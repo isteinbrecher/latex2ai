@@ -441,14 +441,14 @@ ai::FilePath L2A::UTIL::GetFormsPath()
 /**
  *
  */
-ai::FilePath L2A::UTIL::GetHeaderDirectory()
+ai::FilePath L2A::UTIL::GetPdfFileDirectory()
 {
     // Get the document path.
     ai::FilePath path = L2A::UTIL::GetDocumentPath();
 
     // Check that the header directory exists.
     path = path.GetParent();
-    path.AddComponent(ai::UnicodeString(L2A::NAMES::pdf_header_directory_));
+    path.AddComponent(ai::UnicodeString(L2A::NAMES::pdf_file_directory_));
     L2A::UTIL::CreateDirectoryL2A(path);
 
     // Return the header directory.
@@ -493,7 +493,7 @@ unsigned int L2A::UTIL::GetNextItemIndex(ai::FilePath& next_path)
 {
     unsigned int i = 1;
     ai::UnicodeString document_name = GetDocumentName();
-    ai::FilePath pdf_directory = GetHeaderDirectory();
+    ai::FilePath pdf_directory = GetPdfFileDirectory();
     ai::FilePath file;
 
     // Loop through the header directory.

@@ -271,7 +271,7 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                 if (new_parameter_list->GetIntOption(ai::UnicodeString("create_debug_folder")) == 1)
                 {
                     // The user wants to create the debug folder in the header directory.
-                    ai::FilePath debug_directory = L2A::UTIL::GetHeaderDirectory();
+                    ai::FilePath debug_directory = L2A::UTIL::GetPdfFileDirectory();
                     debug_directory.AddComponent(ai::UnicodeString("debug"));
                     if (L2A::UTIL::IsDirectory(debug_directory))
                     {
@@ -360,8 +360,8 @@ ai::UnicodeString L2A::LATEX::GetDefaultHeader()
  */
 ai::FilePath L2A::LATEX::GetHeaderPath()
 {
-    // Get header directory.
-    ai::FilePath path = L2A::UTIL::GetHeaderDirectory();
+    // Header directory.
+    ai::FilePath path = L2A::UTIL::GetDocumentPath().GetParent();
 
     // Check if the header file exists.
     path.AddComponent(ai::UnicodeString(L2A::NAMES::tex_header_name_));

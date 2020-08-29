@@ -39,10 +39,10 @@ namespace L2A
     namespace NAMES
     {
         //! Name of the directory where the L2A header and pdfs will be stored.
-        static const char* pdf_header_directory_ = "LaTeX2AI";
+        static const char* pdf_file_directory_ = "LaTeX2AI";
 
         //! Name of header in the L2A directory.
-        static const char* tex_header_name_ = "_LaTeX2AI_header.tex";
+        static const char* tex_header_name_ = "LaTeX2AI_header.tex";
 
         //! Postfix to the document name for the pdf items.
         static const char* pdf_item_post_fix_ = "_LaTeX2AI_";

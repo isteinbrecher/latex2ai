@@ -64,7 +64,7 @@ license_lines = [
     '    static const char* tex_license_ ='
     ]
 for line in license_tex.split('\n'):
-    license_lines.append('      "{}"'.format(line.replace('"', '\\"')))
+    license_lines.append('      "{}\\n"'.format(line.replace('"', '\\"')))
 license_lines[-1] = license_lines[-1] + ';'
 license_lines.extend([
     '  }',
