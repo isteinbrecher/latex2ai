@@ -62,6 +62,8 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
 
         // Delete the old testing document.
         ai::FilePath testing_document_path = L2A::Global().path_temp_;
+        testing_document_path.AddComponent(ai::UnicodeString("testing_document"));
+        L2A::UTIL::CreateDirectoryL2A(testing_document_path);
         testing_document_path.AddComponent(ai::UnicodeString("l2a_testing_document.ai"));
         L2A::UTIL::RemoveFile(testing_document_path, false);
 
