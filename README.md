@@ -4,6 +4,11 @@ LaTeX2AI is a plugin for Adobe Illustrator CS6 that enables the use of LaTeX ite
 ## Requirements
 A LaTeX compiler must be installed on the system such as [TeX Live](https://www.tug.org/texlive) or [MiKTeX](https://miktex.org) as well as [ghostscript](https://www.ghostscript.com).
 
+## Install from pre-build binaries
+Binaries can be downloaded from the [GitHub release page](https://github.com/stoani89/LaTeX2AI/releases).
+They constist of two files `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
+Both files should be copied into the same directory and this directory has to be set as the Adobe Illustrator Plugin directory.
+
 ## Build from source
 
 ### Requirements
