@@ -57,11 +57,13 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
 
         // Delete the old LaTeX header.
         ai::FilePath latex_header_dir = L2A::Global().path_temp_;
-        latex_header_dir.AddComponent(ai::UnicodeString(L2A::NAMES::pdf_header_directory_));
+        latex_header_dir.AddComponent(ai::UnicodeString(L2A::NAMES::pdf_file_directory_));
         L2A::UTIL::RemoveDirectoryAI(latex_header_dir, false);
 
         // Delete the old testing document.
         ai::FilePath testing_document_path = L2A::Global().path_temp_;
+        testing_document_path.AddComponent(ai::UnicodeString("testing_document"));
+        L2A::UTIL::CreateDirectoryL2A(testing_document_path);
         testing_document_path.AddComponent(ai::UnicodeString("l2a_testing_document.ai"));
         L2A::UTIL::RemoveFile(testing_document_path, false);
 

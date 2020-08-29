@@ -542,15 +542,15 @@ void L2A::RedoItems()
         {
             // Delete all the items for this document, and restart the counter.
             ai::UnicodeString document_name = L2A::UTIL::GetDocumentName();
-            ai::FilePath header_directory = L2A::UTIL::GetHeaderDirectory();
+            ai::FilePath pdf_file_directory = L2A::UTIL::GetPdfFileDirectory();
             ai::UnicodeString pattern = "\\" + document_name + "_LaTeX2AI_*.pdf";
-            std::vector<ai::FilePath> old_pdf_files = L2A::UTIL::FindFilesInFolder(header_directory, pattern);
+            std::vector<ai::FilePath> old_pdf_files = L2A::UTIL::FindFilesInFolder(pdf_file_directory, pattern);
             for (const auto& pdf : old_pdf_files) L2A::UTIL::RemoveFile(pdf);
 
             for (unsigned int i = 0; i < l2a_items.size(); i++)
             {
                 // Move the new pdf to the header directory.
-                ai::FilePath item_pdf_path = header_directory;
+                ai::FilePath item_pdf_path = pdf_file_directory;
                 item_pdf_path.AddComponent(L2A::NAMES::GetPdfItemName(document_name, i + 1));
                 L2A::UTIL::CopyFileL2A(pdf_files[i], item_pdf_path);
                 L2A::AI::RelinkPlacedItem(l2a_items[i].GetPlacedItemMutable(), item_pdf_path);
@@ -621,7 +621,7 @@ void L2A::RelinkCopiedItems()
         ai::UnicodeString placed_item_path_string = placed_item_path.GetFileName();
         ai::UnicodeString compare_string = placed_item_path_string.substr(0, placed_item_path_string.size() - 7);
         const bool same_name = compare_string == L2A::UTIL::GetDocumentName() + L2A::NAMES::pdf_item_post_fix_;
-        const bool same_directory = placed_item_path.GetParent() == L2A::UTIL::GetHeaderDirectory();
+        const bool same_directory = placed_item_path.GetParent() == L2A::UTIL::GetPdfFileDirectory();
         if (!(same_directory && same_name))
         {
             copied_items.push_back(item);
@@ -633,7 +633,7 @@ void L2A::RelinkCopiedItems()
     if (copied_items.size() > 0)
     {
         // Make sure the directory exists.
-        L2A::UTIL::CreateDirectoryL2A(L2A::UTIL::GetHeaderDirectory());
+        L2A::UTIL::CreateDirectoryL2A(L2A::UTIL::GetPdfFileDirectory());
 
         for (auto& item : copied_items)
         {

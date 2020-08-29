@@ -125,7 +125,7 @@ namespace L2A
         /**
          * \brief Get the direcotry where l2a files will be placed for the current document.
          */
-        ai::FilePath GetHeaderDirectory();
+        ai::FilePath GetPdfFileDirectory();
 
         /**
          * \brief Find all files in a folder matching a pattern.
