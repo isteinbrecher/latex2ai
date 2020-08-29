@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # MIT License
 #
-# Copyright (c) 2020 Ivo Steinbrecher (https://github.com/stoani89/LaTeX2AI)
+# Copyright (c) 2020 Ivo Steinbrecher
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -64,8 +64,9 @@ def get_all_source_files():
     out, _err = process.communicate()
     files = out.decode('UTF-8').strip().split('\n')
 
-    source_line_endings = ['.py', '.cs', '.cpp', '.h']
-    source_ending_types = {'.py': 'py', '.cs': 'c', '.cpp': 'c', '.h': 'c'}
+    source_line_endings = ['.py', '.cs', '.cpp', '.h', '.rc']
+    source_ending_types = {'.py': 'py', '.cs': 'c', '.cpp': 'c', '.h': 'c',
+        '.rc': 'c'}
     source_files = {'py': [], 'c': []}
     for file in files:
         extension = os.path.splitext(file)[1]
