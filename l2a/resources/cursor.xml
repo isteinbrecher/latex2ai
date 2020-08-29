@@ -1,0 +1,17 @@
+<?xml version='1.0'?>
+<prop.map version='1'>
+<prop.list>
+<prop.pair>
+<key>DVA_CursorData</key>
+<string>1.0</string>
+</prop.pair>
+<prop.pair>
+<key>kHotSpot</key>
+<array>
+<array.type><int type='signed' size='32'/></array.type>
+<int type='signed' size='32'>1</int>
+<int type='signed' size='32'>2</int>
+</array>
+</prop.pair>
+</prop.list>
+</prop.map>
