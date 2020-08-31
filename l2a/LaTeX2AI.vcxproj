@@ -151,7 +151,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -210,7 +210,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -269,7 +269,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -328,7 +328,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
