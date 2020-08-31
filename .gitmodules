@@ -1,3 +1,6 @@
 [submodule "l2a/tpl/tinyxml2"]
 	path = l2a/tpl/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
+[submodule "l2a/tpl/StackWalker"]
+	path = l2a/tpl/StackWalker
+	url = https://github.com/JochenKalmbach/StackWalker.git
