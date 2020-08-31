@@ -67,6 +67,22 @@ bool L2A::UTIL::IsDirectory(const ai::FilePath& directory)
 /**
  *
  */
+bool L2A::UTIL::IsWriteable(const ai::FilePath& file)
+{
+    bool file_exits = IsFile(file);
+    std::fstream stream;
+    stream.open(file.GetFullPath().as_Platform(), std::fstream::out | std::fstream::app);
+    bool is_writeable = stream.is_open();
+    stream.close();
+    if (!file_exits && is_writeable)
+        // The file did not exits prior and it could be created, therefore it has to be deleted here.
+        RemoveFile(file);
+    return is_writeable;
+}
+
+/**
+ *
+ */
 void L2A::UTIL::RemoveFile(const ai::FilePath& file, const bool& fail_if_not_exist)
 {
     // Check that it exists and is file.
