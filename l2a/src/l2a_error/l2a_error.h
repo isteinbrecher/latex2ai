@@ -38,33 +38,53 @@ namespace L2A
         /**
          * \brief Base class for L2A Errors.
          */
-        class Exception : public exception
+        class ExceptionBase : public exception
         {
            public:
             /**
-             * \brief Constructor with error string.
+             * \brief Constructor with error string and detailed information about the error.
              */
-            Exception(const ai::UnicodeString& error_string) : exception(), error_string_(error_string)
-            {
-#ifdef _DEBUG
-                // In debug show all exceptions that happen.
-                sAIUser->MessageAlert(error_string_);
-#endif
-            }
-
-           protected:
-            //! String containing information regarding this error.
-            ai::UnicodeString error_string_;
+            ExceptionBase(){};
         };
 
         /**
-         * \brief Check if illustrator returned a non zero exit status.
+         * \brief Class for L2A Errors.
          */
-        inline void check_ai_error(AIErr err)
+        class Exception : public ExceptionBase
         {
-            if (err) throw Exception(ai::UnicodeString("Ilustrator Error"));
-        }
+           public:
+            /**
+             * \brief Constructor with error string and detailed information about the error.
+             */
+            Exception(const char* __file__, const int __line__, const char* __function__,
+                const ai::UnicodeString& error_string);
+        };
+
+        /**
+         * \brief Class for L2A Warnings.
+         */
+        class Warning : public ExceptionBase
+        {
+           public:
+            /**
+             * \brief Constructor with warning string.
+             */
+            Warning(const ai::UnicodeString& warning_string) { sAIUser->MessageAlert(warning_string); };
+        };
     }  // namespace ERR
 }  // namespace L2A
 
-#endif
+
+/**
+ * \brief This macro throws an error and adds information where in the code the error happens.
+ */
+#define l2a_error(error_string) \
+    throw L2A::ERR::Exception(__FILE__, __LINE__, __FUNCTION__, ai::UnicodeString(error_string))
+
+/**
+ * \brief This macro checks the AI error code and throws an L2A error if something went wrong.
+ */
+#define l2a_check_ai_error(err) \
+    if (err) l2a_error("Ilustrator Error")
+
+#endif  // L2A_ERROR_H_

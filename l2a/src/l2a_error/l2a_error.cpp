@@ -28,3 +28,25 @@
 
 
 #include "IllustratorSDK.h"
+#include "l2a_error.h"
+
+#include "utility/string_functions.h"
+
+
+L2A::ERR::Exception::Exception(
+    const char* __file__, const int __line__, const char* __function__, const ai::UnicodeString& error_string)
+    : ExceptionBase()
+{
+    ai::UnicodeString full_error_string(
+        "--------------------------------------------------------------------------------\n");
+    full_error_string += ai::UnicodeString(__file__);
+    full_error_string += "::";
+    char buff[100];
+    snprintf(buff, sizeof(buff), "%d", __line__);
+    full_error_string += ai::UnicodeString(buff);
+    full_error_string += "\n";
+    full_error_string += ai::UnicodeString(__function__);
+    full_error_string += "\n--------------------------------------------------------------------------------\n\n";
+    full_error_string += error_string;
+    sAIUser->MessageAlert(full_error_string);
+}
