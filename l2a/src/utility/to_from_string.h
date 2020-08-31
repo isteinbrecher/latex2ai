@@ -30,6 +30,8 @@
 #define UTIL_TO_FROM_STRING_H_
 
 
+#include "l2a_error/l2a_error.h"
+
 
 namespace L2A
 {
@@ -49,7 +51,7 @@ namespace L2A
                 if (std::get<0>(flag_to_string_array[i]) == flag) return std::get<1>(flag_to_string_array[i]);
 
             if (fail_on_default)
-                throw L2A::ERR::Exception(ai::UnicodeString("FlagToString got unexpected flag!"));
+                l2a_error("Got unexpected flag!");
             else
                 return ai::UnicodeString("none");
         }
@@ -68,7 +70,7 @@ namespace L2A
                 if (std::get<1>(flag_to_string_array[i]) == string) return std::get<0>(flag_to_string_array[i]);
 
             if (fail_on_default)
-                throw L2A::ERR::Exception(ai::UnicodeString("FlagFromString got unexpected string " + string + "!"));
+                l2a_error("Got unexpected string " + string + "!");
             else
                 return Tflag::none;
         }

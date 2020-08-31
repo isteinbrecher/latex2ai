@@ -75,29 +75,12 @@ void L2A::UTIL::RemoveFile(const ai::FilePath& file, const bool& fail_if_not_exi
         const int return_value = remove(file.GetFullPath().as_Platform().c_str());
 
         // Check if file could be deleted.
-        if (return_value != 0)
-        {
-            ai::UnicodeString error_string("L2A::UTIL::RemoveFile The given path ");
-            error_string += file.GetFullPath() + " could not be deleted!";
-            throw L2A::ERR::Exception(error_string);
-        }
+        if (return_value != 0) l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
     }
-    else
-    {
-        // Check if it does not exist, of if it is a directory.
-        ai::UnicodeString error_string("L2A::UTIL::RemoveFile The given path ");
-        error_string += file.GetFullPath();
-        if (IsDirectory(file))
-        {
-            error_string += ai::UnicodeString(" is a directory!");
-            throw L2A::ERR::Exception(error_string);
-        }
-        else if (fail_if_not_exist)
-        {
-            error_string += ai::UnicodeString(" does not exist!");
-            throw L2A::ERR::Exception(error_string);
-        }
-    }
+    else if (IsDirectory(file))
+        l2a_error("The given path " + file.GetFullPath() + " is a directory!");
+    else if (fail_if_not_exist)
+        l2a_error("The given path " + file.GetFullPath() + " does not exist!");
 }
 
 /**
@@ -114,26 +97,13 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
         }
         catch (...)
         {
-            throw L2A::ERR::Exception(
-                ai::UnicodeString("The folder \"" + directory.GetFullPath() + "\" could not be deleted!"));
+            l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
         }
     }
-    else
-    {
-        // Check if it does not exist, of if it is a directory.
-        ai::UnicodeString error_string("L2A::UTIL::RemoveDirectoryAI The given path ");
-        error_string += directory.GetFullPath();
-        if (IsFile(directory))
-        {
-            error_string += ai::UnicodeString(" is a file!");
-            throw L2A::ERR::Exception(error_string);
-        }
-        else if (fail_if_not_exist)
-        {
-            error_string += ai::UnicodeString(" does not exist!");
-            throw L2A::ERR::Exception(error_string);
-        }
-    }
+    else if (IsFile(directory))
+        l2a_error("The given path " + directory.GetFullPath() + " is a file!");
+    else if (fail_if_not_exist)
+        l2a_error("The given path " + directory.GetFullPath() + " does not exist!");
 }
 
 /**
@@ -143,23 +113,12 @@ void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString&
 {
     // Check if the folder exists.
     if (!IsDirectory(path.GetParent()))
-    {
-        ai::UnicodeString error_string("L2A::UTIL::WriteFileUTF8 The folder '");
-        error_string += path.GetParent().GetFullPath();
-        error_string += ai::UnicodeString("' for the file '");
-        error_string += path.GetFullPath();
-        error_string += ai::UnicodeString("' does not exist!");
-        throw L2A::ERR::Exception(error_string);
-    }
+        l2a_error("The folder '" + path.GetParent().GetFullPath() + "' for the file '" + path.GetFullPath() +
+            "' does not exist!");
 
     // Check if the file already exists.
     if (IsFile(path) && !overwrite)
-    {
-        ai::UnicodeString error_string("L2A::UTIL::WriteFileUTF8 the file '");
-        error_string += path.GetFullPath();
-        error_string += ai::UnicodeString("' alreday exists and the option overwrite is false!");
-        throw L2A::ERR::Exception(error_string);
-    }
+        l2a_error("The file '" + path.GetFullPath() + "' alreday exists and the option overwrite is false!");
 
     // Write text to file.
     std::ofstream f(path.GetFullPath().as_Platform());
@@ -173,13 +132,7 @@ void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString&
 ai::UnicodeString L2A::UTIL::ReadFileUTF8(const ai::FilePath& path)
 {
     // Check if the file exists.
-    if (!IsFile(path))
-    {
-        ai::UnicodeString error_string("L2A::UTIL::ReadFileUTF8 The file '");
-        error_string += path.GetFullPath();
-        error_string += ai::UnicodeString("' does not exist!");
-        throw L2A::ERR::Exception(error_string);
-    }
+    if (!IsFile(path)) l2a_error("The file '" + path.GetFullPath() + "' does not exist!");
 
     // Open the file stream.
     std::wifstream wif(path.GetFullPath().as_Platform());
@@ -202,9 +155,7 @@ void L2A::UTIL::CreateDirectoryL2A(const ai::FilePath& directory)
     while (!IsDirectory(path))
     {
         // Check if the path is not a valid file.
-        if (IsFile(path))
-            throw L2A::ERR::Exception(
-                ai::UnicodeString("L2A::UTIL::CreateDirectoryL2A Error, the parent of the path is a file!"));
+        if (IsFile(path)) l2a_error("A parent of the path '" + directory.GetFullPath() + "' is a file!");
 
         // Add the current item to the vector.
         parts.push_back(path.GetFileName());
@@ -225,19 +176,17 @@ void L2A::UTIL::CreateDirectoryL2A(const ai::FilePath& directory)
 void L2A::UTIL::CopyFileL2A(const ai::FilePath& source, const ai::FilePath& target)
 {
     // Check if source exists.
-    if (!IsFile(source))
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::UTIL::CopyFileL2A Error, source file does not exist!"));
+    if (!IsFile(source)) l2a_error("The source file '" + source.GetFullPath() + "'does not exist!");
 
     // Check if destination directory exists.
-    if (!IsDirectory(target.GetParent()))
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::UTIL::CopyFileL2A Error, target dir does not exist!"));
+    if (!IsDirectory(target.GetParent())) l2a_error("The target dir '" + target.GetFullPath() + "'does not exist!");
 
     // Copy the file.
     bool copy_ok =
         CopyFile(source.GetFullPath().as_Platform().c_str(), target.GetFullPath().as_Platform().c_str(), false);
 
     // Check if everything was ok
-    if (!copy_ok) throw L2A::ERR::Exception(ai::UnicodeString("L2A::UTIL::CopyFileL2A Error copy process!"));
+    if (!copy_ok) l2a_error("Error in copy process!");
 }
 
 /**
@@ -259,8 +208,7 @@ ai::FilePath L2A::UTIL::GetApplicationDataDirectory()
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, pathBuffer)))
         return ai::FilePath(ai::UnicodeString(pathBuffer));
     else
-        throw L2A::ERR::Exception(ai::UnicodeString(
-            "L2A::UTIL::GetApplicationDataDirectory The application data directory could not be retrieved!"));
+        l2a_error("The application data directory could not be retrieved!");
 }
 
 /**
@@ -271,11 +219,11 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
     ASErr error = kNoErr;
     ai::FilePath path;
     error = sAIDocument->GetDocumentFileSpecification(path);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
 
     // Check if the path is a file.
     if (!IsFile(path) && fail_if_not_saved)
-        throw L2A::ERR::Exception(ai::UnicodeString(
+        throw L2A::ERR::Warning(ai::UnicodeString(
             "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved."));
 
     return path;
@@ -320,10 +268,7 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
         LocalFree(lpMsgBuf);
 
         // Create error message.
-        ai::UnicodeString error_string("Error, process '");
-        error_string += command;
-        error_string += ai::UnicodeString("' could not be created!");
-        throw L2A::ERR::Exception(error_string);
+        l2a_error("Error, process '" + command + "' could not be created!");
     }
     else
     {
@@ -338,11 +283,7 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
         CloseHandle(processInformation.hProcess);
         CloseHandle(processInformation.hThread);
 
-        if (!result)
-        {
-            // Could not get exit code.
-            throw L2A::ERR::Exception(ai::UnicodeString("Executed command but couldn't get exit code."));
-        }
+        if (!result) l2a_error("Executed command but couldn't get exit code.");
 
         // Everything succeeded and return the exit code.
         return (int)exitCode;
@@ -356,16 +297,12 @@ int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
 {
     if (L2A::UTIL::IsFile(file_path))
     {
+        // TODO: Why is this done like this?
         return system(file_path.GetFullPath().as_Platform().c_str());
         // return L2A::UTIL::ExecuteCommandLine(file_path.GetFullPath());
     }
     else
-    {
-        ai::UnicodeString error_string("L2A::UTIL::ExecuteFile The file ");
-        error_string += file_path.GetFullPath();
-        error_string += ai::UnicodeString(" does not exist!");
-        throw L2A::ERR::Exception(error_string);
-    }
+        l2a_error("The file " + file_path.GetFullPath() + " does not exist!");
 }
 
 /**

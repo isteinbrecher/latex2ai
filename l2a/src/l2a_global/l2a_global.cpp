@@ -126,10 +126,8 @@ void L2A::GLOBAL::Global::SetUp()
         command_gs_ = default_parameter_list->GetStringOption(ai::UnicodeString("command_gs"));
 
     // Check that values were found.
-    if (command_latex_ == ai::UnicodeString(""))
-        throw L2A::ERR::Exception(ai::UnicodeString("Could not find command for LaTeX!"));
-    if (command_gs_ == ai::UnicodeString(""))
-        throw L2A::ERR::Exception(ai::UnicodeString("Could not find command for ghostscript!"));
+    if (command_latex_ == ai::UnicodeString("")) l2a_error("Could not find command for LaTeX!");
+    if (command_gs_ == ai::UnicodeString("")) l2a_error("Could not find command for ghostscript!");
 
     // Set default latex compiler options.
     if (command_latex_options_ == ai::UnicodeString(""))
@@ -226,8 +224,7 @@ void L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
  */
 void L2A::GLOBAL::CheckGlobal()
 {
-    if (_l2a_global == NULL)
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::GLOBAL::CheckGlobal The global object is not defined!"));
+    if (_l2a_global == NULL) l2a_error("The global object is not defined!");
 }
 
 /**

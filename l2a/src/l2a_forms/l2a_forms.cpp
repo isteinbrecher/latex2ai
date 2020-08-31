@@ -93,10 +93,10 @@ bool L2A::Form(const ai::UnicodeString& form_type, const L2A::UTIL::ParameterLis
         else if (form_result == ai::UnicodeString("cancel"))
             return false;
         else
-            throw L2A::ERR::Exception(ai::UnicodeString("L2A::Form Got inexpected result from forms application."));
+            l2a_error("Got unexpected result from forms application.");
     }
     else
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::Form no file written in form application!"));
+        l2a_error("No file written in form application!");
 }
 
 /**

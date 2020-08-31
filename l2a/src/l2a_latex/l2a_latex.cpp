@@ -137,12 +137,7 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
 {
     // Check if file exists.
     if (!L2A::UTIL::IsFile(pdf_file))
-    {
-        ai::UnicodeString error_string("L2A::LATEX::SplitPdfPages Error, the file to split up '");
-        error_string += pdf_file.GetFullPath();
-        error_string += "' does not exits!";
-        throw L2A::ERR::Exception(error_string);
-    }
+        l2a_error("The file to split up '" + pdf_file.GetFullPath() + "' does not exits!");
 
     // Ghostscript path.
     ai::UnicodeString gs_path("\"");
@@ -203,12 +198,7 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
 
         // Check if the file was created.
         if (!L2A::UTIL::IsFile(ai::FilePath(file_name)))
-        {
-            ai::UnicodeString error_string("L2A::LATEX::SplitPdfPages Error, the split file '");
-            error_string += file_name;
-            error_string += ai::UnicodeString("' was not created!");
-            throw L2A::ERR::Exception(error_string);
-        }
+            l2a_error("The split file '" + file_name + "' was not created!");
     }
 
     return pdf_files;
