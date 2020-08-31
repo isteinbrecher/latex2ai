@@ -584,6 +584,11 @@ void L2A::RelinkCopiedItems()
     // If the document is not saved, nothing needs to be done in this function.
     if (!L2A::UTIL::IsFile(L2A::UTIL::GetDocumentPath(false))) return;
 
+    // Get all selected items and store them. Those items have to be reselected at the end of this function, to ensure
+    // that all copied items are selected and the user can directly modify (e.g. move) them.
+    std::vector<AIArtHandle> selected_items_all;
+    L2A::AI::GetItems(selected_items_all, L2A::AI::SelectionState::selected);
+
     // Get the selected items. Those are candidates for items that were just paste into the document.
     std::vector<AIArtHandle> selected_items;
     L2A::AI::GetDocumentItems(selected_items, L2A::AI::SelectionState::selected);
@@ -608,6 +613,10 @@ void L2A::RelinkCopiedItems()
     for (const auto& item : selected_items)
     {
         ai::FilePath placed_item_path = L2A::AI::GetPlacedItemPath(item);
+
+        // Check if the item links to a file that exists. If the linked file does not exist, the item will be skipped,
+        // as the TeX file has to be recompiled.
+        if (!L2A::UTIL::IsFile(placed_item_path)) continue;
 
         // Check if the selected item links to a file that other items in this document already link to.
         if (std::find(linked_paths.begin(), linked_paths.end(), placed_item_path.GetFullPath()) != linked_paths.end())
@@ -648,5 +657,8 @@ void L2A::RelinkCopiedItems()
             // Set the name for the  AI item.
             L2A::AI::SetName(item, L2A::NAMES::ai_item_name_prefix_ + L2A::UTIL::IntegerToString(item_index, 3));
         }
+
+        // Select the items again that were selected after the copy mechanism.
+        L2A::AI::SelectItems(selected_items_all);
     }
 }
