@@ -62,6 +62,8 @@ namespace L2A
 
         /**
          * \brief Class for L2A Warnings.
+         *
+         * This class is intended for events that should be displayed to the user but are not considered as an error.
          */
         class Warning : public ExceptionBase
         {
