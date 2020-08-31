@@ -624,9 +624,15 @@ void L2A::AI::SaveToPDF()
         }
     }
 
-    // Get the name of the pdf file.
-    ai::FilePath pdf_file = L2A::UTIL::GetDocumentPath().GetParent();
-    pdf_file.AddComponent(L2A::UTIL::GetDocumentName() + ".pdf");
+    // Get the name of the pdf file and perform some safety checks.
+    ai::FilePath document_path = L2A::UTIL::GetDocumentPath();
+    if (document_path.GetFileExtension() == "pdf")
+        throw L2A::ERR::Warning(
+            ai::UnicodeString("The save as pdf function can only be used if the document is not already a pdf."));
+    ai::FilePath pdf_file = document_path.GetParent();
+    pdf_file.AddComponent(document_path.GetFileNameNoExt() + ".pdf");
+    if (!L2A::UTIL::IsWriteable(pdf_file))
+        throw L2A::ERR::Warning("The file '" + pdf_file.GetFullPath() + "' is not writeable.");
 
     // Set the parameters for the action.
     AIActionParamValueRef action_parameters;
