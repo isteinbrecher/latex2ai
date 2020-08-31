@@ -227,7 +227,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.\src;.\resources;..\..\common\includes;..\..\common\win;..\..\..\illustratorapi\adm;..\..\..\illustratorapi\ate;..\..\..\illustratorapi\illustrator;..\..\..\illustratorapi\illustrator\actions;..\..\..\illustratorapi\pica_sp;..\..\..\illustratorapi\illustrator\legacy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>IllustratorSDK.h</PrecompiledHeaderFile>
@@ -286,7 +286,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.\src;.\resources;..\..\common\includes;..\..\common\win;..\..\..\illustratorapi\adm;..\..\..\illustratorapi\ate;..\..\..\illustratorapi\illustrator;..\..\..\illustratorapi\illustrator\actions;..\..\..\illustratorapi\pica_sp;..\..\..\illustratorapi\illustrator\legacy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>IllustratorSDK.h</PrecompiledHeaderFile>
