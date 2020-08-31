@@ -114,9 +114,9 @@ namespace L2A
     };
 
     /**
-     *\brief Vertical alignment of text.
+     *\brief Method how the placed item is croped in AI.
      */
-    enum class PlacedArtOptions
+    enum class PlacedArtMethod
     {
         //! None.
         none,
@@ -129,16 +129,16 @@ namespace L2A
     };
 
     /**
-     *\brief Get the flag to string array for PlacedArtOptions.
+     *\brief Get the flag to string array for PlacedArtMethod.
      */
-    inline std::array<std::tuple<L2A::PlacedArtOptions, ai::UnicodeString>, 3> PlacedArtOptionsToStringArray()
+    inline std::array<std::tuple<L2A::PlacedArtMethod, ai::UnicodeString>, 3> PlacedArtMethodToStringArray()
     {
-        std::array<std::tuple<PlacedArtOptions, ai::UnicodeString>, 3> to_string_array;
+        std::array<std::tuple<PlacedArtMethod, ai::UnicodeString>, 3> to_string_array;
         to_string_array[0] =
-            std::make_tuple(L2A::PlacedArtOptions::fill_to_boundary_box, ai::UnicodeString("fill_to_boundary_box"));
-        to_string_array[1] = std::make_tuple(L2A::PlacedArtOptions::keep_scale, ai::UnicodeString("keep_scale"));
+            std::make_tuple(L2A::PlacedArtMethod::fill_to_boundary_box, ai::UnicodeString("fill_to_boundary_box"));
+        to_string_array[1] = std::make_tuple(L2A::PlacedArtMethod::keep_scale, ai::UnicodeString("keep_scale"));
         to_string_array[2] =
-            std::make_tuple(L2A::PlacedArtOptions::keep_scale_clip, ai::UnicodeString("keep_scale_clip"));
+            std::make_tuple(L2A::PlacedArtMethod::keep_scale_clip, ai::UnicodeString("keep_scale_clip"));
         return to_string_array;
     };
 
@@ -239,9 +239,9 @@ namespace L2A
         }
 
         /**
-         * \brief Get the placement options.
+         * \brief Get the placement method.
          */
-        PlacedArtOptions GetPlacedOption() const { return placed_option_; }
+        PlacedArtMethod GetPlacedMethod() const { return placed_method_; }
 
         /**
          * \brief Write the contents of this property to the last input file.
@@ -263,8 +263,8 @@ namespace L2A
         //! LaTeX code of the item.
         ai::UnicodeString latex_code_;
 
-        //! Placement option of the item.
-        PlacedArtOptions placed_option_;
+        //! Placement method of the item.
+        PlacedArtMethod placed_method_;
 
         //! Position of the cursor in the form.
         unsigned int cursor_position_;

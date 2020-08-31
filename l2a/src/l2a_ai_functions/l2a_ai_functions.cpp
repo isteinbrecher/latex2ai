@@ -117,19 +117,19 @@ PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
  */
 void L2A::AI::GetPropertyPlacedMethodClip(const L2A::Property& item_property, PlaceMethod& place_method, bool& clip)
 {
-    L2A::PlacedArtOptions placed_options = item_property.GetPlacedOption();
+    L2A::PlacedArtMethod placed_method = item_property.GetPlacedMethod();
 
-    if (placed_options == L2A::PlacedArtOptions::fill_to_boundary_box)
+    if (placed_method == L2A::PlacedArtMethod::fill_to_boundary_box)
     {
         place_method = kConform;
         clip = false;
     }
-    else if (placed_options == L2A::PlacedArtOptions::keep_scale)
+    else if (placed_method == L2A::PlacedArtMethod::keep_scale)
     {
         place_method = kAsIs;
         clip = false;
     }
-    else if (placed_options == L2A::PlacedArtOptions::keep_scale_clip)
+    else if (placed_method == L2A::PlacedArtMethod::keep_scale_clip)
     {
         place_method = kAsIs;
         clip = true;

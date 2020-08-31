@@ -60,7 +60,7 @@ void L2A::Property::DefaultPropertyValues()
     text_align_vertical_ = L2A::TextAlignVertical::centre;
 
     // Do not scale the image and keep it at the same size, also clip it.
-    placed_option_ = L2A::PlacedArtOptions::keep_scale_clip;
+    placed_method_ = L2A::PlacedArtMethod::keep_scale_clip;
 
     // Default latex code.
     latex_code_ = ai::UnicodeString("$a^2+b^2=c^2$");
@@ -79,8 +79,8 @@ void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& propert
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_horizontal")));
     text_align_vertical_ = L2A::UTIL::FlagFromString(TextAlignVerticalToStringArray(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_vertical")));
-    placed_option_ = L2A::UTIL::FlagFromString(
-        PlacedArtOptionsToStringArray(), property_parameter_list.GetStringOption(ai::UnicodeString("placed_option")));
+    placed_method_ = L2A::UTIL::FlagFromString(
+        PlacedArtMethodToStringArray(), property_parameter_list.GetStringOption(ai::UnicodeString("placed_option")));
 
     // Set the latex code.
     latex_code_ = property_parameter_list.GetSubList(ai::UnicodeString("latex"))->GetMainOption();
@@ -114,7 +114,7 @@ L2A::UTIL::ParameterList L2A::Property::ToParameterList() const
     property_parameter_list.SetOption(ai::UnicodeString("text_align_vertical"),
         L2A::UTIL::FlagToString(TextAlignVerticalToStringArray(), text_align_vertical_));
     property_parameter_list.SetOption(
-        ai::UnicodeString("placed_option"), L2A::UTIL::FlagToString(PlacedArtOptionsToStringArray(), placed_option_));
+        ai::UnicodeString("placed_option"), L2A::UTIL::FlagToString(PlacedArtMethodToStringArray(), placed_method_));
 
     // Add the latex text.
     std::shared_ptr<L2A::UTIL::ParameterList> tex_sub_list =
@@ -157,7 +157,7 @@ L2A::PropertyCompare L2A::Property::Compare(const Property& other_property) cons
     }
 
     // Compare the placement methods (and clip).
-    if (placed_option_ != other_property.placed_option_) output.changed_placement = true;
+    if (placed_method_ != other_property.placed_method_) output.changed_placement = true;
 
     // Compare the cursor position.
     if (cursor_position_ != other_property.cursor_position_) output.changed_cursor = true;
