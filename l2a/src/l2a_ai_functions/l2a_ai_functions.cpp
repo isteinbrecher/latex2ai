@@ -36,6 +36,7 @@
 #include "l2a_names.h"
 #include "utility/string_functions.h"
 #include "utility/file_system.h"
+#include "utility/utils.h"
 
 #include "AIDocumentAction.h"
 #include "AIPDFFormatAction.h"
@@ -70,46 +71,8 @@ PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
     L2A::TextAlignHorizontal text_align_horizontal;
     L2A::TextAlignVertical text_align_vertical;
     item_property.GetTextAlignment(text_align_horizontal, text_align_vertical);
-
-    // Set the corret alignment.
-    if (text_align_horizontal == L2A::TextAlignHorizontal::left && text_align_vertical == L2A::TextAlignVertical::top)
-        return kTopLeft;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::centre &&
-        text_align_vertical == L2A::TextAlignVertical::top)
-        return kTopMid;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::right &&
-        text_align_vertical == L2A::TextAlignVertical::top)
-        return kTopRight;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::left &&
-        text_align_vertical == L2A::TextAlignVertical::centre)
-        return kMidLeft;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::centre &&
-        text_align_vertical == L2A::TextAlignVertical::centre)
-        return kMidMid;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::right &&
-        text_align_vertical == L2A::TextAlignVertical::centre)
-        return kMidRight;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::left &&
-        text_align_vertical == L2A::TextAlignVertical::baseline)
-        return kMidLeft;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::centre &&
-        text_align_vertical == L2A::TextAlignVertical::baseline)
-        return kMidMid;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::right &&
-        text_align_vertical == L2A::TextAlignVertical::baseline)
-        return kMidRight;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::left &&
-        text_align_vertical == L2A::TextAlignVertical::bottom)
-        return kBotLeft;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::centre &&
-        text_align_vertical == L2A::TextAlignVertical::bottom)
-        return kBotMid;
-    else if (text_align_horizontal == L2A::TextAlignHorizontal::right &&
-        text_align_vertical == L2A::TextAlignVertical::bottom)
-        return kBotRight;
-    else
-        throw L2A::ERR::Exception(
-            ai::UnicodeString("L2A::AI::GetPropertyAlignment placement could not me determined."));
+    return L2A::UTIL::KeyToValue(
+        GetTextAlignTuples(), GetTextAlignEnumsAI(), std::make_tuple(text_align_horizontal, text_align_vertical));
 }
 
 /**
@@ -117,26 +80,9 @@ PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
  */
 void L2A::AI::GetPropertyPlacedMethodClip(const L2A::Property& item_property, PlaceMethod& place_method, bool& clip)
 {
-    L2A::PlacedArtMethod placed_method = item_property.GetPlacedMethod();
-
-    if (placed_method == L2A::PlacedArtMethod::fill_to_boundary_box)
-    {
-        place_method = kConform;
-        clip = false;
-    }
-    else if (placed_method == L2A::PlacedArtMethod::keep_scale)
-    {
-        place_method = kAsIs;
-        clip = false;
-    }
-    else if (placed_method == L2A::PlacedArtMethod::keep_scale_clip)
-    {
-        place_method = kAsIs;
-        clip = true;
-    }
-    else
-        throw L2A::ERR::Exception(
-            ai::UnicodeString("L2A::AI::GetPropertyPlacedMethodClip place method could not be determined."));
+    std::tuple<PlaceMethod&, bool&> tuple_enums_ai = {place_method, clip};
+    tuple_enums_ai =
+        L2A::UTIL::KeyToValue(GetPlacedMethodEnums(), GetPlacedMethodEnumsAI(), item_property.GetPlacedMethod());
 }
 
 /**

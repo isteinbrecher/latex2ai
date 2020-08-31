@@ -32,7 +32,7 @@
 
 #include "utility/parameter_list.h"
 #include "utility/string_functions.h"
-#include "utility/to_from_string.h"
+#include "utility/utils.h"
 #include "utility/file_system.h"
 #include "l2a_error/l2a_error.h"
 #include "l2a_forms/l2a_forms.h"
@@ -75,12 +75,12 @@ void L2A::Property::DefaultPropertyValues()
 void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& property_parameter_list)
 {
     // Set the options.
-    text_align_horizontal_ = L2A::UTIL::FlagFromString(TextAlignHorizontalToStringArray(),
+    text_align_horizontal_ = L2A::UTIL::KeyToValue(GetTextAlignHorizontalStrings(), GetTextAlignHorizontalEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_horizontal")));
-    text_align_vertical_ = L2A::UTIL::FlagFromString(TextAlignVerticalToStringArray(),
+    text_align_vertical_ = L2A::UTIL::KeyToValue(GetTextAlignVerticalStrings(), GetTextAlignVerticalEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_vertical")));
-    placed_method_ = L2A::UTIL::FlagFromString(
-        PlacedArtMethodToStringArray(), property_parameter_list.GetStringOption(ai::UnicodeString("placed_option")));
+    placed_method_ = L2A::UTIL::KeyToValue(GetPlacedMethodStrings(), GetPlacedMethodEnums(),
+        property_parameter_list.GetStringOption(ai::UnicodeString("placed_option")));
 
     // Set the latex code.
     latex_code_ = property_parameter_list.GetSubList(ai::UnicodeString("latex"))->GetMainOption();
@@ -110,11 +110,11 @@ L2A::UTIL::ParameterList L2A::Property::ToParameterList() const
 
     // Add the options.
     property_parameter_list.SetOption(ai::UnicodeString("text_align_horizontal"),
-        L2A::UTIL::FlagToString(TextAlignHorizontalToStringArray(), text_align_horizontal_));
+        L2A::UTIL::KeyToValue(GetTextAlignHorizontalEnums(), GetTextAlignHorizontalStrings(), text_align_horizontal_));
     property_parameter_list.SetOption(ai::UnicodeString("text_align_vertical"),
-        L2A::UTIL::FlagToString(TextAlignVerticalToStringArray(), text_align_vertical_));
-    property_parameter_list.SetOption(
-        ai::UnicodeString("placed_option"), L2A::UTIL::FlagToString(PlacedArtMethodToStringArray(), placed_method_));
+        L2A::UTIL::KeyToValue(GetTextAlignVerticalEnums(), GetTextAlignVerticalStrings(), text_align_vertical_));
+    property_parameter_list.SetOption(ai::UnicodeString("placed_option"),
+        L2A::UTIL::KeyToValue(GetPlacedMethodEnums(), GetPlacedMethodStrings(), placed_method_));
 
     // Add the latex text.
     std::shared_ptr<L2A::UTIL::ParameterList> tex_sub_list =

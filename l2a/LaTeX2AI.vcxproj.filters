@@ -141,9 +141,6 @@
     <ClInclude Include="src\l2a_property\l2a_property.h">
       <Filter>src\l2a_property</Filter>
     </ClInclude>
-    <ClInclude Include="src\utility\to_from_string.h">
-      <Filter>src\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\l2a_forms\l2a_forms.h">
       <Filter>src\l2a_forms</Filter>
     </ClInclude>
@@ -158,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="src\tests\test_framework.h">
       <Filter>src\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utility\utils.h">
+      <Filter>src\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
