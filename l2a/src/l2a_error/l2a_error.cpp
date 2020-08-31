@@ -89,6 +89,9 @@ L2A::ERR::Exception::Exception(
 {
     ai::UnicodeString full_error_string(
         "--------------------------------------------------------------------------------\n");
+    full_error_string += "LaTeX2AI Error! If this happens, please open an issue under\n";
+    full_error_string += "github.com/stoani89/LaTeX2AI/issues\n";
+    full_error_string += "--------------------------------------------------------------------------------\n";
 #ifdef _DEBUG
     full_error_string += "Stack:\n";
     full_error_string += "--------------------------------------------------------------------------------\n";
