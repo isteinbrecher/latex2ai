@@ -260,10 +260,9 @@ namespace L2A
         /**
          * \brief Get the text alignment enums.
          */
-        void GetTextAlignment(TextAlignHorizontal& text_align_horizontal, TextAlignVertical& text_align_vertical) const
+        std::tuple<TextAlignHorizontal, TextAlignVertical> GetTextAlignment() const
         {
-            text_align_horizontal = text_align_horizontal_;
-            text_align_vertical = text_align_vertical_;
+            return std::make_tuple(text_align_horizontal_, text_align_vertical_);
         }
 
         /**

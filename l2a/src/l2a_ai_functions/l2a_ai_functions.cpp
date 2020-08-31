@@ -68,11 +68,8 @@ AIArtHandle L2A::AI::CreatePlacedItem(ai::FilePath pdf_path)
 PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
 {
     // Get the alignment from the property.
-    L2A::TextAlignHorizontal text_align_horizontal;
-    L2A::TextAlignVertical text_align_vertical;
-    item_property.GetTextAlignment(text_align_horizontal, text_align_vertical);
-    return L2A::UTIL::KeyToValue(
-        GetTextAlignTuples(), GetTextAlignEnumsAI(), std::make_tuple(text_align_horizontal, text_align_vertical));
+    std::tuple<TextAlignHorizontal, TextAlignVertical> text_alignment = item_property.GetTextAlignment();
+    return L2A::UTIL::KeyToValue(GetTextAlignTuples(), GetTextAlignEnumsAI(), text_alignment);
 }
 
 /**
@@ -110,6 +107,17 @@ void L2A::AI::SetPlacement(
 {
     ASErr error = kNoErr;
     error = sAIPlaced->SetPlaceOptions(placed_item, method, alignment, clip);
+    L2A::ERR::check_ai_error(error);
+}
+
+/**
+ *
+ */
+void L2A::AI::GetPlacement(
+    const AIArtHandle& placed_item, PlaceMethod& method, PlaceAlignment& alignment, AIBoolean& clip)
+{
+    ASErr error = kNoErr;
+    error = sAIPlaced->GetPlaceOptions(placed_item, &method, &alignment, &clip);
     L2A::ERR::check_ai_error(error);
 }
 

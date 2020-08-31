@@ -38,6 +38,7 @@
 #include "utility/parameter_list.h"
 #include "utility/file_system.h"
 #include "utility/string_functions.h"
+#include "utility/utils.h"
 #include "l2a_names.h"
 #include "l2a_constants.h"
 
@@ -103,6 +104,30 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
     // Get the data from the art item.
     property_ = L2A::Property();
     property_.SetFromString(L2A::AI::GetNote(placed_item_));
+
+    // Check that the placed options in AI and the set LaTeX2AI options are the same.
+    {
+        PlaceMethod method_ai;
+        PlaceAlignment alignment_ai;
+        AIBoolean clip_ai;
+        L2A::AI::GetPlacement(placed_item_, method_ai, alignment_ai, clip_ai);
+
+        PlaceMethod method_l2a;
+        AIBoolean clip_l2a;
+        std::tuple<PlaceMethod&, AIBoolean&> method_tuple{method_l2a, clip_l2a};
+        method_tuple =
+            L2A::UTIL::KeyToValue(GetPlacedMethodEnums(), GetPlacedMethodEnumsAI(), property_.GetPlacedMethod());
+        PlaceAlignment alignment_l2a =
+            L2A::UTIL::KeyToValue(GetTextAlignTuples(), GetTextAlignEnumsAI(), property_.GetTextAlignment());
+
+        if (method_ai != method_l2a || alignment_ai != alignment_l2a || clip_ai != clip_l2a)
+        {
+            // The options do not match, apply the ones from the LaTeX2AI options.
+            sAIUser->MessageAlert(ai::UnicodeString(
+                "The placement values do not match! The ones from the LaTeX2AI settings are applied."));
+            L2A::AI::SetPlacement(placed_item_, property_);
+        }
+    }
 }
 
 /**
