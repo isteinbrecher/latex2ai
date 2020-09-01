@@ -69,7 +69,7 @@ PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
 {
     // Get the alignment from the property.
     std::tuple<TextAlignHorizontal, TextAlignVertical> text_alignment = item_property.GetTextAlignment();
-    return L2A::UTIL::KeyToValue(GetTextAlignTuples(), GetTextAlignEnumsAI(), text_alignment);
+    return L2A::UTIL::KeyToValue(TextAlignTuples(), TextAlignEnumsAI(), text_alignment);
 }
 
 /**
@@ -79,7 +79,7 @@ void L2A::AI::GetPropertyPlacedMethodClip(const L2A::Property& item_property, Pl
 {
     std::tuple<PlaceMethod&, bool&> tuple_enums_ai = {place_method, clip};
     tuple_enums_ai =
-        L2A::UTIL::KeyToValue(GetPlacedMethodEnums(), GetPlacedMethodEnumsAI(), item_property.GetPlacedMethod());
+        L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), item_property.GetPlacedMethod());
 }
 
 /**

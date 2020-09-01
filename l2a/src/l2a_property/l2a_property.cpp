@@ -75,11 +75,11 @@ void L2A::Property::DefaultPropertyValues()
 void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& property_parameter_list)
 {
     // Set the options.
-    text_align_horizontal_ = L2A::UTIL::KeyToValue(GetTextAlignHorizontalStrings(), GetTextAlignHorizontalEnums(),
+    text_align_horizontal_ = L2A::UTIL::KeyToValue(TextAlignHorizontalStrings(), TextAlignHorizontalEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_horizontal")));
-    text_align_vertical_ = L2A::UTIL::KeyToValue(GetTextAlignVerticalStrings(), GetTextAlignVerticalEnums(),
+    text_align_vertical_ = L2A::UTIL::KeyToValue(TextAlignVerticalStrings(), TextAlignVerticalEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_vertical")));
-    placed_method_ = L2A::UTIL::KeyToValue(GetPlacedMethodStrings(), GetPlacedMethodEnums(),
+    placed_method_ = L2A::UTIL::KeyToValue(PlacedArtMethodStrings(), PlacedArtMethodEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("placed_option")));
 
     // Set the latex code.
@@ -110,11 +110,11 @@ L2A::UTIL::ParameterList L2A::Property::ToParameterList() const
 
     // Add the options.
     property_parameter_list.SetOption(ai::UnicodeString("text_align_horizontal"),
-        L2A::UTIL::KeyToValue(GetTextAlignHorizontalEnums(), GetTextAlignHorizontalStrings(), text_align_horizontal_));
+        L2A::UTIL::KeyToValue(TextAlignHorizontalEnums(), TextAlignHorizontalStrings(), text_align_horizontal_));
     property_parameter_list.SetOption(ai::UnicodeString("text_align_vertical"),
-        L2A::UTIL::KeyToValue(GetTextAlignVerticalEnums(), GetTextAlignVerticalStrings(), text_align_vertical_));
+        L2A::UTIL::KeyToValue(TextAlignVerticalEnums(), TextAlignVerticalStrings(), text_align_vertical_));
     property_parameter_list.SetOption(ai::UnicodeString("placed_option"),
-        L2A::UTIL::KeyToValue(GetPlacedMethodEnums(), GetPlacedMethodStrings(), placed_method_));
+        L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodStrings(), placed_method_));
 
     // Add the latex text.
     std::shared_ptr<L2A::UTIL::ParameterList> tex_sub_list =

@@ -116,9 +116,9 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
         AIBoolean clip_l2a;
         std::tuple<PlaceMethod&, AIBoolean&> method_tuple{method_l2a, clip_l2a};
         method_tuple =
-            L2A::UTIL::KeyToValue(GetPlacedMethodEnums(), GetPlacedMethodEnumsAI(), property_.GetPlacedMethod());
+            L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), property_.GetPlacedMethod());
         PlaceAlignment alignment_l2a =
-            L2A::UTIL::KeyToValue(GetTextAlignTuples(), GetTextAlignEnumsAI(), property_.GetTextAlignment());
+            L2A::UTIL::KeyToValue(TextAlignTuples(), TextAlignEnumsAI(), property_.GetTextAlignment());
 
         if (method_ai != method_l2a || alignment_ai != alignment_l2a || clip_ai != clip_l2a)
         {
