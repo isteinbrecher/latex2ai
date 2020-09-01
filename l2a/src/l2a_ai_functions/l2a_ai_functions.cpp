@@ -274,53 +274,16 @@ void L2A::AI::SetPlacedMatrix(const AIArtHandle& placed_item, AIRealMatrix& plac
  */
 void L2A::AI::AlignmentToFac(const PlaceAlignment& alignment, double (&pos_fac)[2])
 {
-    if (alignment == kTopLeft)
-    {
-        pos_fac[0] = 0.;
-        pos_fac[1] = 1.;
-    }
-    else if (alignment == kTopMid)
-    {
-        pos_fac[0] = 0.5;
-        pos_fac[1] = 1.;
-    }
-    else if (alignment == kTopRight)
-    {
-        pos_fac[0] = 1.;
-        pos_fac[1] = 1.;
-    }
-    else if (alignment == kMidLeft)
-    {
-        pos_fac[0] = 0.;
-        pos_fac[1] = 0.5;
-    }
-    else if (alignment == kMidMid)
-    {
-        pos_fac[0] = 0.5;
-        pos_fac[1] = 0.5;
-    }
-    else if (alignment == kMidRight)
-    {
-        pos_fac[0] = 1.;
-        pos_fac[1] = 0.5;
-    }
-    else if (alignment == kBotLeft)
-    {
-        pos_fac[0] = 0.;
-        pos_fac[1] = 0.;
-    }
-    else if (alignment == kBotMid)
-    {
-        pos_fac[0] = 0.5;
-        pos_fac[1] = 0.;
-    }
-    else if (alignment == kBotRight)
-    {
-        pos_fac[0] = 1.;
-        pos_fac[1] = 0.;
-    }
-    else
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::AI::AlignmentToFac Error, wrong alignment given!"));
+    TextAlignHorizontal horizontal;
+    TextAlignVertical vertical;
+    std::tuple<TextAlignHorizontal&, TextAlignVertical&> text_align_tuple = {horizontal, vertical};
+    text_align_tuple = L2A::UTIL::KeyToValue(TextAlignEnumsAI(), TextAlignTuples(), alignment);
+
+    const std::array<double, 3> text_align_horizontal_factors = {0.0, 0.5, 1.0};
+    const std::array<double, 4> text_align_vertical_factors = {1.0, 0.5, 0.5, 0.0};
+
+    pos_fac[0] = L2A::UTIL::KeyToValue(TextAlignHorizontalEnums(), text_align_horizontal_factors, horizontal);
+    pos_fac[1] = L2A::UTIL::KeyToValue(TextAlignVerticalEnums(), text_align_vertical_factors, vertical);
 }
 
 /**
