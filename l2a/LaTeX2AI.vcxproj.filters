@@ -88,6 +88,9 @@
     <ClCompile Include="..\..\common\source\AppContext.cpp">
       <Filter>sdk</Filter>
     </ClCompile>
+    <ClCompile Include="src\utility\math.cpp">
+      <Filter>src\utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="src\tests\test_framework.h">
       <Filter>src\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utility\math.h">
+      <Filter>src\utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

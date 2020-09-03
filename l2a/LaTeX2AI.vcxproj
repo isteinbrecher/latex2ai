@@ -422,6 +422,7 @@
     <ClCompile Include="src\tests\test_string_functions.cpp" />
     <ClCompile Include="src\tests\test_utility.cpp" />
     <ClCompile Include="src\utility\file_system.cpp" />
+    <ClCompile Include="src\utility\math.cpp" />
     <ClCompile Include="src\utility\parameter_list.cpp" />
     <ClCompile Include="src\utility\string_functions.cpp" />
     <ClCompile Include="tpl\tinyxml2\tinyxml2.cpp">
@@ -454,6 +455,7 @@
     <ClInclude Include="src\utility\parameter_list.h" />
     <ClInclude Include="src\utility\string_functions.h" />
     <ClInclude Include="src\utility\to_from_string.h" />
+    <ClInclude Include="src\utility\math.h" />
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
