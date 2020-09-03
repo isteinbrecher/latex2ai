@@ -58,6 +58,22 @@ void L2A::TEST::UTIL::UnitTest::CompareInt(const int& val1, const int& val2)
 /**
  *
  */
+void L2A::TEST::UTIL::UnitTest::CompareFloat(const AIReal& val1, const AIReal& val2, const AIReal& eps)
+{
+    test_count_++;
+    if (abs(val1 - val2) < eps)
+        test_count_passed_++;
+    else
+    {
+        ai::UnicodeString error_string = "Float compare test for: " + test_name_ + " failed!\nExpected \"" +
+            L2A::UTIL::IntegerToString(val1) + "\" got \"" + L2A::UTIL::IntegerToString(val2) + "\"";
+        sAIUser->MessageAlert(error_string);
+    }
+}
+
+/**
+ *
+ */
 void L2A::TEST::UTIL::UnitTest::CompareStr(const ai::UnicodeString& val1, const ai::UnicodeString& val2)
 {
     test_count_++;
@@ -82,10 +98,9 @@ void L2A::TEST::UTIL::UnitTest::CompareStr(const ai::UnicodeString& val1, const 
 void L2A::TEST::UTIL::UnitTest::CompareRect(const AIRealRect& val1, const AIRealRect& val2)
 {
     test_count_++;
-    if (abs(val1.bottom - val2.bottom) < L2A::CONSTANTS::eps_tests_ &&
-        abs(val1.left - val2.left) < L2A::CONSTANTS::eps_tests_ &&
-        abs(val1.right - val2.right) < L2A::CONSTANTS::eps_tests_ &&
-        abs(val1.top - val2.top) < L2A::CONSTANTS::eps_tests_)
+    if (abs(val1.bottom - val2.bottom) < L2A::CONSTANTS::eps_pos_ &&
+        abs(val1.left - val2.left) < L2A::CONSTANTS::eps_pos_ &&
+        abs(val1.right - val2.right) < L2A::CONSTANTS::eps_pos_ && abs(val1.top - val2.top) < L2A::CONSTANTS::eps_pos_)
     {
         test_count_passed_++;
     }
