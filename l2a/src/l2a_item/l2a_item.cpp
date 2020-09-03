@@ -38,6 +38,7 @@
 #include "utility/parameter_list.h"
 #include "utility/file_system.h"
 #include "utility/string_functions.h"
+#include "utility/math.h"
 #include "l2a_names.h"
 #include "l2a_constants.h"
 
@@ -232,11 +233,16 @@ void L2A::Item::MoveItem(const AIRealPoint& position)
 
     // For some objects that are far out of the artwork, multiple translations can be nessesary to reach the desired
     // position transform the object until the desired position is reached.
-    double position_error = 1.;
+    AIReal position_error = 1.;
     int counter = 0;
+    const int n_max = 3;
 
     while (position_error > L2A::CONSTANTS::eps_pos_)
     {
+        if (n_max == counter)
+            throw L2A::ERR::Exception(
+                "L2A::Item::MoveItem Desired position not reached in " + L2A::UTIL::IntegerToString(n_max) + " tries!");
+
         // Transform the art item to the desired position.
         AIRealMatrix artMatrix;
         sAIRealMath->AIRealMatrixSetTranslate(&artMatrix, position.h - old_position.h, position.v - old_position.v);
@@ -244,12 +250,8 @@ void L2A::Item::MoveItem(const AIRealPoint& position)
 
         // Check error in new position.
         old_position = GetPosition();
-        position_error = sqrt(powf(position.h - old_position.h, 2.) + powf(position.v - old_position.v, 2.));
+        position_error = L2A::UTIL::MATH::GetDistance(position, old_position);
         counter++;
-
-        if (counter > 3)
-            throw L2A::ERR::Exception(
-                ai::UnicodeString("L2A::Item::MoveItem Desired position not reached in 3 tries!"));
     }
 }
 

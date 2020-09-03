@@ -61,6 +61,11 @@ namespace L2A
                 void CompareInt(const int& val1, const int& val2);
 
                 /**
+                 * \brief Compare two floats with a tollerance.
+                 */
+                void CompareFloat(const AIReal& val1, const AIReal& val2, const AIReal& eps);
+
+                /**
                  * \brief Compare two strings.
                  */
                 void CompareStr(const ai::UnicodeString& val1, const ai::UnicodeString& val2);

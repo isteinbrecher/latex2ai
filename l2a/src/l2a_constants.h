@@ -64,9 +64,6 @@ namespace L2A
         //! Tollerance for strech values.
         static const double eps_strech_ = 0.001;
 
-        //! Tollerance for comparing values during testing.
-        static const double eps_tests_ = 0.001;
-
         //! Radius of placement point for annotation.
         static const int radius_ = 7;
 
