@@ -1,2 +1,1 @@
 - Check if the L2A::AI::SetPlacedItem function is neccessary in the current context
-- Error if the PDF that should be created from the document is read only, e.g. opened in Acrobat
