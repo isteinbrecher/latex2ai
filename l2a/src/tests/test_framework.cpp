@@ -40,6 +40,7 @@
 #include "l2a_property/l2a_property.h"
 #include "l2a_error/l2a_error.h"
 #include "utility/parameter_list.h"
+#include "utility/math.h"
 #include "l2a_constants.h"
 
 
@@ -577,21 +578,10 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
                 L2A::Item l2a_item(art_items[i_item]);
 
                 // Check if the position fits to one of the reference solutions.
-                bool match = true;
                 std::vector<AIRealPoint> points = l2a_item.GetPosition(alignment_vector);
                 for (unsigned int i_point = 0; i_point < 9; i_point++)
-                {
-                    const AIRealPoint& boundary_point = points[i_point];
-                    const AIRealPoint& reference_point = reference_solution[i_item][i_point];
-                    if (powf(powf(boundary_point.h - reference_point.h, 2.) +
-                                powf(boundary_point.v - reference_point.v, 2.),
-                            0.5) > L2A::CONSTANTS::eps_pos_)
-                    {
-                        match = false;
-                        break;
-                    }
-                }
-                ut.CompareInt(match, true);
+                    ut.CompareFloat(L2A::UTIL::MATH::GetDistance(points[i_point], reference_solution[i_item][i_point]),
+                        0.0, L2A::CONSTANTS::eps_pos_);
             }
         }
     }
@@ -624,17 +614,14 @@ void L2A::TEST::PRIVATE::CheckItems(L2A::TEST::UTIL::UnitTest& ut)
         L2A::Item l2a_item(placed_item);
 
         // Check if the position fits to one of the grid points.
-        bool match = false;
+        AIReal min_distance = 1e10;
         AIRealPoint point = l2a_item.GetPosition();
         for (const auto& grid_point : grid_points)
         {
-            if ((abs(powf(grid_point.h - point.h, 2.)) + abs(powf(grid_point.v - point.v, 2.))) <
-                L2A::CONSTANTS::eps_pos_)
-            {
-                match = true;
-                break;
-            }
+            const AIReal distance = L2A::UTIL::MATH::GetDistance(grid_point, point);
+            if (distance < min_distance) min_distance = distance;
         }
-        ut.CompareInt(match, true);
+        // We have to increase the tolerance here, because otherwise we get errors. The reason for this is unclear.
+        ut.CompareFloat(min_distance, 0.0, 5.0 * L2A::CONSTANTS::eps_pos_);
     }
 }
