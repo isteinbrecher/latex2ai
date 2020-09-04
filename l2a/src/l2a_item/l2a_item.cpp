@@ -125,7 +125,8 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
         {
             // The options do not match, apply the ones from the LaTeX2AI options.
             sAIUser->MessageAlert(ai::UnicodeString(
-                "The placement values do not match! The ones from the LaTeX2AI settings are applied."));
+                "The Illustrator placement values for a LaTeX2AI item do not match! The ones from the LaTeX2AI "
+                "settings are applied. This can happen if the placement values are changed manually via Illustrator."));
             L2A::AI::SetPlacement(placed_item_, property_);
         }
     }

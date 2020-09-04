@@ -56,13 +56,13 @@ namespace L2A
     namespace CONSTANTS
     {
         //! Tollerance for positions.
-        static const double eps_pos_ = 0.002;
+        static const AIReal eps_pos_ = 0.002f;
 
         //! Tollerance for angles.
-        static const double eps_angle_ = 0.001;
+        static const AIReal eps_angle_ = 0.001f;
 
         //! Tollerance for strech values.
-        static const double eps_strech_ = 0.001;
+        static const AIReal eps_strech_ = 0.001f;
 
         //! Radius of placement point for annotation.
         static const int radius_ = 7;
