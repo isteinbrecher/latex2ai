@@ -403,6 +403,10 @@
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4100</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4100</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4100</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4100</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="..\..\common\source\SDKAboutPluginsHelper.cpp" />
     <ClCompile Include="..\..\common\source\Suites.cpp">
@@ -422,6 +426,7 @@
     <ClCompile Include="src\tests\test_string_functions.cpp" />
     <ClCompile Include="src\tests\test_utility.cpp" />
     <ClCompile Include="src\utility\file_system.cpp" />
+    <ClCompile Include="src\utility\math.cpp" />
     <ClCompile Include="src\utility\parameter_list.cpp" />
     <ClCompile Include="src\utility\string_functions.cpp" />
     <ClCompile Include="tpl\StackWalker\Main\StackWalker\StackWalker.cpp">
@@ -429,6 +434,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">6340;28159;6011;6388;6387</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">6340;28159;6011;6388;6387</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6340;28159;6011;6388;6387</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6340;28159;6011;6388;6387</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="tpl\tinyxml2\tinyxml2.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -459,7 +468,8 @@
     <ClInclude Include="src\utility\file_system.h" />
     <ClInclude Include="src\utility\parameter_list.h" />
     <ClInclude Include="src\utility\string_functions.h" />
-    <ClInclude Include="src\utility\to_from_string.h" />
+    <ClInclude Include="src\utility\math.h" />
+    <ClInclude Include="src\utility\utils.h" />
     <ClInclude Include="tpl\StackWalker\Main\StackWalker\StackWalker.h" />
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h" />
   </ItemGroup>
