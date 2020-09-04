@@ -266,7 +266,7 @@ void L2A::Item::MoveItem(const AIRealPoint& position)
     while (position_error > L2A::CONSTANTS::eps_pos_)
     {
         if (n_max == counter)
-            throw L2A::ERR::Exception(
+            l2a_error(
                 "L2A::Item::MoveItem Desired position not reached in " + L2A::UTIL::IntegerToString(n_max) + " tries!");
 
         // Transform the art item to the desired position.
@@ -404,12 +404,12 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
         if (find_key != item_boundaries.end())
             boundary_positions_view.push_back(L2A::AI::ArtworkPointToViewPoint(find_key->second));
         else
-            throw L2A::ERR::Exception(ai::UnicodeString("L2A::Item::Draw Key in item_boundaries could not be found!"));
+            l2a_error("Key in item_boundaries could not be found!");
     }
 
     // Draw the boundary.
     AIErr error = sAIAnnotatorDrawer->DrawPolygon(message->drawer, &boundary_positions_view[0], 5, false);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
 
     // Draw the placement point.
     AIPoint placement_point =
@@ -420,7 +420,7 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     centre.bottom = placement_point.v - L2A::CONSTANTS::radius_;
     centre.top = placement_point.v + L2A::CONSTANTS::radius_;
     error = sAIAnnotatorDrawer->DrawEllipse(message->drawer, centre, true);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
 
     if (property_.IsBaseline())
     {
@@ -430,7 +430,7 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
         // Draw the base line of a baseline item.
         error = sAIAnnotatorDrawer->SetLineDashedEx(message->drawer, &dash_data_[0], (ai::int32)dash_data_.size());
         error = sAIAnnotatorDrawer->DrawLine(message->drawer, boundary_positions_view[5], boundary_positions_view[6]);
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
     }
 }
 
@@ -527,8 +527,7 @@ void L2A::RedoItems()
     // Get the result from the form.
     const bool redo_latex = new_parameter_list->GetIntOption(ai::UnicodeString("redo_latex"));
     const bool redo_boundary = new_parameter_list->GetIntOption(ai::UnicodeString("redo_boundary"));
-    if (redo_latex && !redo_boundary)
-        L2A::ERR::Exception(ai::UnicodeString("L2A::RedoAllItems Got unexpected combination of options."));
+    if (redo_latex && !redo_boundary) l2a_error("Got unexpected combination of options.");
     std::vector<AIArtHandle> redo_items;
     const bool is_all_items =
         new_parameter_list->GetStringOption(ai::UnicodeString("item_type")) == ai::UnicodeString("all");

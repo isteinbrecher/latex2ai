@@ -30,6 +30,9 @@
 #define UTILS_H_
 
 
+#include "l2a_error/l2a_error.h"
+
+
 namespace L2A
 {
     namespace UTIL
@@ -49,7 +52,7 @@ namespace L2A
         {
             for (unsigned int i = 0; i < n; i++)
                 if (key_array[i] == key) return value_array[i];
-            throw L2A::ERR::Exception(ai::UnicodeString("KeyToValue got unexpected key!"));
+            l2a_error("Key not found in key_array!");
         }
     }  // namespace UTIL
 }  // namespace L2A

@@ -83,7 +83,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
         new_doc_settings.docArtboardSpacing = 100;
 
         error = sAIDocumentList->New(empty, &new_doc_settings, kDialogOff, &new_doc);
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
         L2A::AI::SaveAs(testing_document_path);
 
         // Geometry variables for the item placement on the page.
@@ -236,9 +236,9 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
 
         // Delete the first two items -> hey are copied.
         error = sAIArt->DisposeArt(item_standard.GetPlacedItemMutable());
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
         error = sAIArt->DisposeArt(item_baseline.GetPlacedItemMutable());
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
 
         // Now the document as we expect it is created.
         // Redo all latex items.

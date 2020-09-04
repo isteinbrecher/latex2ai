@@ -55,18 +55,6 @@ namespace L2A
         };
 
         /**
-         * \brief Exception if a latex item creation process did not finish with a resulting pdf file.
-         */
-        class ExceptionLatexNotCreated : public L2A::ERR::Exception
-        {
-           public:
-            /**
-             * \brief Constructor with error string.
-             */
-            ExceptionLatexNotCreated() : Exception(ai::UnicodeString("LaTeX creation not finished successfully")) {}
-        };
-
-        /**
          * \brief Get the full LaTeX text for a given latex code.
          */
         ai::UnicodeString GetLatexString(const ai::UnicodeString& latex_code);

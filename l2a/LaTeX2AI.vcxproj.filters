@@ -91,6 +91,9 @@
     <ClCompile Include="src\utility\math.cpp">
       <Filter>src\utility</Filter>
     </ClCompile>
+    <ClCompile Include="tpl\StackWalker\Main\StackWalker\StackWalker.cpp">
+      <Filter>tpl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -164,6 +167,9 @@
     </ClInclude>
     <ClInclude Include="src\utility\utils.h">
       <Filter>src\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="tpl\StackWalker\Main\StackWalker\StackWalker.h">
+      <Filter>tpl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
