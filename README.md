@@ -22,13 +22,13 @@ To build LaTeX2AI from source additional requirements have to be met:
 ### Getting started
 1. Download and unpack the [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip).
 1. Go to the sample code folder `Adobe Illustrator CS6 SDK/sample code` and run
-	“`
+	```
 	git clone https://github.com/stoani89/LaTeX2AI.git
-	“`
+	```
 1. Go to `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI` and run
-	“`
+	```
 	git sub module update --init
-	“`
+	```
 1. Open `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI/LaTeX2AI.sln` with Visual Studio and compile the solution.
 
 
@@ -56,7 +56,7 @@ Take for example the well-known formula `$\sum_{k=0}^{\nifty}\frac{x^k}{k!}$` wh
 ![Placement small](/doc/placement_small.png?raw=true)
 
 The green box indicates the boundary box of the LaTeX2I label and the dot describes the placement of the label, i.e. if the size changes the position of this dot relative to the label will stay the same.
-If the previous label is now changed to `\display style` we get the following result:
+If the previous label is now changed to `\displaystyle` we get the following result:
 
 ![Placement large](/doc/placement_large.png?raw=true)
 
