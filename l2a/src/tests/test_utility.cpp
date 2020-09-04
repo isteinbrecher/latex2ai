@@ -64,11 +64,7 @@ void L2A::TEST::UTIL::UnitTest::CompareFloat(const AIReal& val1, const AIReal& v
     if (abs(val1 - val2) < eps)
         test_count_passed_++;
     else
-    {
-        ai::UnicodeString error_string = "Float compare test for: " + test_name_ + " failed!\nExpected \"" +
-            L2A::UTIL::IntegerToString(val1) + "\" got \"" + L2A::UTIL::IntegerToString(val2) + "\"";
-        sAIUser->MessageAlert(error_string);
-    }
+        sAIUser->MessageAlert(ai::UnicodeString("Float compare test failed!"));
 }
 
 /**

@@ -456,6 +456,7 @@
     <ClInclude Include="src\utility\string_functions.h" />
     <ClInclude Include="src\utility\to_from_string.h" />
     <ClInclude Include="src\utility\math.h" />
+    <ClInclude Include="src\utility\utils.h" />
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>

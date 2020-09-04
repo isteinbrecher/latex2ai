@@ -78,10 +78,16 @@ namespace L2A
         void SetPlacement(const AIArtHandle& placed_item, const L2A::Property& item_property);
 
         /**
-         * \brief Set the placement of the placed item, acording to the option in property.
+         * \brief Set the placement of the placed item, acording to the a1 enums.
          */
         void SetPlacement(const AIArtHandle& placed_item, const PlaceMethod& method, const PlaceAlignment& alignment,
             const bool& clip);
+
+        /**
+         * \brief Get the ai enums placement of the placed item.
+         */
+        void GetPlacement(
+            const AIArtHandle& placed_item, PlaceMethod& method, PlaceAlignment& alignment, AIBoolean& clip);
 
         /**
          * \brief Get the filepath of the linked file in a placed item.
