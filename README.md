@@ -64,8 +64,8 @@ The size of the label changed due to a change in the underlying LaTeX code, but 
 
 #### Baseline placement
 Additionally there is the possibility of a *baseline* placement.
-This placement will result in a label where the baseline is exactly in the vertical center of the label.
-A label which is created with this option can now be easily adjusted to fit to another label or Illustrator text:
+This will result in a label where the baseline is exactly in the vertical center of the label.
+The resulting label can not be easily adjusted and snapped to align with another baseline label or Illustrator text:
 
 ![Placement baseline](/doc/placement_baseline.png?raw=true)
 
