@@ -154,7 +154,7 @@ namespace L2A
         /**
          * \brief Convert the alignment flag to the 2d positional factors.
          */
-        void AlignmentToFac(const PlaceAlignment& alignment, double (&pos_fac)[2]);
+        void AlignmentToFac(const PlaceAlignment& alignment, AIReal (&pos_fac)[2]);
 
         /**
          * \brief Check if the given item is a l2a item.
@@ -240,7 +240,7 @@ namespace L2A
          * (opposed to the internal rotation functions).
          * @param anlge Angle in degrees to rotate.
          */
-        void Rotate(const double angle);
+        void Rotate(const AIReal angle);
 
         /**
          * \brief Reset the bounding box of the currently active Illustrator item(s).
@@ -254,7 +254,7 @@ namespace L2A
          * @param delta_y Offset in y direction (in points)
          * @param copy If the item chould be moved or copied and then moved.
          */
-        void Move(const double delta_x, const double delta_y, bool copy = false);
+        void Move(const AIReal delta_x, const AIReal delta_y, bool copy = false);
 
         /**
          * \brief Scale the currently acitve Illustrator item(s).
@@ -262,7 +262,7 @@ namespace L2A
          * @param scale_y Vertical scale (unitless).
          * @param copy If the item chould be copied.
          */
-        void Scale(const double scale_x, const double scale_y, bool copy = false);
+        void Scale(const AIReal scale_x, const AIReal scale_y, bool copy = false);
 
         /**
          * \brief Select all items in the items vector.

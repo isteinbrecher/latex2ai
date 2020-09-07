@@ -213,7 +213,7 @@ void L2A::Item::RedoBoundary()
     AIRealPoint old_position = GetPosition();
 
     // Get the angle.
-    double angle = GetAngle();
+    AIReal angle = GetAngle();
 
     // Rotate the object back to the initial position.
     AIRealMatrix artMatrix;
@@ -310,7 +310,7 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
     if (set_clip) L2A::AI::SetPlacement(placed_item_, place_method, L2A::AI::GetPropertyAlignment(property_), true);
 
     // Variables for the placement factor and the points on the item.
-    double pos_fac[2];
+    AIReal pos_fac[2];
     AIRealPoint position;
 
     // Boundary coordinates for item.
@@ -332,30 +332,30 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
     else
     {
         // Angles of the basis vectors
-        double angle_1 = GetAngle(0);
-        double angle_2 = GetAngle(1);
+        AIReal angle_1 = GetAngle(0);
+        AIReal angle_2 = GetAngle(1);
 
         // Scale factor of the basis vectors.
-        double scale_1 = GetStrech(0);
-        double scale_2 = GetStrech(1);
+        AIReal scale_1 = GetStrech(0);
+        AIReal scale_2 = GetStrech(1);
 
         // Dimensions of the pdf file.
         AIRealRect image_box = L2A::AI::GetPlacedBoundingBox(placed_item_);
-        double pdf_height = image_box.top - image_box.bottom;
-        double pdf_width = image_box.right - image_box.left;
+        AIReal pdf_height = image_box.top - image_box.bottom;
+        AIReal pdf_width = image_box.right - image_box.left;
 
         // Vectors to each corner of the item.
-        double vec0[2] = {0., 0.};
-        double vec1[2] = {scale_1 * pdf_width * cos(angle_1), scale_1 * pdf_width * sin(angle_1)};
-        double vec2[2] = {scale_2 * pdf_height * cos(angle_2), scale_2 * pdf_height * sin(angle_2)};
-        double vec3[2] = {vec1[0] + vec2[0], vec1[1] + vec2[1]};
+        AIReal vec0[2] = {0., 0.};
+        AIReal vec1[2] = {scale_1 * pdf_width * cos(angle_1), scale_1 * pdf_width * sin(angle_1)};
+        AIReal vec2[2] = {scale_2 * pdf_height * cos(angle_2), scale_2 * pdf_height * sin(angle_2)};
+        AIReal vec3[2] = {vec1[0] + vec2[0], vec1[1] + vec2[1]};
 
         // Get the minimum distance for both directions.
-        double diff_x = min(min(min(vec0[0], vec1[0]), vec2[0]), vec3[0]);
-        double diff_y = min(min(min(vec0[1], vec1[1]), vec2[1]), vec3[1]);
+        AIReal diff_x = min(min(min(vec0[0], vec1[0]), vec2[0]), vec3[0]);
+        AIReal diff_y = min(min(min(vec0[1], vec1[1]), vec2[1]), vec3[1]);
 
         // Position of the bottom left node.
-        double pos_node[2] = {bounds.left - diff_x, bounds.bottom - diff_y};
+        AIReal pos_node[2] = {bounds.left - diff_x, bounds.bottom - diff_y};
 
         // Get the coordinates of the placement point.
         for (const auto& alignment : placements)
@@ -437,7 +437,7 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
 /**
  *
  */
-double L2A::Item::GetAngle(unsigned short director) const
+AIReal L2A::Item::GetAngle(unsigned short director) const
 {
     // Get the values from the matrix.
     AIRealMatrix artMatrix = L2A::AI::GetPlacedMatrix(placed_item_);
@@ -466,8 +466,8 @@ bool L2A::Item::IsRotated() const
 bool L2A::Item::IsDiamond() const
 {
     // Check if the angle between the two directors is pi/2
-    double angle_1 = GetAngle(0);
-    double angle_2 = GetAngle(1);
+    AIReal angle_1 = GetAngle(0);
+    AIReal angle_2 = GetAngle(1);
     // Use the strech tollerance here, because not the angles are compared, but their cosines.
     if (abs(cos(angle_2 - angle_1)) < L2A::CONSTANTS::eps_strech_)
         return false;
@@ -478,7 +478,7 @@ bool L2A::Item::IsDiamond() const
 /**
  *
  */
-double L2A::Item::GetStrech(unsigned short director) const
+AIReal L2A::Item::GetStrech(unsigned short director) const
 {
     // Get the values from the matrix.
     AIRealMatrix artMatrix = L2A::AI::GetPlacedMatrix(placed_item_);
