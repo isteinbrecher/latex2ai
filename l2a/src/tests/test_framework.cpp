@@ -581,7 +581,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
                 std::vector<AIRealPoint> points = l2a_item.GetPosition(alignment_vector);
                 for (unsigned int i_point = 0; i_point < 9; i_point++)
                     ut.CompareFloat(L2A::UTIL::MATH::GetDistance(points[i_point], reference_solution[i_item][i_point]),
-                        0.0, L2A::CONSTANTS::eps_pos_);
+                        0.0, (AIReal)2.0 * L2A::CONSTANTS::eps_pos_);
             }
         }
     }
@@ -622,6 +622,6 @@ void L2A::TEST::PRIVATE::CheckItems(L2A::TEST::UTIL::UnitTest& ut)
             if (distance < min_distance) min_distance = distance;
         }
         // We have to increase the tolerance here, because otherwise we get errors. The reason for this is unclear.
-        ut.CompareFloat(min_distance, 0.0, 5.0f * L2A::CONSTANTS::eps_pos_);
+        ut.CompareFloat(min_distance, 0.0, (ASReal)5.0 * L2A::CONSTANTS::eps_pos_);
     }
 }
