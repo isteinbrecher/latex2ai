@@ -1,6 +1,3 @@
-# Build folder.
-output/
-
 # Visual Studio files.
 .vs/*
 */.vs/*
