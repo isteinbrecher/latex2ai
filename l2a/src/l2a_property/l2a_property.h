@@ -72,16 +72,16 @@ namespace L2A
     };
 
     /**
-     *\brief Get the flag to string array for TextAlignHorizontal.
+     *\brief Define the TextAlignHorizontal enum conversions.
      */
-    inline std::array<std::tuple<L2A::TextAlignHorizontal, ai::UnicodeString>, 3> TextAlignHorizontalToStringArray()
+    inline std::array<TextAlignHorizontal, 3> TextAlignHorizontalEnums()
     {
-        std::array<std::tuple<TextAlignHorizontal, ai::UnicodeString>, 3> to_string_array;
-        to_string_array[0] = std::make_tuple(L2A::TextAlignHorizontal::left, ai::UnicodeString("left"));
-        to_string_array[1] = std::make_tuple(L2A::TextAlignHorizontal::centre, ai::UnicodeString("centreH"));
-        to_string_array[2] = std::make_tuple(L2A::TextAlignHorizontal::right, ai::UnicodeString("right"));
-        return to_string_array;
-    };
+        return {TextAlignHorizontal::left, TextAlignHorizontal::centre, TextAlignHorizontal::right};
+    }
+    inline std::array<ai::UnicodeString, 3> TextAlignHorizontalStrings()
+    {
+        return {ai::UnicodeString("left"), ai::UnicodeString("centreH"), ai::UnicodeString("right")};
+    }
 
     /**
      *\brief Vertical alignment of text.
@@ -101,22 +101,47 @@ namespace L2A
     };
 
     /**
-     *\brief Get the flag to string array for TextAlignVertical.
+     *\brief Define the TextAlignVertical enum conversions.
      */
-    inline std::array<std::tuple<L2A::TextAlignVertical, ai::UnicodeString>, 4> TextAlignVerticalToStringArray()
+    inline std::array<TextAlignVertical, 4> TextAlignVerticalEnums()
     {
-        std::array<std::tuple<TextAlignVertical, ai::UnicodeString>, 4> to_string_array;
-        to_string_array[0] = std::make_tuple(L2A::TextAlignVertical::centre, ai::UnicodeString("centreV"));
-        to_string_array[1] = std::make_tuple(L2A::TextAlignVertical::top, ai::UnicodeString("top"));
-        to_string_array[2] = std::make_tuple(L2A::TextAlignVertical::bottom, ai::UnicodeString("bottom"));
-        to_string_array[3] = std::make_tuple(L2A::TextAlignVertical::baseline, ai::UnicodeString("baseline"));
-        return to_string_array;
-    };
+        return {
+            TextAlignVertical::top, TextAlignVertical::centre, TextAlignVertical::baseline, TextAlignVertical::bottom};
+    }
+    inline std::array<ai::UnicodeString, 4> TextAlignVerticalStrings()
+    {
+        return {ai::UnicodeString("top"), ai::UnicodeString("centreV"), ai::UnicodeString("baseline"),
+            ai::UnicodeString("bottom")};
+    }
 
     /**
-     *\brief Vertical alignment of text.
+     *\brief Define enum conversions for TextAlignHorizontal and TextAlignVertical.
      */
-    enum class PlacedArtOptions
+    inline std::array<std::tuple<TextAlignHorizontal, TextAlignVertical>, 12> TextAlignTuples()
+    {
+        return {std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::top),
+            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::top),
+            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::top),
+            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::centre),
+            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::centre),
+            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::centre),
+            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::baseline),
+            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::baseline),
+            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::baseline),
+            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::bottom),
+            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::bottom),
+            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::bottom)};
+    }
+    inline std::array<PlaceAlignment, 12> TextAlignEnumsAI()
+    {
+        return {kTopLeft, kTopMid, kTopRight, kMidLeft, kMidMid, kMidRight, kMidLeft, kMidMid, kMidRight, kBotLeft,
+            kBotMid, kBotRight};
+    }
+
+    /**
+     *\brief Method how the placed item is croped in AI.
+     */
+    enum class PlacedArtMethod
     {
         //! None.
         none,
@@ -129,18 +154,21 @@ namespace L2A
     };
 
     /**
-     *\brief Get the flag to string array for PlacedArtOptions.
+     *\brief Define the PlacedArtMethod enum conversions.
      */
-    inline std::array<std::tuple<L2A::PlacedArtOptions, ai::UnicodeString>, 3> PlacedArtOptionsToStringArray()
+    inline std::array<PlacedArtMethod, 3> PlacedArtMethodEnums()
     {
-        std::array<std::tuple<PlacedArtOptions, ai::UnicodeString>, 3> to_string_array;
-        to_string_array[0] =
-            std::make_tuple(L2A::PlacedArtOptions::fill_to_boundary_box, ai::UnicodeString("fill_to_boundary_box"));
-        to_string_array[1] = std::make_tuple(L2A::PlacedArtOptions::keep_scale, ai::UnicodeString("keep_scale"));
-        to_string_array[2] =
-            std::make_tuple(L2A::PlacedArtOptions::keep_scale_clip, ai::UnicodeString("keep_scale_clip"));
-        return to_string_array;
-    };
+        return {PlacedArtMethod::fill_to_boundary_box, PlacedArtMethod::keep_scale, PlacedArtMethod::keep_scale_clip};
+    }
+    inline std::array<ai::UnicodeString, 3> PlacedArtMethodStrings()
+    {
+        return {ai::UnicodeString("fill_to_boundary_box"), ai::UnicodeString("keep_scale"),
+            ai::UnicodeString("keep_scale_clip")};
+    }
+    inline std::array<std::tuple<PlaceMethod, bool>, 3> PlacedArtMethodEnumsAI()
+    {
+        return {std::make_tuple(kConform, false), std::make_tuple(kAsIs, false), std::make_tuple(kAsIs, true)};
+    }
 
     /**
      * \brief Compare flags for property items.
@@ -232,16 +260,15 @@ namespace L2A
         /**
          * \brief Get the text alignment enums.
          */
-        void GetTextAlignment(TextAlignHorizontal& text_align_horizontal, TextAlignVertical& text_align_vertical) const
+        std::tuple<TextAlignHorizontal, TextAlignVertical> GetTextAlignment() const
         {
-            text_align_horizontal = text_align_horizontal_;
-            text_align_vertical = text_align_vertical_;
+            return std::make_tuple(text_align_horizontal_, text_align_vertical_);
         }
 
         /**
-         * \brief Get the placement options.
+         * \brief Get the placement method.
          */
-        PlacedArtOptions GetPlacedOption() const { return placed_option_; }
+        PlacedArtMethod GetPlacedMethod() const { return placed_method_; }
 
         /**
          * \brief Write the contents of this property to the last input file.
@@ -263,8 +290,8 @@ namespace L2A
         //! LaTeX code of the item.
         ai::UnicodeString latex_code_;
 
-        //! Placement option of the item.
-        PlacedArtOptions placed_option_;
+        //! Placement method of the item.
+        PlacedArtMethod placed_method_;
 
         //! Position of the cursor in the form.
         unsigned int cursor_position_;

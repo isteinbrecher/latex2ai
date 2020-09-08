@@ -44,7 +44,7 @@ L2A::Annotator::Annotator(SPInterfaceMessage* message) : cursor_item_(NULL)
 
     // Create the annotator.
     error = sAIAnnotator->AddAnnotator(message->d.self, "LaTeX2AI Annotator", &annotator_handle_);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
 
     // At the beginning, the annotator has to be inactive. This has to be done with the SetAnnotator method as that one
     // does not invalidate the boundaries, which at the point of the creation of this object would not work.
@@ -104,7 +104,7 @@ bool L2A::Annotator::IsActive() const
     ASErr error = kNoErr;
     AIBoolean is_active;
     error = sAIAnnotator->GetAnnotatorActive(annotator_handle_, &is_active);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
     return is_active;
 }
 
@@ -139,7 +139,7 @@ void L2A::Annotator::SetAnnotatorInactive() { SetAnnotatorWithInvalidateBounds(f
 void L2A::Annotator::SetAnnotator(bool active)
 {
     ASErr error = sAIAnnotator->SetAnnotatorActive(annotator_handle_, active);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
 }
 
 /**
@@ -150,16 +150,15 @@ bool L2A::Annotator::CheckForArtHit(AIToolMessage* message)
     ASErr result = kNoErr;
 
     // This function can only be called if the annotator is active.
-    if (!IsActive())
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::Annotator::CheckForArtHit Annotator has to be active."));
+    if (!IsActive()) l2a_error("Annotator has to be active.");
 
     // Check if cursor is over any art.
     AIHitRef hitRef = NULL;
     AIToolHitData toolHitData;
     result = sAIHitTest->HitTest(NULL, &message->cursor, kAllHitRequest, &hitRef);
-    L2A::ERR::check_ai_error(result);
+    l2a_check_ai_error(result);
     result = sAIHitTest->GetHitData(hitRef, &toolHitData);
-    L2A::ERR::check_ai_error(result);
+    l2a_check_ai_error(result);
 
     // Check if the item is a L2AItem.
     if (toolHitData.hit && toolHitData.object != NULL && L2A::AI::IsL2AItem(toolHitData.object))
@@ -181,8 +180,7 @@ bool L2A::Annotator::CheckForArtHit(AIToolMessage* message)
 void L2A::Annotator::Draw(AIAnnotatorMessage* message) const
 {
     // This can only be called when the annotator is active.
-    if (!IsActive())
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::Annotator::Draw The annotator has to be active."));
+    if (!IsActive()) l2a_error("The annotator has to be active.");
 
     // Loop over items and draw boundary.
     for (const auto& item : item_vector_) std::get<0>(item).Draw(message, std::get<1>(item));
@@ -198,7 +196,7 @@ void L2A::Annotator::InvalAnnotation(AIAnnotatorMessage* message) const
 
     // Invalidate the rect bounds so it is redrawn.
     AIErr result = sAIAnnotator->InvalAnnotationRect(NULL, &inval_rect);
-    L2A::ERR::check_ai_error(result);
+    l2a_check_ai_error(result);
 }
 
 /**
@@ -209,10 +207,10 @@ void L2A::Annotator::InvalAnnotation() const
     // Get the bounds of the current document view.
     AIRealRect view_bounds = {0, 0, 0, 0};
     AIErr result = sAIDocumentView->GetDocumentViewBounds(NULL, &view_bounds);
-    L2A::ERR::check_ai_error(result);
+    l2a_check_ai_error(result);
 
     // Invalidate the rect bounds so it is redrawn.
     AIRect inval_rect = L2A::AI::ArtworkBoundsToViewBounds(view_bounds);
     result = sAIAnnotator->InvalAnnotationRect(NULL, &inval_rect);
-    L2A::ERR::check_ai_error(result);
+    l2a_check_ai_error(result);
 }

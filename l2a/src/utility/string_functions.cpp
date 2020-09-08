@@ -48,9 +48,7 @@ ai::UnicodeString L2A::UTIL::IntegerToString(const unsigned int& number, const u
     if (pad_len != 0)
     {
         // Check that the string is not longer than the padding length.
-        if (pad_len < number_string.length())
-            throw L2A::ERR::Exception(
-                ai::UnicodeString("UTIL::IntegerToString\nPaddig length is shorter than integer length!"));
+        if (pad_len < number_string.length()) l2a_error("Paddig length is shorter than integer length!");
 
         ai::UnicodeString padding("");
         for (unsigned int i = 0; i < pad_len - number_string.length(); i++) padding.append(ai::UnicodeString("0"));
@@ -70,9 +68,7 @@ ai::UnicodeString L2A::UTIL::IntegerToString(const unsigned int& number, const u
 int L2A::UTIL::StringToInteger(const ai::UnicodeString& string)
 {
     int return_value;
-    if (!ai::NumberFormat().parseString(string, return_value))
-        throw L2A::ERR::Exception(
-            ai::UnicodeString("UTIL::StringToInteger\nInteger could not be converted to string!"));
+    if (!ai::NumberFormat().parseString(string, return_value)) l2a_error("Integer could not be converted to string!");
     return return_value;
 }
 

@@ -48,6 +48,11 @@ namespace L2A
         bool IsDirectory(const ai::FilePath& directory);
 
         /**
+         * \brief Checks if a file is write protected.
+         */
+        bool IsWriteable(const ai::FilePath& file);
+
+        /**
          * \brief Remove a file on the file system. If the file does not exist, an error is thrown.
          */
         void RemoveFile(const ai::FilePath& file, const bool& fail_if_not_exist = true);

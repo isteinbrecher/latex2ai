@@ -32,7 +32,6 @@
 
 #include "l2a_constants.h"
 #include "l2a_plugin.h"
-#include "l2a_suites.h"
 #include "l2a_error/l2a_error.h"
 #include "l2a_global/l2a_global.h"
 #include "l2a_item/l2a_item.h"
@@ -104,7 +103,7 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
     {
         // The redo item is selected. Since this only acts as button we want to deselect the tool here.
         error = sAITool->SetSelectedToolByName(kSelectTool);
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
     }
 
     return error;
@@ -313,7 +312,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         else
         {
             error = sAITool->GetToolNumberFromName(toolGroupName, &data.sameGroupAs);
-            L2A::ERR::check_ai_error(error);
+            l2a_check_ai_error(error);
         }
 
         // Each tool icon is on its own.
@@ -321,7 +320,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
 
         // Add the tool.
         error = sAITool->AddTool(message->d.self, data.title, &data, options, &fToolHandle[i]);
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
     }
 
     return error;
@@ -394,7 +393,7 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
 
         // Deselect all so a call to the plugin will be given, where the tools can be deselected.
         error = sAIMatchingArt->DeselectAll();
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
     }
     else if (message->tool == this->fToolHandle[2])
     {
@@ -406,7 +405,7 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
         if (L2A::AI::GetDocumentCount() > 0)
         {
             error = sAIMatchingArt->DeselectAll();
-            L2A::ERR::check_ai_error(error);
+            l2a_check_ai_error(error);
         }
     }
     else if (message->tool == this->fToolHandle[3] && L2A::AI::GetDocumentCount() > 0)
@@ -415,7 +414,7 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
 
         // Deselect all so a call to the plugin will be given, where the tools can be deselected.
         error = sAIMatchingArt->DeselectAll();
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
     }
 #ifdef _DEBUG
     else if (message->tool == this->fToolHandle[4])
@@ -468,7 +467,7 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
         else
             cursor_id = CURSOR_ICON_CREATE;
         error = sAIUser->SetCursor(cursor_id, fResourceManagerHandle);
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
     }
 
     return error;

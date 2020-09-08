@@ -88,6 +88,12 @@
     <ClCompile Include="..\..\common\source\AppContext.cpp">
       <Filter>sdk</Filter>
     </ClCompile>
+    <ClCompile Include="src\utility\math.cpp">
+      <Filter>src\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="tpl\StackWalker\Main\StackWalker\StackWalker.cpp">
+      <Filter>tpl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -141,9 +147,6 @@
     <ClInclude Include="src\l2a_property\l2a_property.h">
       <Filter>src\l2a_property</Filter>
     </ClInclude>
-    <ClInclude Include="src\utility\to_from_string.h">
-      <Filter>src\utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\l2a_forms\l2a_forms.h">
       <Filter>src\l2a_forms</Filter>
     </ClInclude>
@@ -158,6 +161,15 @@
     </ClInclude>
     <ClInclude Include="src\tests\test_framework.h">
       <Filter>src\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utility\math.h">
+      <Filter>src\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utility\utils.h">
+      <Filter>src\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="tpl\StackWalker\Main\StackWalker\StackWalker.h">
+      <Filter>tpl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

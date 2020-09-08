@@ -44,13 +44,7 @@ L2A::UTIL::ParameterList::ParameterList(const ai::UnicodeString& string) : UTIL:
     // Parse the string into an xml document.
     tinyxml2::XMLDocument xml_doc;
     tinyxml2::XMLError xml_error = xml_doc.Parse(string.as_Platform().c_str());
-    if (tinyxml2::XML_SUCCESS != xml_error)
-    {
-        ai::UnicodeString error_string("L2A::UTIL::ParameterList::ParameterList XML could not be parsed.");
-        error_string += "\nThe string was:\n\n";
-        error_string += string;
-        throw L2A::ERR::Exception(ai::UnicodeString(error_string));
-    }
+    if (tinyxml2::XML_SUCCESS != xml_error) l2a_error("XML could not be parsed.\nThe string was:\n\n" + string);
 
     // Get the root element of the xml. This is this item.
     const tinyxml2::XMLElement* xml_root = xml_doc.RootElement();
@@ -73,15 +67,11 @@ void L2A::UTIL::ParameterList::SetFromXML(const tinyxml2::XMLElement* xml_elemen
     // Loop overchild elements.
     for (const tinyxml2::XMLElement* child = xml_element->FirstChildElement(); child != NULL;
          child = child->NextSiblingElement())
-    {
         SetSubList(ai::UnicodeString(child->Name()), std::make_shared<ParameterList>(child), true);
-    }
 
     // Loop over options and set them.
     for (const tinyxml2::XMLAttribute* attr = xml_element->FirstAttribute(); attr != NULL; attr = attr->Next())
-    {
         SetOption(ai::UnicodeString(attr->Name()), ai::UnicodeString(attr->Value()), true);
-    }
 
     // Set main option.
     ai::UnicodeString xml_text(xml_element->GetText());
@@ -94,18 +84,10 @@ void L2A::UTIL::ParameterList::SetFromXML(const tinyxml2::XMLElement* xml_elemen
 void L2A::UTIL::ParameterList::SetSubList(
     const ai::UnicodeString& key, const std::shared_ptr<ParameterList>& sub_list, const bool& fail_on_overwrite)
 {
-    if (main_option_set_)
-        throw L2A::ERR::Exception(
-            ai::UnicodeString("L2A::UTIL::ParameterList::SetSubList main option is already set for this item!"));
+    if (main_option_set_) l2a_error("Sub lists can not be set if the main option is already set!");
     if (fail_on_overwrite)
         // Check if the key already exists.
-        if (sub_lists_.count(key) != 0)
-        {
-            ai::UnicodeString error_string("UTIL::ParameterList::SetSubList\nKey \"");
-            error_string += key;
-            error_string += ai::UnicodeString("\" already exists in sub list map!");
-            throw L2A::ERR::Exception(error_string);
-        }
+        if (sub_lists_.count(key) != 0) l2a_error("Key \"" + key + "\" already exists in sub list map!");
 
     // Add the value.
     sub_lists_[key] = sub_list;
@@ -141,13 +123,7 @@ void L2A::UTIL::ParameterList::SetOption(
 {
     if (fail_on_overwrite)
         // Check if the key already exists.
-        if (options_map_.count(key) != 0)
-        {
-            ai::UnicodeString error_string("UTIL::ParameterList::SetOption\nKey \"");
-            error_string += key;
-            error_string += ai::UnicodeString("\" already exists in option map!");
-            throw L2A::ERR::Exception(error_string);
-        }
+        if (options_map_.count(key) != 0) l2a_error("Key \"" + key + "\" already exists in option map!");
 
     // Add the value.
     options_map_[key] = value;
@@ -176,9 +152,7 @@ void L2A::UTIL::ParameterList::SetOption(
 void L2A::UTIL::ParameterList::SetMainOption(const ai::UnicodeString& value)
 {
     // This is only possible if no subsets are set.
-    if (sub_lists_.size() != 0)
-        throw L2A::ERR::Exception(
-            ai::UnicodeString("L2A::UTIL::ParameterList::SetMainOption Size of sub lists is not 0!"));
+    if (sub_lists_.size() != 0) l2a_error("Main option can not be set if size if sub lists is not 0!");
     main_option_set_ = true;
     main_option_ = value;
 };
@@ -203,7 +177,7 @@ std::shared_ptr<L2A::UTIL::ParameterList> L2A::UTIL::ParameterList::GetSubListMu
         return it->second;
     else
     {
-        ai::UnicodeString error_string("UTIL::ParameterList::GetSubList\nKey \"");
+        ai::UnicodeString error_string("Key \"");
         error_string += key;
         error_string += ai::UnicodeString("\" not found in sub list map.\nExisting keys:");
         for (auto const& sub_list_it : sub_lists_)
@@ -211,7 +185,7 @@ std::shared_ptr<L2A::UTIL::ParameterList> L2A::UTIL::ParameterList::GetSubListMu
             error_string += ai::UnicodeString("\n    ");
             error_string += sub_list_it.first;
         }
-        throw L2A::ERR::Exception(error_string);
+        l2a_error(error_string);
     }
 }
 
@@ -226,7 +200,7 @@ ai::UnicodeString L2A::UTIL::ParameterList::GetStringOption(const ai::UnicodeStr
         return it->second;
     else
     {
-        ai::UnicodeString error_string("UTIL::ParameterList::GetStringOption\nKey \"");
+        ai::UnicodeString error_string("Key \"");
         error_string += key;
         error_string += ai::UnicodeString("\" not found in option map.\nExisting keys:");
         for (auto const& parameters_it : options_map_)
@@ -234,7 +208,7 @@ ai::UnicodeString L2A::UTIL::ParameterList::GetStringOption(const ai::UnicodeStr
             error_string += ai::UnicodeString("\n    ");
             error_string += parameters_it.first;
         }
-        throw L2A::ERR::Exception(error_string);
+        l2a_error(error_string);
     }
 }
 
@@ -251,8 +225,7 @@ int L2A::UTIL::ParameterList::GetIntOption(const ai::UnicodeString& key) const
  */
 ai::UnicodeString L2A::UTIL::ParameterList::GetMainOption() const
 {
-    if (!main_option_set_)
-        throw L2A::ERR::Exception(ai::UnicodeString("L2A::UTIL::ParameterList::GetMainOption main option is not set!"));
+    if (!main_option_set_) l2a_error("Main option is not set!");
     return main_option_;
 }
 

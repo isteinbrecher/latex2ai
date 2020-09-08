@@ -38,6 +38,8 @@
 #include "utility/parameter_list.h"
 #include "utility/file_system.h"
 #include "utility/string_functions.h"
+#include "utility/math.h"
+#include "utility/utils.h"
 #include "l2a_names.h"
 #include "l2a_constants.h"
 
@@ -103,6 +105,31 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
     // Get the data from the art item.
     property_ = L2A::Property();
     property_.SetFromString(L2A::AI::GetNote(placed_item_));
+
+    // Check that the placed options in AI and the set LaTeX2AI options are the same.
+    {
+        PlaceMethod method_ai;
+        PlaceAlignment alignment_ai;
+        AIBoolean clip_ai;
+        L2A::AI::GetPlacement(placed_item_, method_ai, alignment_ai, clip_ai);
+
+        PlaceMethod method_l2a;
+        AIBoolean clip_l2a;
+        std::tuple<PlaceMethod&, AIBoolean&> method_tuple{method_l2a, clip_l2a};
+        method_tuple =
+            L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), property_.GetPlacedMethod());
+        PlaceAlignment alignment_l2a =
+            L2A::UTIL::KeyToValue(TextAlignTuples(), TextAlignEnumsAI(), property_.GetTextAlignment());
+
+        if (method_ai != method_l2a || alignment_ai != alignment_l2a || clip_ai != clip_l2a)
+        {
+            // The options do not match, apply the ones from the LaTeX2AI options.
+            sAIUser->MessageAlert(ai::UnicodeString(
+                "The Illustrator placement values for a LaTeX2AI item do not match! The ones from the LaTeX2AI "
+                "settings are applied. This can happen if the placement values are changed manually via Illustrator."));
+            L2A::AI::SetPlacement(placed_item_, property_);
+        }
+    }
 }
 
 /**
@@ -232,11 +259,16 @@ void L2A::Item::MoveItem(const AIRealPoint& position)
 
     // For some objects that are far out of the artwork, multiple translations can be nessesary to reach the desired
     // position transform the object until the desired position is reached.
-    double position_error = 1.;
+    AIReal position_error = 1.;
     int counter = 0;
+    const int n_max = 3;
 
     while (position_error > L2A::CONSTANTS::eps_pos_)
     {
+        if (n_max == counter)
+            l2a_error(
+                "L2A::Item::MoveItem Desired position not reached in " + L2A::UTIL::IntegerToString(n_max) + " tries!");
+
         // Transform the art item to the desired position.
         AIRealMatrix artMatrix;
         sAIRealMath->AIRealMatrixSetTranslate(&artMatrix, position.h - old_position.h, position.v - old_position.v);
@@ -244,12 +276,8 @@ void L2A::Item::MoveItem(const AIRealPoint& position)
 
         // Check error in new position.
         old_position = GetPosition();
-        position_error = sqrt(powf(position.h - old_position.h, 2.) + powf(position.v - old_position.v, 2.));
+        position_error = L2A::UTIL::MATH::GetDistance(position, old_position);
         counter++;
-
-        if (counter > 3)
-            throw L2A::ERR::Exception(
-                ai::UnicodeString("L2A::Item::MoveItem Desired position not reached in 3 tries!"));
     }
 }
 
@@ -376,12 +404,12 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
         if (find_key != item_boundaries.end())
             boundary_positions_view.push_back(L2A::AI::ArtworkPointToViewPoint(find_key->second));
         else
-            throw L2A::ERR::Exception(ai::UnicodeString("L2A::Item::Draw Key in item_boundaries could not be found!"));
+            l2a_error("Key in item_boundaries could not be found!");
     }
 
     // Draw the boundary.
     AIErr error = sAIAnnotatorDrawer->DrawPolygon(message->drawer, &boundary_positions_view[0], 5, false);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
 
     // Draw the placement point.
     AIPoint placement_point =
@@ -392,7 +420,7 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     centre.bottom = placement_point.v - L2A::CONSTANTS::radius_;
     centre.top = placement_point.v + L2A::CONSTANTS::radius_;
     error = sAIAnnotatorDrawer->DrawEllipse(message->drawer, centre, true);
-    L2A::ERR::check_ai_error(error);
+    l2a_check_ai_error(error);
 
     if (property_.IsBaseline())
     {
@@ -402,7 +430,7 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
         // Draw the base line of a baseline item.
         error = sAIAnnotatorDrawer->SetLineDashedEx(message->drawer, &dash_data_[0], (ai::int32)dash_data_.size());
         error = sAIAnnotatorDrawer->DrawLine(message->drawer, boundary_positions_view[5], boundary_positions_view[6]);
-        L2A::ERR::check_ai_error(error);
+        l2a_check_ai_error(error);
     }
 }
 
@@ -499,8 +527,7 @@ void L2A::RedoItems()
     // Get the result from the form.
     const bool redo_latex = new_parameter_list->GetIntOption(ai::UnicodeString("redo_latex"));
     const bool redo_boundary = new_parameter_list->GetIntOption(ai::UnicodeString("redo_boundary"));
-    if (redo_latex && !redo_boundary)
-        L2A::ERR::Exception(ai::UnicodeString("L2A::RedoAllItems Got unexpected combination of options."));
+    if (redo_latex && !redo_boundary) l2a_error("Got unexpected combination of options.");
     std::vector<AIArtHandle> redo_items;
     const bool is_all_items =
         new_parameter_list->GetStringOption(ai::UnicodeString("item_type")) == ai::UnicodeString("all");
@@ -584,6 +611,11 @@ void L2A::RelinkCopiedItems()
     // If the document is not saved, nothing needs to be done in this function.
     if (!L2A::UTIL::IsFile(L2A::UTIL::GetDocumentPath(false))) return;
 
+    // Get all selected items and store them. Those items have to be reselected at the end of this function, to ensure
+    // that all copied items are selected and the user can directly modify (e.g. move) them.
+    std::vector<AIArtHandle> selected_items_all;
+    L2A::AI::GetItems(selected_items_all, L2A::AI::SelectionState::selected);
+
     // Get the selected items. Those are candidates for items that were just paste into the document.
     std::vector<AIArtHandle> selected_items;
     L2A::AI::GetDocumentItems(selected_items, L2A::AI::SelectionState::selected);
@@ -608,6 +640,10 @@ void L2A::RelinkCopiedItems()
     for (const auto& item : selected_items)
     {
         ai::FilePath placed_item_path = L2A::AI::GetPlacedItemPath(item);
+
+        // Check if the item links to a file that exists. If the linked file does not exist, the item will be skipped,
+        // as the TeX file has to be recompiled.
+        if (!L2A::UTIL::IsFile(placed_item_path)) continue;
 
         // Check if the selected item links to a file that other items in this document already link to.
         if (std::find(linked_paths.begin(), linked_paths.end(), placed_item_path.GetFullPath()) != linked_paths.end())
@@ -648,5 +684,8 @@ void L2A::RelinkCopiedItems()
             // Set the name for the  AI item.
             L2A::AI::SetName(item, L2A::NAMES::ai_item_name_prefix_ + L2A::UTIL::IntegerToString(item_index, 3));
         }
+
+        // Select the items again that were selected after the copy mechanism.
+        L2A::AI::SelectItems(selected_items_all);
     }
 }
