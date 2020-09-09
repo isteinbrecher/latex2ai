@@ -38,7 +38,9 @@ namespace L2A
     namespace UTIL
     {
         /**
-         * \brief Convert an integer to an ai::UnicodeString. Optional padding is possible.
+         * \brief Convert an integer to an ai::UnicodeString.
+         * @param number Number to be converted to a string.
+         * @param pad_len Padded length of the string. If this is 0, then the string will not be padded.
          */
         ai::UnicodeString IntegerToString(const unsigned int& number, const unsigned int& pad_len = 0);
 
@@ -49,13 +51,18 @@ namespace L2A
 
         /**
          * \brief Check if a string starts with another string.
+         * @param ref_string The string that should be checked.
+         * @param compare_string The string that should be at the beginning.
          * @param caseless_compare If this is true, capitalization matters in the comparison.
          */
         bool StartsWith(const ai::UnicodeString& ref_string, const ai::UnicodeString& compare_string,
             bool caseless_compare = false);
 
         /**
-         * \brief Add a method to replace parts of this string.
+         * \brief Replace parts of a string.
+         * @param string String where parts will be replaced.
+         * @param search_string Substring that will be replaced.
+         * @param replace_string Substring that will be inserted into the replaced parts.
          */
         void StringReplaceAll(
             ai::UnicodeString& string, const ai::UnicodeString& search_string, const ai::UnicodeString& replace_string);
