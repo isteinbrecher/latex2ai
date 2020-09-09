@@ -71,7 +71,11 @@ namespace L2A
             string return_path = arguments[3];
 
             // Open the desired form.
-            if (arguments[1] == "l2a_item")
+            if (arguments[1] == "l2a_test_forms")
+            {
+                TestForms(parameter_list, return_path);
+            }
+            else if (arguments[1] == "l2a_item")
             {
                 Application.Run(new L2A.FORMS.Item(parameter_list, return_path));
             }
@@ -88,6 +92,23 @@ namespace L2A
                 Application.Run(new L2A.FORMS.Options(parameter_list, return_path));
             }
             else L2A.ERR.ExceptionClass.Exception("The form type \"" + arguments[1] + "\" is not defiend.");
+        }
+
+        /// <summary>
+        /// Test the communication between the AI plug-in and the forms application.
+        /// </summary>
+        static private void TestForms(L2A.UTIL.ParameterList parameter_list, string return_xml)
+        {
+            var return_parameter_list = new L2A.UTIL.ParameterList();
+            return_parameter_list.options_["form_result"] = "ok";
+            return_parameter_list.sub_lists_["LaTeX2AI_form_result"] = parameter_list;
+
+            // Write the parameter list to string.
+            string xml_string = return_parameter_list.ToString("LaTeX2AI_form_result");
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(return_xml, false))
+            {
+                file.WriteLine(xml_string);
+            }
         }
     }
 }
