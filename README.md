@@ -81,7 +81,7 @@ The following Figure illustrates the different options:
 
 Please note that the **remain original size** option leads to issues if the item is bend (see the red boxes in the previous Figure).
 
-Every time a label is changed the boundary box is reset, i.e. so that it matches the size of the actual places PDF file.
+Every time a label is changed the boundary box is reset so that it matches the size of the actual places PDF file.
 With the **Redo items** button the boundary box of all labels can be redone.
 It is generally advisable to redo all boundary boxes before exporting the Illustrator document, to ensure that the font size will be correct for each label.
 
