@@ -53,6 +53,12 @@ namespace L2A
          */
         bool StartsWith(const ai::UnicodeString& ref_string, const ai::UnicodeString& compare_string,
             bool caseless_compare = false);
+
+        /**
+         * \brief Add a method to replace parts of this string.
+         */
+        void StringReplaceAll(
+            ai::UnicodeString& string, const ai::UnicodeString& search_string, const ai::UnicodeString& replace_string);
     }  // namespace UTIL
 }  // namespace L2A
 
