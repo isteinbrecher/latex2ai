@@ -50,8 +50,7 @@ void L2A::TEST::TestForms(L2A::TEST::UTIL::UnitTest& ut)
     L2A::UTIL::ParameterList input_list;
     input_list.SetOption(ai::UnicodeString("key0"), random_integer);
     input_list.SetOption(ai::UnicodeString("key1"), random_integer);
-    input_list.SetOption(ai::UnicodeString("key2"),
-        ai::UnicodeString("Hier ist ein langer Text mit Umlauten ‰ˆƒ÷‹ﬂ@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n"));
+    input_list.SetOption(ai::UnicodeString("key2"), ai::UnicodeString(L2A::TEST::UTIL::test_string_1_));
 
     // Add sub list.
     L2A::UTIL::ParameterList sub_list;
@@ -63,8 +62,7 @@ void L2A::TEST::TestForms(L2A::TEST::UTIL::UnitTest& ut)
 
     // Add second sub list.
     std::shared_ptr<L2A::UTIL::ParameterList> sub_list_2 = input_list.SetSubList(ai::UnicodeString("sublist_key1"));
-    sub_list_2->SetMainOption(
-        ai::UnicodeString("Hier ist ein langer Text mit Umlauten ‰ˆƒ÷‹ﬂ@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n"));
+    sub_list_2->SetMainOption(ai::UnicodeString(L2A::TEST::UTIL::test_string_4_));
     sub_list_2->SetOption(ai::UnicodeString("key0"), ai::UnicodeString("newvalue"));
 
     // Send to forms and read it again.
