@@ -145,6 +145,11 @@ namespace L2A
             void SetMainOption(const ai::UnicodeString& value);
 
             /**
+             * \brief Get number of sublists.
+             */
+            size_t GetNumberOfSubList() const { return sub_lists_.size(); }
+
+            /**
              * \brief Get const sub list of this parameter list.
              */
             std::shared_ptr<const ParameterList> GetSubList(const ai::UnicodeString& key) const;
@@ -153,6 +158,16 @@ namespace L2A
              * \brief Get mutable sub list of this parameter list.
              */
             std::shared_ptr<ParameterList> GetSubListMutable(const ai::UnicodeString& key) const;
+
+            /**
+             * \brief Check if a sublist with a certain key exists.
+             */
+            bool SubListExists(const ai::UnicodeString& key) const { return sub_lists_.find(key) != sub_lists_.end(); }
+
+            /**
+             * \brief Get number of options.
+             */
+            size_t GetNumberOfOptions() const { return options_map_.size(); }
 
             /**
              * \brief Get string option.
@@ -170,6 +185,11 @@ namespace L2A
             ai::UnicodeString GetMainOption() const;
 
             /**
+             * \brief Check if main option is set.
+             */
+            bool GetMainOptionSet() const { return main_option_set_; }
+
+            /**
              * \brief Return a XML string representing all options in this object.
              */
             ai::UnicodeString ToXMLString(const ai::UnicodeString& root_name) const;
@@ -177,7 +197,20 @@ namespace L2A
             /**
              * \brief Check if an option exists in this list.
              */
-            bool OptionExists(const ai::UnicodeString& key) const;
+            bool OptionExists(const ai::UnicodeString& key) const
+            {
+                return options_map_.find(key) != options_map_.end();
+            }
+
+            /**
+             * \brief Overload the == operator for a parameter list.
+             */
+            bool operator==(const ParameterList& other) const;
+
+            /**
+             * \brief Overload the != operator for a parameter list.
+             */
+            bool operator!=(const ParameterList& other) const { return !(*this == other); }
 
            private:
             /**
