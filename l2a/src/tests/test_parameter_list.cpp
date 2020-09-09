@@ -69,6 +69,9 @@ void L2A::TEST::TestParameterList(L2A::TEST::UTIL::UnitTest& ut)
     // Transform this list to a string and read it again.
     L2A::UTIL::ParameterList transformed_list(first_list.ToXMLString(ai::UnicodeString("root")));
 
+    // Compare with the == operator.
+    ut.CompareInt(first_list == transformed_list, 1);
+
     // Check the results.
     ut.CompareStr(transformed_list.GetStringOption(ai::UnicodeString("key0")), ai::UnicodeString("value0"));
     ut.CompareStr(transformed_list.GetStringOption(ai::UnicodeString("key1")), ai::UnicodeString("value1"));
