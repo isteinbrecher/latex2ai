@@ -53,7 +53,7 @@ void L2A::TEST::TestingMain()
     L2A::TEST::TestForms(ut);
 
     // Print the testing summary. For now this is deactivated.
-    // ut.PrintTestSummary();
+    ut.PrintTestSummary();
 }
 
 /**
