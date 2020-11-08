@@ -37,6 +37,8 @@
 #include "l2a_global/l2a_global.h"
 #include "l2a_names.h"
 
+#include <regex>
+
 
 /**
  *
@@ -369,3 +371,42 @@ ai::FilePath L2A::LATEX::GetHeaderPath()
  *
  */
 ai::UnicodeString L2A::LATEX::GetTexLicense() { return ai::UnicodeString(L2A::LICENSE::tex_license_); }
+
+/**
+ *
+ */
+ai::UnicodeString L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& header_path)
+{
+    auto header_dir = header_path.GetParent();
+    auto header_text = L2A::UTIL::ReadFileUTF8(header_path);
+    std::string header_string = header_text.as_UTF8();
+
+    // Regex string to find inputs in the header.
+    std::regex re_input("\\\\(input) *\\{.*\\}");
+
+    // Loop over inputs.
+    auto input_begin = std::sregex_iterator(header_string.begin(), header_string.end(), re_input);
+    auto input_end = std::sregex_iterator();
+    std::string return_header("");
+    int last_pos = 0;
+    for (std::sregex_iterator i = input_begin; i != input_end; ++i)
+    {
+        std::smatch match = *i;
+        return_header += header_string.substr(last_pos, match.position() - last_pos);
+
+        // Get the path of the input_file.
+        std::smatch brackets_match;
+        std::regex re_brackets("\\{.*\\}");
+        auto input_string = header_string.substr(match.position(), match.length());
+        std::regex_search(input_string, brackets_match, re_brackets);
+        std::string input_path_string = brackets_match.str(0);
+        input_path_string = input_path_string.substr(1, input_path_string.length() - 2);
+        auto input_header_path = header_dir;
+        input_header_path.AddComponent(ai::UnicodeString(input_path_string));
+        return_header += GetHeaderWithIncludedInputs(input_header_path).as_UTF8();
+
+        last_pos = match.position() + match.length();
+    }
+    return_header += header_string.substr(last_pos, header_string.length());
+    return ai::UnicodeString(return_header);
+}
