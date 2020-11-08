@@ -317,8 +317,9 @@ ai::FilePath L2A::LATEX::WriteLatexFiles(const ai::UnicodeString& latex_code, co
     tex_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_tex_name_));
     batch_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_batch_name_));
 
-    // Copy the header into the temp directory.
-    L2A::UTIL::CopyFileL2A(GetHeaderPath(), tex_header_file);
+    // Create the header in the temp directory.
+    ai::UnicodeString header_string = L2A::LATEX::GetHeaderWithIncludedInputs(GetHeaderPath());
+    L2A::UTIL::WriteFileUTF8(tex_header_file, header_string, true);
 
     // Creates the LaTeX file.
     L2A::UTIL::WriteFileUTF8(tex_file, GetLatexString(latex_code), true);
