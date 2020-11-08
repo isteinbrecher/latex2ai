@@ -137,7 +137,7 @@ namespace L2A
         /**
          * \brief Get the angle of the item along the x1 or x2 axis (director is 0 for x1 and 1 for x2).
          */
-        double GetAngle(unsigned short director = 0) const;
+        AIReal GetAngle(unsigned short director = 0) const;
 
         /**
          * \brief Check if the item is rotated.
@@ -152,7 +152,7 @@ namespace L2A
         /**
          * \brief Get the strech of the item in a direction.
          */
-        double GetStrech(unsigned short director = 0) const;
+        AIReal GetStrech(unsigned short director = 0) const;
 
         /**
          * \brief Check if the item is streched.

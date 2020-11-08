@@ -271,15 +271,15 @@ void L2A::AI::SetPlacedMatrix(const AIArtHandle& placed_item, AIRealMatrix& plac
 /**
  *
  */
-void L2A::AI::AlignmentToFac(const PlaceAlignment& alignment, double (&pos_fac)[2])
+void L2A::AI::AlignmentToFac(const PlaceAlignment& alignment, AIReal (&pos_fac)[2])
 {
     TextAlignHorizontal horizontal;
     TextAlignVertical vertical;
     std::tuple<TextAlignHorizontal&, TextAlignVertical&> text_align_tuple = {horizontal, vertical};
     text_align_tuple = L2A::UTIL::KeyToValue(TextAlignEnumsAI(), TextAlignTuples(), alignment);
 
-    const std::array<double, 3> text_align_horizontal_factors = {0.0, 0.5, 1.0};
-    const std::array<double, 4> text_align_vertical_factors = {1.0, 0.5, 0.5, 0.0};
+    const std::array<AIReal, 3> text_align_horizontal_factors = {0.0, 0.5, 1.0};
+    const std::array<AIReal, 4> text_align_vertical_factors = {1.0, 0.5, 0.5, 0.0};
 
     pos_fac[0] = L2A::UTIL::KeyToValue(TextAlignHorizontalEnums(), text_align_horizontal_factors, horizontal);
     pos_fac[1] = L2A::UTIL::KeyToValue(TextAlignVerticalEnums(), text_align_vertical_factors, vertical);
@@ -715,7 +715,7 @@ void L2A::AI::SaveAs(const ai::FilePath& document_path)
 /**
  *
  */
-void L2A::AI::Rotate(const double angle)
+void L2A::AI::Rotate(const AIReal angle)
 {
     // Set the parameters for the action.
     AIErr result;
@@ -761,7 +761,7 @@ void L2A::AI::ResetBoundingBox()
 /**
  *
  */
-void L2A::AI::Move(const double delta_x, const double delta_y, bool copy)
+void L2A::AI::Move(const AIReal delta_x, const AIReal delta_y, bool copy)
 {
     // Set the parameters for the action.
     AIErr result;
@@ -770,9 +770,9 @@ void L2A::AI::Move(const double delta_x, const double delta_y, bool copy)
     result = sAIActionManager->AINewActionParamValue(&action_parameters);
     l2a_check_ai_error(result);
 
-    result = sAIActionManager->AIActionSetReal(action_parameters, kAITranslateSelectionHorizontalKey, (ASReal)delta_x);
+    result = sAIActionManager->AIActionSetReal(action_parameters, kAITranslateSelectionHorizontalKey, delta_x);
     l2a_check_ai_error(result);
-    result = sAIActionManager->AIActionSetReal(action_parameters, kAITranslateSelectionVerticalKey, (ASReal)delta_y);
+    result = sAIActionManager->AIActionSetReal(action_parameters, kAITranslateSelectionVerticalKey, delta_y);
     l2a_check_ai_error(result);
     result = sAIActionManager->AIActionSetBoolean(action_parameters, kAITranslateSelectionCopyKey, copy);
     l2a_check_ai_error(result);
@@ -785,7 +785,7 @@ void L2A::AI::Move(const double delta_x, const double delta_y, bool copy)
 /**
  *
  */
-void L2A::AI::Scale(const double scale_x, const double scale_y, bool copy)
+void L2A::AI::Scale(const AIReal scale_x, const AIReal scale_y, bool copy)
 {
     // Set the parameters for the action.
     AIErr result;
