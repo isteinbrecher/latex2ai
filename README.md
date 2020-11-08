@@ -22,13 +22,13 @@ To build LaTeX2AI from source additional requirements have to be met:
 ### Getting started
 1. Download and unpack the [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip).
 1. Go to the sample code folder `Adobe Illustrator CS6 SDK/sample code` and run
-	“`
+	```
 	git clone https://github.com/stoani89/LaTeX2AI.git
-	“`
+	```
 1. Go to `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI` and run
-	“`
+	```
 	git sub module update --init
-	“`
+	```
 1. Open `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI/LaTeX2AI.sln` with Visual Studio and compile the solution.
 
 
@@ -56,7 +56,7 @@ Take for example the well-known formula `$\sum_{k=0}^{\nifty}\frac{x^k}{k!}$` wh
 ![Placement small](/doc/placement_small.png?raw=true)
 
 The green box indicates the boundary box of the LaTeX2I label and the dot describes the placement of the label, i.e. if the size changes the position of this dot relative to the label will stay the same.
-If the previous label is now changed to `\display style` we get the following result:
+If the previous label is now changed to `\displaystyle` we get the following result:
 
 ![Placement large](/doc/placement_large.png?raw=true)
 
@@ -64,8 +64,8 @@ The size of the label changed due to a change in the underlying LaTeX code, but 
 
 #### Baseline placement
 Additionally there is the possibility of a *baseline* placement.
-This placement will result in a label where the baseline is exactly in the vertical center of the label.
-A label which is created with this option can now be easily adjusted to fit to another label or Illustrator text:
+This will result in a label where the baseline is exactly in the vertical center of the label.
+The resulting label can not be easily adjusted and snapped to align with another baseline label or Illustrator text:
 
 ![Placement baseline](/doc/placement_baseline.png?raw=true)
 
@@ -81,7 +81,7 @@ The following Figure illustrates the different options:
 
 Please note that the **remain original size** option leads to issues if the item is bend (see the red boxes in the previous Figure).
 
-Every time a label is changed the boundary box is reset, i.e. so that it matches the size of the actual places PDF file.
+Every time a label is changed the boundary box is reset so that it matches the size of the actual places PDF file.
 With the **Redo items** button the boundary box of all labels can be redone.
 It is generally advisable to redo all boundary boxes before exporting the Illustrator document, to ensure that the font size will be correct for each label.
 
