@@ -32,6 +32,7 @@
 
 #include "l2a_global/l2a_global.h"
 #include "l2a_error/l2a_error.h"
+#include "l2a_constants.h"
 #include "utility/file_system.h"
 #include "utility/parameter_list.h"
 #include "utility/string_functions.h"
@@ -72,6 +73,14 @@ bool L2A::Form(const ai::UnicodeString& form_type, const L2A::UTIL::ParameterLis
     form_command_string += input_path.GetFullPath();
     form_command_string += "\" \"";
     form_command_string += output_path.GetFullPath();
+    form_command_string += "\" \"";
+    form_command_string += L2A_VERSION_GIT_SHA_HEAD_;
+    form_command_string += "\" \"";
+#ifdef _DEBUG
+    form_command_string += "debug";
+#else
+    form_command_string += "release";
+#endif
     form_command_string += "\"";
 
     // Call the form.

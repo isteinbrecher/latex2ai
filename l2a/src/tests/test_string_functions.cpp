@@ -80,4 +80,13 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
     ut.CompareInt(0, L2A::UTIL::StartsWith(long_name, start_name_case));
     ut.CompareInt(1, L2A::UTIL::StartsWith(long_name, start_name_case, true));
     ut.CompareInt(0, L2A::UTIL::StartsWith(long_name, start_name_wrong));
+
+    // Test the replace functions.
+    ai::UnicodeString full_string("hello $name with $other $other $name and line breaks \n\n\r\n\r\n\n just like that");
+    L2A::UTIL::StringReplaceAll(full_string, ai::UnicodeString("$name"), ai::UnicodeString("Full Name"));
+    L2A::UTIL::StringReplaceAll(full_string, ai::UnicodeString("$other"), ai::UnicodeString("s$other and more"));
+    L2A::UTIL::StringReplaceAll(full_string, ai::UnicodeString("\r\n"), ai::UnicodeString("\n"));
+    ut.CompareStr(full_string,
+        ai::UnicodeString("hello Full Name with s$other and more s$other and more Full Name and line breaks \n\n\n\n\n "
+                          "just like that"));
 }

@@ -89,3 +89,19 @@ bool L2A::UTIL::StartsWith(
     else
         return false;
 }
+
+/**
+ *
+ */
+void L2A::UTIL::StringReplaceAll(
+    ai::UnicodeString& string, const ai::UnicodeString& search_string, const ai::UnicodeString& replace_string)
+{
+    // https://stackoverflow.com/questions/3418231/replace-part-of-a-string-with-another-string
+    if (search_string.empty()) return;
+    size_t start_pos = 0;
+    while ((start_pos = string.find(search_string, start_pos)) != std::string::npos)
+    {
+        string = string.replace(start_pos, search_string.length(), replace_string);
+        start_pos += replace_string.length();  // In case 'to' contains 'from', like replacing 'x' with 'yx'
+    }
+}

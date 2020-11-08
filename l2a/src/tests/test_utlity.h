@@ -39,6 +39,14 @@ namespace L2A
     {
         namespace UTIL
         {
+            //! Strings that are used to compare during testing.
+            static const char* test_string_1_ = "Umlaute äöÄÖÜß@!\nund neue Zeile";
+            static const char* test_string_2_ =
+                "Hier ist ein langer Text mit Umlauten äöÄÖÜß@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n";
+            static const char* test_string_3_ = "    \n    \n    \n    \nMainOptionText\n    \n    \n";
+            static const char* test_string_4_ =
+                "Hier ist ein anderer langer Text mit Umlauten äöÄÖÜß@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n";
+
             /**
              * \brief A class that handles testing.
              */

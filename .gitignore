@@ -1,12 +1,9 @@
-# Build folder.
-output/
-
 # Visual Studio files.
 .vs/*
 */.vs/*
 
 # Automatically generated files.
-/l2a/src/auto_generated/*
+auto_generated/
 
 # Forms binaries.
 forms/bin/*

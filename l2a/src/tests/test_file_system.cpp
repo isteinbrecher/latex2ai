@@ -49,8 +49,7 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
     L2A::UTIL::RemoveFile(temp_file, false);
 
     // Create the file with a text.
-    const ai::UnicodeString test_text(
-        "Hier ist ein langer Text mit Umlauten äöÄÖÜß@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n");
+    const ai::UnicodeString test_text(L2A::TEST::UTIL::test_string_1_);
     L2A::UTIL::WriteFileUTF8(temp_file, ai::UnicodeString("wrong text"));
     L2A::UTIL::WriteFileUTF8(temp_file, test_text, true);
 

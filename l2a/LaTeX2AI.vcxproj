@@ -151,7 +151,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -210,7 +210,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -269,7 +269,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -328,7 +328,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -421,6 +421,7 @@
     </ClCompile>
     <ClCompile Include="src\tests\testing.cpp" />
     <ClCompile Include="src\tests\test_file_system.cpp" />
+    <ClCompile Include="src\tests\test_forms.cpp" />
     <ClCompile Include="src\tests\test_framework.cpp" />
     <ClCompile Include="src\tests\test_parameter_list.cpp" />
     <ClCompile Include="src\tests\test_string_functions.cpp" />
@@ -461,6 +462,7 @@
     <ClInclude Include="src\l2a_suites.h" />
     <ClInclude Include="src\tests\testing.h" />
     <ClInclude Include="src\tests\test_file_system.h" />
+    <ClInclude Include="src\tests\test_forms.h" />
     <ClInclude Include="src\tests\test_framework.h" />
     <ClInclude Include="src\tests\test_parameter_list.h" />
     <ClInclude Include="src\tests\test_string_functions.h" />

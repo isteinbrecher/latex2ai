@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\auto_generated\version.cs" />
     <Compile Include="src\forms\base.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,4 +150,7 @@
     <None Include="images\LaTeX2AI_font_placement.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cs</PreBuildEvent>
+  </PropertyGroup>
 </Project>
