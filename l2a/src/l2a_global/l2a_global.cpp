@@ -30,11 +30,13 @@
 #include "IllustratorSDK.h"
 #include "l2a_global.h"
 
+#include "l2a_suites.h"
 #include "l2a_error/l2a_error.h"
 #include "utility/file_system.h"
 #include "utility/string_functions.h"
 #include "utility/parameter_list.h"
 #include "l2a_forms/l2a_forms.h"
+#include "l2a_latex/l2a_latex.h"
 #include "l2a_constants.h"
 
 
@@ -144,16 +146,42 @@ void L2A::GLOBAL::Global::SetFromUserForm()
 {
     // Get a parameter list with the current options and the default options.
     std::shared_ptr<L2A::UTIL::ParameterList> form_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
-    ToParameterList(form_parameter_list);
-    std::shared_ptr<L2A::UTIL::ParameterList> default_list =
-        form_parameter_list->SetSubList(ai::UnicodeString("default_options"));
-    GetDefaultParameterList(default_list);
-    form_parameter_list->SetOption(ai::UnicodeString("git_sha"), ai::UnicodeString(L2A_VERSION_GIT_SHA_HEAD_));
+    GetParameterListForForm(form_parameter_list);
 
     // Call the form.
-    std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
-    if (!L2A::Form(ai::UnicodeString("l2a_options"), *form_parameter_list, form_return_parameter_list).canceled)
-        SetFromParameterList(*form_return_parameter_list);
+    bool exit_form = false;
+    while (!exit_form)
+    {
+        std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list =
+            std::make_shared<L2A::UTIL::ParameterList>();
+        L2A::FormReturnValue form_return =
+            L2A::Form(ai::UnicodeString("l2a_options"), *form_parameter_list, form_return_parameter_list);
+        if (!form_return.canceled)
+        {
+            if (form_return.return_string == "ok")
+            {
+                SetFromParameterList(*form_return_parameter_list);
+                exit_form = true;
+            }
+            else if (form_return.return_string == "create_default_header")
+            {
+                form_parameter_list->SetOption(ai::UnicodeString("path_latex"),
+                    form_return_parameter_list->GetStringOption(ai::UnicodeString("path_latex")));
+                form_parameter_list->SetOption(ai::UnicodeString("command_latex"),
+                    form_return_parameter_list->GetStringOption(ai::UnicodeString("command_latex")));
+                form_parameter_list->SetOption(ai::UnicodeString("command_latex_options"),
+                    form_return_parameter_list->GetStringOption(ai::UnicodeString("command_latex_options")));
+                form_parameter_list->SetOption(ai::UnicodeString("command_gs"),
+                    form_return_parameter_list->GetStringOption(ai::UnicodeString("command_gs")));
+
+                L2A::LATEX::GetHeaderPath();
+            }
+            else
+                l2a_error("Got unexpected return value from form");
+        }
+        else
+            exit_form = true;
+    }
 }
 
 /**
@@ -217,6 +245,41 @@ void L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
     command_gs_ = parameter_list.GetStringOption(ai::UnicodeString("command_gs"));
     if (parameter_list.OptionExists(ai::UnicodeString("path_form_exe")))
         path_form_exe_ = ai::FilePath(parameter_list.GetStringOption(ai::UnicodeString("path_form_exe")));
+}
+
+/**
+ *
+ */
+void L2A::GLOBAL::Global::GetParameterListForForm(std::shared_ptr<L2A::UTIL::ParameterList>& form_parameter_list) const
+{
+    // Get a parameter list with the current options and the default options.
+    ToParameterList(form_parameter_list);
+    std::shared_ptr<L2A::UTIL::ParameterList> default_list =
+        form_parameter_list->SetSubList(ai::UnicodeString("default_options"));
+    GetDefaultParameterList(default_list);
+    form_parameter_list->SetOption(ai::UnicodeString("git_sha"), ai::UnicodeString(L2A_VERSION_GIT_SHA_HEAD_));
+    {
+        // Add the header path.
+        ai::int32 n_documents;
+        sAIDocumentList->Count(&n_documents);
+        if (n_documents > 0)
+        {
+            // Add the header path
+            ai::FilePath document_path = L2A::UTIL::GetDocumentPath(false);
+            if (L2A::UTIL::IsFile(document_path))
+                // The document is saved, so add the full path.
+                form_parameter_list->SetOption(
+                    ai::UnicodeString("document_header_path"), L2A::LATEX::GetHeaderPath(false).GetFullPath());
+            else
+                // Document is not save.
+                form_parameter_list->SetOption(
+                    ai::UnicodeString("document_header_path"), ai::UnicodeString("not_saved"));
+        }
+        else
+            // No open documents.
+            form_parameter_list->SetOption(
+                ai::UnicodeString("document_header_path"), ai::UnicodeString("no_documents"));
+    }
 }
 
 /**
