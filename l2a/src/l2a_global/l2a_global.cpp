@@ -152,7 +152,7 @@ void L2A::GLOBAL::Global::SetFromUserForm()
 
     // Call the form.
     std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
-    if (L2A::Form(ai::UnicodeString("l2a_options"), *form_parameter_list, form_return_parameter_list))
+    if (!L2A::Form(ai::UnicodeString("l2a_options"), *form_parameter_list, form_return_parameter_list).canceled)
         SetFromParameterList(*form_return_parameter_list);
 }
 

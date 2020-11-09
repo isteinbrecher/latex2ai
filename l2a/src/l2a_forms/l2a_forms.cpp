@@ -41,14 +41,17 @@
 /**
  *
  */
-bool L2A::Form(const ai::UnicodeString& form_type, const L2A::UTIL::ParameterList& input_parameter_list,
+L2A::FormReturnValue L2A::Form(const ai::UnicodeString& form_type, const L2A::UTIL::ParameterList& input_parameter_list,
     std::shared_ptr<L2A::UTIL::ParameterList>& return_parameter_list)
 {
+    L2A::FormReturnValue return_value;
+
     // If testing is activated, skip the actual form path and return the parameter list from the global object.
     if (L2A::Global().is_testing_)
     {
         return_parameter_list = L2A::Global().testing_form_return_parameter_list_;
-        return true;
+        return_value.canceled = false;
+        return return_value;
     }
 
     // Get the filepath for the input and output files.
@@ -94,15 +97,16 @@ bool L2A::Form(const ai::UnicodeString& form_type, const L2A::UTIL::ParameterLis
 
         // Check if the form was canceled.
         ai::UnicodeString form_result = form_parameter_list.GetStringOption(ai::UnicodeString("form_result"));
-        if (form_result == ai::UnicodeString("ok"))
+        if (form_result == ai::UnicodeString("cancel"))
+            return_value.canceled = true;
+        else
         {
             return_parameter_list = form_parameter_list.GetSubListMutable(ai::UnicodeString("LaTeX2AI_form_result"));
-            return true;
+            return_value.canceled = false;
         }
-        else if (form_result == ai::UnicodeString("cancel"))
-            return false;
-        else
-            l2a_error("Got unexpected result from forms application.");
+
+        return_value.return_string = form_result;
+        return return_value;
     }
     else
         l2a_error("No file written in form application!");

@@ -256,7 +256,7 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
         std::shared_ptr<L2A::UTIL::ParameterList> new_parameter_list;
         while (true)
         {
-            if (L2A::Form(ai::UnicodeString("l2a_debug"), debug_parameter_list, new_parameter_list))
+            if (!L2A::Form(ai::UnicodeString("l2a_debug"), debug_parameter_list, new_parameter_list).canceled)
             {
                 if (new_parameter_list->GetIntOption(ai::UnicodeString("create_debug_folder")) == 1)
                 {
