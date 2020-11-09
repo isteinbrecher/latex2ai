@@ -105,7 +105,7 @@ namespace L2A
          * \brief Get the path to the header for the current document. If no header exists, a default one will be
          * created.
          */
-        ai::FilePath GetHeaderPath();
+        ai::FilePath GetHeaderPath(const bool create_default_if_not_exist = true);
 
         /**
          * \brief Get the license information for tex files.

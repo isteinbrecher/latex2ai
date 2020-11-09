@@ -348,14 +348,14 @@ ai::UnicodeString L2A::LATEX::GetDefaultHeader()
 /**
  *
  */
-ai::FilePath L2A::LATEX::GetHeaderPath()
+ai::FilePath L2A::LATEX::GetHeaderPath(const bool create_default_if_not_exist)
 {
     // Header directory.
     ai::FilePath path = L2A::UTIL::GetDocumentPath().GetParent();
 
     // Check if the header file exists.
     path.AddComponent(ai::UnicodeString(L2A::NAMES::tex_header_name_));
-    if (!L2A::UTIL::IsFile(path))
+    if (!L2A::UTIL::IsFile(path) && create_default_if_not_exist)
     {
         // Write the default header to file and notify the user that header was created.
         L2A::UTIL::WriteFileUTF8(path, GetDefaultHeader());
