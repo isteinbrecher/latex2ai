@@ -389,7 +389,7 @@ ai::UnicodeString L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& he
     auto input_begin = std::sregex_iterator(header_string.begin(), header_string.end(), re_input);
     auto input_end = std::sregex_iterator();
     std::string return_header("");
-    int last_pos = 0;
+    long long int last_pos = 0;
     for (std::sregex_iterator i = input_begin; i != input_end; ++i)
     {
         std::smatch match = *i;
