@@ -95,6 +95,8 @@ A sub directory of that directory will be created with the name `LaTeX2AI` which
 
 # Changelog
 - **Pre-release**
+  - New features:
+    - Allow for `input` commands in LaTeX headers.
   - Bug fixes:
     - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
 - **v0.0.1:** Initial release
