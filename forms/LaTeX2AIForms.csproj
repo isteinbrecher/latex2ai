@@ -151,6 +151,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>C:\Users\VirtualBox\Anaconda3\python.exe "$(ProjectDir)..\scripts\create_headers.py" cs</PreBuildEvent>
+    <PreBuildEvent>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py" cs</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -18,6 +18,7 @@ Both files have to be copied into the same directory and this directory has to b
 To build LaTeX2AI from source additional requirements have to be met:
 - A C++ compiler has to be available on the system. This repository includes a Visual Studio 2017 solution for Windows.
 - `python3` and `git` have to be available on the system.
+- An environment variable `PYTHON_EXE` has to be defined which points to a valid `python3` executable on the system.
 
 ### Getting started
 1. Download and unpack the [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip).
