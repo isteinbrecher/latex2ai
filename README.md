@@ -91,3 +91,9 @@ LaTeX2AI requires a certain file structure.
 It is assumed that all Illustrator files in the same directory use the same LaTeX header `LaTeX2AI_header.tex` (if no one exits in the directory, it will be created the first time it is needed).
 This header can be edited to include packages and macros needed for the labels.
 A sub directory of that directory will be created with the name `LaTeX2AI` which stores the `.pdf` files for the labels of all Illustrator documents in that directory.
+
+
+# Changelog
+- **Pre-release**
+    - Nothing yet
+- **v0.0.1:** Initial release
