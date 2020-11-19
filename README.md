@@ -89,12 +89,14 @@ It is generally advisable to redo all boundary boxes before exporting the Illust
 ## File structure
 LaTeX2AI requires a certain file structure.
 It is assumed that all Illustrator files in the same directory use the same LaTeX header `LaTeX2AI_header.tex` (if no one exits in the directory, it will be created the first time it is needed).
-This header can be edited to include packages and macros needed for the labels.
+This header can be edited to include packages and macros needed for the labels (LaTeX2AI supports `\input` commands in the header, also recursively).
 A sub directory of that directory will be created with the name `LaTeX2AI` which stores the `.pdf` files for the labels of all Illustrator documents in that directory.
 
 
 # Changelog
 - **Pre-release**
+  - New features:
+    - Allow for `input` commands in LaTeX headers.
   - Bug fixes:
     - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
 - **v0.0.1:** Initial release
