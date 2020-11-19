@@ -111,6 +111,11 @@ namespace L2A
          * \brief Get the license information for tex files.
          */
         ai::UnicodeString GetTexLicense();
+
+        /**
+         * \brief Get the header as a string, wehre all inputs are resoved.
+         */
+        ai::UnicodeString GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
     }  // namespace LATEX
 }  // namespace L2A
 
