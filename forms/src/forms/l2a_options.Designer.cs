@@ -71,8 +71,13 @@ namespace L2A.FORMS
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.git_sha = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.header_button = new System.Windows.Forms.Button();
+            this.document_header = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // latex_command
@@ -86,7 +91,7 @@ namespace L2A.FORMS
             // 
             // button_default
             // 
-            this.button_default.Location = new System.Drawing.Point(12, 315);
+            this.button_default.Location = new System.Drawing.Point(12, 390);
             this.button_default.Name = "button_default";
             this.button_default.Size = new System.Drawing.Size(95, 23);
             this.button_default.TabIndex = 1;
@@ -96,7 +101,7 @@ namespace L2A.FORMS
             // 
             // button_ok
             // 
-            this.button_ok.Location = new System.Drawing.Point(308, 315);
+            this.button_ok.Location = new System.Drawing.Point(308, 390);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(95, 23);
             this.button_ok.TabIndex = 2;
@@ -106,7 +111,7 @@ namespace L2A.FORMS
             // 
             // button_cancel
             // 
-            this.button_cancel.Location = new System.Drawing.Point(409, 315);
+            this.button_cancel.Location = new System.Drawing.Point(409, 390);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(95, 23);
             this.button_cancel.TabIndex = 3;
@@ -131,7 +136,7 @@ namespace L2A.FORMS
             this.groupBox1.Size = new System.Drawing.Size(492, 229);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "LaTeX Options";
+            this.groupBox1.Text = "Global LaTeX Options";
             // 
             // gs_path
             // 
@@ -242,11 +247,50 @@ namespace L2A.FORMS
             this.label5.TabIndex = 10;
             this.label5.Text = "Git SHA";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.header_button);
+            this.groupBox3.Controls.Add(this.document_header);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Location = new System.Drawing.Point(12, 310);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(492, 74);
+            this.groupBox3.TabIndex = 11;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Document LaTeX2AI Information";
+            // 
+            // header_button
+            // 
+            this.header_button.Location = new System.Drawing.Point(400, 41);
+            this.header_button.Name = "header_button";
+            this.header_button.Size = new System.Drawing.Size(86, 23);
+            this.header_button.TabIndex = 10;
+            this.header_button.Text = "dummy";
+            this.header_button.UseVisualStyleBackColor = true;
+            this.header_button.Click += new System.EventHandler(this.HeaderClick);
+            // 
+            // document_header
+            // 
+            this.document_header.Location = new System.Drawing.Point(22, 43);
+            this.document_header.Name = "document_header";
+            this.document_header.Size = new System.Drawing.Size(372, 20);
+            this.document_header.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 22);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 13);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "LaTeX Header";
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(516, 350);
+            this.ClientSize = new System.Drawing.Size(516, 421);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button_cancel);
@@ -262,6 +306,8 @@ namespace L2A.FORMS
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -287,5 +333,9 @@ namespace L2A.FORMS
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox git_sha;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button header_button;
+        private System.Windows.Forms.TextBox document_header;
+        private System.Windows.Forms.Label label6;
     }
 }

@@ -68,7 +68,7 @@ void L2A::TEST::TestForms(L2A::TEST::UTIL::UnitTest& ut)
     // Send to forms and read it again.
     std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
     const bool form_return_value =
-        L2A::Form(ai::UnicodeString("l2a_test_forms"), input_list, form_return_parameter_list);
+        !L2A::Form(ai::UnicodeString("l2a_test_forms"), input_list, form_return_parameter_list).canceled;
 
     // Perform result checks.
     ut.CompareInt(true, form_return_value);

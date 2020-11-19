@@ -102,6 +102,11 @@ namespace L2A
              */
             void SetFromParameterList(const L2A::UTIL::ParameterList& parameter_list);
 
+            /**
+             * \brief Get the parameter list for displaying the global options in the form.
+             */
+            void GetParameterListForForm(std::shared_ptr<L2A::UTIL::ParameterList>& form_parameter_list) const;
+
            public:
             //! Flag if item could be setup.
             bool is_setup_;

@@ -522,7 +522,7 @@ void L2A::RedoItems()
 
     // Get the user input for the redo all function.
     std::shared_ptr<L2A::UTIL::ParameterList> new_parameter_list;
-    if (!L2A::Form(ai::UnicodeString("l2a_redo"), redo_all_parameter_list, new_parameter_list)) return;
+    if (L2A::Form(ai::UnicodeString("l2a_redo"), redo_all_parameter_list, new_parameter_list).canceled) return;
 
     // Get the result from the form.
     const bool redo_latex = new_parameter_list->GetIntOption(ai::UnicodeString("redo_latex"));

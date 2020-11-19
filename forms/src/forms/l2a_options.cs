@@ -32,6 +32,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+
 
 namespace L2A.FORMS
 {
@@ -56,6 +58,41 @@ namespace L2A.FORMS
             git_sha.BackColor = BackColor;
             git_sha.TabStop = false;
             git_sha.TextAlign = HorizontalAlignment.Right;
+
+            // Set the document header path.
+            header_path_ = parameter_list.options_["document_header_path"];
+            document_header.ReadOnly = true;
+            document_header.BorderStyle = 0;
+            document_header.BackColor = BackColor;
+            document_header.TabStop = false;
+            document_header.Enabled = false;
+            if (header_path_ == "no_documents")
+            {
+                // In this case there are no open documents in Illustrator -> we can do nothing with the header.
+                document_header.Text = "No active documents in Illustrator";
+                document_header.ForeColor = Color.Gray;
+                header_button.Visible = false;
+            }
+            else if (header_path_ == "not_saved")
+            {
+                // In this case the current opened document in Illustrator is not saved -> we can do nothing with the header.
+                document_header.Text = "Current document not saved";
+                document_header.ForeColor = Color.Gray;
+                header_button.Visible = false;
+            }
+            else if (File.Exists(header_path_))
+            {
+                // In this case the document header exists -> allow the user to open it with the open header button.
+                document_header.Text = header_path_;
+                header_button.Text = "Open";
+                document_header.Enabled = true;
+            }
+            else
+            {
+                // In this case the document header does not exists -> allow the user to create it with the header button.
+                document_header.Text = "No header in the document directory";
+                header_button.Text = "Create Default";
+            }
 
             // Load the current options.
             SetFromParameterList(parameter_list);
@@ -82,6 +119,20 @@ namespace L2A.FORMS
         private void CancelClick(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void HeaderClick(object sender, EventArgs e)
+        {
+            if (File.Exists(header_path_))
+                // The header exists -> if the user clicks on the button open it in the system default editor.
+                System.Diagnostics.Process.Start(header_path_);
+            else
+            {
+                // The header does not exist and the button is active -> return to the plugin and create the header, then load this form again with the currently selected values.
+                this.form_result_ = "create_default_header";
+                this.StoreValues();
+                this.Close();
+            }
         }
 
         public override void ThisFormClosed(object sender, FormClosedEventArgs e)
@@ -124,5 +175,8 @@ namespace L2A.FORMS
 
         // Store the default parameters in case the user wants them.
         private L2A.UTIL.ParameterList default_list_;
+
+        // Header path.
+        private string header_path_;
     }
 }

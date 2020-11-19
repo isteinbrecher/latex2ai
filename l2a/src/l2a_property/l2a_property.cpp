@@ -171,9 +171,10 @@ L2A::PropertyCompare L2A::Property::Compare(const Property& other_property) cons
  */
 bool L2A::Property::GetUserInput()
 {
-    // First get the paramete list from the forms application.
+    // First get the parameter list from the forms application.
     std::shared_ptr<L2A::UTIL::ParameterList> new_parameter_list;
-    const bool form_return_value = L2A::Form(ai::UnicodeString("l2a_item"), ToParameterList(), new_parameter_list);
+    const bool form_return_value =
+        !L2A::Form(ai::UnicodeString("l2a_item"), ToParameterList(), new_parameter_list).canceled;
     if (form_return_value)
     {
         // Set the new parameters for this item.
