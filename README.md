@@ -111,4 +111,6 @@ For example:
     - Add option to edit LaTeX header in the settings form.
   - Bug fixes:
     - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
+  - Other:
+    - Add information how to cite.
 - **v0.0.1:** Initial release
