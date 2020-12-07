@@ -28,7 +28,7 @@ To build LaTeX2AI from source additional requirements have to be met:
 	```
 1. Go to `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI` and run
 	```
-	git sub module update --init
+	git submodule update --init
 	```
 1. Open `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI/LaTeX2AI.sln` with Visual Studio and compile the solution.
 
