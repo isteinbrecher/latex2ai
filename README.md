@@ -93,6 +93,17 @@ This header can be edited to include packages and macros needed for the labels (
 A sub directory of that directory will be created with the name `LaTeX2AI` which stores the `.pdf` files for the labels of all Illustrator documents in that directory.
 
 
+# License & How to cite
+LaTeX2AI is under the MIT license, see [./LICENSE](LICENSE).
+If you use LaTeX2AI to create figures for your work, please acknowledge it with a link to the GitHub repository.
+For example:
+
+- Sketches in this work have been created using the Adobe Illustrator plug-in LaTeX2AI ([https://github.com/stoani89/LaTeX2AI](https://github.com/stoani89/LaTeX2AI)).
+
+## Work which uses LaTeX2AI
+1. Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Computational Mechanics, 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
+2. Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
+
 # Changelog
 - **Pre-release**
   - New features:
@@ -100,4 +111,6 @@ A sub directory of that directory will be created with the name `LaTeX2AI` which
     - Add option to edit LaTeX header in the settings form.
   - Bug fixes:
     - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
+  - Other:
+    - Add information how to cite.
 - **v0.0.1:** Initial release
