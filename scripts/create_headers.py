@@ -134,7 +134,7 @@ def create_cs_headers():
 if __name__ == '__main__':
     """Execution part of script"""
 
-    if len(sys.argv) is not 2:
+    if len(sys.argv) != 2:
         raise ValueError('Wrong number of system arguments.')
 
     # Change working directory to script directory.
