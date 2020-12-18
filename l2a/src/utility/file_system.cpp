@@ -367,28 +367,39 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
 ai::FilePath L2A::UTIL::GetFormsPath()
 {
     // Default value.
-    ai::FilePath forms_path(ai::UnicodeString(""));
+    std::vector<ai::FilePath> forms_paths;
 
-    // Get the path to the plug in.
-    ai::FilePath plugin_directory;
-    sAIFolders->FindFolder(kAIAdditionalAIPluginsFolderType, false, plugin_directory);
-    if (L2A::UTIL::IsDirectory(plugin_directory))
+    // Look in the installed plugins folder as well as the additional extensions folder.
+    std::vector<ai::FilePath> plugin_directories(2);
+    sAIFolders->FindFolder(kAIPluginsFolderType, false, plugin_directories[0]);
+    sAIFolders->FindFolder(kAIAdditionalAIPluginsFolderType, false, plugin_directories[1]);
+    for (const auto& plugin_directory : plugin_directories)
     {
-        // Search for the executable in the folder.
-        for (const auto& item :
-            std::filesystem::recursive_directory_iterator(plugin_directory.GetFullPath().as_Platform()))
+        if (L2A::UTIL::IsDirectory(plugin_directory))
         {
-            ai::FilePath current_item(ai::UnicodeString(item.path()));
-            if (current_item.GetFileName() == "LaTeX2AIForms.exe")
+            // Search for the executable in the folder.
+            for (const auto& item :
+                std::filesystem::recursive_directory_iterator(plugin_directory.GetFullPath().as_Platform()))
             {
-                forms_path = current_item;
-                break;
+                ai::FilePath current_item(ai::UnicodeString(item.path()));
+                if (current_item.GetFileName() == "LaTeX2AIForms.exe") forms_paths.push_back(current_item);
             }
         }
     }
 
-    // Return the path.
-    return forms_path;
+    if (forms_paths.size() > 1)
+    {
+        // More than one found forms executable could lead to undefined behaviour.
+        ai::UnicodeString error_string("LaTeX2AI found more than one LaTeX2AIForms.exe executable.");
+        error_string += "\nThere should only be one.";
+        error_string += "\nThe found paths are:";
+        for (const auto& forms_exe : forms_paths) error_string += "\n" + forms_exe.GetFullPath();
+        l2a_error(error_string);
+    }
+    else if (forms_paths.size() == 1)
+        return forms_paths[0];
+    else
+        return ai::FilePath(ai::UnicodeString(""));
 }
 
 /**

@@ -10,7 +10,9 @@ The following software has to be installed on the system:
 ## Install LaTeX2AI
 Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub release page](https://github.com/stoani89/LaTeX2AI/releases).
 They consist of two files `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
-Both files have to be copied into the same directory and this directory has to be set as the Adobe Illustrator Plugin directory.
+There are two ways to add LaTeX2AI to Illustrator:
+- Both files can be copied to the default plug-in directory `C:\Program Files\Adobe\Adobe Illustrator <your version number>\Plug-ins`, preferably into a subdirectory `LaTeX2AI` (for this method administrator privileges are required).
+- Both files can be copied into an arbitrary directory and this directory has to be set as the Adobe Illustrator Plugin directory.
 
 ## Build LaTeX2AI from source
 
@@ -31,6 +33,10 @@ To build LaTeX2AI from source additional requirements have to be met:
 	git submodule update --init
 	```
 1. Open `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI/LaTeX2AI.sln` with Visual Studio and compile the solution.
+1. The compiled binaries are located unter `Adobe Illustrator CS6 SDK/sample code/output/win/x64/<Debug/Release>`.
+   This directory has to be set as the Plugin directory in Illustrator.
+   The relevant files created, i.e. the ones needed to run LaTeX2AI are `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
+   The executable `LaTeX2AIForms.exe` contains the UI for LaTeX2AI and should only be called from within the plugin itself.
 
 
 # How to use LaTeX2AI
@@ -113,4 +119,6 @@ For example:
     - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
   - Other:
     - Add information how to cite.
+    - Forms and the plugin are now compiled in the same directory, also add more detailed build information.
+    - LaTeX2AI can now also be installed in the default Illustrator plug-in directory.
 - **v0.0.1:** Initial release
