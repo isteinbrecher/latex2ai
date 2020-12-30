@@ -1,11 +1,12 @@
 # LaTeX2AI
-LaTeX2AI is a plugin for Adobe Illustrator CS6 that enables the use of text labels typeset in LaTeX inside an Illustrator document.
+LaTeX2AI is a plugin for Adobe Illustrator that enables the use of text labels typeset in LaTeX inside an Illustrator document.
+Currently Illustrator CS6 and 2021 are supported.
 
 ## Requirements
 Currently LaTeX2AI only works on Adobe Illustrator for Windows.
 The following software has to be installed on the system:
 - A LaTeX compiler such as [TeX Live](https://www.tug.org/texlive) or [MiKTeX](https://miktex.org)
-- [Ghost script](https://www.ghostscript.com)
+- [Ghost script 64bit](https://www.ghostscript.com)
 
 ## Install LaTeX2AI
 Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub release page](https://github.com/stoani89/LaTeX2AI/releases).
@@ -25,17 +26,20 @@ To build LaTeX2AI from source additional requirements have to be met:
   - `ILLUSTRATOR_EXE` has to point to the illustrator executable on the system (this path is used for debugging).
 
 ### Getting started
-1. Download and unpack the [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip).
-1. Go to the sample code folder `Adobe Illustrator CS6 SDK/sample code` and run
+1. Download and unpack the SDK depending on your Illustrator version:
+  - [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip)
+  - [Adobe Illustrator 2021](https://console.adobe.io/downloads)
+1. Go to the sample code folder `Adobe Illustrator <YOUR VERSION> SDK/sample code` and run
 	```
 	git clone https://github.com/stoani89/LaTeX2AI.git
 	```
-1. Go to `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI` and run
+1. Go to `Adobe Illustrator <YOUR VERSION> SDK/sample code/LaTeX2AI` and run
 	```
 	git submodule update --init
 	```
-1. Open `Adobe Illustrator CS6 SDK/sample code/LaTeX2AI/LaTeX2AI.sln` with Visual Studio and compile the solution.
-1. The compiled binaries are located unter `Adobe Illustrator CS6 SDK/sample code/output/win/x64/<Debug/Release>`.
+1. Open `Adobe Illustrator <YOUR VERSION> SDK/sample code/LaTeX2AI/LaTeX2AI.sln` with Visual Studio, select the build type (*Release* or *Debug*) and the target (`x64`) and compile the solution.
+   It might be neccessary to change the *Windows SDK* version for `LaTeX2AI` and the *.NET Framework* version for `LaTeX2AIForms` to match the ones available on your system.
+1. The compiled binaries are located unter `Adobe Illustrator <YOUR VERSION> SDK/sample code/output/win/x64/<Debug/Release>`.
    This directory has to be set as the Plugin directory in Illustrator.
    The relevant files created, i.e. the ones needed to run LaTeX2AI are `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
    The executable `LaTeX2AIForms.exe` contains the UI for LaTeX2AI and should only be called from within the plugin itself.
@@ -124,4 +128,5 @@ For example:
     - Add information how to cite.
     - Forms and the plugin are now compiled in the same directory, also add more detailed build information.
     - LaTeX2AI can now also be installed in the default Illustrator plug-in directory.
+    - Support Illustrator 2021.
 - **v0.0.1:** Initial release
