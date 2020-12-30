@@ -30,6 +30,14 @@
 #ifndef L2A_DEFINES_H_
 #define L2A_DEFINES_H_
 
+//! Check the Illustrator version.
+#if kPluginInterfaceVersion == kPluginInterfaceVersion16001
+#elif kPluginInterfaceVersion == kPluginInterfaceVersion25001
+#else
+#error Currently LaTeX2AI only supports Illustrator CS6 and Illustrator CC2021
+#endif
+
+
 //! Include information regarding the curent git version.
 #include "auto_generated/version.h"
 
