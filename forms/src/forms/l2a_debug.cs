@@ -48,17 +48,14 @@ namespace L2A.FORMS
             string creation_type = parameter_list.options_["creation_type"];
             if ("create" == creation_type)
             {
-                latex_creation_type_ = LatexCreationType.create;
                 button_cancel.Text = "Cancel item creation";
             }
             else if ("edit" == creation_type)
             {
-                latex_creation_type_ = LatexCreationType.edit;
                 button_cancel.Text = "Cancel edit item";
             }
             else if ("redo_all" == creation_type)
             {
-                latex_creation_type_ = LatexCreationType.redo_all;
                 extra_label.Text = "Could not create the combined Latex file for the redo mode." + Environment.NewLine + "This usually happens when something in the header changes " + Environment.NewLine + "or the document is compiled on a different system than before.";
                 button_cancel.Text = "Continue";
                 button_ok.Visible = false;
@@ -109,9 +106,6 @@ namespace L2A.FORMS
         {
             Process.Start(latex_log_file_);
         }
-
-        //! Latex creation type.
-        LatexCreationType latex_creation_type_;
 
         //! Path to LaTeX log file.
         string latex_log_file_;
