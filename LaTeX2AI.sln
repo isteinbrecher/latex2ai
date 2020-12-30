@@ -9,36 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaTeX2AIForms", "forms\LaTe
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Debug|x64.ActiveCfg = Debug|x64
 		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Debug|x64.Build.0 = Debug|x64
-		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Debug|x86.ActiveCfg = Debug|Win32
-		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Debug|x86.Build.0 = Debug|Win32
-		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Release|Any CPU.ActiveCfg = Release|Win32
 		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Release|x64.ActiveCfg = Release|x64
 		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Release|x64.Build.0 = Release|x64
-		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Release|x86.ActiveCfg = Release|Win32
-		{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}.Release|x86.Build.0 = Release|Win32
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0812436F-B188-4A77-B266-9A892CC1286A}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{0812436F-B188-4A77-B266-9A892CC1286A}.Debug|x64.Build.0 = Debug|Any CPU
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Debug|x86.Build.0 = Debug|Any CPU
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0812436F-B188-4A77-B266-9A892CC1286A}.Release|x64.ActiveCfg = Release|Any CPU
 		{0812436F-B188-4A77-B266-9A892CC1286A}.Release|x64.Build.0 = Release|Any CPU
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Release|x86.ActiveCfg = Release|Any CPU
-		{0812436F-B188-4A77-B266-9A892CC1286A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
