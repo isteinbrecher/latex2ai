@@ -117,7 +117,7 @@ For example:
 2. Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
 
 # Changelog
-- **Pre-release**
+- **v0.0.2**
   - New features:
     - Allow for `\input` commands in LaTeX headers.
     - Add option to edit LaTeX header in the settings form.
