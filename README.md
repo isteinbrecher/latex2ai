@@ -20,7 +20,9 @@ There are two ways to add LaTeX2AI to Illustrator:
 To build LaTeX2AI from source additional requirements have to be met:
 - A C++ compiler has to be available on the system. This repository includes a Visual Studio 2017 solution for Windows.
 - `python3` and `git` have to be available on the system.
-- An environment variable `PYTHON_EXE` has to be defined which points to a valid `python3` executable on the system.
+- The following environment variables have to be defined:
+  - `PYTHON_EXE` has to points to a valid `python3` executable on the system.
+  - `ILLUSTRATOR_EXE` has to point to the illustrator executable on the system (this path is used for debugging).
 
 ### Getting started
 1. Download and unpack the [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip).
@@ -117,6 +119,7 @@ For example:
     - Add option to edit LaTeX header in the settings form.
   - Bug fixes:
     - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
+    - Replace hardcoded path to Illustrator executable with environment variable `ILLUSTRATOR_PATH`
   - Other:
     - Add information how to cite.
     - Forms and the plugin are now compiled in the same directory, also add more detailed build information.
