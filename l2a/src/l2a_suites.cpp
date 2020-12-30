@@ -98,4 +98,4 @@ ImportSuite gImportSuites[] = {kAIToolSuite, kAIToolVersion, &sAITool, kAIUnicod
     //
     kAIPathStyleSuite, kAIPathStyleSuiteVersion, &sAIPathStyle,
 
-    nil, 0, nil};
+    NULL, 0, NULL};
