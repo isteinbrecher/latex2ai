@@ -425,7 +425,11 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     if (property_.IsBaseline())
     {
         // Dash data for dashed line to display baseline items.
+#if ILLUSTRATOR_VERSION == 16
         std::vector<AIReal> dash_data_ = {20, 7};
+#else
+        std::vector<AIFloat> dash_data_ = {20, 7};
+#endif
 
         // Draw the base line of a baseline item.
         error = sAIAnnotatorDrawer->SetLineDashedEx(message->drawer, &dash_data_[0], (ai::int32)dash_data_.size());

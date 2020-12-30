@@ -32,6 +32,8 @@
 
 #include "IllustratorSDK.h"
 
+#include "../l2a_constants.h"
+
 
 namespace L2A
 {
@@ -72,6 +74,7 @@ namespace L2A
 
 namespace ai
 {
+#if ILLUSTRATOR_VERSION == 16
     /**
      * \brief Overload the + operator for strings. Now existing strings can be simply added.
      */
@@ -81,6 +84,7 @@ namespace ai
         return_string += rhs;
         return return_string;
     }
+#endif
 
     /**
      * \brief Overload the + operator for a string and a char*. Now existing strings can be simply added.

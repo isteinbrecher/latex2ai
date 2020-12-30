@@ -34,7 +34,10 @@
 /**
  *
  */
-AIReal L2A::UTIL::MATH::GetNorm(const AIRealPoint& point) { return sqrt(powf(point.h, 2.) + powf(point.v, 2.)); }
+AIReal L2A::UTIL::MATH::GetNorm(const AIRealPoint& point)
+{
+    return sqrt(pow(point.h, AIReal(2.0)) + pow(point.v, AIReal(2.0)));
+}
 
 /**
  *
