@@ -314,8 +314,8 @@ int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
     if (L2A::UTIL::IsFile(file_path))
     {
         // TODO: Why is this done like this?
-        return system(file_path.GetFullPath().as_Platform().c_str());
-        // return L2A::UTIL::ExecuteCommandLine(file_path.GetFullPath());
+        //return system(file_path.GetFullPath().as_Platform().c_str());
+        return L2A::UTIL::ExecuteCommandLine(file_path.GetFullPath());
     }
     else
         l2a_error("The file " + file_path.GetFullPath() + " does not exist!");
