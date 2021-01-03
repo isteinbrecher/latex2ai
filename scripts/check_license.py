@@ -116,13 +116,24 @@ def check_license():
     license_text = get_license_text()
     source_files = get_all_source_files()
 
+    skip_list = [
+        'l2a/resources/resource.h',
+        'l2a/resources/l2a.rc',
+        'forms/Properties/Resources.Designer.cs',
+        'forms/Properties/Settings.Designer.cs'
+        ]
+
     for key in source_files:
         header = license_to_source(license_text, key)
         for file in source_files[key]:
-            with open(file, encoding='ISO-8859-1') as source_file:
-                source_text = source_file.read()
-                if not source_text.startswith(header):
-                    print('Wrong header in: {}'.format(file))
+            for skip in skip_list:
+                if file.endswith(skip):
+                    break
+            else:
+                with open(file, encoding='ISO-8859-1') as source_file:
+                    source_text = source_file.read()
+                    if not source_text.startswith(header):
+                        print('Wrong header in: {}'.format(file))
 
 
 if __name__ == '__main__':
