@@ -85,7 +85,7 @@ The resulting label can now be easily adjusted and snapped to align with another
 ### Stretch behavior
 This option controls how a LaTeX2AI text label behaves when the size of the boundary box changes in Illustrator:
 
-- **stretch**: The label always stretches to the boundary box dimensions.
+- **stretch** (default): The label always stretches to the boundary box dimensions.
 - **remain original size**: Only the boundary box stretches, the label will remain in the correct size.
 
 The following Figure illustrates the different options:
@@ -139,9 +139,11 @@ A few things to keep in mind:
 - **Pre-Release**
   - New features:
     - Allow to redo boundary box from the create / edit form.
+    - Allow to redo the latex label from the create / edit form.
   - Bug fixes:
   - Other:
     - Add contributing guidelines.
+    - Change the default placement options.
 - **v0.0.2**
   - New features:
     - Allow for `\input` commands in LaTeX headers.
