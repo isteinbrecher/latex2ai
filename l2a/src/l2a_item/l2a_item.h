@@ -67,7 +67,8 @@ namespace L2A
     {
         ok,
         cancel,
-        redo_boundary
+        redo_boundary,
+        redo_latex
     };
 
     /**
