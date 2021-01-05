@@ -140,6 +140,7 @@ A few things to keep in mind:
   - New features:
   - Bug fixes:
   - Other:
+    - Add contributing guidelines.
 - **v0.0.2**
   - New features:
     - Allow for `\input` commands in LaTeX headers.
