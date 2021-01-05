@@ -139,6 +139,7 @@ A few things to keep in mind:
 - **Pre-Release**
   - New features:
   - Bug fixes:
+    - Fix bug with whitespaces in `system` calls.
   - Other:
 - **v0.0.2**
   - New features:
