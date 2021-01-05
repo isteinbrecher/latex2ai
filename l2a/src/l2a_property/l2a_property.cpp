@@ -59,7 +59,7 @@ void L2A::Property::DefaultPropertyValues()
     text_align_vertical_ = L2A::TextAlignVertical::centre;
 
     // Do not scale the image and keep it at the same size, also clip it.
-    placed_method_ = L2A::PlacedArtMethod::keep_scale_clip;
+    placed_method_ = L2A::PlacedArtMethod::fill_to_boundary_box;
 
     // Default latex code.
     latex_code_ = ai::UnicodeString("$a^2+b^2=c^2$");
