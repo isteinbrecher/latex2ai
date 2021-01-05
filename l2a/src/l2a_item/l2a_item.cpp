@@ -61,7 +61,11 @@ L2A::Item::Item(const AIRealPoint& position)
         ItemFormReturnValues return_value = OpenUserForm(property_);
         if (return_value == ItemFormReturnValues::cancel)
             return;
-        else if (return_value == ItemFormReturnValues::redo_boundary)
+        else if (return_value == ItemFormReturnValues::ok)
+        {
+            // Do nothing in this case.
+        }
+        else
             l2a_error("Unexpected return value");
 
         // Create the pdf file.
@@ -151,16 +155,23 @@ void L2A::Item::Change()
     {
         // Get input from user.
         ItemFormReturnValues return_value = OpenUserForm(new_input);
-        if (return_value == ItemFormReturnValues::redo_boundary)
+        if (return_value == ItemFormReturnValues::ok)
+            // Compare the current input and the new one.
+            diff = property_.Compare(new_input);
+        else if (return_value == ItemFormReturnValues::cancel)
+            return;
+        else if (return_value == ItemFormReturnValues::redo_boundary)
         {
             RedoBoundary();
             return;
         }
-        else if (return_value == ItemFormReturnValues::cancel)
-            return;
-
-        // Compare the current input and the new one.
-        diff = property_.Compare(new_input);
+        else if (return_value == ItemFormReturnValues::redo_latex)
+        {
+            diff.changed_latex = true;
+            // We have to set the new input here, since it will be set as the property of this label at the end of this
+            // function.
+            new_input = property_;
+        }
 
         if (diff.changed_latex)
         {
@@ -455,15 +466,23 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
 L2A::ItemFormReturnValues L2A::Item::OpenUserForm(L2A::Property& input_property) const
 {
     L2A::UTIL::ParameterList form_input_parameter_list;
-    ai::UnicodeString key("boundary_box_state");
+    ai::UnicodeString key_latex("latex_exists");
+    ai::UnicodeString key_boundary_box("boundary_box_state");
     if (!sAIArt->ValidArt(placed_item_, true))
-        form_input_parameter_list.SetOption(key, ai::UnicodeString("none"));
-    else if (IsDiamond())
-        form_input_parameter_list.SetOption(key, ai::UnicodeString("diamond"));
-    else if (IsStreched())
-        form_input_parameter_list.SetOption(key, ai::UnicodeString("streched"));
+    {
+        form_input_parameter_list.SetOption(key_latex, false);
+        form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("none"));
+    }
     else
-        form_input_parameter_list.SetOption(key, ai::UnicodeString("ok"));
+    {
+        form_input_parameter_list.SetOption(key_latex, true);
+        if (IsDiamond())
+            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("diamond"));
+        else if (IsStreched())
+            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("streched"));
+        else
+            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("ok"));
+    }
     form_input_parameter_list.SetSubList(ai::UnicodeString("property_list"), input_property.ToParameterList());
 
     std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list;
@@ -477,6 +496,8 @@ L2A::ItemFormReturnValues L2A::Item::OpenUserForm(L2A::Property& input_property)
     }
     else if (return_string == ai::UnicodeString("redo_boundary_box"))
         return ItemFormReturnValues::redo_boundary;
+    else if (return_string == ai::UnicodeString("redo_latex"))
+        return ItemFormReturnValues::redo_latex;
     else if (return_string == ai::UnicodeString("cancel"))
         return ItemFormReturnValues::cancel;
     else

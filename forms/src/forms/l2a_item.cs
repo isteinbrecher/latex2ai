@@ -77,6 +77,13 @@ namespace L2A.FORMS
                 else if (boundary_box_state == "diamond")
                     boundary_box_status.Text = "Bend";
             }
+
+            // Set the redo latex related stuff.
+            string latex_exists = input_parameter_list_.options_["latex_exists"];
+            if (latex_exists == "0")
+                group_latex.Visible = false;
+            else
+                group_latex.Visible = true;
         }
 
         private void SetPosition(string text_align_horizontal, string text_align_vertical)
@@ -160,17 +167,19 @@ namespace L2A.FORMS
             this.Close();
         }
 
-        private void RedoBoundaryClick(object sender, EventArgs e)
+        private bool FormIsChanged()
         {
-            // Check if values were changed.
             StoreValues();
             L2A.UTIL.ParameterList property_list = input_parameter_list_.sub_lists_["property_list"];
-            if (
-                return_parameter_list_.options_["text_align_horizontal"] != property_list.options_["text_align_horizontal"] ||
+            return return_parameter_list_.options_["text_align_horizontal"] != property_list.options_["text_align_horizontal"] ||
                 return_parameter_list_.options_["text_align_vertical"] != property_list.options_["text_align_vertical"] ||
                 return_parameter_list_.options_["placed_option"] != property_list.options_["placed_option"] ||
-                return_parameter_list_.sub_lists_["latex"].main_option_ != property_list.sub_lists_["latex"].main_option_
-                )
+                return_parameter_list_.sub_lists_["latex"].main_option_ != property_list.sub_lists_["latex"].main_option_;
+        }
+
+        private void RedoBoundaryClick(object sender, EventArgs e)
+        {
+            if (FormIsChanged())
             {
                 DialogResult dialog_result = MessageBox.Show("Some values of the item changed. If you continue with Redo Boundary Box the changes will be lost. Do you want to continue?", "LaTeX2AI", MessageBoxButtons.OKCancel);
                 // The user wants to continue editing the form.
@@ -178,6 +187,19 @@ namespace L2A.FORMS
             }
 
             this.form_result_ = "redo_boundary_box";
+            this.Close();
+        }
+
+        private void RedoLaTeXClick(object sender, EventArgs e)
+        {
+            if (FormIsChanged())
+            {
+                DialogResult dialog_result = MessageBox.Show("Some values of the item changed. If you continue with Redo LaTeX the changes will be lost. Do you want to continue?", "LaTeX2AI", MessageBoxButtons.OKCancel);
+                // The user wants to continue editing the form.
+                if (dialog_result == DialogResult.Cancel) return;
+            }
+
+            this.form_result_ = "redo_latex";
             this.Close();
         }
 
