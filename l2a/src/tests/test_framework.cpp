@@ -172,6 +172,9 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
         L2A::Property item_property;
         item_property.latex_code_ = ai::UnicodeString("Test item $\\int_a^b \\mathrm dx$");
 
+        L2A::GlobalMutable().testing_form_return_value_.canceled = false;
+        L2A::GlobalMutable().testing_form_return_value_.return_string = ai::UnicodeString("ok");
+
         item_property.text_align_horizontal_ = L2A::TextAlignHorizontal::centre;
         item_property.text_align_vertical_ = L2A::TextAlignVertical::centre;
         L2A::GlobalMutable().testing_form_return_parameter_list_ =

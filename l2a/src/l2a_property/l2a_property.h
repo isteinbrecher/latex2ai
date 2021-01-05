@@ -247,12 +247,6 @@ namespace L2A
         }
 
         /**
-         * \brief Get the input parameters from the user via a form.
-         * @return False if the form was canceled.
-         */
-        bool GetUserInput();
-
-        /**
          * \brief Get the latex code for this property
          */
         ai::UnicodeString GetLaTeXCode() const;

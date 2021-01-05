@@ -74,10 +74,14 @@ namespace L2A.FORMS
             this.original_size = new System.Windows.Forms.RadioButton();
             this.strech = new System.Windows.Forms.RadioButton();
             this.group_type = new System.Windows.Forms.GroupBox();
+            this.rebo_boundary_box = new System.Windows.Forms.Button();
+            this.group_boundary_box = new System.Windows.Forms.GroupBox();
+            this.boundary_box_status = new System.Windows.Forms.Label();
             this.group_placement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.group_text.SuspendLayout();
             this.group_type.SuspendLayout();
+            this.group_boundary_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_cancel
@@ -317,11 +321,43 @@ namespace L2A.FORMS
             this.group_type.TabStop = false;
             this.group_type.Text = "Select behaviour of the item when it is streched";
             // 
+            // rebo_boundary_box
+            // 
+            this.rebo_boundary_box.Location = new System.Drawing.Point(130, 14);
+            this.rebo_boundary_box.Name = "rebo_boundary_box";
+            this.rebo_boundary_box.Size = new System.Drawing.Size(125, 23);
+            this.rebo_boundary_box.TabIndex = 33;
+            this.rebo_boundary_box.Text = "Redo Boundary Box";
+            this.rebo_boundary_box.UseVisualStyleBackColor = true;
+            this.rebo_boundary_box.Click += new System.EventHandler(this.RedoBoundaryClick);
+            // 
+            // group_boundary_box
+            // 
+            this.group_boundary_box.Controls.Add(this.boundary_box_status);
+            this.group_boundary_box.Controls.Add(this.rebo_boundary_box);
+            this.group_boundary_box.Location = new System.Drawing.Point(302, 12);
+            this.group_boundary_box.Name = "group_boundary_box";
+            this.group_boundary_box.Size = new System.Drawing.Size(261, 45);
+            this.group_boundary_box.TabIndex = 33;
+            this.group_boundary_box.TabStop = false;
+            this.group_boundary_box.Text = "Boundary Box";
+            this.group_boundary_box.Visible = false;
+            // 
+            // boundary_box_status
+            // 
+            this.boundary_box_status.AutoSize = true;
+            this.boundary_box_status.Location = new System.Drawing.Point(6, 22);
+            this.boundary_box_status.Name = "boundary_box_status";
+            this.boundary_box_status.Size = new System.Drawing.Size(65, 13);
+            this.boundary_box_status.TabIndex = 34;
+            this.boundary_box_status.Text = "UNKNOWN";
+            // 
             // Item
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(670, 222);
+            this.Controls.Add(this.group_boundary_box);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.Controls.Add(this.group_placement);
@@ -339,6 +375,8 @@ namespace L2A.FORMS
             this.group_text.ResumeLayout(false);
             this.group_type.ResumeLayout(false);
             this.group_type.PerformLayout();
+            this.group_boundary_box.ResumeLayout(false);
+            this.group_boundary_box.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -367,5 +405,8 @@ namespace L2A.FORMS
         private System.Windows.Forms.RadioButton original_size;
         private System.Windows.Forms.RadioButton strech;
         private System.Windows.Forms.GroupBox group_type;
+        private System.Windows.Forms.Button rebo_boundary_box;
+        private System.Windows.Forms.GroupBox group_boundary_box;
+        private System.Windows.Forms.Label boundary_box_status;
     }
 }
