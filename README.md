@@ -138,6 +138,7 @@ A few things to keep in mind:
 # Changelog
 - **Pre-Release**
   - New features:
+    - Allow to redo boundary box from the create / edit form.
   - Bug fixes:
   - Other:
 - **v0.0.2**
