@@ -31,6 +31,9 @@
 #define L2A_GLOBAL_H_
 
 
+#include "../l2a_forms/l2a_forms.h"
+
+
 // Forward declarations.
 namespace L2A
 {
@@ -143,6 +146,7 @@ namespace L2A
 
             //! Parameter list that will be returned for forms during testing.
             std::shared_ptr<L2A::UTIL::ParameterList> testing_form_return_parameter_list_;
+            L2A::FormReturnValue testing_form_return_value_;
         };
 
         void CheckGlobal();

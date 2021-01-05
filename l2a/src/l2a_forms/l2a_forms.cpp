@@ -50,8 +50,7 @@ L2A::FormReturnValue L2A::Form(const ai::UnicodeString& form_type, const L2A::UT
     if (L2A::Global().is_testing_)
     {
         return_parameter_list = L2A::Global().testing_form_return_parameter_list_;
-        return_value.canceled = false;
-        return return_value;
+        return L2A::Global().testing_form_return_value_;
     }
 
     // Get the filepath for the input and output files.

@@ -40,22 +40,43 @@ namespace L2A.FORMS
         {
             InitializeComponent();
 
+            input_parameter_list_ = parameter_list;
+            L2A.UTIL.ParameterList property_list = input_parameter_list_.sub_lists_["property_list"];
+
             // Set the position item.
-            SetPosition(parameter_list.options_["text_align_horizontal"], parameter_list.options_["text_align_vertical"]);
+            SetPosition(property_list.options_["text_align_horizontal"], property_list.options_["text_align_vertical"]);
 
             // Set the placement options.
-            SetPlacementOption(parameter_list.options_["placed_option"]);
+            SetPlacementOption(property_list.options_["placed_option"]);
 
             // Set the latex code.
-            textbox.Text = parameter_list.sub_lists_["latex"].main_option_;
+            textbox.Text = property_list.sub_lists_["latex"].main_option_;
 
             // Set the position of the cursor in the text box.
-            int cursor_position = Int32.Parse(parameter_list.sub_lists_["latex"].options_["cursor_position"]);
+            int cursor_position = Int32.Parse(property_list.sub_lists_["latex"].options_["cursor_position"]);
             textbox.SelectionStart = cursor_position;
             textbox.SelectionLength = 0;
 
             // Set the textbox to be active.
             ActiveControl = textbox;
+
+            // Set the redo boundary box relatex stuff in the form.
+            string boundary_box_state = input_parameter_list_.options_["boundary_box_state"];
+            if (boundary_box_state == "none")
+                group_boundary_box.Visible = false;
+            else
+            {
+                group_boundary_box.Visible = true;
+                if (boundary_box_state == "ok")
+                {
+                    boundary_box_status.Text = "Ok";
+                    rebo_boundary_box.Enabled = false;
+                }
+                else if (boundary_box_state == "streched")
+                    boundary_box_status.Text = "Streched";
+                else if (boundary_box_state == "diamond")
+                    boundary_box_status.Text = "Bend";
+            }
         }
 
         private void SetPosition(string text_align_horizontal, string text_align_vertical)
@@ -136,6 +157,27 @@ namespace L2A.FORMS
 
         private void CancelClick(object sender, EventArgs e)
         {
+            this.Close();
+        }
+
+        private void RedoBoundaryClick(object sender, EventArgs e)
+        {
+            // Check if values were changed.
+            StoreValues();
+            L2A.UTIL.ParameterList property_list = input_parameter_list_.sub_lists_["property_list"];
+            if (
+                return_parameter_list_.options_["text_align_horizontal"] != property_list.options_["text_align_horizontal"] ||
+                return_parameter_list_.options_["text_align_vertical"] != property_list.options_["text_align_vertical"] ||
+                return_parameter_list_.options_["placed_option"] != property_list.options_["placed_option"] ||
+                return_parameter_list_.sub_lists_["latex"].main_option_ != property_list.sub_lists_["latex"].main_option_
+                )
+            {
+                DialogResult dialog_result = MessageBox.Show("Some values of the item changed. If you continue with Redo Boundary Box the changes will be lost. Do you want to continue?", "LaTeX2AI", MessageBoxButtons.OKCancel);
+                // The user wants to continue editing the form.
+                if (dialog_result == DialogResult.Cancel) return;
+            }
+
+            this.form_result_ = "redo_boundary_box";
             this.Close();
         }
 
@@ -262,5 +304,8 @@ namespace L2A.FORMS
             return_parameter_list_.sub_lists_["latex"].main_option_ = textbox.Text;
             return_parameter_list_.sub_lists_["latex"].options_["cursor_position"] = textbox.SelectionStart.ToString();
         }
+
+        //! Parameter list with the given options from the main application.
+        protected L2A.UTIL.ParameterList input_parameter_list_;
     }
 }
