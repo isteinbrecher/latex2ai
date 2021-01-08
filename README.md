@@ -141,6 +141,7 @@ A few things to keep in mind:
     - Allow to redo boundary box from the create / edit form.
     - Allow to redo the latex label from the create / edit form.
   - Bug fixes:
+    - Fix bug with whitespaces in `system` calls.
   - Other:
     - Add contributing guidelines.
     - Change the default placement options.
