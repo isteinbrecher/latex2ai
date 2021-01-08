@@ -144,13 +144,14 @@ A few things to keep in mind:
   - Other:
     - Add contributing guidelines.
     - Change the default placement options.
+    - Rename environment variable `ILLUSTRATOR_PATH` to `ILLUSTRATOR_EXE`.
 - **v0.0.2**
   - New features:
     - Allow for `\input` commands in LaTeX headers.
     - Add option to edit LaTeX header in the settings form.
   - Bug fixes:
-    - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
-    - Replace hardcoded path to Illustrator executable with environment variable `ILLUSTRATOR_PATH`
+    - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`.
+    - Replace hardcoded path to Illustrator executable with environment variable `ILLUSTRATOR_PATH`.
   - Other:
     - Add information how to cite.
     - Forms and the plugin are now compiled in the same directory; also add more detailed build information.
