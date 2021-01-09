@@ -35,7 +35,6 @@
 #include "utility/utils.h"
 #include "utility/file_system.h"
 #include "l2a_error/l2a_error.h"
-#include "l2a_forms/l2a_forms.h"
 #include "l2a_global/l2a_global.h"
 
 
@@ -60,7 +59,7 @@ void L2A::Property::DefaultPropertyValues()
     text_align_vertical_ = L2A::TextAlignVertical::centre;
 
     // Do not scale the image and keep it at the same size, also clip it.
-    placed_method_ = L2A::PlacedArtMethod::keep_scale_clip;
+    placed_method_ = L2A::PlacedArtMethod::fill_to_boundary_box;
 
     // Default latex code.
     latex_code_ = ai::UnicodeString("$a^2+b^2=c^2$");
@@ -164,23 +163,6 @@ L2A::PropertyCompare L2A::Property::Compare(const Property& other_property) cons
 
     // Return the compare value.
     return output;
-}
-
-/**
- *
- */
-bool L2A::Property::GetUserInput()
-{
-    // First get the parameter list from the forms application.
-    std::shared_ptr<L2A::UTIL::ParameterList> new_parameter_list;
-    const bool form_return_value =
-        !L2A::Form(ai::UnicodeString("l2a_item"), ToParameterList(), new_parameter_list).canceled;
-    if (form_return_value)
-    {
-        // Set the new parameters for this item.
-        SetFromParameterList(*new_parameter_list);
-    }
-    return form_return_value;
 }
 
 /**

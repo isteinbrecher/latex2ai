@@ -12,7 +12,7 @@ The following software dependencies are required:
 Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub release page](https://github.com/stoani89/LaTeX2AI/releases).
 They consist of two files `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
 There are two ways to add LaTeX2AI to Illustrator:
-- Both files can be copied to the default plug-in directory `C:\Program Files\Adobe\Adobe Illustrator <your version number>\Plug-ins`, preferably into a subdirectory `LaTeX2AI` (for this method administrator privileges are required).
+- Both files can be copied to the default plug-in directory `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins`, preferably into a subdirectory `LaTeX2AI` (for this method administrator privileges are required).
 - Both files can be copied into an arbitrary directory and this directory has to be set as the Adobe Illustrator Plugin directory.
 
 ## Build LaTeX2AI from source
@@ -85,7 +85,7 @@ The resulting label can now be easily adjusted and snapped to align with another
 ### Stretch behavior
 This option controls how a LaTeX2AI text label behaves when the size of the boundary box changes in Illustrator:
 
-- **stretch**: The label always stretches to the boundary box dimensions.
+- **stretch** (default): The label always stretches to the boundary box dimensions.
 - **remain original size**: Only the boundary box stretches, the label will remain in the correct size.
 
 The following Figure illustrates the different options:
@@ -116,14 +116,43 @@ For example:
 1. Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Computational Mechanics, 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
 2. Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
 
+
+# Contributing
+
+If you are interested in contributing to LaTeX2AI, we welcome your collaboration.
+For general questions, feature request and bug reports please open an [issue](https://github.com/stoani89/LaTeX2AI/issues).
+
+If you contribute actual code, fork the repository and make the changes in a feature branch.
+Depending on the topic and amount of changes you also might want to open an [issue](https://github.com/stoani89/LaTeX2AI/issues).
+To merge your changes into the main LaTeX2AI repository, create a pull request to the `develop` branch (this branch will be merged into `master` with the next release).
+A few things to keep in mind:
+- Compile a debug build and run the framework tests in Illustrator ![Framework tests](/l2a/resources/testing_light.png?raw=true "Framework tests").
+  You might also consider adding tests for your changes (`./l2a/src/tests`).
+- Run the `python3` script `check_license.py` to ensure that all added source files have the correct license header.
+- LaTeX2AI uses `clang-format` to format the C++ code.
+  Make sure to apply clang format to the changed source files (with the Visual Studio solution in the repository this should happen automatically).
+- Add a short description of your changes to the [Changelog](#changelog) in [./README.md](README.md).
+- Feel free to add yourself to the [./CONTRIBUTORS](CONTRIBUTORS) file.
+
+
 # Changelog
+- **v0.0.3**
+  - New features:
+    - Allow to redo boundary box from the create / edit form.
+    - Allow to redo the latex label from the create / edit form.
+  - Bug fixes:
+    - Fix bug with whitespaces in `system` calls.
+  - Other:
+    - Add contributing guidelines.
+    - Change the default placement options.
+    - Rename environment variable `ILLUSTRATOR_PATH` to `ILLUSTRATOR_EXE`.
 - **v0.0.2**
   - New features:
     - Allow for `\input` commands in LaTeX headers.
     - Add option to edit LaTeX header in the settings form.
   - Bug fixes:
-    - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`
-    - Replace hardcoded path to Illustrator executable with environment variable `ILLUSTRATOR_PATH`
+    - Replace hardcoded path to python executable with environment variable `PYTHON_EXE`.
+    - Replace hardcoded path to Illustrator executable with environment variable `ILLUSTRATOR_PATH`.
   - Other:
     - Add information how to cite.
     - Forms and the plugin are now compiled in the same directory; also add more detailed build information.

@@ -38,6 +38,9 @@
  */
 void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
 {
+    // Set test name.
+    ut.SetTestName(ai::UnicodeString("TestFileSystem"));
+
     // Get the name of the temp directory.
     const ai::FilePath temp_directory = L2A::UTIL::GetTemporaryDirectory();
 
@@ -87,5 +90,14 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
         L2A::UTIL::RemoveDirectoryAI(test_directory_first);
         ut.CompareInt(false, L2A::UTIL::IsDirectory(test_directory_first));
         ut.CompareInt(false, L2A::UTIL::IsFile(file_path));
+    }
+
+    // Check that batch files with whitespace in the path can be executed.
+    {
+        ai::FilePath batch_path = temp_directory;
+        batch_path.AddComponent(ai::UnicodeString("with whitespace.bat"));
+        L2A::UTIL::WriteFileUTF8(batch_path, ai::UnicodeString("EXIT 1234"), true);
+        int return_value = L2A::UTIL::ExecuteFile(batch_path);
+        ut.CompareInt(1234, return_value);
     }
 }

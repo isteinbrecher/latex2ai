@@ -11,6 +11,6 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>"l2a_options" "C:\Users\VirtualBox\AppData\Local\Temp\LaTeX2AI\l2a_forms_input.xml" "C:\adobe_plugins\AAA\l2a_form_item_return.xml"</StartArguments>
+    <StartArguments>"l2a_options" "C:\Users\VirtualBox\AppData\Local\Temp\LaTeX2AI\l2a_forms_input.xml" "C:\Users\VirtualBox\AppData\Local\Temp\LaTeX2AI\l2a_form_item_return.xml" "e41388bd44807ae927921f273ff05ee73dab5a72" "debug"</StartArguments>
   </PropertyGroup>
 </Project>

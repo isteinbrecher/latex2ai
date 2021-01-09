@@ -61,6 +61,17 @@ namespace L2A
 namespace L2A
 {
     /**
+     * \brief Enum to manage the return values of the form for the Item.
+     */
+    enum class ItemFormReturnValues
+    {
+        ok,
+        cancel,
+        redo_boundary,
+        redo_latex
+    };
+
+    /**
      * \brief Class that represents one LaTeX2AI item in AI. It has mehtods for creating and replacing the LaTeX
      *        document in AI.
      */
@@ -127,6 +138,11 @@ namespace L2A
          * \brief Draw the boundary of the placed item in the document.
          */
         void Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment, AIRealPoint>& item_boundaries) const;
+
+        /**
+         * \brief Open a form to edit the values related to this item.
+         */
+        ItemFormReturnValues OpenUserForm(L2A::Property& input_property) const;
 
        private:
         /**

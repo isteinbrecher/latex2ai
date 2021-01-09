@@ -74,15 +74,22 @@ namespace L2A.FORMS
             this.original_size = new System.Windows.Forms.RadioButton();
             this.strech = new System.Windows.Forms.RadioButton();
             this.group_type = new System.Windows.Forms.GroupBox();
+            this.rebo_boundary_box = new System.Windows.Forms.Button();
+            this.boundary_box_status = new System.Windows.Forms.Label();
+            this.group_boundary_box = new System.Windows.Forms.GroupBox();
+            this.group_latex = new System.Windows.Forms.GroupBox();
+            this.redo_latex = new System.Windows.Forms.Button();
             this.group_placement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.group_text.SuspendLayout();
             this.group_type.SuspendLayout();
+            this.group_boundary_box.SuspendLayout();
+            this.group_latex.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_cancel
             // 
-            this.button_cancel.Location = new System.Drawing.Point(576, 34);
+            this.button_cancel.Location = new System.Drawing.Point(647, 34);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.TabIndex = 29;
@@ -92,7 +99,7 @@ namespace L2A.FORMS
             // 
             // button_ok
             // 
-            this.button_ok.Location = new System.Drawing.Point(576, 5);
+            this.button_ok.Location = new System.Drawing.Point(647, 5);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 28;
@@ -258,7 +265,7 @@ namespace L2A.FORMS
             this.group_text.Controls.Add(this.textbox);
             this.group_text.Location = new System.Drawing.Point(178, 63);
             this.group_text.Name = "group_text";
-            this.group_text.Size = new System.Drawing.Size(479, 147);
+            this.group_text.Size = new System.Drawing.Size(544, 147);
             this.group_text.TabIndex = 31;
             this.group_text.TabStop = false;
             this.group_text.Text = "LaTeX code - for newline press SHIFT+ENTER";
@@ -268,7 +275,7 @@ namespace L2A.FORMS
             this.textbox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textbox.Location = new System.Drawing.Point(6, 19);
             this.textbox.Name = "textbox";
-            this.textbox.Size = new System.Drawing.Size(467, 122);
+            this.textbox.Size = new System.Drawing.Size(532, 122);
             this.textbox.TabIndex = 2;
             this.textbox.Text = "";
             this.textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormKeyDown);
@@ -317,11 +324,65 @@ namespace L2A.FORMS
             this.group_type.TabStop = false;
             this.group_type.Text = "Select behaviour of the item when it is streched";
             // 
+            // rebo_boundary_box
+            // 
+            this.rebo_boundary_box.Location = new System.Drawing.Point(95, 16);
+            this.rebo_boundary_box.Name = "rebo_boundary_box";
+            this.rebo_boundary_box.Size = new System.Drawing.Size(115, 23);
+            this.rebo_boundary_box.TabIndex = 33;
+            this.rebo_boundary_box.Text = "Redo Boundary Box";
+            this.rebo_boundary_box.UseVisualStyleBackColor = true;
+            this.rebo_boundary_box.Click += new System.EventHandler(this.RedoBoundaryClick);
+            // 
+            // boundary_box_status
+            // 
+            this.boundary_box_status.AutoSize = true;
+            this.boundary_box_status.Location = new System.Drawing.Point(6, 22);
+            this.boundary_box_status.Name = "boundary_box_status";
+            this.boundary_box_status.Size = new System.Drawing.Size(65, 13);
+            this.boundary_box_status.TabIndex = 34;
+            this.boundary_box_status.Text = "UNKNOWN";
+            // 
+            // group_boundary_box
+            // 
+            this.group_boundary_box.Controls.Add(this.boundary_box_status);
+            this.group_boundary_box.Controls.Add(this.rebo_boundary_box);
+            this.group_boundary_box.Location = new System.Drawing.Point(304, 12);
+            this.group_boundary_box.Name = "group_boundary_box";
+            this.group_boundary_box.Size = new System.Drawing.Size(216, 45);
+            this.group_boundary_box.TabIndex = 33;
+            this.group_boundary_box.TabStop = false;
+            this.group_boundary_box.Text = "Boundary Box";
+            this.group_boundary_box.Visible = false;
+            // 
+            // group_latex
+            // 
+            this.group_latex.Controls.Add(this.redo_latex);
+            this.group_latex.Location = new System.Drawing.Point(528, 12);
+            this.group_latex.Name = "group_latex";
+            this.group_latex.Size = new System.Drawing.Size(98, 45);
+            this.group_latex.TabIndex = 35;
+            this.group_latex.TabStop = false;
+            this.group_latex.Text = "LaTeX";
+            this.group_latex.Visible = false;
+            // 
+            // redo_latex
+            // 
+            this.redo_latex.Location = new System.Drawing.Point(6, 16);
+            this.redo_latex.Name = "redo_latex";
+            this.redo_latex.Size = new System.Drawing.Size(86, 23);
+            this.redo_latex.TabIndex = 33;
+            this.redo_latex.Text = "Redo LaTeX";
+            this.redo_latex.UseVisualStyleBackColor = true;
+            this.redo_latex.Click += new System.EventHandler(this.RedoLaTeXClick);
+            // 
             // Item
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(670, 222);
+            this.ClientSize = new System.Drawing.Size(734, 222);
+            this.Controls.Add(this.group_latex);
+            this.Controls.Add(this.group_boundary_box);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.Controls.Add(this.group_placement);
@@ -339,6 +400,9 @@ namespace L2A.FORMS
             this.group_text.ResumeLayout(false);
             this.group_type.ResumeLayout(false);
             this.group_type.PerformLayout();
+            this.group_boundary_box.ResumeLayout(false);
+            this.group_boundary_box.PerformLayout();
+            this.group_latex.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -367,5 +431,10 @@ namespace L2A.FORMS
         private System.Windows.Forms.RadioButton original_size;
         private System.Windows.Forms.RadioButton strech;
         private System.Windows.Forms.GroupBox group_type;
+        private System.Windows.Forms.Button rebo_boundary_box;
+        private System.Windows.Forms.Label boundary_box_status;
+        private System.Windows.Forms.GroupBox group_boundary_box;
+        private System.Windows.Forms.GroupBox group_latex;
+        private System.Windows.Forms.Button redo_latex;
     }
 }
