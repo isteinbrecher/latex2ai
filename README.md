@@ -136,7 +136,7 @@ A few things to keep in mind:
 
 
 # Changelog
-- **Pre-Release**
+- **v0.0.3**
   - New features:
     - Allow to redo boundary box from the create / edit form.
     - Allow to redo the latex label from the create / edit form.
