@@ -136,6 +136,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **Pre-release**
+  - Bug fixes:
+    - Fix error when editing item with missing PDF file.
 - **v0.0.3**
   - New features:
     - Allow to redo boundary box from the create / edit form.
