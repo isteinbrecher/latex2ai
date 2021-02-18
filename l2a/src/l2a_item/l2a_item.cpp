@@ -194,8 +194,10 @@ void L2A::Item::Change()
         // Convert pdf with postscript.
         pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
 
-        // Move new latex file to l2a folder (replace the old one).
+        // Move new latex file to l2a folder (replace the old one). If the old one does not exist (for whatever reason)
+        // a new one is created.
         ai::FilePath placed_item_file = L2A::AI::GetPlacedItemPath(placed_item_);
+        if (!L2A::UTIL::IsFile(placed_item_file)) L2A::UTIL::GetNextItemIndex(placed_item_file);
         L2A::UTIL::CopyFileL2A(pdf_file, placed_item_file);
 
         // Everything worked fine, set the property of the current item.
