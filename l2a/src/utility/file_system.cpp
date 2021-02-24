@@ -475,3 +475,12 @@ unsigned int L2A::UTIL::GetNextItemIndex(ai::FilePath& next_path)
     next_path = file;
     return i;
 }
+
+/**
+ *
+ */
+ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
+{
+    std::filesystem::path path_std = path.GetFullPath().as_Platform();
+    return ai::FilePath(ai::UnicodeString(std::filesystem::absolute(path_std).string()));
+}
