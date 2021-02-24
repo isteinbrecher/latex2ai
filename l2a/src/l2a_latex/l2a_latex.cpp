@@ -378,8 +378,10 @@ ai::UnicodeString L2A::LATEX::GetTexLicense() { return ai::UnicodeString(L2A::LI
  */
 ai::UnicodeString L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& header_path)
 {
-    auto header_dir = header_path.GetParent();
-    auto header_text = L2A::UTIL::ReadFileUTF8(header_path);
+    // Get the full path here, so relative directories will be resolved.
+    auto header_path_full = L2A::UTIL::GetFullFilePath(header_path);
+    auto header_dir = header_path_full.GetParent();
+    auto header_text = L2A::UTIL::ReadFileUTF8(header_path_full);
     std::string header_string = header_text.as_UTF8();
 
     // Regex string to find inputs in the header.
