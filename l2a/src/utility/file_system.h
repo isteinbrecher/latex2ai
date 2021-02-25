@@ -142,6 +142,10 @@ namespace L2A
          */
         unsigned int GetNextItemIndex(ai::FilePath& next_path);
 
+        /**
+         * \brief Return the full file path for a given path. This also resolves ".." inside the file path.
+         */
+        ai::FilePath GetFullFilePath(const ai::FilePath& path);
     }  // namespace UTIL
 }  // namespace L2A
 
