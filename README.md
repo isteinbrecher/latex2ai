@@ -140,6 +140,7 @@ A few things to keep in mind:
   - Bug fixes:
     - Fix error when editing item with missing PDF file.
     - Fix error with included headers containing relative paths.
+    - Clean temp directory at startup.
 - **v0.0.3**
   - New features:
     - Allow to redo boundary box from the create / edit form.
