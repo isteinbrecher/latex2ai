@@ -33,6 +33,8 @@
 //! Check the Illustrator version.
 #if kPluginInterfaceVersion == kPluginInterfaceVersion16001
 #define ILLUSTRATOR_VERSION 16
+#elif kPluginInterfaceVersion == kPluginInterfaceVersion22001
+#define ILLUSTRATOR_VERSION 22
 #elif kPluginInterfaceVersion == kPluginInterfaceVersion25001
 #define ILLUSTRATOR_VERSION 25
 #else
