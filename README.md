@@ -145,6 +145,7 @@ A few things to keep in mind:
     - Fix error with included headers containing relative paths.
     - Clean temp directory at startup.
   - Other:
+    - Create automated build script.
     - Support Illustrator 2018.
 - **v0.0.3**
   - New features:
