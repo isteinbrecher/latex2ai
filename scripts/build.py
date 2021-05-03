@@ -24,7 +24,7 @@
 # -----------------------------------------------------------------------------
 
 """
-Build LaTeX2AI
+Automatically build LaTeX2AI and create a arcive with the executables.
 """
 
 # Import python modules.
@@ -62,7 +62,8 @@ if __name__ == '__main__':
     
     # Get base directory.
     file_path = os.path.realpath(os.path.join(os.getcwd(), __file__))
-    base_dir = os.path.dirname(os.path.dirname(file_path))
+    script_dir = os.path.dirname(file_path)
+    base_dir = os.path.dirname(script_dir)
     
     # Remove output directory.
     output_dir = os.path.join(base_dir, '..\output')
@@ -72,31 +73,38 @@ if __name__ == '__main__':
         print("Error: %s - %s." % (e.filename, e.strerror))
         sys.exit(1)
 
-    # Build LaTeX2AI.
-    build_type = 'Release'
-    os.environ['LaTeX2AI_build_type'] = build_type
-    subprocess.call(['compile_solution.bat'])
-
-    # Get information about the build.
+    # Get git information.
     git_info = get_git_tag_or_hash()
-    split_path = os.path.normpath(base_dir).split(os.sep)
-    illustrator_version = split_path[-3]
-    version_dir = {
-        'Adobe Illustrator CS6 SDK': 'IllustratorCS6',
-        'Adobe Illustrator CC 2018 SDK': 'IllustratorCC2018',
-        'Adobe Illustrator 2021 SDK': 'Illustrator2021'
-        }
 
-    # Compress the executables.
-    executable_dir = os.path.realpath(
-        os.path.join(output_dir, 'win', 'x64', build_type))
-    os.chdir(executable_dir)
-    executables = [
-        'LaTeX2AI.aip',
-        'LaTeX2AIForms.exe'
+    # Build LaTeX2AI.
+    build_types = [
+        'Release',
+        'Debug'
         ]
-    zip_name = ('LaTeX2AI_' + git_info + '_' + build_type.lower() + '_'
-        + version_dir[illustrator_version] + '.zip')
-    with ZipFile(zip_name, mode='w') as zf:
-        for f in executables:
-            zf.write(f)
+    for build_type in build_types:
+        os.chdir(script_dir)
+        os.environ['LaTeX2AI_build_type'] = build_type
+        subprocess.call(['compile_solution.bat'])
+
+        # Get information about the build.
+        split_path = os.path.normpath(base_dir).split(os.sep)
+        illustrator_version = split_path[-3]
+        version_dir = {
+            'Adobe Illustrator CS6 SDK': 'IllustratorCS6',
+            'Adobe Illustrator CC 2018 SDK': 'IllustratorCC2018',
+            'Adobe Illustrator 2021 SDK': 'Illustrator2021'
+            }
+
+        # Compress the executables.
+        executable_dir = os.path.realpath(
+            os.path.join(output_dir, 'win', 'x64', build_type))
+        os.chdir(executable_dir)
+        executables = [
+            'LaTeX2AI.aip',
+            'LaTeX2AIForms.exe'
+            ]
+        zip_name = ('LaTeX2AI_' + git_info + '_' + build_type.lower() + '_'
+            + version_dir[illustrator_version] + '.zip')
+        with ZipFile(zip_name, mode='w') as zf:
+            for f in executables:
+                zf.write(f)
