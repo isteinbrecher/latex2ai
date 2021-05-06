@@ -31,7 +31,7 @@ The additional requirements to build LaTeX2AI from source are:
 ### Getting started
 1. Download and unpack the SDK depending on your Illustrator version:
   - [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip)
-  - [Adobe Illustrator 2021](https://console.adobe.io/downloads)
+  - [Adobe Illustrator CC and newer](https://console.adobe.io/downloads)
 1. Go to the sample code folder `Adobe Illustrator <YOUR VERSION> SDK/sample code` and run
 	```
 	git clone https://github.com/stoani89/LaTeX2AI.git
