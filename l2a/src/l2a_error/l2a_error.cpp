@@ -32,8 +32,6 @@
 
 #include "utility/string_functions.h"
 
-
-#ifdef _DEBUG
 #include "../../tpl/StackWalker/Main/StackWalker/StackWalker.h"
 
 /**
@@ -78,7 +76,6 @@ class MyStackWalker : public StackWalker
     //! Vector with the relevant stack lines.
     std::vector<ai::UnicodeString> stack_lines_;
 };
-#endif
 
 /**
  *
@@ -92,14 +89,17 @@ L2A::ERR::Exception::Exception(
     full_error_string += "LaTeX2AI Error! If this happens, please open an issue under\n";
     full_error_string += "github.com/stoani89/LaTeX2AI/issues\n";
     full_error_string += "--------------------------------------------------------------------------------\n";
-#ifdef _DEBUG
+    full_error_string += "LaTeX2AI git sha:\n";
+    full_error_string += L2A_VERSION_GIT_SHA_HEAD_;
+    full_error_string += "\n\nIllustrator Version:\n";
+    full_error_string += L2A::UTIL::IntegerToString(ILLUSTRATOR_VERSION);
+    full_error_string += "\n--------------------------------------------------------------------------------\n";
     full_error_string += "Stack:\n";
     full_error_string += "--------------------------------------------------------------------------------\n";
     MyStackWalker sw;
     sw.ShowCallstack();
     full_error_string += sw.GetStack();
     full_error_string += "\n--------------------------------------------------------------------------------\n";
-#endif
     full_error_string += "Error thrown at:\n";
     full_error_string += "--------------------------------------------------------------------------------\n";
     full_error_string += ai::UnicodeString(__file__);
