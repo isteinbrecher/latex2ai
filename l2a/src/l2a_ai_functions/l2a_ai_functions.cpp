@@ -941,3 +941,16 @@ void L2A::AI::GetIsHiddenLocked(const AIArtHandle& art_item, bool& is_hidden, bo
         if (attributes & kArtHidden) is_hidden = true;
     }
 }
+
+/**
+ *
+ */
+bool L2A::AI::GetLockedInsertionPoint()
+{
+    AIArtHandle art;
+    short paintorder;
+    AIBoolean editable;
+    AIErr error = sAIArt->GetInsertionPointForCurrentDrawingMode(&art, &paintorder, &editable);
+    l2a_check_ai_error(error);
+    return !editable;
+}
