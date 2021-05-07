@@ -251,6 +251,10 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
                     // Create am item at the clicked position.
                     L2A::Item(message->cursor);
                 }
+                else
+                    sAIUser->MessageAlert(
+                        ai::UnicodeString("You tried to create a LaTeX2AI item inside a locked or hidden layer / "
+                                          "group. This is not possible."));
             }
         }
         catch (L2A::ERR::Exception&)
