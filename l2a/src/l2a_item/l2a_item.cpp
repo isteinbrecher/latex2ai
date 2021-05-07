@@ -411,6 +411,18 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     else
         item_color = L2A::CONSTANTS::color_ok_;
 
+    // Get the hidden and locked status of the item.
+    bool is_hidden;
+    bool is_locked;
+    L2A::AI::GetIsHiddenLocked(placed_item_, is_hidden, is_locked);
+    if (is_hidden) return;
+    if (is_locked)
+    {
+        item_color.red = ai::uint16(0.5 * item_color.red);
+        item_color.green = ai::uint16(0.5 * item_color.green);
+        item_color.blue = ai::uint16(0.5 * item_color.blue);
+    }
+
     // Set drawing options.
     sAIAnnotatorDrawer->SetLineWidth(message->drawer, (AIReal)(L2A::CONSTANTS::line_width_));
     sAIAnnotatorDrawer->SetColor(message->drawer, item_color);
