@@ -167,7 +167,7 @@ namespace L2A
         bool IsIsolationMode();
 
         /**
-         * \brief Exit the currnt isolation mode.
+         * \brief Exit the current isolation mode.
          */
         void ExitIsolationMode();
 
@@ -282,6 +282,31 @@ namespace L2A
          * first.
          */
         void GetPathPoints(AIArtHandle& path_item, std::vector<AIRealPoint>& points, bool append_to_vector = false);
+
+        /**
+         * \brief Get the parent item of the art item.
+         * @params art_item(in) Art item.
+         * @params parent(out) Parent art item.
+         * @return True if parent exists.
+         */
+        bool GetArtParent(const AIArtHandle& art_item, AIArtHandle& parent);
+
+        /**
+         * \brief Get all parents of an art item.
+         * @params art_item(in) Art item.
+         * @params parents(out) Parents of the art item. The first item in the vector will be top parent, i.e. the main
+         * layer.
+         */
+        void GetArtParents(const AIArtHandle& art_item, std::vector<AIArtHandle>& parents);
+
+        /**
+         * \brief Check if a item is locked and or hidden in AI, including the parent locked / hidden settings.
+         * @params art_item(in) Art item.
+         * @params is_hidden(out) If the item or any of the parents are hidden.
+         * @params is_locked(out) If the item or any of the parents are locked.
+         * layer.
+         */
+        void GetIsHiddenLocked(const AIArtHandle& art_item, bool& is_hidden, bool& is_locked);
     }  // namespace AI
 }  // namespace L2A
 

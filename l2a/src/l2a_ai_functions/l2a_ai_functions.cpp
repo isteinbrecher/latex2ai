@@ -882,3 +882,62 @@ void L2A::AI::GetPathPoints(AIArtHandle& path_item, std::vector<AIRealPoint>& po
     // Add points to return vector.
     for (const auto& segment : segments) points.push_back(segment.p);
 };
+
+/**
+ *
+ */
+bool L2A::AI::GetArtParent(const AIArtHandle& art_item, AIArtHandle& parent)
+{
+    AIErr error = sAIArt->GetArtParent(art_item, &parent);
+    l2a_check_ai_error(error);
+    if (parent == nullptr)
+        return false;
+    else
+        return true;
+}
+
+/**
+ *
+ */
+void L2A::AI::GetArtParents(const AIArtHandle& art_item, std::vector<AIArtHandle>& parents)
+{
+    parents.clear();
+    AIArtHandle art = art_item;
+    AIArtHandle parent;
+    while (GetArtParent(art, parent))
+    {
+        // Parent could be found, add it to the front of the vector.
+        parents.insert(parents.begin(), parent);
+        art = parent;
+    }
+}
+
+/**
+ *
+ */
+void L2A::AI::GetIsHiddenLocked(const AIArtHandle& art_item, bool& is_hidden, bool& is_locked)
+{
+    // Get all parents of the art item.
+    std::vector<AIArtHandle> parents;
+    GetArtParents(art_item, parents);
+
+    // Check if any of the parents are locked / hidden
+    ai::int32 attributes;
+    AIErr error = sAIArt->GetArtUserAttr(art_item, kArtLocked | kArtHidden, &attributes);
+    l2a_check_ai_error(error);
+    if (attributes & kArtLocked)
+        is_locked = true;
+    else
+        is_locked = false;
+    if (attributes & kArtHidden)
+        is_hidden = true;
+    else
+        is_hidden = false;
+    for (const auto& parent : parents)
+    {
+        error = sAIArt->GetArtUserAttr(parent, kArtLocked | kArtHidden, &attributes);
+        l2a_check_ai_error(error);
+        if (attributes & kArtLocked) is_locked = true;
+        if (attributes & kArtHidden) is_hidden = true;
+    }
+}
