@@ -825,7 +825,15 @@ void L2A::AI::SelectItems(std::vector<AIArtHandle>& items)
     for (auto& item : items)
     {
         error = sAIArt->SetArtUserAttr(item, kArtSelected, kArtSelected);
-        l2a_check_ai_error(error);
+        if (error)
+        {
+            // We got an Illustrator error, this can be because the item is locked or hidden. If the item is not locked
+            // or hidden, something else happened and we still raise the error.
+            bool is_hidden;
+            bool is_locked;
+            L2A::AI::GetIsHiddenLocked(item, is_hidden, is_locked);
+            if ((!is_hidden) && (!is_locked)) l2a_check_ai_error(error);
+        }
     }
 
     // Update the document item properties.

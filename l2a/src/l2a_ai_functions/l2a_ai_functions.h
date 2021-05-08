@@ -309,8 +309,7 @@ namespace L2A
         void GetIsHiddenLocked(const AIArtHandle& art_item, bool& is_hidden, bool& is_locked);
 
         /**
-         * \brief Check if the current insertion point is locked.
-         * @return True if the current insertion point is locked.
+         * \brief Check if the current insertion point is locked and or hidden, i.e. no item can be created.
          */
         bool GetLockedInsertionPoint();
     }  // namespace AI
