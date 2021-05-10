@@ -139,7 +139,7 @@ A few things to keep in mind:
 
 
 # Changelog
-- **Pre-release**
+- **v0.0.4**
   - Bug fixes:
     - Fix error when editing item with missing PDF file.
     - Fix error with included headers containing relative paths.
