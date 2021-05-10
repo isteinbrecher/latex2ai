@@ -32,11 +32,13 @@
 
 //! Check the Illustrator version.
 #if kPluginInterfaceVersion == kPluginInterfaceVersion16001
-#define ILLUSTRATOR_VERSION 16
+#define ILLUSTRATOR_VERSION 1600
+#elif kPluginInterfaceVersion == kPluginInterfaceVersion22001
+#define ILLUSTRATOR_VERSION 2200
 #elif kPluginInterfaceVersion == kPluginInterfaceVersion25001
-#define ILLUSTRATOR_VERSION 25
+#define ILLUSTRATOR_VERSION 2500
 #else
-#error Currently LaTeX2AI only supports Illustrator CS6 and Illustrator CC2021
+#error Currently LaTeX2AI only supports Illustrator CS6, Illustrator CC2018 and Illustrator 2021
 #endif
 
 
@@ -59,7 +61,9 @@
 #define TOOL_ICON_TESTING_DARK_ID 16060       // icon for testing in dark mode
 
 #define CURSOR_ICON_CREATE 16061  // cursor for create mode
-#define CURSOR_ICON_EDIT 16062    // cursor for edit mode
+#define CURSOR_ICON_LOCKED 16062  // cursor for locked create mode
+#define CURSOR_ICON_EDIT 16063    // cursor for edit mode
+
 
 namespace L2A
 {

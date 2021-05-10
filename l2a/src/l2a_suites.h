@@ -64,5 +64,6 @@ extern "C" AIHitTestSuite* sAIHitTest;
 extern "C" AIActionManagerSuite* sAIActionManager;
 extern "C" AIPathSuite* sAIPath;
 extern "C" AIPathStyleSuite* sAIPathStyle;
+extern "C" AILayerSuite* sAILayer;
 
 #endif  // L2A_SUITES_H_

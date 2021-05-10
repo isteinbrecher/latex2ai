@@ -87,7 +87,7 @@ namespace L2A.UTIL
             {
                 foreach (XmlNode node in xml_element.ChildNodes)
                 {
-                    if (node is XmlText text)
+                    if (node is XmlText)
                     {
                         // If there are no child nodes this one has a main option.
                         main_option_ = xml_element.InnerText;

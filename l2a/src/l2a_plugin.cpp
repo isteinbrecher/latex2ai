@@ -244,8 +244,18 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
                 hit_item.Change();
             }
             else
-                // Create am item at the clicked position.
-                L2A::Item(message->cursor);
+            {
+                // Check if the current insertion point is locked.
+                if (!L2A::AI::GetLockedInsertionPoint())
+                {
+                    // Create am item at the clicked position.
+                    L2A::Item(message->cursor);
+                }
+                else
+                    sAIUser->MessageAlert(
+                        ai::UnicodeString("You tried to create a LaTeX2AI item inside a locked or hidden layer / "
+                                          "group. This is not possible."));
+            }
         }
         catch (L2A::ERR::Exception&)
         {
@@ -297,7 +307,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
     for (short i = 0; i < n_tools; i++)
     {
         // Define the name and icon for the tool.
-#if ILLUSTRATOR_VERSION == 16
+#if ILLUSTRATOR_VERSION <= 2200
         data.title = toolTitleStr[i];
         data.tooltip = toolTipStr[i];
 #else
@@ -324,7 +334,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-#if ILLUSTRATOR_VERSION == 16
+#if ILLUSTRATOR_VERSION <= 2200
         error = sAITool->AddTool(message->d.self, toolTitleStr[i], &data, options, &fToolHandle[i]);
 #else
         error = sAITool->AddTool(message->d.self, toolTitleStr[i], data, options, &fToolHandle[i]);
@@ -474,7 +484,12 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
         if (annotator_->CheckForArtHit(message))
             cursor_id = CURSOR_ICON_EDIT;
         else
-            cursor_id = CURSOR_ICON_CREATE;
+        {
+            if (L2A::AI::GetLockedInsertionPoint())
+                cursor_id = CURSOR_ICON_LOCKED;
+            else
+                cursor_id = CURSOR_ICON_CREATE;
+        }
         error = sAIUser->SetCursor(cursor_id, fResourceManagerHandle);
         l2a_check_ai_error(error);
     }

@@ -66,6 +66,7 @@ void L2A::GLOBAL::Global::SetUp()
     // Get directories for this system.
     path_temp_ = L2A::UTIL::GetTemporaryDirectory();
     path_temp_.AddComponent(ai::UnicodeString("LaTeX2AI"));
+    L2A::UTIL::RemoveDirectoryAI(path_temp_, false);
     L2A::UTIL::CreateDirectoryL2A(path_temp_);
 
     // Application data path.

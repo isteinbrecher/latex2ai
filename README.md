@@ -1,6 +1,9 @@
 # LaTeX2AI
 LaTeX2AI is a plugin for Adobe Illustrator that enables the use of text labels typeset in LaTeX inside an Illustrator document.
-Currently LaTeX2AI supports Illustrator CS6 and 2021.
+Currently LaTeX2AI supports:
+- Illustrator CS6
+- Illustrator CC 2018
+- Illustrator 2021
 
 ## Requirements
 Currently LaTeX2AI only works on Adobe Illustrator for Windows.
@@ -28,7 +31,7 @@ The additional requirements to build LaTeX2AI from source are:
 ### Getting started
 1. Download and unpack the SDK depending on your Illustrator version:
   - [Adobe Illustrator CS6 SDK](http://download.macromedia.com/pub/developer/illustrator/sdk/AI_CS6_SDK_Win_682.6.1.zip)
-  - [Adobe Illustrator 2021](https://console.adobe.io/downloads)
+  - [Adobe Illustrator CC and newer](https://console.adobe.io/downloads)
 1. Go to the sample code folder `Adobe Illustrator <YOUR VERSION> SDK/sample code` and run
 	```
 	git clone https://github.com/stoani89/LaTeX2AI.git
@@ -136,6 +139,15 @@ A few things to keep in mind:
 
 
 # Changelog
+- **v0.0.4**
+  - Bug fixes:
+    - Fix error when editing item with missing PDF file.
+    - Fix error with included headers containing relative paths.
+    - Clean temp directory at startup.
+    - Fix bugs when working with locked and or hidden layers / groups.
+  - Other:
+    - Create automated build script.
+    - Support Illustrator CC 2018.
 - **v0.0.3**
   - New features:
     - Allow to redo boundary box from the create / edit form.
