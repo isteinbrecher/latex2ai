@@ -411,6 +411,18 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     else
         item_color = L2A::CONSTANTS::color_ok_;
 
+    // Get the hidden and locked status of the item.
+    bool is_hidden;
+    bool is_locked;
+    L2A::AI::GetIsHiddenLocked(placed_item_, is_hidden, is_locked);
+    if (is_hidden) return;
+    if (is_locked)
+    {
+        item_color.red = ai::uint16(0.5 * item_color.red);
+        item_color.green = ai::uint16(0.5 * item_color.green);
+        item_color.blue = ai::uint16(0.5 * item_color.blue);
+    }
+
     // Set drawing options.
     sAIAnnotatorDrawer->SetLineWidth(message->drawer, (AIReal)(L2A::CONSTANTS::line_width_));
     sAIAnnotatorDrawer->SetColor(message->drawer, item_color);
@@ -612,8 +624,29 @@ void L2A::RedoItems()
     if (!redo_latex && !redo_boundary || redo_items.size() == 0) return;
 
     // Create an Item for all placed items that need to be redone.
+    unsigned int locked_counter = 0;
     std::vector<L2A::Item> l2a_items;
-    for (const auto& placed_item : redo_items) l2a_items.push_back(L2A::Item(placed_item));
+    for (const auto& placed_item : redo_items)
+    {
+        bool is_hidden;
+        bool is_locked;
+        L2A::AI::GetIsHiddenLocked(placed_item, is_hidden, is_locked);
+        if (is_hidden || is_locked)
+            locked_counter++;
+        else
+            l2a_items.push_back(L2A::Item(placed_item));
+    }
+
+    // Aller the user that locked and or hidden items were selected.
+    if (locked_counter > 0)
+    {
+        ai::UnicodeString message_text("The LaTeX2AI Redo function got ");
+        message_text += L2A::UTIL::IntegerToString(locked_counter);
+        message_text += " hidden / locked items. They will be skipped.";
+        if (is_all_items && redo_latex)
+            message_text += "\nThe LaTeX2AI label PDFs in the PDF direcory will not be cleaned.";
+        sAIUser->MessageAlert(message_text);
+    }
 
     if (redo_latex)
     {
@@ -637,7 +670,7 @@ void L2A::RedoItems()
         // Split up the created items into the individual pdf files.
         std::vector<ai::FilePath> pdf_files = L2A::LATEX::SplitPdfPages(pdf_path, (unsigned int)l2a_items.size());
 
-        if (is_all_items)
+        if (is_all_items && locked_counter == 0)
         {
             // Delete all the items for this document, and restart the counter.
             ai::UnicodeString document_name = L2A::UTIL::GetDocumentName();

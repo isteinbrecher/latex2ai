@@ -61,7 +61,9 @@
 #define TOOL_ICON_TESTING_DARK_ID 16060       // icon for testing in dark mode
 
 #define CURSOR_ICON_CREATE 16061  // cursor for create mode
-#define CURSOR_ICON_EDIT 16062    // cursor for edit mode
+#define CURSOR_ICON_LOCKED 16062  // cursor for locked create mode
+#define CURSOR_ICON_EDIT 16063    // cursor for edit mode
+
 
 namespace L2A
 {
