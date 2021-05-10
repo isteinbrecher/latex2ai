@@ -28,11 +28,11 @@ Automatically build LaTeX2AI and create a arcive with the executables.
 """
 
 # Import python modules.
-import sys
 import os
 import shutil
 import subprocess
 from zipfile import ZipFile
+from pathlib import Path
 from create_headers import get_git_sha
 
 
@@ -55,56 +55,160 @@ def get_git_tag_or_hash():
             # This commit has a tag, return the tag.
             return tag.split('/')[-1]
     return git_sha[:7]
-   
 
-if __name__ == '__main__':
-    """Execution part of script"""
-    
-    # Get base directory.
-    file_path = os.path.realpath(os.path.join(os.getcwd(), __file__))
-    script_dir = os.path.dirname(file_path)
-    base_dir = os.path.dirname(script_dir)
-    
-    # Remove output directory.
-    output_dir = os.path.join(base_dir, '..\output')
-    try:
-        shutil.rmtree(output_dir)
-    except OSError as e:
-        print("Error: %s - %s." % (e.filename, e.strerror))
-        sys.exit(1)
 
-    # Get git information.
-    git_info = get_git_tag_or_hash()
+def get_illustrator_version(path):
+    """
+    Return a short name of the Illustrator version.
+    """
 
-    # Build LaTeX2AI.
-    build_types = [
-        'Release',
-        'Debug'
-        ]
-    for build_type in build_types:
-        os.chdir(script_dir)
-        os.environ['LaTeX2AI_build_type'] = build_type
-        subprocess.call(['compile_solution.bat'])
+    split_path = os.path.normpath(path).split(os.sep)
+    version_dir = {
+        'Adobe Illustrator CS6 SDK': 'IllustratorCS6',
+        'Adobe Illustrator CC 2018 SDK': 'IllustratorCC2018',
+        'Adobe Illustrator 2021 SDK': 'Illustrator2021'
+        }
+    illustrator_version = None
+    for path_part in split_path:
+        if path_part in version_dir.keys():
+            if illustrator_version is None:
+                illustrator_version = version_dir[path_part]
+            else:
+                raise ValueError(
+                    'Could not find the AI version in {}'.format(path))
+    if illustrator_version is None:
+        raise ValueError('Could not find the AI version in {}'.format(path))
+    else:
+        return illustrator_version
 
-        # Get information about the build.
-        split_path = os.path.normpath(base_dir).split(os.sep)
-        illustrator_version = split_path[-3]
-        version_dir = {
-            'Adobe Illustrator CS6 SDK': 'IllustratorCS6',
-            'Adobe Illustrator CC 2018 SDK': 'IllustratorCC2018',
-            'Adobe Illustrator 2021 SDK': 'Illustrator2021'
-            }
 
-        # Compress the executables.
-        executable_dir = os.path.realpath(
-            os.path.join(output_dir, 'win', 'x64', build_type))
+def build_solution(repository_dir, build_type, git_info, illustrator_version):
+    """
+    Build the solution and compress the executables into a zip file.
+    """
+
+    # Build the solution, for this we have to set the build type environment
+    # variable.
+    script_dir = os.path.join(repository_dir, 'scripts')
+    os.chdir(script_dir)
+    os.environ['LaTeX2AI_build_type'] = build_type
+    return_value = subprocess.call(['compile_solution.bat'])
+
+    if return_value == 0:
+        # The build passed, compress the executables.
+        executable_dir = os.path.realpath(os.path.join(
+            repository_dir, '..\output', 'win', 'x64', build_type))
         os.chdir(executable_dir)
         executables = [
             'LaTeX2AI.aip',
             'LaTeX2AIForms.exe'
             ]
-        zip_name = ('LaTeX2AI_' + git_info + '_' + build_type.lower() + '_'
-            + version_dir[illustrator_version] + '.zip')
+        zip_name = ('LaTeX2AI_' + git_info + '_' + build_type.lower()
+            + '_' + illustrator_version + '.zip')
         with ZipFile(zip_name, mode='w') as zf:
             for f in executables:
                 zf.write(f)
+        return os.path.join(executable_dir, zip_name)
+    else:
+        raise ValueError('Could not build solution in {}'.format(
+            repository_dir))
+
+
+def clean_repository(repository_dir):
+    """
+    Check if the repositroy is clean.
+    """
+
+    # Check if the repository is clean.
+    os.chdir(repository_dir)
+    out = subprocess.check_output(['git', 'status', '--porcelain'])
+    if out == b'':
+        return True
+    else:
+        return False
+
+
+def correct_git_state(repository_dir, git_info_other):
+    """
+    Check if the repositroy is at the correct state.
+    """
+
+    # Check if the repository is clean.
+    if not clean_repository(repository_dir):
+        raise ValueError('Repository {} not clean'.format(repository_dir))
+
+    # Check if we are at the right commit.
+    git_info = get_git_tag_or_hash()
+    if (git_info_other is not None) and (not git_info == git_info_other):
+        # We are in a clean state and the version does not match, so pull
+        # the new version.
+        os.chdir(repository_dir)
+        subprocess.call(['git', 'fetch', 'origin'])
+        subprocess.call(['git', 'fetch', 'origin', '--tags'])
+        subprocess.call(['git', 'checkout', git_info_other])
+        git_info = get_git_tag_or_hash()
+        if not git_info == git_info_other:
+            raise ValueError(('Could not obtain the correct commit {} in {}'
+                ).format(git_info_other, repository_dir))
+    return git_info
+
+
+def build_all_types(repository_dir, git_info_other=None):
+    """
+    Build all build types in a repository.
+    """
+
+    git_info = correct_git_state(repository_dir, git_info_other)
+    illustrator_version = get_illustrator_version(repository_dir)
+
+    # Remove output directory.
+    output_dir = os.path.realpath(
+        os.path.join(repository_dir, '..\output'))
+    try:
+        if os.path.isdir(output_dir):
+            shutil.rmtree(output_dir)
+    except OSError as _e:
+        return []
+
+    build_types = [
+        'Release',
+        'Debug'
+        ]
+    zip_files = []
+    for build_type in build_types:
+        zip_files.append(build_solution(repository_dir, build_type, git_info,
+            illustrator_version))
+    return zip_files
+
+
+if __name__ == '__main__':
+    """Execution part of script"""
+
+    # Get base directory.
+    file_path = os.path.realpath(os.path.join(os.getcwd(), __file__))
+    script_dir = os.path.dirname(file_path)
+    base_dir = os.path.dirname(script_dir)
+
+    zip_files = []
+
+    if 'LATEX2AI_REPOSITORIES' in os.environ.keys():
+        # Build all.
+        repositories = os.environ['LATEX2AI_REPOSITORIES'].strip().split(';')
+        if repositories[-1] == '':
+            del repositories[-1]
+        os.chdir(base_dir)
+        git_info = get_git_tag_or_hash()
+        for repository in repositories:
+            zip_files.extend(build_all_types(repository,
+                git_info_other=git_info))
+    else:
+        zip_files.extend(build_all_types(base_dir))
+
+    # Move all zip files to this dir.
+    zip_dir = script_dir = os.path.join(script_dir, 'executables')
+    Path(zip_dir).mkdir(exist_ok=True)
+    for zip_file in zip_files:
+        os.replace(zip_file,
+            os.path.join(zip_dir, os.path.basename(zip_file)))
+
+    input()
