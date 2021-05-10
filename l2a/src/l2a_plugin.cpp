@@ -307,7 +307,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
     for (short i = 0; i < n_tools; i++)
     {
         // Define the name and icon for the tool.
-#if ILLUSTRATOR_VERSION == 16
+#if ILLUSTRATOR_VERSION <= 2200
         data.title = toolTitleStr[i];
         data.tooltip = toolTipStr[i];
 #else
@@ -334,7 +334,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-#if ILLUSTRATOR_VERSION == 16
+#if ILLUSTRATOR_VERSION <= 2200
         error = sAITool->AddTool(message->d.self, toolTitleStr[i], &data, options, &fToolHandle[i]);
 #else
         error = sAITool->AddTool(message->d.self, toolTitleStr[i], data, options, &fToolHandle[i]);
