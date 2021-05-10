@@ -38,7 +38,7 @@
 #elif kPluginInterfaceVersion == kPluginInterfaceVersion25001
 #define ILLUSTRATOR_VERSION 2500
 #else
-#error Currently LaTeX2AI only supports Illustrator CS6 and Illustrator CC2021
+#error Currently LaTeX2AI only supports Illustrator CS6, Illustrator CC2018 and Illustrator 2021
 #endif
 
 
