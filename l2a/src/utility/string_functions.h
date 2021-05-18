@@ -74,7 +74,7 @@ namespace L2A
 
 namespace ai
 {
-#if ILLUSTRATOR_VERSION == 1600
+#if ILLUSTRATOR_VERSION <= 2100
     /**
      * \brief Overload the + operator for strings. Now existing strings can be simply added.
      */
