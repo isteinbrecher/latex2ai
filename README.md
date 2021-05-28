@@ -140,7 +140,7 @@ A few things to keep in mind:
 
 
 # Changelog
-- **pre_release**
+- **v0.0.5**
   - Other:
     - Support Illustrator 2017
 - **v0.0.4**
