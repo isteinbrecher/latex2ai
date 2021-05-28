@@ -1,9 +1,10 @@
 # LaTeX2AI
 LaTeX2AI is a plugin for Adobe Illustrator that enables the use of text labels typeset in LaTeX inside an Illustrator document.
 Currently LaTeX2AI supports:
-- Illustrator CS6
+- Illustrator CS6 (tested)
+- Illustrator CC 2017
 - Illustrator CC 2018
-- Illustrator 2021
+- Illustrator 2021 (tested)
 
 ## Requirements
 Currently LaTeX2AI only works on Adobe Illustrator for Windows.
@@ -139,6 +140,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **v0.0.5**
+  - Other:
+    - Support Illustrator 2017
 - **v0.0.4**
   - Bug fixes:
     - Fix error when editing item with missing PDF file.

@@ -11,8 +11,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -65,6 +65,7 @@ def get_illustrator_version(path):
     split_path = os.path.normpath(path).split(os.sep)
     version_dir = {
         'Adobe Illustrator CS6 SDK': 'IllustratorCS6',
+        'Adobe Illustrator CC 2017 SDK': 'IllustratorCC2017',
         'Adobe Illustrator CC 2018 SDK': 'IllustratorCC2018',
         'Adobe Illustrator 2021 SDK': 'Illustrator2021'
         }
