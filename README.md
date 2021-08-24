@@ -140,6 +140,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **pre-release**
+  - Bug fixes:
+    - Fix bug when saving a PDF for an unsaved AI document.
 - **v0.0.5**
   - Other:
     - Support Illustrator 2017
