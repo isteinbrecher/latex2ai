@@ -524,6 +524,14 @@ void L2A::AI::SaveToPDF()
 {
     AIErr result;
 
+    // Get the name of the pdf file and perform some safety checks.
+    ai::FilePath document_path = L2A::UTIL::GetDocumentPath(false);
+    if (!L2A::UTIL::IsFile(document_path))
+    {
+        sAIUser->MessageAlert(ai::UnicodeString("The Illustrator document is not saved. No PDF copy will be saved."));
+        return;
+    }
+
     // First it is checked if the active document is saved. It is advisable to save the document before exporting to
     // pdf.
     AIBoolean is_modified = true;
@@ -543,8 +551,7 @@ void L2A::AI::SaveToPDF()
         }
     }
 
-    // Get the name of the pdf file and perform some safety checks.
-    ai::FilePath document_path = L2A::UTIL::GetDocumentPath();
+    // Perform some safety checks.
     if (document_path.GetFileExtension() == "pdf")
         throw L2A::ERR::Warning(
             ai::UnicodeString("The save as pdf function can only be used if the document is not already a pdf."));
