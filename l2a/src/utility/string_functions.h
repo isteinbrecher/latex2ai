@@ -47,6 +47,16 @@ namespace L2A
         ai::UnicodeString IntegerToString(const unsigned int& number, const unsigned int& pad_len = 0);
 
         /**
+         * \brief Convert a float to an ai::UnicodeString.
+         * @param number Number to be converted to a string.
+         */
+        template <typename V>
+        ai::UnicodeString FloatToString(const V& number)
+        {
+            return ai::UnicodeString(to_string(number));
+        }
+
+        /**
          * \brief Convert an ai::UnicodeString to an integer.
          */
         int StringToInteger(const ai::UnicodeString& string);

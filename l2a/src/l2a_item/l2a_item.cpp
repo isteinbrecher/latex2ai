@@ -798,13 +798,29 @@ void L2A::RelinkCopiedItems()
 /**
  *
  */
-void L2A::DocumentToTikZ() {
-
-
+void L2A::DocumentToTikZ()
+{
     AIErr result;
 
 
-    // Get all artwork bounds.
+    // Perform some basic checks.
+    std::vector<AIArtHandle> all_items;
+    L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
+    std::vector<L2A::Item> l2a_items;
+    for (auto const& item : all_items)
+    {
+        L2A::Item new_item(item);
+        if (new_item.IsDiamond() || new_item.IsStreched())
+        {
+            sAIUser->MessageAlert(
+                ai::UnicodeString("The bounding boxes for all LaTeX2AI items have to be up to date and not streched."));
+            return;
+        }
+        l2a_items.push_back(new_item);
+    }
+
+
+    // Setup all artworks.
     ai::ArtboardList artboard_list;
     result = sAIArtboard->GetArtboardList(artboard_list);
     l2a_check_ai_error(result);
@@ -814,6 +830,7 @@ void L2A::DocumentToTikZ() {
     l2a_check_ai_error(result);
 
     std::vector<AIRealRect> artboard_bounds;
+    std::vector<ai::UnicodeString> artboard_codes;
     for (ai::ArtboardID i = 0; i < count; i++)
     {
         ai::ArtboardProperties artboard_poperty;
@@ -824,27 +841,32 @@ void L2A::DocumentToTikZ() {
         result = sAIArtboard->GetPosition(artboard_poperty, bounds);
         l2a_check_ai_error(result);
         artboard_bounds.push_back(bounds);
+
+        ai::UnicodeString code("\\begin{tikzpicture}");
+        code += "\\node[anchor=south west,inner sep=0] at (0,0) {\\includegraphics[scale=1,page=" +
+            L2A::UTIL::IntegerToString(i + 1) + "]{ex_patch_test.pdf}}\n;";
+        artboard_codes.push_back(code);
     }
 
 
+    // Conversion of alignment to TikZ placement.
+    std::array<ai::UnicodeString, 12> tikz_placement{ai::UnicodeString("north west"), ai::UnicodeString("north"),
+        ai::UnicodeString("north east"), ai::UnicodeString("west"), ai::UnicodeString("center"),
+        ai::UnicodeString("east"), ai::UnicodeString("base west"), ai::UnicodeString("base"),
+        ai::UnicodeString("base east"), ai::UnicodeString("south west"), ai::UnicodeString("south"),
+        ai::UnicodeString("south east")};
+
+
     // Loop over all L2AItems.
-    std::vector<AIArtHandle> all_items;
-    L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
-    for (auto const& item : all_items)
+    const double artwork_to_cm = 72.0 / 2.54;
+    for (auto const& item : l2a_items)
     {
-        L2A::Item l2a_item(item);
-
-        std::string code = l2a_item.GetProperty().GetLaTeXCode().as_UTF8();
-
-
-
         // Get all placement points.
         std::vector<PlaceAlignment> alignment_vector;
-        alignment_vector.push_back(PlaceAlignment::kBotLeft);
-        alignment_vector.push_back(PlaceAlignment::kBotRight);
-        alignment_vector.push_back(PlaceAlignment::kTopRight);
-        alignment_vector.push_back(PlaceAlignment::kTopLeft);
-        std::vector<AIRealPoint> points = l2a_item.GetPosition(alignment_vector);
+        for (auto const& alignment : TextAlignEnumsAI()) alignment_vector.push_back(alignment);
+        std::vector<AIRealPoint> points = item.GetPosition(alignment_vector);
+        std::map<PlaceAlignment, AIRealPoint> point_map;
+        for (unsigned int i = 0; i < 9; i++) point_map[alignment_vector[i]] = points[i];
 
         // Get the item bounding box.
         AIRealRect item_bounds;
@@ -865,35 +887,31 @@ void L2A::DocumentToTikZ() {
         {
             if (L2A::UTIL::MATH::CheckBoundingBoxesOverlap(artboard_bounds[i], item_bounds))
             {
-                // Get the coordinates of the item realitve to the lower left corner of the artboard.
-                AIReal x = points[0].h - artboard_bounds[i].left;
-                AIReal y = points[0].v - artboard_bounds[i].bottom;
+                // The item is part of the artboard -> add to the TikZ code.
 
-                double artwork_to_mm = 72.0 / 25.4;
+                // Get the coordinates of the placement point.
+                PlaceAlignment place_alignement = L2A::AI::GetPropertyAlignment(item.GetProperty());
+                AIRealPoint& point = point_map[place_alignement];
+                AIReal x = point.h - artboard_bounds[i].left;
+                AIReal y = point.v - artboard_bounds[i].bottom;
+
+                // Add the TeX code for this item in this artboard.
+                artboard_codes[i] += "\\node[anchor=" +
+                    L2A::UTIL::KeyToValue(TextAlignTuples(), tikz_placement, item.GetProperty().GetTextAlignment()) +
+                    ",inner sep=1pt,rotate=" + L2A::UTIL::FloatToString(item.GetAngle()) + "] at (" +
+                    L2A::UTIL::FloatToString(x / artwork_to_cm) + "," + L2A::UTIL::FloatToString(y / artwork_to_cm) +
+                    "){" + item.GetProperty().GetLaTeXCode() + "};\n";
             }
         }
-
-
-
-        // ai::ArtboardID count;
-        // result = sAIArtboard->GetCount(artboardList, count);
-        // l2a_check_ai_error(result);
-
-        // ai::ArtboardID index;
-        // result = sAIArtboard->GetActive(artboardList, index);
-        // l2a_check_ai_error(result);
-
-        // ai::ArtboardProperties artboard_poperty;
-        // result = sAIArtboard->GetArtboardProperties(artboardList, index, artboard_poperty);
-        // l2a_check_ai_error(result);
-
-        // AIRealRect bounds;
-        // result = sAIArtboard->GetPosition(artboard_poperty, bounds);
-        // l2a_check_ai_error(result);
-
-        //        int a = 1;
     }
 
 
+    // Finish up the TeX codes.
+    for (ai::ArtboardID i = 0; i < count; i++)
+    {
+        artboard_codes[i] += "\\end{tikzpicture}";
+    }
 
+    std::string temp = artboard_codes[0].as_UTF8();
+    int a = 1;
 }

@@ -144,12 +144,6 @@ namespace L2A
          */
         ItemFormReturnValues OpenUserForm(L2A::Property& input_property) const;
 
-       private:
-        /**
-         * \brief Move the placed item to a desired position.
-         */
-        void MoveItem(const AIRealPoint& position_item);
-
         /**
          * \brief Get the angle of the item along the x1 or x2 axis (director is 0 for x1 and 1 for x2).
          */
@@ -166,14 +160,20 @@ namespace L2A
         bool IsDiamond() const;
 
         /**
-         * \brief Get the strech of the item in a direction.
-         */
-        AIReal GetStrech(unsigned short director = 0) const;
-
-        /**
          * \brief Check if the item is streched.
          */
         bool IsStreched() const;
+
+       private:
+        /**
+         * \brief Move the placed item to a desired position.
+         */
+        void MoveItem(const AIRealPoint& position_item);
+
+        /**
+         * \brief Get the strech of the item in a direction.
+         */
+        AIReal GetStrech(unsigned short director = 0) const;
 
        private:
         //! Properties of this item.
