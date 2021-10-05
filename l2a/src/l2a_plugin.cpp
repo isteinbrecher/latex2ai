@@ -183,7 +183,7 @@ ASErr L2APlugin::StartupPlugin(SPInterfaceMessage* message)
 
 #ifdef _DEBUG
         // In the debug mode perform all unit tests at startup.
-        L2A::TEST::TestingMain();
+        // L2A::TEST::TestingMain();
 #endif
     }
     catch (ai::Error& ex)
