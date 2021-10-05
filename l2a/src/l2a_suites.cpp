@@ -58,6 +58,7 @@ extern "C"
     AIPathSuite* sAIPath = NULL;
     AIPathStyleSuite* sAIPathStyle = NULL;
     AILayerSuite* sAILayer = NULL;
+    AIArtboardSuite* sAIArtboard = NULL;
 }
 
 ImportSuite gImportSuites[] = {kAIToolSuite, kAIToolVersion, &sAITool, kAIUnicodeStringSuite, kAIUnicodeStringVersion,
@@ -100,5 +101,7 @@ ImportSuite gImportSuites[] = {kAIToolSuite, kAIToolVersion, &sAITool, kAIUnicod
     kAIPathStyleSuite, kAIPathStyleSuiteVersion, &sAIPathStyle,
     //
     kAILayerSuite, kAILayerSuiteVersion, &sAILayer,
+    //
+    kAIArtboardSuite, kAIArtboardSuiteVersion, &sAIArtboard,
 
     NULL, 0, NULL};

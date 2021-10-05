@@ -97,6 +97,9 @@
     <ClCompile Include="src\tests\test_forms.cpp">
       <Filter>src\test</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIArtboards.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">

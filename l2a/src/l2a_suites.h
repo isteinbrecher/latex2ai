@@ -40,6 +40,7 @@
 #include "AIIsolationMode.h"
 #include "AIAnnotator.h"
 #include "AIAnnotatorDrawer.h"
+#include "AIArtboard.h"
 
 extern "C" AIToolSuite* sAITool;
 extern "C" AIUnicodeStringSuite* sAIUnicodeString;
@@ -65,5 +66,6 @@ extern "C" AIActionManagerSuite* sAIActionManager;
 extern "C" AIPathSuite* sAIPath;
 extern "C" AIPathStyleSuite* sAIPathStyle;
 extern "C" AILayerSuite* sAILayer;
+extern "C" AIArtboardSuite* sAIArtboard;
 
 #endif  // L2A_SUITES_H_
