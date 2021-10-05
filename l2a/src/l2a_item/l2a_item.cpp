@@ -794,3 +794,8 @@ void L2A::RelinkCopiedItems()
         L2A::AI::SelectItems(selected_items_all);
     }
 }
+
+/**
+ *
+ */
+void L2A::DocumentToTikZ() {}

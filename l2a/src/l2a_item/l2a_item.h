@@ -201,5 +201,9 @@ namespace L2A
      */
     void RelinkCopiedItems();
 
+    /**
+     * \brief Convert the document to a TikZ compatible pdf and code.
+     */
+    void DocumentToTikZ();
 }  // namespace L2A
 #endif
