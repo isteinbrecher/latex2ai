@@ -73,6 +73,12 @@ namespace L2A
              * \brief Calculate the distance between two points.
              */
             AIReal GetDistance(const AIRealPoint& point_a, const AIRealPoint& point_b);
+
+            /**
+             * \brief Check if two bounding boxes overlap.
+             */
+            bool CheckBoundingBoxesOverlap(const AIRealRect& box_a, const AIRealRect& box_b);
+
         }  // namespace MATH
     }      // namespace UTIL
 }  // namespace L2A

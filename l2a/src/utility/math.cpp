@@ -46,3 +46,13 @@ AIReal L2A::UTIL::MATH::GetDistance(const AIRealPoint& point_a, const AIRealPoin
 {
     return GetNorm(point_a - point_b);
 }
+
+/**
+ *
+ */
+bool L2A::UTIL::MATH::CheckBoundingBoxesOverlap(const AIRealRect& box_a, const AIRealRect& box_b)
+{
+    bool overlap_horizontal = (box_a.left < box_b.right) && (box_a.right > box_b.left);
+    bool overlap_vertical = (box_a.bottom < box_b.top) && (box_a.top > box_b.bottom);
+    return overlap_horizontal && overlap_vertical;
+}
