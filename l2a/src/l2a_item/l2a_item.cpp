@@ -798,4 +798,102 @@ void L2A::RelinkCopiedItems()
 /**
  *
  */
-void L2A::DocumentToTikZ() {}
+void L2A::DocumentToTikZ() {
+
+
+    AIErr result;
+
+
+    // Get all artwork bounds.
+    ai::ArtboardList artboard_list;
+    result = sAIArtboard->GetArtboardList(artboard_list);
+    l2a_check_ai_error(result);
+
+    ai::ArtboardID count;
+    result = sAIArtboard->GetCount(artboard_list, count);
+    l2a_check_ai_error(result);
+
+    std::vector<AIRealRect> artboard_bounds;
+    for (ai::ArtboardID i = 0; i < count; i++)
+    {
+        ai::ArtboardProperties artboard_poperty;
+        result = sAIArtboard->GetArtboardProperties(artboard_list, i, artboard_poperty);
+        l2a_check_ai_error(result);
+
+        AIRealRect bounds;
+        result = sAIArtboard->GetPosition(artboard_poperty, bounds);
+        l2a_check_ai_error(result);
+        artboard_bounds.push_back(bounds);
+    }
+
+
+    // Loop over all L2AItems.
+    std::vector<AIArtHandle> all_items;
+    L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
+    for (auto const& item : all_items)
+    {
+        L2A::Item l2a_item(item);
+
+        std::string code = l2a_item.GetProperty().GetLaTeXCode().as_UTF8();
+
+
+
+        // Get all placement points.
+        std::vector<PlaceAlignment> alignment_vector;
+        alignment_vector.push_back(PlaceAlignment::kBotLeft);
+        alignment_vector.push_back(PlaceAlignment::kBotRight);
+        alignment_vector.push_back(PlaceAlignment::kTopRight);
+        alignment_vector.push_back(PlaceAlignment::kTopLeft);
+        std::vector<AIRealPoint> points = l2a_item.GetPosition(alignment_vector);
+
+        // Get the item bounding box.
+        AIRealRect item_bounds;
+        item_bounds.bottom = 1e10;
+        item_bounds.top = -1e10;
+        item_bounds.left = 1e10;
+        item_bounds.right = -1e10;
+        for (auto const& point : points)
+        {
+            if (point.h < item_bounds.left) item_bounds.left = point.h;
+            if (point.h > item_bounds.right) item_bounds.right = point.h;
+            if (point.v < item_bounds.bottom) item_bounds.bottom = point.v;
+            if (point.v > item_bounds.top) item_bounds.top = point.v;
+        }
+
+        // Loop over artworks and check if the item intersects one of them.
+        for (ai::ArtboardID i = 0; i < count; i++)
+        {
+            if (L2A::UTIL::MATH::CheckBoundingBoxesOverlap(artboard_bounds[i], item_bounds))
+            {
+                // Get the coordinates of the item realitve to the lower left corner of the artboard.
+                AIReal x = points[0].h - artboard_bounds[i].left;
+                AIReal y = points[0].v - artboard_bounds[i].bottom;
+
+                double artwork_to_mm = 72.0 / 25.4;
+            }
+        }
+
+
+
+        // ai::ArtboardID count;
+        // result = sAIArtboard->GetCount(artboardList, count);
+        // l2a_check_ai_error(result);
+
+        // ai::ArtboardID index;
+        // result = sAIArtboard->GetActive(artboardList, index);
+        // l2a_check_ai_error(result);
+
+        // ai::ArtboardProperties artboard_poperty;
+        // result = sAIArtboard->GetArtboardProperties(artboardList, index, artboard_poperty);
+        // l2a_check_ai_error(result);
+
+        // AIRealRect bounds;
+        // result = sAIArtboard->GetPosition(artboard_poperty, bounds);
+        // l2a_check_ai_error(result);
+
+        //        int a = 1;
+    }
+
+
+
+}
