@@ -416,16 +416,18 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
     }
     else if (message->tool == this->fToolHandle[2])
     {
-        // Open the global options dialog.
-        L2A::GlobalMutable().SetFromUserForm();
+        L2A::DocumentToTikZ();
 
-        // If a document is opend, deselect all artwork  so a call to the plugin will be given, where the tools can be
-        // deselected. And the selection tool will be activated.
-        if (L2A::AI::GetDocumentCount() > 0)
-        {
-            error = sAIMatchingArt->DeselectAll();
-            l2a_check_ai_error(error);
-        }
+        //// Open the global options dialog.
+        // L2A::GlobalMutable().SetFromUserForm();
+
+        //// If a document is opend, deselect all artwork  so a call to the plugin will be given, where the tools can be
+        //// deselected. And the selection tool will be activated.
+        // if (L2A::AI::GetDocumentCount() > 0)
+        //{
+        //    error = sAIMatchingArt->DeselectAll();
+        //    l2a_check_ai_error(error);
+        //}
     }
     else if (message->tool == this->fToolHandle[3] && L2A::AI::GetDocumentCount() > 0)
     {
