@@ -164,6 +164,16 @@ namespace L2A
          * \brief Set the working directory of the plugin.
          */
         void SetWorkingDirectory(const ai::FilePath& path);
+
+        /*
+         * \brief Encode a file to base 64.
+         */
+        std::string encode_file_base64(const ai::FilePath& path);
+
+        /*
+         * \brief Write a base64 encoded string to a file.
+         */
+        void decode_file_base64(const ai::FilePath& path, const std::string& encoded_string);
     }  // namespace UTIL
 }  // namespace L2A
 
