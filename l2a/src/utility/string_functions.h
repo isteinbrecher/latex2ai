@@ -73,6 +73,11 @@ namespace L2A
          * \brief Split string at occurences of split_string.
          */
         std::vector<ai::UnicodeString> SplitString(ai::UnicodeString& string, const ai::UnicodeString& split_string);
+
+        /**
+         * \brief Calculate a hash from a string.
+         */
+        ai::UnicodeString StringHash(const ai::UnicodeString& string);
     }  // namespace UTIL
 }  // namespace L2A
 
