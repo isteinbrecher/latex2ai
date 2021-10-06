@@ -103,6 +103,12 @@
     <ClCompile Include="src\l2a_global\l2a_version.cpp">
       <Filter>src\l2a_global</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\test_base64.cpp">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="tpl\base64\src\base64.cpp">
+      <Filter>tpl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -188,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="src\l2a_global\l2a_version.h">
       <Filter>src\l2a_global</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_base64.h">
+      <Filter>src\test</Filter>
+    </ClInclude>
+    <ClInclude Include="tpl\base64\src\base64.h">
+      <Filter>tpl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
