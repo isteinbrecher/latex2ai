@@ -118,3 +118,24 @@ L2A::ERR::Exception::Exception(
     full_error_string += error_string;
     sAIUser->MessageAlert(full_error_string);
 }
+
+/**
+ * \brief User class to obtain a vector with the current stack.
+ */
+ai::UnicodeString L2A::ERR::AIErrorCodeToString(const int& err)
+{
+    int err_local = err;
+    std::vector<char> chars(4);
+    for (unsigned int i = 0; i < 4; i++)
+    {
+        // Get the first 8 bits.
+        chars[3 - i] = err_local & 0xFF;
+
+        // Shift by 8 bits.
+        err_local >>= 8;
+    }
+
+    // Return the Illustrator error code.
+    ai::UnicodeString error_string("Ilustrator Error. Error code: ");
+    return error_string + ai::UnicodeString(chars.data(), 4);
+}
