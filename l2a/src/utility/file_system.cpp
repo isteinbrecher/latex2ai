@@ -491,15 +491,9 @@ ai::FilePath L2A::UTIL::GetFormsPath()
  */
 ai::FilePath L2A::UTIL::GetPdfFileDirectory()
 {
-    // Get the document path.
     ai::FilePath path = L2A::UTIL::GetDocumentPath();
-
-    // Check that the header directory exists.
     path = path.GetParent();
     path.AddComponent(ai::UnicodeString(L2A::NAMES::pdf_file_directory_));
-    L2A::UTIL::CreateDirectoryL2A(path);
-
-    // Return the header directory.
     return path;
 }
 
@@ -532,32 +526,6 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
     FindClose(handle);
 
     return file_vector;
-}
-
-/**
- *
- */
-unsigned int L2A::UTIL::GetNextItemIndex(ai::FilePath& next_path)
-{
-    unsigned int i = 1;
-    ai::UnicodeString document_name = GetDocumentName();
-    ai::FilePath pdf_directory = GetPdfFileDirectory();
-    ai::FilePath file;
-
-    // Loop through the header directory.
-    bool while_value = true;
-    while (while_value)
-    {
-        file = pdf_directory;
-        file.AddComponent(L2A::NAMES::GetPdfItemName(document_name, i));
-        if (IsFile(file))
-            i++;
-        else
-            while_value = false;
-    }
-
-    next_path = file;
-    return i;
 }
 
 /**

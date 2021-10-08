@@ -30,6 +30,8 @@
 #include "IllustratorSDK.h"
 #include "SDKErrors.h"
 
+#include "AIMenuCommandNotifiers.h"
+
 #include "l2a_constants.h"
 #include "l2a_plugin.h"
 #include "l2a_error/l2a_error.h"
@@ -52,7 +54,12 @@ void FixupReload(Plugin* plugin) { L2APlugin::FixupVTable((L2APlugin*)plugin); }
 /*
  */
 L2APlugin::L2APlugin(SPPluginRef pluginRef)
-    : Plugin(pluginRef), fNotifySelectionChanged(nullptr), fResourceManagerHandle(nullptr)
+    : Plugin(pluginRef),
+      fNotifySelectionChanged(nullptr),
+      fNotifyDocumentSave(nullptr),
+      fNotifyDocumentSaveAs(nullptr),
+      fNotifyDocumentOpened(nullptr),
+      fResourceManagerHandle(nullptr)
 {
     // Set the name that of this plugin in Illustrator.
     strncpy(fPluginName, L2A_PLUGIN_NAME, kMaxStringLength);
@@ -65,14 +72,11 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
 {
     ASErr error = kNoErr;
 
-    if (message->notifier == fNotifySelectionChanged)
+    try
     {
-        // Selection of art items changed in the document.
-
-        try
+        if (message->notifier == fNotifySelectionChanged)
         {
-            // Check if new l2a items were copied into this document. If so, new pdf files will be created for them.
-            L2A::RelinkCopiedItems();
+            // Selection of art items changed in the document.
 
             // Invalidate the entire document view bounds.
             annotator_->InvalAnnotation();
@@ -89,10 +93,16 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
                 change_item.Change();
             }
         }
-        catch (L2A::ERR::Exception&)
+        else if (message->notifier == fNotifyDocumentOpened || message->notifier == fNotifyDocumentSave ||
+            message->notifier == fNotifyDocumentSaveAs)
         {
-            sAIUser->MessageAlert(ai::UnicodeString("L2APlugin::Notify Error caught."));
+            L2A::AI::UndoActivate();
+            L2A::CheckItemDataStructure();
         }
+    }
+    catch (L2A::ERR::Exception&)
+    {
+        sAIUser->MessageAlert(ai::UnicodeString("L2APlugin::Notify Error caught."));
     }
 
     // Check which tool is selected.
@@ -377,6 +387,16 @@ ASErr L2APlugin::AddNotifier(SPInterfaceMessage* /*message*/)
     {
         result = sAINotifier->AddNotifier(
             fPluginRef, L2A_PLUGIN_NAME, kAIArtSelectionChangedNotifier, &fNotifySelectionChanged);
+        aisdk::check_ai_error(result);
+        result =
+            sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAISaveCommandPreNotifierStr, &fNotifyDocumentSave);
+        aisdk::check_ai_error(result);
+        aisdk::check_ai_error(result);
+        result = sAINotifier->AddNotifier(
+            fPluginRef, L2A_PLUGIN_NAME, kAISaveAsCommandPostNotifierStr, &fNotifyDocumentSaveAs);
+        aisdk::check_ai_error(result);
+        result =
+            sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAIDocumentOpenedNotifier, &fNotifyDocumentOpened);
         aisdk::check_ai_error(result);
     }
     catch (ai::Error& ex)
