@@ -141,6 +141,9 @@ void L2A::AI::SetPlacedItemPath(AIArtHandle& placed_item, const ai::FilePath& pa
     AIErr error;
     error = sAIPlaced->SetPlacedFileSpecification(placed_item, path);
     l2a_check_ai_error(error);
+    AIBoolean item_is_updated;
+    error = sAIArt->UpdateArtworkLink(placed_item, true, &item_is_updated);
+    l2a_check_ai_error(error);
 }
 
 /**
@@ -294,7 +297,7 @@ bool L2A::AI::IsL2AItem(const AIArtHandle& item)
     ai::UnicodeString item_name = GetName(item);
 
     // Check if the name is the one of an L2A item.
-    if (L2A::UTIL::StartsWith(item_name, ai::UnicodeString(L2A::NAMES::ai_item_name_prefix_)))
+    if (L2A::UTIL::StartsWith(item_name, ai::UnicodeString(L2A::NAMES::ai_item_name_)))
         return true;
     else
         return false;
@@ -539,9 +542,8 @@ void L2A::AI::SaveToPDF()
     l2a_check_ai_error(result);
     if (is_modified)
     {
-        AIAnswer save = sAIUser->YesNoAlert(ai::UnicodeString(
-            "The curent document is not saved. It is advisable to save the document before exporting to pdf."));
-        if (save == AIAnswer::kAIAnswer_Yes)
+        if (YesNoAlert(ai::UnicodeString(
+                "The curent document is not saved. It is advisable to save the document before exporting to pdf.")))
         {
             AIDocumentHandle doc;
             result = sAIDocument->GetDocument(&doc);
@@ -968,4 +970,16 @@ bool L2A::AI::GetLockedInsertionPoint()
     AIErr error = sAIArt->GetInsertionPointForCurrentDrawingMode(&art, &paintorder, &editable);
     l2a_check_ai_error(error);
     return !editable;
+}
+
+/**
+ *
+ */
+bool L2A::AI::YesNoAlert(const ai::UnicodeString& message)
+{
+    AIAnswer ans = sAIUser->YesNoAlert(message);
+    if (ans == AIAnswer::kAIAnswer_Yes)
+        return true;
+    else
+        return false;
 }

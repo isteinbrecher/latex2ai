@@ -151,11 +151,6 @@ namespace L2A
         std::vector<ai::FilePath> FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& pattern);
 
         /**
-         * \brief Get the index of the next available l2a pdf file for the current document.
-         */
-        unsigned int GetNextItemIndex(ai::FilePath& next_path);
-
-        /**
          * \brief Return the full file path for a given path. This also resolves ".." inside the file path.
          */
         ai::FilePath GetFullFilePath(const ai::FilePath& path);
