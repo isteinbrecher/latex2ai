@@ -1,0 +1,94 @@
+% -----------------------------------------------------------------------------
+% MIT License
+%
+% Copyright (c) 2020 Ivo Steinbrecher
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included in
+% all copies or substantial portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
+% -----------------------------------------------------------------------------
+
+% DO NOT change the document class
+\documentclass[class=scrartcl]{standalone}
+\KOMAoptions{fontsize=11pt}
+\usepackage{amsmath}
+
+% All items can be scaled using this variable. This variable HAS to be defined (default 1).
+\newcommand{\itemscalefactor}{2}
+
+% Add needed packages and macros here:
+
+
+% Encoding options
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% to create the line for baseline placement so Illustrator does not crop the pdf
+\usepackage{tikz}
+
+% dimensions for tikzpicture
+\newlength\maxheight
+\newlength\diffheight
+
+% configuration for standalone package
+\standaloneconfig{border=0pt, multi}
+
+% standalone environment
+\newenvironment{lta}{\ignorespaces}{\ignorespacesafterend}
+\standaloneenv{lta}
+
+% environment for standard placement
+\newcommand{\LaTeXtoAI}[1]{%
+    \begin{lta}%
+        \scalebox{\itemscalefactor}{#1}%
+    \end{lta}%
+}
+
+% environment for baseline placement
+\newbox\ltabox
+\newcommand{\LaTeXtoAIbase}[1]{
+	\begin{lta}
+	    \scalebox{\itemscalefactor}{%
+		\setbox\ltabox\hbox{%
+            #1%
+        }%
+        \begin{tikzpicture}[baseline={(current bounding box.center)}]%
+            \pgfmathsetlength{\maxheight}{max(\ht\ltabox,\dp\ltabox)+1pt};
+            \pgfmathsetlength{\diffheight}{0.01pt};
+            \draw [line width=0.5\diffheight, opacity=0, draw=white](0,\maxheight-\diffheight) --(0,\maxheight);%
+            \draw [line width=0.5\diffheight, opacity=0, draw=white](0,-\maxheight+\diffheight) --(0,-\maxheight);%
+        \end{tikzpicture}%
+        \unhbox\ltabox}%
+	\end{lta}%
+}
+
+
+
+
+\begin{document}
+
+\begin{lta}%
+\begin{tikzpicture}%
+\begin{scope}[cm={2,0,1,2,(0,0)}] % Sets the coordinate trafo matrix entries.
+\node[inner sep=0pt,transform shape]{\begin{tikzpicture}\node[inner sep=1pt]{ABC};\end{tikzpicture}};
+\end{scope}
+\end{tikzpicture}%
+\end{lta}
+
+\LaTeXtoAI{ABC}
+
+\end{document}
