@@ -127,15 +127,18 @@ void L2A::TEST::UTIL::UnitTest::CompareRect(const AIRealRect& val1, const AIReal
 /**
  *
  */
-void L2A::TEST::UTIL::UnitTest::PrintTestSummary()
+void L2A::TEST::UTIL::UnitTest::PrintTestSummary(const bool print_status)
 {
-    ai::UnicodeString summary_string("");
-    summary_string += "Performed ";
-    summary_string += L2A::UTIL::IntegerToString(test_count_);
-    summary_string += " tests\n";
-    summary_string += L2A::UTIL::IntegerToString(test_count_passed_);
-    summary_string += " passed\n";
-    summary_string += L2A::UTIL::IntegerToString(test_count_ - test_count_passed_);
-    summary_string += " failed";
-    sAIUser->MessageAlert(summary_string);
+    if (print_status)
+    {
+        ai::UnicodeString summary_string("");
+        summary_string += "Performed ";
+        summary_string += L2A::UTIL::IntegerToString(test_count_);
+        summary_string += " tests\n";
+        summary_string += L2A::UTIL::IntegerToString(test_count_passed_);
+        summary_string += " passed\n";
+        summary_string += L2A::UTIL::IntegerToString(test_count_ - test_count_passed_);
+        summary_string += " failed";
+        sAIUser->MessageAlert(summary_string);
+    }
 }

@@ -41,7 +41,7 @@
 /**
  *
  */
-void L2A::TEST::TestingMain()
+void L2A::TEST::TestingMain(const bool print_status)
 {
     // Create the testing object.
     L2A::TEST::UTIL::UnitTest ut;
@@ -53,13 +53,13 @@ void L2A::TEST::TestingMain()
     L2A::TEST::TestForms(ut);
 
     // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary();
+    ut.PrintTestSummary(print_status);
 }
 
 /**
  *
  */
-void L2A::TEST::TestFramework()
+void L2A::TEST::TestFramework(const bool print_status)
 {
     // Create the testing object.
     L2A::TEST::UTIL::UnitTest ut;
@@ -68,5 +68,5 @@ void L2A::TEST::TestFramework()
     L2A::TEST::TestFramework(ut);
 
     // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary();
+    ut.PrintTestSummary(print_status);
 }
