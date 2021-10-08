@@ -109,6 +109,9 @@
     <ClCompile Include="tpl\base64\src\base64.cpp">
       <Filter>tpl</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\test_base64.cpp">
+      <Filter>src\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="tpl\base64\src\base64.h">
       <Filter>tpl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_base64.h">
+      <Filter>src\test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
