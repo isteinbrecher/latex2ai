@@ -165,6 +165,11 @@ namespace L2A
          */
         void SetWorkingDirectory(const ai::FilePath& path);
 
+        /**
+         * \brief Check if two file paths point to the same file object.
+         */
+        bool IsEqualFile(const ai::FilePath& path_a, const ai::FilePath& path_b);
+
         /*
          * \brief Encode a file to base 64.
          */
