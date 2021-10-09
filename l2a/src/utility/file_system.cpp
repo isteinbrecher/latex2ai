@@ -577,6 +577,16 @@ void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
     std::filesystem::current_path(path.GetFullPath().as_UTF8());
 }
 
+/**
+ *
+ */
+bool L2A::UTIL::IsEqualFile(const ai::FilePath& path_a, const ai::FilePath& path_b)
+{
+    // TODO: This function returns false if the files are equal and one of the paths points to a network folder and the
+    // other one to a mounted drive.
+    return path_a.Equal(path_b, true);
+}
+
 /*
  *
  */
