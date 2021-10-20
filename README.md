@@ -145,6 +145,7 @@ A few things to keep in mind:
     - Fix bug when saving a PDF for an unsaved AI document.
   - Other:
     - Improve output message for Illustrator errors.
+    - Multiple images are now split with a single call to ghostscript.
 - **v0.0.5**
   - Other:
     - Support Illustrator 2017
