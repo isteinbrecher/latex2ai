@@ -141,52 +141,34 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
     if (!L2A::UTIL::IsFile(pdf_file))
         l2a_error("The file to split up '" + pdf_file.GetFullPath() + "' does not exits!");
 
-    // Ghostscript path.
-    ai::UnicodeString gs_path("\"");
-    gs_path += L2A::Global().command_gs_;
-    gs_path += ai::UnicodeString("\"");
-
-    // Get name and folder of pdf file.
-    ai::UnicodeString split_pdf_name = pdf_file.GetFileNameNoExt();
+    // Get name and folder of the pdf file.
+    ai::UnicodeString split_pdf_name = pdf_file.GetFileName();
+    ai::UnicodeString split_pdf_name_no_ext = pdf_file.GetFileNameNoExt();
     ai::FilePath pdf_folder = pdf_file.GetParent();
-    ai::FilePath batch_file = pdf_folder;
-    batch_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_split_batch_name_));
     ai::FilePath pdf_pages = pdf_folder;
-    pdf_pages.AddComponent(split_pdf_name);
+    pdf_pages.AddComponent(split_pdf_name_no_ext);
 
-    // Delete existing files.
+    // Delete existing files for the individual pages.
     for (unsigned int i = 1; i <= n_pages; i++)
     {
         ai::UnicodeString file_name = pdf_pages.GetFullPath();
         file_name += ai::UnicodeString("_");
-        file_name += L2A::UTIL::IntegerToString(i, 3);
+        file_name += L2A::UTIL::IntegerToString(i);
         file_name += ai::UnicodeString(".pdf");
         L2A::UTIL::RemoveFile(ai::FilePath(file_name), false);
     }
 
-    // Create string for system to execute.
-    ai::UnicodeString command("");
-    for (unsigned int i = 1; i <= n_pages; i++)
-    {
-        command += gs_path;
-        command += ai::UnicodeString(" -dBATCH -dSAFER -dNOPAUSE -dFirstPage=");
-        command += L2A::UTIL::IntegerToString(i);
-        command += ai::UnicodeString(" -dLastPage=");
-        command += L2A::UTIL::IntegerToString(i);
-        command += ai::UnicodeString(" -sDEVICE=pdfwrite -o \"");
-        command += pdf_pages.GetFullPath();
-        command += ai::UnicodeString("_");
-        command += L2A::UTIL::IntegerToString(i, 3);
-        command += ai::UnicodeString(".pdf\" \"");
-        command += pdf_file.GetFullPath();
-        command += ai::UnicodeString("\"\n");
-    }
+    // Get the ghostscript command to split the pdf.
+    ai::UnicodeString gs_command("\"");
+    gs_command += L2A::Global().command_gs_;
+    gs_command += "\" -sDEVICE=pdfwrite -o ";
+    gs_command += split_pdf_name_no_ext;
+    gs_command += "_%d.pdf ";
+    gs_command += split_pdf_name;
 
-    // Write command to batch file.
-    L2A::UTIL::WriteFileUTF8(batch_file, command, true);
-
-    // Execute batch file.
-    L2A::UTIL::ExecuteFile(batch_file);
+    // Call the command to split up the pdf file.
+    L2A::UTIL::SetWorkingDirectory(pdf_folder);
+    std::system(gs_command.as_UTF8().c_str());
 
     // Get vector of pdf files for the single items.
     std::vector<ai::FilePath> pdf_files;
@@ -194,7 +176,7 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
     {
         ai::UnicodeString file_name = pdf_pages.GetFullPath();
         file_name += ai::UnicodeString("_");
-        file_name += L2A::UTIL::IntegerToString(i, 3);
+        file_name += L2A::UTIL::IntegerToString(i);
         file_name += ai::UnicodeString(".pdf");
         pdf_files.push_back(ai::FilePath(file_name));
 

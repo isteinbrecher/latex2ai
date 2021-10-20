@@ -484,3 +484,11 @@ ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
     std::filesystem::path path_std = path.GetFullPath().as_Platform();
     return ai::FilePath(ai::UnicodeString(std::filesystem::absolute(path_std).string()));
 }
+
+/**
+ *
+ */
+void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
+{
+    std::filesystem::current_path(path.GetFullPath().as_UTF8());
+}

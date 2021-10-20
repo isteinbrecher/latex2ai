@@ -146,6 +146,11 @@ namespace L2A
          * \brief Return the full file path for a given path. This also resolves ".." inside the file path.
          */
         ai::FilePath GetFullFilePath(const ai::FilePath& path);
+
+        /**
+         * \brief Set the working directory of the plugin.
+         */
+        void SetWorkingDirectory(const ai::FilePath& path);
     }  // namespace UTIL
 }  // namespace L2A
 
