@@ -50,7 +50,7 @@
 bool L2A::UTIL::IsFile(const ai::FilePath& file)
 {
     bool is_file = false;
-    bool exists = file.Exists(true, NULL, &is_file);
+    bool exists = file.Exists(true, nullptr, &is_file);
     return (exists && is_file);
 }
 
@@ -60,7 +60,7 @@ bool L2A::UTIL::IsFile(const ai::FilePath& file)
 bool L2A::UTIL::IsDirectory(const ai::FilePath& directory)
 {
     bool is_file = true;
-    bool exists = directory.Exists(true, NULL, &is_file);
+    bool exists = directory.Exists(true, nullptr, &is_file);
     return (exists && (!is_file));
 }
 
@@ -185,7 +185,7 @@ void L2A::UTIL::CreateDirectoryL2A(const ai::FilePath& directory)
     for (size_t i = 0; i < n_parts; i++)
     {
         path.AddComponent(parts[n_parts - i - 1]);
-        CreateDirectory(path.GetFullPath().as_Platform().c_str(), NULL);
+        CreateDirectory(path.GetFullPath().as_Platform().c_str(), nullptr);
     }
 }
 
@@ -221,7 +221,7 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
 ai::FilePath L2A::UTIL::GetApplicationDataDirectory()
 {
     TCHAR pathBuffer[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, pathBuffer)))
+    if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_LOCAL_APPDATA, nullptr, 0, pathBuffer)))
         return ai::FilePath(ai::UnicodeString(pathBuffer));
     else
         l2a_error("The application data directory could not be retrieved!");
@@ -264,8 +264,8 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
     PROCESS_INFORMATION processInformation = {0};
     STARTUPINFO startupInfo = {0};
     startupInfo.cb = sizeof(startupInfo);
-    BOOL result = CreateProcess(NULL, (char*)(cmdLine.c_str()), NULL, NULL, FALSE,
-        NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, NULL, NULL, &startupInfo, &processInformation);
+    BOOL result = CreateProcess(nullptr, (char*)(cmdLine.c_str()), nullptr, nullptr, FALSE,
+        NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, nullptr, nullptr, &startupInfo, &processInformation);
 
     // Check if the process could be created.
     if (!result)
@@ -273,8 +273,8 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
         // Get the error from the system
         LPVOID lpMsgBuf;
         DWORD dw = GetLastError();
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL,
-            dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, NULL);
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+            nullptr, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, nullptr);
 
         // Display the error
         // CString strError = (LPTSTR) lpMsgBuf;
@@ -328,7 +328,7 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
 {
     // Get the path to the programs folder.
     TCHAR pathBuffer[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PROGRAM_FILES, NULL, 0, pathBuffer)))
+    if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_PROGRAM_FILES, nullptr, 0, pathBuffer)))
     {
         ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
         program_folder.AddComponent(ai::UnicodeString("gs"));

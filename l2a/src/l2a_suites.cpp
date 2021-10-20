@@ -33,31 +33,31 @@
 
 extern "C"
 {
-    AIToolSuite* sAITool = NULL;
-    AIUnicodeStringSuite* sAIUnicodeString = NULL;
-    AIPluginSuite* sAIPlugin = NULL;
-    SPBlocksSuite* sSPBlocks = NULL;
-    AIStringFormatUtilsSuite* sAIStringFormatUtils = NULL;
+    AIToolSuite* sAITool = nullptr;
+    AIUnicodeStringSuite* sAIUnicodeString = nullptr;
+    AIPluginSuite* sAIPlugin = nullptr;
+    SPBlocksSuite* sSPBlocks = nullptr;
+    AIStringFormatUtilsSuite* sAIStringFormatUtils = nullptr;
 
     // Non default suites needed for L2A.
-    AIDocumentSuite* sAIDocument = NULL;
-    AIDocumentListSuite* sAIDocumentList = NULL;
-    AIPlacedSuite* sAIPlaced = NULL;
-    AIArtSuite* sAIArt = NULL;
-    AIRealMathSuite* sAIRealMath = NULL;
-    AITransformArtSuite* sAITransformArt = NULL;
-    AIIsolationModeSuite* sAIIsolationMode = NULL;
-    AIMatchingArtSuite* sAIMatchingArt = NULL;
-    AIMdMemorySuite* sAIMdMemorySuite = NULL;
-    AIUndoSuite* sAIUndo = NULL;
-    AIAnnotatorSuite* sAIAnnotator = NULL;
-    AIAnnotatorDrawerSuite* sAIAnnotatorDrawer = NULL;
-    AIDocumentViewSuite* sAIDocumentView = NULL;
-    AIHitTestSuite* sAIHitTest = NULL;
-    AIActionManagerSuite* sAIActionManager = NULL;
-    AIPathSuite* sAIPath = NULL;
-    AIPathStyleSuite* sAIPathStyle = NULL;
-    AILayerSuite* sAILayer = NULL;
+    AIDocumentSuite* sAIDocument = nullptr;
+    AIDocumentListSuite* sAIDocumentList = nullptr;
+    AIPlacedSuite* sAIPlaced = nullptr;
+    AIArtSuite* sAIArt = nullptr;
+    AIRealMathSuite* sAIRealMath = nullptr;
+    AITransformArtSuite* sAITransformArt = nullptr;
+    AIIsolationModeSuite* sAIIsolationMode = nullptr;
+    AIMatchingArtSuite* sAIMatchingArt = nullptr;
+    AIMdMemorySuite* sAIMdMemorySuite = nullptr;
+    AIUndoSuite* sAIUndo = nullptr;
+    AIAnnotatorSuite* sAIAnnotator = nullptr;
+    AIAnnotatorDrawerSuite* sAIAnnotatorDrawer = nullptr;
+    AIDocumentViewSuite* sAIDocumentView = nullptr;
+    AIHitTestSuite* sAIHitTest = nullptr;
+    AIActionManagerSuite* sAIActionManager = nullptr;
+    AIPathSuite* sAIPath = nullptr;
+    AIPathStyleSuite* sAIPathStyle = nullptr;
+    AILayerSuite* sAILayer = nullptr;
 }
 
 ImportSuite gImportSuites[] = {kAIToolSuite, kAIToolVersion, &sAITool, kAIUnicodeStringSuite, kAIUnicodeStringVersion,
@@ -101,4 +101,4 @@ ImportSuite gImportSuites[] = {kAIToolSuite, kAIToolVersion, &sAITool, kAIUnicod
     //
     kAILayerSuite, kAILayerSuiteVersion, &sAILayer,
 
-    NULL, 0, NULL};
+    nullptr, 0, nullptr};

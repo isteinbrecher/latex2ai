@@ -43,7 +43,7 @@
 /**
  * Set the global variable to a null pointer.
  */
-L2A::GLOBAL::Global* L2A::GLOBAL::_l2a_global = NULL;
+L2A::GLOBAL::Global* L2A::GLOBAL::_l2a_global = nullptr;
 
 /**
  *
@@ -104,7 +104,7 @@ void L2A::GLOBAL::Global::SetUp()
             ai::UnicodeString form_string(
                 "The path to the forms executable could not be found. Please select the path, otherwise LaTeX2AI can "
                 "not be used!");
-            form_result = sAIUser->OKCancelAlert(form_string, true, NULL);
+            form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
             if (!form_result) return;
 
             // Ask the user to pick the file.
@@ -288,7 +288,7 @@ void L2A::GLOBAL::Global::GetParameterListForForm(std::shared_ptr<L2A::UTIL::Par
  */
 void L2A::GLOBAL::CheckGlobal()
 {
-    if (_l2a_global == NULL) l2a_error("The global object is not defined!");
+    if (_l2a_global == nullptr) l2a_error("The global object is not defined!");
 }
 
 /**

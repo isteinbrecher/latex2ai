@@ -272,7 +272,7 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                         ai::UnicodeString form_string("");
                         form_string += "The debug folder \"" + debug_directory.GetFullPath() +
                             "\" and its contents will be delete in this process. Do you want to continue?";
-                        form_result = sAIUser->OKCancelAlert(form_string, true, NULL);
+                        form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
 
                         if (!form_result)
                             // Do not create the folder and open the main debug form again.
@@ -288,8 +288,8 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                     sAIUser->MessageAlert("The debug files were created in \"" + debug_directory.GetFullPath() + "\"");
 
                     // Open explorer in the debug folder.
-                    ShellExecute(
-                        NULL, "open", debug_directory.GetFullPath().as_Platform().c_str(), NULL, NULL, SW_SHOWDEFAULT);
+                    ShellExecute(nullptr, "open", debug_directory.GetFullPath().as_Platform().c_str(), nullptr, nullptr,
+                        SW_SHOWDEFAULT);
                 }
                 else
                     // The user wants to redo the item.
