@@ -594,7 +594,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
     }
 
     // Deactivate the global testing mode.
-    L2A::GlobalMutable().testing_form_return_parameter_list_ = NULL;
+    L2A::GlobalMutable().testing_form_return_parameter_list_ = nullptr;
     L2A::GlobalMutable().is_testing_ = false;
 }
 

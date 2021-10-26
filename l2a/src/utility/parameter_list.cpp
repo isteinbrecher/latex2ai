@@ -65,12 +65,12 @@ L2A::UTIL::ParameterList::ParameterList(const tinyxml2::XMLElement* xml_element)
 void L2A::UTIL::ParameterList::SetFromXML(const tinyxml2::XMLElement* xml_element)
 {
     // Loop overchild elements.
-    for (const tinyxml2::XMLElement* child = xml_element->FirstChildElement(); child != NULL;
+    for (const tinyxml2::XMLElement* child = xml_element->FirstChildElement(); child != nullptr;
          child = child->NextSiblingElement())
         SetSubList(ai::UnicodeString(child->Name()), std::make_shared<ParameterList>(child), true);
 
     // Loop over options and set them.
-    for (const tinyxml2::XMLAttribute* attr = xml_element->FirstAttribute(); attr != NULL; attr = attr->Next())
+    for (const tinyxml2::XMLAttribute* attr = xml_element->FirstAttribute(); attr != nullptr; attr = attr->Next())
     {
         // If the option string contains line breaks, the forms applications returns them as \r\n line breaks instead
         // of \n line breaks. This is replaced here.
