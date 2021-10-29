@@ -52,7 +52,7 @@ void TestErrorCodeConversion(L2A::TEST::UTIL::UnitTest& ut)
 void L2A::TEST::TestUtilityFunctions(L2A::TEST::UTIL::UnitTest& ut)
 {
     // Set test name.
-    ut.SetTestName(ai::UnicodeString("StringFunctions"));
+    ut.SetTestName(ai::UnicodeString("TestUtilityFunctions"));
 
     // Call the individual tests
     TestErrorCodeConversion(ut);
