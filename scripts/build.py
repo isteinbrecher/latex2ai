@@ -144,8 +144,8 @@ def correct_git_state(repository_dir, git_info_other):
         # We are in a clean state and the version does not match, so pull
         # the new version.
         os.chdir(repository_dir)
-        subprocess.call(['git', 'fetch', 'origin'])
-        subprocess.call(['git', 'fetch', 'origin', '--tags'])
+        subprocess.call(['git', 'fetch', '--all'])
+        subprocess.call(['git', 'fetch', '--all', '--tags'])
         subprocess.call(['git', 'checkout', git_info_other])
         git_info = get_git_tag_or_hash()
         if not git_info == git_info_other:

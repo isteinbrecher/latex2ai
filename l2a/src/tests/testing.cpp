@@ -30,11 +30,12 @@
 #include "IllustratorSDK.h"
 #include "testing.h"
 
-#include "test_utlity.h"
+#include "testing_utlity.h"
 #include "test_parameter_list.h"
 #include "test_string_functions.h"
 #include "test_file_system.h"
 #include "test_framework.h"
+#include "test_utlity.h"
 #include "test_forms.h"
 
 
@@ -50,6 +51,7 @@ void L2A::TEST::TestingMain(const bool print_status)
     L2A::TEST::TestParameterList(ut);
     L2A::TEST::TestStringFunctions(ut);
     L2A::TEST::TestFileSystem(ut);
+    L2A::TEST::TestUtilityFunctions(ut);
     L2A::TEST::TestForms(ut);
 
     // Print the testing summary. For now this is deactivated.

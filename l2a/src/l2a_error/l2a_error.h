@@ -79,6 +79,10 @@ namespace L2A
          */
         ai::UnicodeString AIErrorCodeToString(const int& err);
 
+        /**
+         * \brief Convert the Illustrator integer error to 4 characters.
+         */
+        ai::UnicodeString AIErrorCodeToErrorString(const int& err);
     }  // namespace ERR
 }  // namespace L2A
 
@@ -93,6 +97,6 @@ namespace L2A
  * \brief This macro checks the AI error code and throws an L2A error if something went wrong.
  */
 #define l2a_check_ai_error(err) \
-    if (err) l2a_error(L2A::ERR::AIErrorCodeToString(err))
+    if (err) l2a_error(L2A::ERR::AIErrorCodeToErrorString(err))
 
 #endif  // L2A_ERROR_H_

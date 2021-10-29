@@ -237,6 +237,7 @@
     <ClCompile Include="src\tests\test_framework.cpp" />
     <ClCompile Include="src\tests\test_parameter_list.cpp" />
     <ClCompile Include="src\tests\test_string_functions.cpp" />
+    <ClCompile Include="src\tests\testing_utility.cpp" />
     <ClCompile Include="src\tests\test_utility.cpp" />
     <ClCompile Include="src\utility\file_system.cpp" />
     <ClCompile Include="src\utility\math.cpp" />
@@ -272,6 +273,7 @@
     <ClInclude Include="src\tests\test_framework.h" />
     <ClInclude Include="src\tests\test_parameter_list.h" />
     <ClInclude Include="src\tests\test_string_functions.h" />
+    <ClInclude Include="src\tests\testing_utlity.h" />
     <ClInclude Include="src\tests\test_utlity.h" />
     <ClInclude Include="src\utility\file_system.h" />
     <ClInclude Include="src\utility\parameter_list.h" />
