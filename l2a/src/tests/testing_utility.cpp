@@ -28,7 +28,7 @@
 
 
 #include "IllustratorSDK.h"
-#include "test_utlity.h"
+#include "testing_utlity.h"
 
 #include "utility/string_functions.h"
 #include "l2a_constants.h"
