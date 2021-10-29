@@ -1,17 +1,20 @@
-# Hidden files.
+# Hidden files
 .*
 
-# Visual Studio files.
+# Visual Studio files
 .vs/*
 */.vs/*
 
-# Automatically generated files.
+# Automatically generated files
 auto_generated/
 scripts/executables/
 
-# Forms binaries.
-forms/bin/*
-forms/obj/*
-
 # Python folders
 */__pycache__/*
+
+# TeX files
+*.aux
+*.log
+*.pdf
+*.synctex.gz
+
