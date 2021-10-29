@@ -30,7 +30,7 @@
 #include "IllustratorSDK.h"
 #include "test_parameter_list.h"
 
-#include "test_utlity.h"
+#include "testing_utlity.h"
 #include "../utility/parameter_list.h"
 
 

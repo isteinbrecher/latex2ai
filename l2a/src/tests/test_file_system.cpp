@@ -30,7 +30,7 @@
 #include "IllustratorSDK.h"
 #include "test_file_system.h"
 
-#include "test_utlity.h"
+#include "testing_utlity.h"
 #include "../utility/file_system.h"
 
 /**
