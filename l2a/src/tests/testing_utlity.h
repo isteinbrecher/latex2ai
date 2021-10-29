@@ -86,7 +86,7 @@ namespace L2A
                 /**
                  * \brief Print summary of the tests.
                  */
-                void PrintTestSummary();
+                void PrintTestSummary(const bool print_status);
 
                private:
                 //! Name of the current test.
