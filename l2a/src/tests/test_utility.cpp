@@ -23,52 +23,37 @@
 // -----------------------------------------------------------------------------
 
 /**
- * \brief Main function for testing.
+ * \brief Test utility functions.
  */
 
 
 #include "IllustratorSDK.h"
-#include "testing.h"
+#include "test_utlity.h"
 
 #include "testing_utlity.h"
-#include "test_parameter_list.h"
-#include "test_string_functions.h"
-#include "test_file_system.h"
-#include "test_framework.h"
-#include "test_utlity.h"
-#include "test_forms.h"
-
+#include "l2a_error/l2a_error.h"
 
 /**
  *
  */
-void L2A::TEST::TestingMain()
+void TestErrorCodeConversion(L2A::TEST::UTIL::UnitTest& ut)
 {
-    // Create the testing object.
-    L2A::TEST::UTIL::UnitTest ut;
-
-    // Call the individual testing functions.
-    L2A::TEST::TestParameterList(ut);
-    L2A::TEST::TestStringFunctions(ut);
-    L2A::TEST::TestFileSystem(ut);
-    L2A::TEST::TestUtilityFunctions(ut);
-    L2A::TEST::TestForms(ut);
-
-    // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary();
+    int code = 'SHRT';
+    ut.CompareStr(L2A::ERR::AIErrorCodeToString(code), ai::UnicodeString("SHRT"));
+    code = 'ORD?';
+    ut.CompareStr(L2A::ERR::AIErrorCodeToString(code), ai::UnicodeString("ORD?"));
+    code = '~VAT';
+    ut.CompareStr(L2A::ERR::AIErrorCodeToString(code), ai::UnicodeString("~VAT"));
 }
 
 /**
  *
  */
-void L2A::TEST::TestFramework()
+void L2A::TEST::TestUtilityFunctions(L2A::TEST::UTIL::UnitTest& ut)
 {
-    // Create the testing object.
-    L2A::TEST::UTIL::UnitTest ut;
+    // Set test name.
+    ut.SetTestName(ai::UnicodeString("StringFunctions"));
 
-    // Call the framework test.
-    L2A::TEST::TestFramework(ut);
-
-    // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary();
+    // Call the individual tests
+    TestErrorCodeConversion(ut);
 }

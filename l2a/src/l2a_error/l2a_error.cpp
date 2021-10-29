@@ -120,7 +120,7 @@ L2A::ERR::Exception::Exception(
 }
 
 /**
- * \brief User class to obtain a vector with the current stack.
+ *
  */
 ai::UnicodeString L2A::ERR::AIErrorCodeToString(const int& err)
 {
@@ -136,6 +136,15 @@ ai::UnicodeString L2A::ERR::AIErrorCodeToString(const int& err)
     }
 
     // Return the Illustrator error code.
+    return ai::UnicodeString(chars.data(), 4);
+}
+
+/**
+ *
+ */
+ai::UnicodeString L2A::ERR::AIErrorCodeToErrorString(const int& err)
+{
     ai::UnicodeString error_string("Ilustrator Error. Error code: ");
-    return error_string + ai::UnicodeString(chars.data(), 4);
+    error_string += AIErrorCodeToString(err);
+    return error_string;
 }

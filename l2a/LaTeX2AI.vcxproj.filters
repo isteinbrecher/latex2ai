@@ -97,6 +97,9 @@
     <ClCompile Include="src\tests\testing_utility.cpp">
       <Filter>src\test</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\test_utility.cpp">
+      <Filter>src\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -175,6 +178,9 @@
       <Filter>src\test</Filter>
     </ClInclude>
     <ClInclude Include="src\tests\testing_utlity.h">
+      <Filter>src\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_utlity.h">
       <Filter>src\test</Filter>
     </ClInclude>
   </ItemGroup>

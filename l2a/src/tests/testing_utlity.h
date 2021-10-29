@@ -26,8 +26,8 @@
  * \brief Utility functions for testing.
  */
 
-#ifndef TEST_UTILITY_H_
-#define TEST_UTILITY_H_
+#ifndef TESTING_UTILITY_H_
+#define TESTING_UTILITY_H_
 
 
 #include "IllustratorSDK.h"

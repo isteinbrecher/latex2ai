@@ -23,52 +23,38 @@
 // -----------------------------------------------------------------------------
 
 /**
- * \brief Main function for testing.
+ * \brief Test utility functions.
  */
+
+#ifndef TEST_UTILITY_H_
+#define TEST_UTILITY_H_
 
 
 #include "IllustratorSDK.h"
-#include "testing.h"
-
-#include "testing_utlity.h"
-#include "test_parameter_list.h"
-#include "test_string_functions.h"
-#include "test_file_system.h"
-#include "test_framework.h"
-#include "test_utlity.h"
-#include "test_forms.h"
 
 
-/**
- *
- */
-void L2A::TEST::TestingMain()
+// Forward declarations.
+namespace L2A
 {
-    // Create the testing object.
-    L2A::TEST::UTIL::UnitTest ut;
+    namespace TEST
+    {
+        namespace UTIL
+        {
+            class UnitTest;
+        }
+    }  // namespace TEST
+}  // namespace L2A
 
-    // Call the individual testing functions.
-    L2A::TEST::TestParameterList(ut);
-    L2A::TEST::TestStringFunctions(ut);
-    L2A::TEST::TestFileSystem(ut);
-    L2A::TEST::TestUtilityFunctions(ut);
-    L2A::TEST::TestForms(ut);
 
-    // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary();
-}
-
-/**
- *
- */
-void L2A::TEST::TestFramework()
+namespace L2A
 {
-    // Create the testing object.
-    L2A::TEST::UTIL::UnitTest ut;
+    namespace TEST
+    {
+        /**
+         * \brief Test utility functions.
+         */
+        void TestUtilityFunctions(L2A::TEST::UTIL::UnitTest& ut);
+    }  // namespace TEST
+}  // namespace L2A
 
-    // Call the framework test.
-    L2A::TEST::TestFramework(ut);
-
-    // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary();
-}
+#endif
