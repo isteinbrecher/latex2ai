@@ -1,4 +1,5 @@
-# LaTeX2AI
+![LaTeX2AI](/logo/logo_black.png?raw=true)
+
 LaTeX2AI is a plugin for Adobe Illustrator that enables the use of text labels typeset in LaTeX inside an Illustrator document.
 Currently LaTeX2AI supports:
 - Illustrator CS6 (tested)
