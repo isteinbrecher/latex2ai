@@ -64,10 +64,11 @@ def get_all_source_files():
     out, _err = process.communicate()
     files = out.decode('UTF-8').strip().split('\n')
 
-    source_line_endings = ['.py', '.cs', '.cpp', '.h', '.rc', '.bat']
+    source_line_endings = ['.py', '.cs', '.cpp', '.h', '.rc', '.bat', '.sh',
+        '.tex']
     source_ending_types = {'.py': 'py', '.cs': 'c', '.cpp': 'c', '.h': 'c',
-        '.rc': 'c', '.bat': 'bat'}
-    source_files = {'py': [], 'c': [], 'bat': []}
+        '.rc': 'c', '.bat': 'bat', '.sh': 'sh', '.tex': 'tex'}
+    source_files = {'py': [], 'c': [], 'bat': [], 'sh': [], 'tex': []}
     for file in files:
         extension = os.path.splitext(file)[1]
         if extension not in source_line_endings:
@@ -92,6 +93,9 @@ def license_to_source(license_text, source_type):
         comment = '//'
     elif source_type == 'bat':
         comment = '@REM'
+    elif source_type == 'sh':
+        header = '#! /bin/bash'
+        comment = '#'
     elif source_type == 'tex':
         comment = '%'
     else:
