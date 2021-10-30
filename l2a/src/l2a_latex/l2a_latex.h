@@ -108,11 +108,6 @@ namespace L2A
         ai::FilePath GetHeaderPath(const bool create_default_if_not_exist = true);
 
         /**
-         * \brief Get the license information for tex files.
-         */
-        ai::UnicodeString GetTexLicense();
-
-        /**
          * \brief Get the header as a string, wehre all inputs are resoved.
          */
         ai::UnicodeString GetHeaderWithIncludedInputs(const ai::FilePath& header_path);

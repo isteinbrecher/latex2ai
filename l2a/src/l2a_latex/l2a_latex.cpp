@@ -30,6 +30,7 @@
 #include "IllustratorSDK.h"
 #include "l2a_latex.h"
 
+#include "auto_generated/tex.h"
 #include "utility/string_functions.h"
 #include "utility/file_system.h"
 #include "utility/parameter_list.h"
@@ -45,69 +46,15 @@
  */
 ai::UnicodeString L2A::LATEX::GetLatexString(const ai::UnicodeString& latex_code)
 {
-    // Create the latex code.
-    ai::UnicodeString temp = GetTexLicense();
-    temp += "\n% include the packages defined by the user\n";
-    temp += "\\input{";
-    temp += ai::UnicodeString(L2A::NAMES::tex_header_name_);
-    temp += "}\n";
-    temp += "\n";
-    temp += "% Encoding options\n";
-    temp += "\\usepackage[utf8]{inputenc}\n";
-    temp += "\\usepackage[T1]{fontenc}\n";
-    temp += "\n";
-    temp += "% to create the line for baseline placement so Illustrator does not crop the pdf\n";
-    temp += "\\usepackage{tikz}\n";
-    temp += "\n";
-    temp += "% dimensions for tikzpicture\n";
-    temp += "\\newlength\\maxheight\n";
-    temp += "\\newlength\\diffheight\n";
-    temp += "\n";
-    temp += "% configuration for standalone package\n";
-    temp += "\\standaloneconfig{border=1pt, multi}\n";
-    temp += "\n";
-    temp += "% standalone environment\n";
-    temp += "\\newenvironment{lta}{\\ignorespaces}{\\ignorespacesafterend}\n";
-    temp += "\\standaloneenv{lta}\n";
-    temp += "\n";
-    temp += "% environment for standard placement\n";
-    temp += "\\newcommand{\\LaTeXtoAI}[1]{%\n";
-    temp += "    \\begin{lta}%\n";
-    temp += "        \\scalebox{\\itemscalefactor}{#1}%\n";
-    temp += "    \\end{lta}%\n";
-    temp += "}\n";
-    temp += "\n";
-    temp += "% environment for baseline placement\n";
-    temp += "\\newbox\\ltabox\n";
-    temp += "\\newcommand{\\LaTeXtoAIbase}[1]{\n";
-    temp += "	\\begin{lta}\n";
-    temp += "	    \\scalebox{\\itemscalefactor}{%\n";
-    temp += "		\\setbox\\ltabox\\hbox{%\n";
-    temp += "            #1%\n";
-    temp += "        }%\n";
-    temp += "        \\begin{tikzpicture}[baseline={(current bounding box.center)}]%\n";
-    temp += "            \\pgfmathsetlength{\\maxheight}{max(\\ht\\ltabox,\\dp\\ltabox)+1pt};\n";
-    temp += "            \\pgfmathsetlength{\\diffheight}{0.01pt};\n";
-    temp +=
-        "            \\draw [line width=0.5\\diffheight, opacity=0, draw=white](0,\\maxheight-\\diffheight) "
-        "--(0,\\maxheight);%\n";
-    temp +=
-        "            \\draw [line width=0.5\\diffheight, opacity=0, draw=white](0,-\\maxheight+\\diffheight) "
-        "--(0,-\\maxheight);%\n";
-    temp += "        \\end{tikzpicture}%\n";
-    temp += "        \\unhbox\\ltabox}%\n";
-    temp += "	\\end{lta}%\n";
-    temp += "}\n";
-    temp += "\n";
-    temp += "\\begin{document}\n";
+    // Get the latex code.
+    ai::UnicodeString code(L2A_LATEX_ITEM_);
 
-    // Add the 'real' code.
-    temp += latex_code;
+    // Replace placeholders.
+    L2A::UTIL::StringReplaceAll(
+        code, ai::UnicodeString("{tex_header_name}"), ai::UnicodeString(L2A::NAMES::tex_header_name_));
+    L2A::UTIL::StringReplaceAll(code, ai::UnicodeString("{latex_code}"), ai::UnicodeString(latex_code));
 
-    // Finish latex document.
-    temp += "\n\\end{document}";
-
-    return temp;
+    return code;
 }
 
 /**
@@ -317,18 +264,7 @@ ai::FilePath L2A::LATEX::WriteLatexFiles(const ai::UnicodeString& latex_code, co
 /**
  *
  */
-ai::UnicodeString L2A::LATEX::GetDefaultHeader()
-{
-    ai::UnicodeString header = GetTexLicense();
-    header += "\n% DO NOT change the document class\n";
-    header += "\\documentclass[class=scrartcl]{standalone}\n";
-    header += "\\KOMAoptions{fontsize=11pt}\n";
-    header += "\\usepackage{amsmath}\n\n";
-    header += "% All items can be scaled using this variable. This variable HAS to be defined (default 1).\n";
-    header += "\\newcommand{\\itemscalefactor}{1}\n\n";
-    header += "% Add needed packages and macros here:\n";
-    return header;
-}
+ai::UnicodeString L2A::LATEX::GetDefaultHeader() { return ai::UnicodeString(L2A_LATEX_HEADER_); }
 
 /**
  *
@@ -349,11 +285,6 @@ ai::FilePath L2A::LATEX::GetHeaderPath(const bool create_default_if_not_exist)
 
     return path;
 }
-
-/**
- *
- */
-ai::UnicodeString L2A::LATEX::GetTexLicense() { return ai::UnicodeString(L2A::LICENSE::tex_license_); }
 
 /**
  *

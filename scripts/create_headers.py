@@ -31,6 +31,7 @@ Create the header containing version information of the plugin.
 import sys
 import subprocess
 import os
+import shutil
 from check_license import (get_license_text, license_to_source,
     get_repository_dir)
 
@@ -47,15 +48,10 @@ def get_git_sha():
     return out.decode('UTF-8').strip()
 
 
-def create_cpp_headers():
+def create_cpp_version_headers(dir_path, license_c):
     """
-    Create the headers for the c++ files.
+    Create the header containing the version definitions.
     """
-
-    # Create the headers.
-    license_text = get_license_text()
-    license_c = license_to_source(license_text, 'c')
-    license_tex = license_to_source(license_text, 'tex')
 
     version_lines = [
         '\n',
@@ -67,35 +63,65 @@ def create_cpp_headers():
         ''
         ]
 
-    license_lines = [
-        '\n',
-        '// Automatic generated header with license information.',
-        '#ifndef LICENSE_H_',
-        '#define LICENSE_H_',
-        'namespace L2A',
-        '{',
-        '  namespace LICENSE',
-        '  {',
-        '    static const char* tex_license_ ='
-        ]
-    for line in license_tex.split('\n'):
-        license_lines.append('      "{}\\n"'.format(line.replace('"', '\\"')))
-    license_lines[-1] = license_lines[-1] + ';'
-    license_lines.extend([
-        '  }',
-        '}',
-        '#endif',
-        ''])
-
-    # If it does not exist, create the directory for the header.
-    dir_path = os.path.join(get_repository_dir(), 'l2a/src/auto_generated')
-    os.makedirs(dir_path, exist_ok=True)
-
-    # The script is caled form the base repository directory.
+    # The script is called form the base repository directory.
     with open(os.path.join(dir_path, 'version.h'), 'w') as version_header:
         version_header.write(license_c + '\n'.join(version_lines))
-    with open(os.path.join(dir_path, 'license.h'), 'w') as license_header:
-        license_header.write(license_c + '\n'.join(license_lines))
+
+
+def create_cpp_tex_headers(dir_path, license_c):
+    """
+    Create the header containing the TeX definitions.
+    """
+
+    def load_tex_code(file_name):
+        """Load the TeX code from the templates."""
+        tex_path = os.path.join('..', 'tex', file_name)
+        with open(tex_path) as tex_file:
+            return (tex_file.read().strip()
+                ).replace('\\', '\\\\'
+                ).replace('"', '\\"')
+
+    # Get the LaTeX codes.
+    header_code = load_tex_code('LaTeX2AI_header.tex')
+    item_code = load_tex_code('LaTeX2AI_item.tex')
+
+    tex_lines = [
+        '\n',
+        '// Automatic generated header with TeX code.',
+        '#ifndef TEX_H_',
+        '#define TEX_H_',
+        '',
+        '#define L2A_LATEX_HEADER_ \\',
+        '  "' + '\\n"\\\n  "'.join(header_code.split('\n')) + '"',
+        '',
+        '#define L2A_LATEX_ITEM_ \\',
+        '  "' + '\\n"\\\n  "'.join(item_code.split('\n')) + '"',
+        '#endif',
+        ''
+        ]
+
+    # The script is called form the base repository directory.
+    with open(os.path.join(dir_path, 'tex.h'), 'w') as tex_header:
+        tex_header.write(license_c + '\n'.join(tex_lines))
+
+
+def create_cpp_headers():
+    """
+    Create the C++ headers.
+    """
+
+    # Get the license text.
+    license_text = get_license_text()
+    license_c = license_to_source(license_text, 'c')
+
+    # Clean the directory for the automatic generated headers.
+    dir_path = os.path.join(get_repository_dir(), 'l2a/src/auto_generated')
+    if os.path.exists(dir_path):
+        shutil.rmtree(dir_path)
+    os.makedirs(dir_path)
+
+    create_cpp_version_headers(dir_path, license_c)
+    create_cpp_tex_headers(dir_path, license_c)
 
 
 def create_cs_headers():
