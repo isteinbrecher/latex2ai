@@ -23,14 +23,15 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
-# Create the icon pdfs
-pdflatex icon_l2a.tex
-pdflatex icon_forms.tex
+# Create the logo and icon pdf
+pdflatex logo_icon.tex
 
 # Convert the pdf into pngs
 # -r = [png pixel size] / [size in mm] / 10 / 2.54
-gs -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o icon.png icon_l2a.pdf
-gs -sDEVICE=pngalpha -dTextAlphaBits=4 -r1250 -o icon_256.png icon_forms.pdf
+gs -dFirstPage=1 -dLastPage=1 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo_black.png logo_icon.pdf
+gs -dFirstPage=2 -dLastPage=2 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo_color.png logo_icon.pdf
+gs -dFirstPage=3 -dLastPage=3 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo_square.png logo_icon.pdf
+gs -dFirstPage=4 -dLastPage=4 -sDEVICE=pngalpha -dTextAlphaBits=4 -r1250 -o icon_256.png logo_icon.pdf
 
 # Create the icon file
 convert icon_256.png -define icon:auto-resize=256,64,48,32,16 icon_forms.ico
