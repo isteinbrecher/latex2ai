@@ -22,7 +22,10 @@
 % SOFTWARE.
 % -----------------------------------------------------------------------------
 
-\documentclass[border=0mm]{standalone}
+\documentclass[multi,border=0mm]{standalone}
+
+\newenvironment{lta}{\ignorespaces}{\ignorespacesafterend}
+\standaloneenv{lta}
 
 \usepackage{sourcesanspro}
 \usepackage{tikz}
@@ -31,13 +34,50 @@
 \definecolor{back}{cmyk}{0,0.5,1,0.85}
 \definecolor{yel}{cmyk}{0,0.5,1,0}
 
+% Full LaTeX2AI text
+\newcommand{\latextoai}{\LaTeX{}2\sffamily\bfseries{Ai}}
+
+% Half sizes for the icon
+\newcommand{\widthHalf}{23pt}
+\newcommand{\heightHalf}{7pt}
+
+% Half size for the square icons
 \newcommand{\sizeHalf}{7pt}
 
 \begin{document}
+
+% LaTeX2AI logo
+\begin{lta}
+\begin{tikzpicture}
+\node [anchor=base,inner sep=1pt](L) at (0pt,-3pt) {\textcolor{black}{\latextoai}};
+\end{tikzpicture}%
+\end{lta}
+
+% LaTeX2AI icon
+\begin{lta}
+\begin{tikzpicture}
+\draw [yel,fill=back,thick] (-\widthHalf,-\heightHalf) rectangle (\widthHalf,\heightHalf);
+\node [anchor=base,inner sep=0pt](L) at (0pt,-3pt) {\textcolor{yel}{\latextoai}};
+\end{tikzpicture}%
+\end{lta}
+
+% Large square icon
+\begin{lta}
+\begin{tikzpicture}
+\draw [yel,fill=back,thick] (-\sizeHalf,-\sizeHalf) rectangle (\sizeHalf,\sizeHalf);
+\node [anchor=base,inner sep=0pt](L) at (-3pt,-3pt) {\textcolor{yel}{$L$}};
+\node [anchor=base,inner sep=0pt] (two) at (-0.5pt,0pt) {\tiny\textcolor{yel}{2}};
+\node [anchor=base,inner sep=0pt] (A) at (3pt,-3pt) {\sffamily \bfseries \textcolor{yel}{A}};
+\end{tikzpicture}%
+\end{lta}
+
+% Small square icon
+\begin{lta}
 \begin{tikzpicture}
 \draw [yel,fill=back,thick] (-\sizeHalf,-\sizeHalf) rectangle (\sizeHalf,\sizeHalf);
 \node [anchor=base,inner sep=0pt](L) at (-3.25pt,-3pt) {\textcolor{yel}{\bfseries \textit{L}}};
-%\node [anchor=base,inner sep=0pt] (two) at (-0.5pt,0pt) {\tiny\textcolor{yel}{2}};
 \node [anchor=base,inner sep=0pt] (A) at (3pt,-3pt) {\sffamily \bfseries \textcolor{yel}{A}};
-\end{tikzpicture}
+\end{tikzpicture}%
+\end{lta}
+
 \end{document}
