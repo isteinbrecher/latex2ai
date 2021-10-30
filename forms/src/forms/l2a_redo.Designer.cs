@@ -52,7 +52,6 @@ namespace L2A.FORMS
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Redo));
             this.check_box_latex = new System.Windows.Forms.CheckBox();
             this.check_box_boundary = new System.Windows.Forms.CheckBox();
             this.button_ok = new System.Windows.Forms.Button();
@@ -162,7 +161,6 @@ namespace L2A.FORMS
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Redo";
