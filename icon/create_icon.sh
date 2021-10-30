@@ -30,7 +30,9 @@ pdflatex icon_forms.tex
 # Convert the pdf into pngs
 # -r = [png pixel size] / [size in mm] / 10 / 2.54
 gs -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o icon.png icon_l2a.pdf
-gs -sDEVICE=pngalpha -dTextAlphaBits=4 -r1250 -o icon_256.png icon_forms.tex.pdf
+gs -sDEVICE=pngalpha -dTextAlphaBits=4 -r1250 -o icon_256.png icon_forms.pdf
 
 # Create the icon file
-convert icon_256.png -define icon:auto-resize=256,64,48,32,16 latex2ai_forms_icon.ico
+convert icon_256.png -define icon:auto-resize=256,64,48,32,16 icon_forms.ico
+rm icon_256.png
+mv icon_forms.ico ../forms/

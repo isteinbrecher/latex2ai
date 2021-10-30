@@ -52,7 +52,6 @@ namespace L2A.FORMS
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Item));
             this.button_cancel = new System.Windows.Forms.Button();
             this.button_ok = new System.Windows.Forms.Button();
             this.pos_11 = new System.Windows.Forms.RadioButton();
@@ -390,7 +389,6 @@ namespace L2A.FORMS
             this.Controls.Add(this.group_text);
             this.Controls.Add(this.group_type);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Item";
             this.Text = "LaTeX2AI Create Item";
