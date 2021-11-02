@@ -147,6 +147,7 @@ A few things to keep in mind:
   - Other:
     - Improve output message for Illustrator errors.
     - Multiple images are now split with a single call to ghostscript.
+    - Add logo.
 - **v0.0.5**
   - Other:
     - Support Illustrator 2017
