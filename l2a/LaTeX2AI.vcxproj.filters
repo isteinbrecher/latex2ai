@@ -100,6 +100,9 @@
     <ClCompile Include="src\tests\test_utility.cpp">
       <Filter>src\test</Filter>
     </ClCompile>
+    <ClCompile Include="src\l2a_global\l2a_version.cpp">
+      <Filter>src\l2a_global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="src\tests\test_utlity.h">
       <Filter>src\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_global\l2a_version.h">
+      <Filter>src\l2a_global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
