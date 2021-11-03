@@ -38,7 +38,10 @@
 #include "l2a_forms/l2a_forms.h"
 #include "l2a_latex/l2a_latex.h"
 #include "l2a_constants.h"
+#include "l2a_version.h"
 
+#include "../tpl/json/single_include/nlohmann/json.hpp"
+using json = nlohmann::json;
 
 /**
  * Set the global variable to a null pointer.
@@ -59,6 +62,9 @@ L2A::GLOBAL::Global::~Global()
  */
 void L2A::GLOBAL::Global::SetUp()
 {
+    // Check if a new version of LaTeX2AI is available.
+    L2A::GLOBAL::CheckGithubVersion();
+
     // Get default parameter list.
     std::shared_ptr<L2A::UTIL::ParameterList> default_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
     GetDefaultParameterList(default_parameter_list);
@@ -258,6 +264,7 @@ void L2A::GLOBAL::Global::GetParameterListForForm(std::shared_ptr<L2A::UTIL::Par
     std::shared_ptr<L2A::UTIL::ParameterList> default_list =
         form_parameter_list->SetSubList(ai::UnicodeString("default_options"));
     GetDefaultParameterList(default_list);
+    form_parameter_list->SetOption(ai::UnicodeString("version"), ai::UnicodeString(L2A_VERSION_STRING_));
     form_parameter_list->SetOption(ai::UnicodeString("git_sha"), ai::UnicodeString(L2A_VERSION_GIT_SHA_HEAD_));
     {
         // Add the header path.

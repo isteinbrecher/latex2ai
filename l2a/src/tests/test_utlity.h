@@ -54,6 +54,11 @@ namespace L2A
          * \brief Test utility functions.
          */
         void TestUtilityFunctions(L2A::TEST::UTIL::UnitTest& ut);
+
+        /**
+         * \brief Test utility functions.
+         */
+        void TestVersion(L2A::TEST::UTIL::UnitTest& ut);
     }  // namespace TEST
 }  // namespace L2A
 

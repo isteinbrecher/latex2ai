@@ -145,6 +145,7 @@ A few things to keep in mind:
   - Bug fixes:
     - Fix bug when saving a PDF for an unsaved AI document.
   - Other:
+    - LaTeX2AI now checks on startup if new releases are published on GitHub.
     - Improve output message for Illustrator errors.
     - Multiple images are now split with a single call to ghostscript.
     - Add logo.

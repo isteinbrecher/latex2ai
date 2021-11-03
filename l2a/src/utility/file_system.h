@@ -111,6 +111,12 @@ namespace L2A
         int ExecuteCommandLine(const ai::UnicodeString& command);
 
         /**
+         * \brief Execute a command line. Return the exit code and the comand output.
+         */
+        int ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeString& command_output,
+            const unsigned long max_time_ms = INFINITE);
+
+        /**
          * \brief Execute a file on disc.
          */
         int ExecuteFile(const ai::FilePath& file_path);

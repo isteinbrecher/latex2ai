@@ -183,6 +183,7 @@
     <ClCompile Include="src\l2a_error\l2a_error.cpp" />
     <ClCompile Include="src\l2a_forms\l2a_forms.cpp" />
     <ClCompile Include="src\l2a_global\l2a_global.cpp" />
+    <ClCompile Include="src\l2a_global\l2a_version.cpp" />
     <ClCompile Include="src\l2a_item\l2a_item.cpp" />
     <ClCompile Include="src\l2a_latex\l2a_latex.cpp" />
     <ClCompile Include="src\l2a_plugin.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="src\l2a_error\l2a_error.h" />
     <ClInclude Include="src\l2a_forms\l2a_forms.h" />
     <ClInclude Include="src\l2a_global\l2a_global.h" />
+    <ClInclude Include="src\l2a_global\l2a_version.h" />
     <ClInclude Include="src\l2a_item\l2a_item.h" />
     <ClInclude Include="src\l2a_latex\l2a_latex.h" />
     <ClInclude Include="src\l2a_names.h" />
