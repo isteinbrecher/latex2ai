@@ -51,7 +51,14 @@ namespace L2A.FORMS
             // Store the default list.
             default_list_ = parameter_list.sub_lists_["default_options"];
 
-            // Set the git sha.
+            // Set the version and the git sha.
+            version.Text = parameter_list.options_["version"];
+            version.ReadOnly = true;
+            version.BorderStyle = 0;
+            version.BackColor = BackColor;
+            version.TabStop = false;
+            version.TextAlign = HorizontalAlignment.Right;
+
             git_sha.Text = parameter_list.options_["git_sha"];
             git_sha.ReadOnly = true;
             git_sha.BorderStyle = 0;

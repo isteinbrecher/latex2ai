@@ -258,6 +258,7 @@ void L2A::GLOBAL::Global::GetParameterListForForm(std::shared_ptr<L2A::UTIL::Par
     std::shared_ptr<L2A::UTIL::ParameterList> default_list =
         form_parameter_list->SetSubList(ai::UnicodeString("default_options"));
     GetDefaultParameterList(default_list);
+    form_parameter_list->SetOption(ai::UnicodeString("version"), ai::UnicodeString(L2A_VERSION_STRING_));
     form_parameter_list->SetOption(ai::UnicodeString("git_sha"), ai::UnicodeString(L2A_VERSION_GIT_SHA_HEAD_));
     {
         // Add the header path.
