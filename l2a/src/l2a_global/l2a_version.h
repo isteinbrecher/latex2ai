@@ -76,6 +76,11 @@ namespace L2A
             //! Integer to store the version number [major, minor, patch]. For each version number 8 bits are used.
             unsigned int version_;
         };
+
+        /**
+         * \brief Check if the current version is up to date with the GitHub version.
+         */
+        void CheckGithubVersion();
     }  // namespace GLOBAL
 }  // namespace L2A
 

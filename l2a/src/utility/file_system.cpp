@@ -262,7 +262,8 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
 /**
  *
  */
-int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeString& command_output)
+int L2A::UTIL::ExecuteCommandLine(
+    const ai::UnicodeString& command, ai::UnicodeString& command_output, const unsigned long max_time_ms)
 {
     // This code is mainly a combination of
     // https://www.codeproject.com/Tips/333559/CreateProcess-and-wait-for-result
@@ -312,7 +313,7 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeS
     else
     {
         // Successfully created the process.  Wait for it to finish.
-        WaitForSingleObject(processInformation.hProcess, INFINITE);
+        WaitForSingleObject(processInformation.hProcess, max_time_ms);
 
         // Get the exit code.
         DWORD exitCode;

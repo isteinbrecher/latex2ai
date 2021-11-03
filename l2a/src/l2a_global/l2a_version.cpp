@@ -30,8 +30,11 @@
 #include "IllustratorSDK.h"
 #include "l2a_version.h"
 
+#include "l2a_constants.h"
 #include "l2a_error/l2a_error.h"
 #include "utility/string_functions.h"
+#include "utility/file_system.h"
+#include "../tpl/json/single_include/nlohmann/json.hpp"
 
 
 /**
@@ -99,4 +102,51 @@ void L2A::GLOBAL::Version::SetVersion(const unsigned int version, const size_t v
 
     // Set the current bits.
     version_ |= ((version & 0xff) << 8 * (2 - version_type));
+}
+
+/**
+ *
+ */
+void L2A::GLOBAL::CheckGithubVersion()
+{
+    try
+    {
+        // Get the packages in the GitHub repository.
+        ai::UnicodeString command("curl -s https://api.github.com/repos/latex2ai/latex2ai/releases");
+        ai::UnicodeString result;
+
+        // TODO: The call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
+        // 500ms. Check if we can to this without the specified maximum time.
+        L2A::UTIL::ExecuteCommandLine(command, result, 500);
+        std::string curl_output = result.as_UTF8();
+        if (curl_output == "") return;
+
+        // Convert the string to a json object.
+        using json = nlohmann::json;
+        auto github_releases = json::parse(curl_output);
+
+        // Get the version tags.
+        std::vector<L2A::GLOBAL::Version> github_versions;
+        for (auto& [key, value] : github_releases.items())
+            if (value.contains("tag_name"))
+                github_versions.push_back(L2A::GLOBAL::Version(value["tag_name"].get<std::string>()));
+
+        // Get the current version.
+        auto newest_version = max_element(std::begin(github_versions), std::end(github_versions))._Ptr;
+        L2A::GLOBAL::Version current_version(L2A_VERSION_STRING_);
+        if (current_version < *newest_version)
+        {
+            ai::UnicodeString message_string("The new LaTeX2AI version v");
+            message_string += newest_version->ToString();
+            message_string += " is available at GitHub. The currently used version is v";
+            message_string += current_version.ToString() + ".";
+            sAIUser->MessageAlert(message_string);
+        }
+    }
+    catch (...)
+    {
+#ifdef _DEBUG
+        sAIUser->MessageAlert(ai::UnicodeString("Error in CheckGithubVersion"));
+#endif
+    }
 }
