@@ -50,7 +50,7 @@
 bool L2A::UTIL::IsFile(const ai::FilePath& file)
 {
     bool is_file = false;
-    bool exists = file.Exists(true, NULL, &is_file);
+    bool exists = file.Exists(true, nullptr, &is_file);
     return (exists && is_file);
 }
 
@@ -60,7 +60,7 @@ bool L2A::UTIL::IsFile(const ai::FilePath& file)
 bool L2A::UTIL::IsDirectory(const ai::FilePath& directory)
 {
     bool is_file = true;
-    bool exists = directory.Exists(true, NULL, &is_file);
+    bool exists = directory.Exists(true, nullptr, &is_file);
     return (exists && (!is_file));
 }
 
@@ -185,7 +185,7 @@ void L2A::UTIL::CreateDirectoryL2A(const ai::FilePath& directory)
     for (size_t i = 0; i < n_parts; i++)
     {
         path.AddComponent(parts[n_parts - i - 1]);
-        CreateDirectory(path.GetFullPath().as_Platform().c_str(), NULL);
+        CreateDirectory(path.GetFullPath().as_Platform().c_str(), nullptr);
     }
 }
 
@@ -221,7 +221,7 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
 ai::FilePath L2A::UTIL::GetApplicationDataDirectory()
 {
     TCHAR pathBuffer[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, pathBuffer)))
+    if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_LOCAL_APPDATA, nullptr, 0, pathBuffer)))
         return ai::FilePath(ai::UnicodeString(pathBuffer));
     else
         l2a_error("The application data directory could not be retrieved!");
@@ -254,18 +254,42 @@ ai::UnicodeString L2A::UTIL::GetDocumentName() { return GetDocumentPath(false).G
  *
  */
 int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
-{  // This code is mainly from
+{
+    ai::UnicodeString unused_variable;
+    return ExecuteCommandLine(command, unused_variable);
+}
+
+/**
+ *
+ */
+int L2A::UTIL::ExecuteCommandLine(
+    const ai::UnicodeString& command, ai::UnicodeString& command_output, const unsigned long max_time_ms)
+{
+    // This code is mainly a combination of
     // https://www.codeproject.com/Tips/333559/CreateProcess-and-wait-for-result
+    // https://docs.microsoft.com/en-us/windows/win32/procthread/creating-a-child-process-with-redirected-input-and-output
 
     // Convert the string to platform text.
     std::string cmdLine = command.as_Platform();
+    // cmdLine = "pdflatex -v";
+    SECURITY_ATTRIBUTES saAttr;
+    saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+    saAttr.bInheritHandle = TRUE;
+    saAttr.lpSecurityDescriptor = nullptr;
+    HANDLE g_hChildStd_OUT_Rd = nullptr;
+    HANDLE g_hChildStd_OUT_Wr = nullptr;
+    if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) l2a_error("StdoutRd CreatePipe");
+    if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0)) l2a_error("Stdout SetHandleInformation");
 
     // Create the process.
     PROCESS_INFORMATION processInformation = {0};
     STARTUPINFO startupInfo = {0};
     startupInfo.cb = sizeof(startupInfo);
-    BOOL result = CreateProcess(NULL, (char*)(cmdLine.c_str()), NULL, NULL, FALSE,
-        NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, NULL, NULL, &startupInfo, &processInformation);
+    startupInfo.hStdError = g_hChildStd_OUT_Wr;
+    startupInfo.hStdOutput = g_hChildStd_OUT_Wr;
+    startupInfo.dwFlags |= STARTF_USESTDHANDLES;
+    BOOL result = CreateProcess(nullptr, (char*)(cmdLine.c_str()), nullptr, nullptr, TRUE,
+        NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, nullptr, nullptr, &startupInfo, &processInformation);
 
     // Check if the process could be created.
     if (!result)
@@ -273,8 +297,8 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
         // Get the error from the system
         LPVOID lpMsgBuf;
         DWORD dw = GetLastError();
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL,
-            dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, NULL);
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+            nullptr, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, nullptr);
 
         // Display the error
         // CString strError = (LPTSTR) lpMsgBuf;
@@ -289,7 +313,7 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
     else
     {
         // Successfully created the process.  Wait for it to finish.
-        WaitForSingleObject(processInformation.hProcess, INFINITE);
+        WaitForSingleObject(processInformation.hProcess, max_time_ms);
 
         // Get the exit code.
         DWORD exitCode;
@@ -298,8 +322,28 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
         // Close the handles.
         CloseHandle(processInformation.hProcess);
         CloseHandle(processInformation.hThread);
+        CloseHandle(g_hChildStd_OUT_Wr);
+
+        // Read the output from the command.
+        DWORD dwRead;
+        static const int BUFSIZE = 4096;
+        CHAR chBuf[BUFSIZE];
+        BOOL bSuccess = FALSE;
+        std::string result_string = "";
+
+        for (;;)
+        {
+            bSuccess = ReadFile(g_hChildStd_OUT_Rd, chBuf, BUFSIZE, &dwRead, NULL);
+            if (!bSuccess || dwRead == 0) break;
+
+            std::string s(chBuf, dwRead);
+            result_string += s;
+        }
 
         if (!result) l2a_error("Executed command but couldn't get exit code.");
+
+        // Convert comman output to unicode string.
+        command_output = ai::UnicodeString(result_string);
 
         // Everything succeeded and return the exit code.
         return (int)exitCode;
@@ -328,7 +372,7 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
 {
     // Get the path to the programs folder.
     TCHAR pathBuffer[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PROGRAM_FILES, NULL, 0, pathBuffer)))
+    if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_PROGRAM_FILES, nullptr, 0, pathBuffer)))
     {
         ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
         program_folder.AddComponent(ai::UnicodeString("gs"));
@@ -483,4 +527,12 @@ ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
 {
     std::filesystem::path path_std = path.GetFullPath().as_Platform();
     return ai::FilePath(ai::UnicodeString(std::filesystem::absolute(path_std).string()));
+}
+
+/**
+ *
+ */
+void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
+{
+    std::filesystem::current_path(path.GetFullPath().as_UTF8());
 }

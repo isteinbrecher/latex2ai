@@ -38,7 +38,7 @@
 /**
  *
  */
-L2A::Annotator::Annotator(SPInterfaceMessage* message) : cursor_item_(NULL)
+L2A::Annotator::Annotator(SPInterfaceMessage* message) : cursor_item_(nullptr)
 {
     ASErr error = kNoErr;
 
@@ -153,15 +153,15 @@ bool L2A::Annotator::CheckForArtHit(AIToolMessage* message)
     if (!IsActive()) l2a_error("Annotator has to be active.");
 
     // Check if cursor is over any art.
-    AIHitRef hitRef = NULL;
+    AIHitRef hitRef = nullptr;
     AIToolHitData toolHitData;
-    result = sAIHitTest->HitTest(NULL, &message->cursor, kAllHitRequest, &hitRef);
+    result = sAIHitTest->HitTest(nullptr, &message->cursor, kAllHitRequest, &hitRef);
     l2a_check_ai_error(result);
     result = sAIHitTest->GetHitData(hitRef, &toolHitData);
     l2a_check_ai_error(result);
 
     // Check if the item is a L2AItem.
-    if (toolHitData.hit && toolHitData.object != NULL && L2A::AI::IsL2AItem(toolHitData.object))
+    if (toolHitData.hit && toolHitData.object != nullptr && L2A::AI::IsL2AItem(toolHitData.object))
     {
         // Set the last art item to hit.
         cursor_item_ = toolHitData.object;
@@ -169,7 +169,7 @@ bool L2A::Annotator::CheckForArtHit(AIToolMessage* message)
     }
     else
     {
-        cursor_item_ = NULL;
+        cursor_item_ = nullptr;
         return false;
     }
 }
@@ -195,7 +195,7 @@ void L2A::Annotator::InvalAnnotation(AIAnnotatorMessage* message) const
     AIRect inval_rect = L2A::AI::ArtworkBoundsToViewBounds(*message->invalidationRects);
 
     // Invalidate the rect bounds so it is redrawn.
-    AIErr result = sAIAnnotator->InvalAnnotationRect(NULL, &inval_rect);
+    AIErr result = sAIAnnotator->InvalAnnotationRect(nullptr, &inval_rect);
     l2a_check_ai_error(result);
 }
 
@@ -206,11 +206,11 @@ void L2A::Annotator::InvalAnnotation() const
 {
     // Get the bounds of the current document view.
     AIRealRect view_bounds = {0, 0, 0, 0};
-    AIErr result = sAIDocumentView->GetDocumentViewBounds(NULL, &view_bounds);
+    AIErr result = sAIDocumentView->GetDocumentViewBounds(nullptr, &view_bounds);
     l2a_check_ai_error(result);
 
     // Invalidate the rect bounds so it is redrawn.
     AIRect inval_rect = L2A::AI::ArtworkBoundsToViewBounds(view_bounds);
-    result = sAIAnnotator->InvalAnnotationRect(NULL, &inval_rect);
+    result = sAIAnnotator->InvalAnnotationRect(nullptr, &inval_rect);
     l2a_check_ai_error(result);
 }

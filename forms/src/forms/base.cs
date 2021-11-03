@@ -52,6 +52,9 @@ namespace L2A.FORMS
 
             // Create an empty parameter list with values to return.
             return_parameter_list_ = new L2A.UTIL.ParameterList();
+
+            // Set the icon.
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         }
 
         public virtual void ThisFormClosed(object sender, FormClosedEventArgs e)

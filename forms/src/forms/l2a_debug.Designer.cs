@@ -117,7 +117,7 @@ namespace L2A.FORMS
             this.button_ok.Location = new System.Drawing.Point(12, 181);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(173, 23);
-            this.button_ok.TabIndex = 35;
+            this.button_ok.TabIndex = 0;
             this.button_ok.Text = "Re edit the LaTeX code";
             this.button_ok.UseVisualStyleBackColor = true;
             this.button_ok.Click += new System.EventHandler(this.OkClick);
@@ -134,6 +134,7 @@ namespace L2A.FORMS
             // 
             // Debug
             // 
+            this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(375, 214);

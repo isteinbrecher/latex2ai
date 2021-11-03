@@ -4,3 +4,6 @@
 [submodule "l2a/tpl/StackWalker"]
 	path = l2a/tpl/StackWalker
 	url = https://github.com/JochenKalmbach/StackWalker.git
+[submodule "l2a/tpl/json"]
+	path = l2a/tpl/json
+	url = https://github.com/nlohmann/json.git

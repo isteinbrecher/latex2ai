@@ -52,7 +52,7 @@ void FixupReload(Plugin* plugin) { L2APlugin::FixupVTable((L2APlugin*)plugin); }
 /*
  */
 L2APlugin::L2APlugin(SPPluginRef pluginRef)
-    : Plugin(pluginRef), fNotifySelectionChanged(NULL), fResourceManagerHandle(NULL)
+    : Plugin(pluginRef), fNotifySelectionChanged(nullptr), fResourceManagerHandle(nullptr)
 {
     // Set the name that of this plugin in Illustrator.
     strncpy(fPluginName, L2A_PLUGIN_NAME, kMaxStringLength);
@@ -183,7 +183,8 @@ ASErr L2APlugin::StartupPlugin(SPInterfaceMessage* message)
 
 #ifdef _DEBUG
         // In the debug mode perform all unit tests at startup.
-        L2A::TEST::TestingMain();
+        static const bool print_status = false;
+        L2A::TEST::TestingMain(print_status);
 #endif
     }
     catch (ai::Error& ex)
@@ -205,10 +206,10 @@ ASErr L2APlugin::ShutdownPlugin(SPInterfaceMessage* message)
     try
     {
         // If it was created, delete the global object.
-        if (L2A::GLOBAL::_l2a_global != NULL) delete L2A::GLOBAL::_l2a_global;
+        if (L2A::GLOBAL::_l2a_global != nullptr) delete L2A::GLOBAL::_l2a_global;
 
         // Dereference the annotator -> the object will be delete here, otherwise we would have a memory leak later.
-        annotator_ = NULL;
+        annotator_ = nullptr;
 
         // We need to call the base shutdown method to avoid memory leaks when closing the plugin.
         error = Plugin::ShutdownPlugin(message);

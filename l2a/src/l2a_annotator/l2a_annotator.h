@@ -88,7 +88,7 @@ namespace L2A
         /**
          * \brief Return true if an item is hit.
          */
-        bool IsArtHit() const { return cursor_item_ != NULL; }
+        bool IsArtHit() const { return cursor_item_ != nullptr; }
 
         /**
          * \brief Return true hit item.

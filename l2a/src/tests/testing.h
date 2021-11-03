@@ -37,12 +37,12 @@ namespace L2A
         /**
          * \brief This function will call all tests.
          */
-        void TestingMain();
+        void TestingMain(const bool print_status = true);
 
         /**
          * \brief Test the functionality of the complete LaTeX2AI toolbox.
          */
-        void TestFramework();
+        void TestFramework(const bool print_status = true);
     }  // namespace TEST
 }  // namespace L2A
 

@@ -32,7 +32,6 @@
 
 
 #include "utility/string_functions.h"
-#include "auto_generated/license.h"
 
 namespace L2A
 {

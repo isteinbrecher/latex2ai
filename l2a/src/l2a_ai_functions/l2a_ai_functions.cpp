@@ -160,9 +160,9 @@ void L2A::AI::RelinkPlacedItem(AIArtHandle& placed_item, const ai::FilePath& pat
     l2a_check_ai_error(error);
 
     // Relink the new art to the object.
-    if (request.m_hNewArt == NULL && request.m_hOldArt != NULL)
+    if (request.m_hNewArt == nullptr && request.m_hOldArt != nullptr)
         placed_item = request.m_hOldArt;
-    else if (request.m_hOldArt == NULL && request.m_hNewArt != NULL)
+    else if (request.m_hOldArt == nullptr && request.m_hNewArt != nullptr)
         placed_item = request.m_hNewArt;
     else
         l2a_error("Got two return pointers. This is unexpected.");
@@ -207,7 +207,7 @@ ai::UnicodeString L2A::AI::GetName(const AIArtHandle& item)
 {
     ASErr error = kNoErr;
     ai::UnicodeString return_string;
-    error = sAIArt->GetArtName(item, return_string, NULL);
+    error = sAIArt->GetArtName(item, return_string, nullptr);
     l2a_check_ai_error(error);
     return return_string;
 }
@@ -483,7 +483,7 @@ unsigned int L2A::AI::GetDocumentCount()
 AIPoint L2A::AI::ArtworkPointToViewPoint(const AIRealPoint& artwork_point)
 {
     AIPoint view_point;
-    AIErr error = sAIDocumentView->ArtworkPointToViewPoint(NULL, &artwork_point, &view_point);
+    AIErr error = sAIDocumentView->ArtworkPointToViewPoint(nullptr, &artwork_point, &view_point);
     l2a_check_ai_error(error);
     return view_point;
 }
@@ -503,9 +503,9 @@ AIRect L2A::AI::ArtworkBoundsToViewBounds(const AIRealRect& artwork_bounds)
 
     // Convert artwork coordinates to view coordinates.
     AIPoint tlView, brView;
-    result = sAIDocumentView->ArtworkPointToViewPoint(NULL, &tlArt, &tlView);
+    result = sAIDocumentView->ArtworkPointToViewPoint(nullptr, &tlArt, &tlView);
     l2a_check_ai_error(result);
-    result = sAIDocumentView->ArtworkPointToViewPoint(NULL, &brArt, &brView);
+    result = sAIDocumentView->ArtworkPointToViewPoint(nullptr, &brArt, &brView);
     l2a_check_ai_error(result);
 
     AIRect view_bounds;
@@ -523,6 +523,14 @@ AIRect L2A::AI::ArtworkBoundsToViewBounds(const AIRealRect& artwork_bounds)
 void L2A::AI::SaveToPDF()
 {
     AIErr result;
+
+    // Get the name of the pdf file and perform some safety checks.
+    ai::FilePath document_path = L2A::UTIL::GetDocumentPath(false);
+    if (!L2A::UTIL::IsFile(document_path))
+    {
+        sAIUser->MessageAlert(ai::UnicodeString("The Illustrator document is not saved. No PDF copy will be saved."));
+        return;
+    }
 
     // First it is checked if the active document is saved. It is advisable to save the document before exporting to
     // pdf.
@@ -543,8 +551,7 @@ void L2A::AI::SaveToPDF()
         }
     }
 
-    // Get the name of the pdf file and perform some safety checks.
-    ai::FilePath document_path = L2A::UTIL::GetDocumentPath();
+    // Perform some safety checks.
     if (document_path.GetFileExtension() == "pdf")
         throw L2A::ERR::Warning(
             ai::UnicodeString("The save as pdf function can only be used if the document is not already a pdf."));
@@ -849,7 +856,7 @@ void L2A::AI::DrawPath(const std::vector<AIPathSegment>& segments, AIPathStyle s
     AIErr error;
     AIArtHandle path;
 
-    error = sAIArt->NewArt(kPathArt, kPlaceAboveAll, NULL, &path);
+    error = sAIArt->NewArt(kPathArt, kPlaceAboveAll, nullptr, &path);
     l2a_check_ai_error(error);
 
     error = sAIPath->SetPathSegments(path, 0, (ai::int16)segments.size(), segments.data());

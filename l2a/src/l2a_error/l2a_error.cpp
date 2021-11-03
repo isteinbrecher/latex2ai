@@ -92,7 +92,9 @@ L2A::ERR::Exception::Exception(
     full_error_string += "LaTeX2AI Error! If this happens, please open an issue under\n";
     full_error_string += "github.com/latex2ai/latex2ai/issues\n";
     full_error_string += "--------------------------------------------------------------------------------\n";
-    full_error_string += "LaTeX2AI git sha:\n";
+    full_error_string += "LaTeX2AI version:\n";
+    full_error_string += L2A_VERSION_STRING_;
+    full_error_string += "\nLaTeX2AI git sha:\n";
     full_error_string += L2A_VERSION_GIT_SHA_HEAD_;
     full_error_string += "\n\nIllustrator Version:\n";
     full_error_string += L2A::UTIL::IntegerToString(ILLUSTRATOR_VERSION);
@@ -117,4 +119,34 @@ L2A::ERR::Exception::Exception(
     full_error_string += "\n--------------------------------------------------------------------------------\n\n";
     full_error_string += error_string;
     sAIUser->MessageAlert(full_error_string);
+}
+
+/**
+ *
+ */
+ai::UnicodeString L2A::ERR::AIErrorCodeToString(const int& err)
+{
+    int err_local = err;
+    std::vector<char> chars(4);
+    for (unsigned int i = 0; i < 4; i++)
+    {
+        // Get the first 8 bits.
+        chars[3 - i] = err_local & 0xFF;
+
+        // Shift by 8 bits.
+        err_local >>= 8;
+    }
+
+    // Return the Illustrator error code.
+    return ai::UnicodeString(chars.data(), 4);
+}
+
+/**
+ *
+ */
+ai::UnicodeString L2A::ERR::AIErrorCodeToErrorString(const int& err)
+{
+    ai::UnicodeString error_string("Ilustrator Error. Error code: ");
+    error_string += AIErrorCodeToString(err);
+    return error_string;
 }

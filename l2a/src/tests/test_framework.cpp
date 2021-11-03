@@ -31,7 +31,7 @@
 #include "test_framework.h"
 
 #include "l2a_suites.h"
-#include "test_utlity.h"
+#include "testing_utlity.h"
 #include "l2a_item/l2a_item.h"
 #include "l2a_global/l2a_global.h"
 #include "l2a_ai_functions/l2a_ai_functions.h"
@@ -594,7 +594,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
     }
 
     // Deactivate the global testing mode.
-    L2A::GlobalMutable().testing_form_return_parameter_list_ = NULL;
+    L2A::GlobalMutable().testing_form_return_parameter_list_ = nullptr;
     L2A::GlobalMutable().is_testing_ = false;
 }
 
