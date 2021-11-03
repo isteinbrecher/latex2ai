@@ -141,7 +141,7 @@ A few things to keep in mind:
 
 
 # Changelog
-- **pre-release**
+- **v0.0.6**
   - Bug fixes:
     - Fix bug when saving a PDF for an unsaved AI document.
   - Other:
