@@ -263,8 +263,27 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
 /**
  *
  */
-int L2A::UTIL::ExecuteCommandLine(
-    const ai::UnicodeString& command, ai::UnicodeString& command_output, const unsigned long max_time_ms)
+int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeString& command_output, const bool quiet,
+    const unsigned long max_time_ms)
+{
+    ai::UnicodeString error_message;
+    int exit_code = ExecuteCommandLineNoErrors(command, command_output, error_message, max_time_ms);
+    if (exit_code == -69)
+    {
+        if (quiet)
+            l2a_error_quiet(error_message);
+        else
+            l2a_error(error_message);
+    }
+
+    return exit_code;
+}
+
+/**
+ *
+ */
+int L2A::UTIL::ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::UnicodeString& command_output,
+    ai::UnicodeString& error_message, const unsigned long max_time_ms)
 {
     // This code is mainly a combination of
     // https://www.codeproject.com/Tips/333559/CreateProcess-and-wait-for-result
@@ -279,8 +298,16 @@ int L2A::UTIL::ExecuteCommandLine(
     saAttr.lpSecurityDescriptor = nullptr;
     HANDLE g_hChildStd_OUT_Rd = nullptr;
     HANDLE g_hChildStd_OUT_Wr = nullptr;
-    if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) l2a_error("StdoutRd CreatePipe");
-    if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0)) l2a_error("Stdout SetHandleInformation");
+    if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0))
+    {
+        error_message = ai::UnicodeString("StdoutRd CreatePipe");
+        return -69;
+    }
+    if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0))
+    {
+        error_message = ai::UnicodeString("Stdout SetHandleInformation");
+        return -69;
+    }
 
     // Create the process.
     PROCESS_INFORMATION processInformation = {0};
@@ -309,7 +336,8 @@ int L2A::UTIL::ExecuteCommandLine(
         LocalFree(lpMsgBuf);
 
         // Create error message.
-        l2a_error("Error, process '" + command + "' could not be created!");
+        error_message = "Error, process '" + command + "' could not be created!";
+        return -69;
     }
     else
     {
@@ -341,7 +369,11 @@ int L2A::UTIL::ExecuteCommandLine(
             result_string += s;
         }
 
-        if (!result) l2a_error("Executed command but couldn't get exit code.");
+        if (!result)
+        {
+            error_message = ai::UnicodeString("Executed command but couldn't get exit code.");
+            return -69;
+        }
 
         // Convert comman output to unicode string.
         command_output = ai::UnicodeString(result_string);

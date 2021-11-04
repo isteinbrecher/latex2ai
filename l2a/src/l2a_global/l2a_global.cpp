@@ -305,7 +305,7 @@ bool L2A::GLOBAL::Global::CheckGhostscriptCommand(const ai::UnicodeString& gs_co
 
     try
     {
-        L2A::UTIL::ExecuteCommandLine(full_gs_command, command_output);
+        L2A::UTIL::ExecuteCommandLine(full_gs_command, command_output, true);
         if (command_output.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
             return true;
         else
@@ -368,7 +368,7 @@ bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) cons
     ai::UnicodeString command_output;
     try
     {
-        L2A::UTIL::ExecuteCommandLine(command_latex, command_output);
+        L2A::UTIL::ExecuteCommandLine(command_latex, command_output, true);
         if (command_output.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
             return true;
         else

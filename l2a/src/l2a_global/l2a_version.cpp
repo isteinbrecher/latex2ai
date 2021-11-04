@@ -117,7 +117,7 @@ void L2A::GLOBAL::CheckGithubVersion()
 
         // TODO: The call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
         // 500ms. Check if we can to this without the specified maximum time.
-        L2A::UTIL::ExecuteCommandLine(command, result, 500);
+        L2A::UTIL::ExecuteCommandLine(command, result, true, 500);
         std::string curl_output = result.as_UTF8();
         if (curl_output == "") return;
 
