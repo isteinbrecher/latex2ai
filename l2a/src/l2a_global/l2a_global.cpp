@@ -60,7 +60,8 @@ L2A::GLOBAL::Global::~Global()
  */
 void L2A::GLOBAL::Global::SetUp()
 {
-    // Check if a new version of LaTeX2AI is available.
+    // Check if a new version of LaTeX2AI is available. Do this at the beginning in case there is an error in the set
+    // and get path functions later on and it is fixed in a future release.
     L2A::GLOBAL::CheckGithubVersion();
 
     // Get default parameter list.
@@ -96,34 +97,14 @@ void L2A::GLOBAL::Global::SetUp()
             L2A::UTIL::RemoveFile(application_data_path_);
     }
 
-    // Check if the path to the forms exists, if not, try the default one. If this one can not be found, the function
-    // returns false and the plug in will not be activated, as without the forms application, latex2ai currently does
-    // not work.
-    if (!L2A::UTIL::IsFile(path_form_exe_))
+    // Make sure the path to the forms executable is valid.
+    if (!CheckFormsPath())
     {
-        path_form_exe_ = L2A::UTIL::GetFormsPath();
-        if (!L2A::UTIL::IsFile(path_form_exe_))
-        {
-            AIBoolean form_result = true;
-            ai::UnicodeString form_string(
-                "The path to the forms executable could not be found. Please select the path, otherwise LaTeX2AI can "
-                "not be used!");
-            form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
-            if (!form_result) return;
+        // The path from the application data file is not valid. Try to automatically find it.
+        ai::FilePath path_form_exe_autoget = L2A::UTIL::GetFormsPath();
 
-            // Ask the user to pick the file.
-            ai::FilePath temp;
-            AIFileDialogFilters options;
-            options.AddFilter(ai::UnicodeString("Executable (*.exe)"), ai::UnicodeString("*.exe"));
-            AIErr err =
-                sAIUser->GetFileDialog(ai::UnicodeString("Select *.exe for the forms Application"), &options, temp);
-
-            // Check if the form was canceled.
-            if (err == kCanceledErr)
-                return;
-            else
-                path_form_exe_ = temp;
-        }
+        // "Officially" set the forms path and check if it is valid.
+        if (!SetFormsPath(path_form_exe_autoget)) return;
     }
 
     // Command paths.
@@ -202,6 +183,60 @@ ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
     }
     else
         return command_latex_;
+}
+
+/**
+ *
+ */
+bool L2A::GLOBAL::Global::SetFormsPath(const ai::FilePath& forms_path)
+{
+    // Set the path since this path will be used in the forms application for testing if the path is valid.
+    // TODO: maybe think of a better way to do this.
+    this->path_form_exe_ = forms_path;
+
+    // Check until the path is correct or the user cancels the operation.
+    while (!CheckFormsPath())
+    {
+        AIBoolean form_result = true;
+        ai::UnicodeString form_string(
+            "The path to the forms executable LaTeX2AIForms.exe could not be found. Please select the path, otherwise "
+            "LaTeX2AI can not be used!");
+        form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
+        if (!form_result) return false;
+
+        // Ask the user to pick the file.
+        AIFileDialogFilters options;
+        options.AddFilter(ai::UnicodeString("Executable (*.exe)"), ai::UnicodeString("*.exe"));
+        AIErr err = sAIUser->GetFileDialog(
+            ai::UnicodeString("Select *.exe for the forms Application"), &options, path_form_exe_);
+        if (err == kCanceledErr) return false;
+        l2a_check_ai_error(err);
+    }
+
+    return true;
+}
+
+/**
+ *
+ */
+bool L2A::GLOBAL::Global::CheckFormsPath() const
+{
+    // If the path does not exist we can return right away.
+    if (!L2A::UTIL::IsFile(path_form_exe_)) return false;
+
+    L2A::UTIL::ParameterList empty_list;
+    std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list;
+
+    try
+    {
+        L2A::FormReturnValue form_return_value =
+            L2A::Form(ai::UnicodeString("l2a_check_forms"), empty_list, form_return_parameter_list);
+        return !(form_return_value.canceled);
+    }
+    catch (...)
+    {
+        return false;
+    }
 }
 
 /**

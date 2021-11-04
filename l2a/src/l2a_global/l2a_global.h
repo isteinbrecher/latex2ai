@@ -86,6 +86,16 @@ namespace L2A
 
            private:
             /**
+             * \brief Set path to the executable of the forms application.
+             */
+            bool SetFormsPath(const ai::FilePath& forms_path);
+
+            /**
+             * \brief Check that the path to the forms application points to a valid executable.
+             */
+            bool CheckFormsPath() const;
+
+            /**
              * \brief Convert this object to a parameter list.
              */
             void ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;

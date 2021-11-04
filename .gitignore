@@ -5,6 +5,9 @@
 .vs/*
 */.vs/*
 
+# Build files
+/forms/obj
+
 # Automatically generated files
 auto_generated/
 scripts/executables/
