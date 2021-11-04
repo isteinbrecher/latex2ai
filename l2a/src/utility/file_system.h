@@ -43,7 +43,7 @@ namespace L2A
         bool IsFile(const ai::FilePath& file);
 
         /**
-         * \brief Checks if the path is a file and exists.
+         * \brief Checks if the path is a directory and exists.
          */
         bool IsDirectory(const ai::FilePath& directory);
 

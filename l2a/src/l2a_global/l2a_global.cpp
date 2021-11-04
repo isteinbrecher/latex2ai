@@ -135,9 +135,14 @@ void L2A::GLOBAL::Global::SetUp()
         if (!SetGhostscriptCommand(gs_command)) return;
     }
 
-    // Make sure the latex command is valid.
-    if (true)
+    // Make sure the latex path is valid.
+    if (!CheckLatexCommand(path_latex_))
     {
+        // The path from the application data file is not valid. Try the default value.
+        path_latex_ = ai::FilePath(ai::UnicodeString(""));
+
+        // "Officially" set the latex path and check if it is valid.
+        if (!SetLatexCommand(path_latex_)) return;
     }
 
     // Everything was ok.
@@ -301,7 +306,70 @@ bool L2A::GLOBAL::Global::CheckGhostscriptCommand(const ai::UnicodeString& gs_co
     try
     {
         L2A::UTIL::ExecuteCommandLine(full_gs_command, command_output);
-        if (command_output.find(ai::UnicodeString(" Ghostscript ")) != 0)
+        if (command_output.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
+            return true;
+        else
+            return false;
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
+
+/**
+ *
+ */
+bool L2A::GLOBAL::Global::SetLatexCommand(const ai::FilePath& latex_path)
+{
+    ai::FilePath path = latex_path;
+
+    // Check until the command is correct or the user cancels the operation.
+    while (!CheckLatexCommand(path))
+    {
+        AIBoolean form_result = true;
+        ai::UnicodeString form_string(
+            "The path to the folder with the LaTeX executables (pdflatex.exe, ...) seems to be wrong. Please select "
+            "the correct path, otherwise LaTeX2AI can not be used!");
+        form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
+        if (!form_result) return false;
+
+        // Ask the user to pick the directory.
+        ai::UnicodeString message("Select *.exe for the forms Application");
+        AIErr err = sAIUser->GetDirectoryDialog(message, path);
+
+        if (err == kCanceledErr) return false;
+        l2a_check_ai_error(err);
+    }
+
+    path_latex_ = path;
+    return true;
+}
+
+/**
+ *
+ */
+bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) const
+{
+    ai::UnicodeString command_latex;
+    if (L2A::UTIL::IsDirectory(path_latex))
+    {
+        ai::FilePath exe_path = path_latex;
+        exe_path.AddComponent(ai::UnicodeString("pdflatex.exe"));
+        command_latex = "\"" + exe_path.GetFullPath() + "\"";
+    }
+    else if (path_latex.IsEmpty())
+        command_latex = ai::UnicodeString("pdflatex");
+    else
+        // The directory does not exist and is not empty -> this will not work.
+        return false;
+
+    command_latex += " -v";
+    ai::UnicodeString command_output;
+    try
+    {
+        L2A::UTIL::ExecuteCommandLine(command_latex, command_output);
+        if (command_output.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
             return true;
         else
             return false;

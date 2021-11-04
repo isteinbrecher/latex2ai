@@ -86,7 +86,7 @@ namespace L2A
 
            private:
             /**
-             * \brief Set path to the executable of the forms application.
+             * \brief Set path to the executable of the forms application and check if it is correct.
              */
             bool SetFormsPath(const ai::FilePath& forms_path);
 
@@ -96,7 +96,7 @@ namespace L2A
             bool CheckFormsPath() const;
 
             /**
-             * \brief Set the ghostscript command.
+             * \brief Set the ghostscript and check if it is correct.
              */
             bool SetGhostscriptCommand(ai::UnicodeString gs_command);
 
@@ -104,6 +104,16 @@ namespace L2A
              * \brief Check if the ghostscript command is valid.
              */
             bool CheckGhostscriptCommand(const ai::UnicodeString& gs_command) const;
+
+            /**
+             * \brief Set the LaTeX path and check if it is correct.
+             */
+            bool SetLatexCommand(const ai::FilePath& latex_path);
+
+            /**
+             * \brief Check that the stored LaTeX command is correct.
+             */
+            bool CheckLatexCommand(const ai::FilePath& path_latex) const;
 
             /**
              * \brief Convert this object to a parameter list.
