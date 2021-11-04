@@ -35,6 +35,7 @@
 #include "utility/string_functions.h"
 #include "l2a_names.h"
 
+#include <array>
 #include <filesystem>
 
 // File encoding.
@@ -372,30 +373,36 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
 {
     // Get the path to the programs folder.
     TCHAR pathBuffer[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_PROGRAM_FILES, nullptr, 0, pathBuffer)))
+    std::array<std::tuple<int, int>, 2> programm_shortcuts = {
+        std::make_tuple(CSIDL_PROGRAM_FILESX86, 32), std::make_tuple(CSIDL_PROGRAM_FILES, 64)};
+    for (unsigned int i = 0; i < 2; i++)
     {
-        ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
-        program_folder.AddComponent(ai::UnicodeString("gs"));
-
-        // Check if the ghostscript folder exists.
-        if (IsDirectory(program_folder))
+        if (SUCCEEDED(SHGetFolderPath(nullptr, std::get<0>(programm_shortcuts[i]), nullptr, 0, pathBuffer)))
         {
-            ai::FilePath gs_folder;
-            for (auto& p : std::filesystem::directory_iterator(program_folder.GetFullPath().as_Platform()))
-            {
-                // Check if the directory starts with "gs".
-                gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
-                if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
-                {
-                    // We do not care about the version -> use the first "gs*" folder that we find.
+            ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
+            program_folder.AddComponent(ai::UnicodeString("gs"));
 
-                    // Check if an execuable can be found.
-                    gs_folder.AddComponent(ai::UnicodeString("bin"));
-                    gs_folder.AddComponent(ai::UnicodeString("gswin64c.exe"));
-                    if (IsFile(gs_folder))
-                        return gs_folder.GetFullPath();
-                    else
-                        break;
+            // Check if the ghostscript folder exists.
+            if (IsDirectory(program_folder))
+            {
+                ai::FilePath gs_folder;
+                for (auto& p : std::filesystem::directory_iterator(program_folder.GetFullPath().as_Platform()))
+                {
+                    // Check if the directory starts with "gs".
+                    gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
+                    if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
+                    {
+                        // We do not care about the version -> use the first "gs*" folder that we find.
+
+                        // Check if an execuable can be found.
+                        gs_folder.AddComponent(ai::UnicodeString("bin"));
+                        gs_folder.AddComponent(ai::UnicodeString("gswin") +
+                            L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) + "c.exe");
+                        if (IsFile(gs_folder))
+                            return gs_folder.GetFullPath();
+                        else
+                            break;
+                    }
                 }
             }
         }

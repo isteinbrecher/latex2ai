@@ -96,6 +96,16 @@ namespace L2A
             bool CheckFormsPath() const;
 
             /**
+             * \brief Set the ghostscript command.
+             */
+            bool SetGhostscriptCommand(ai::UnicodeString gs_command);
+
+            /**
+             * \brief Check if the ghostscript command is valid.
+             */
+            bool CheckGhostscriptCommand(const ai::UnicodeString& gs_command) const;
+
+            /**
              * \brief Convert this object to a parameter list.
              */
             void ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;
@@ -112,8 +122,10 @@ namespace L2A
 
             /**
              * \brief Set the values for this object from a parameter list.
+             *
+             * Return false if not all parameters could be set.
              */
-            void SetFromParameterList(const L2A::UTIL::ParameterList& parameter_list);
+            bool SetFromParameterList(const L2A::UTIL::ParameterList& parameter_list);
 
             /**
              * \brief Get the parameter list for displaying the global options in the form.
@@ -141,9 +153,6 @@ namespace L2A
 
             //! Path to form exe.
             ai::FilePath path_form_exe_;
-
-            //! Path to application data directory.
-            ai::FilePath application_data_directory_;
 
             //! File that stores global application data.
             ai::FilePath application_data_path_;
