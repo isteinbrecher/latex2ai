@@ -57,7 +57,7 @@ namespace L2A
              * \brief Constructor with error string and detailed information about the error.
              */
             Exception(const char* __file__, const int __line__, const char* __function__,
-                const ai::UnicodeString& error_string);
+                const ai::UnicodeString& error_string, const bool display_error_message = true);
         };
 
         /**
@@ -92,6 +92,16 @@ namespace L2A
  */
 #define l2a_error(error_string) \
     throw L2A::ERR::Exception(__FILE__, __LINE__, __FUNCTION__, ai::UnicodeString(error_string))
+
+/**
+ * \brief This macro throws an that only displays the error message in the debug mode.
+ */
+#if _DEBUG
+#define l2a_error_quiet(error_string) l2a_error(error_string)
+#else
+#define l2a_error_quiet(error_string) \
+    throw L2A::ERR::Exception(__FILE__, __LINE__, __FUNCTION__, ai::UnicodeString(error_string), false)
+#endif
 
 /**
  * \brief This macro checks the AI error code and throws an L2A error if something went wrong.

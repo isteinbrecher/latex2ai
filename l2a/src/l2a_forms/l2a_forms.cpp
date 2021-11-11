@@ -100,7 +100,12 @@ L2A::FormReturnValue L2A::Form(const ai::UnicodeString& form_type, const L2A::UT
             return_value.canceled = true;
         else
         {
-            return_parameter_list = form_parameter_list.GetSubListMutable(ai::UnicodeString("LaTeX2AI_form_result"));
+            // In some cases (e.g. check forms) no result list is returned.
+            ai::UnicodeString sub_list_name("LaTeX2AI_form_result");
+            if (form_parameter_list.SubListExists(sub_list_name))
+                return_parameter_list = form_parameter_list.GetSubListMutable(sub_list_name);
+            else
+                return_parameter_list = nullptr;
             return_value.canceled = false;
         }
 

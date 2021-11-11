@@ -117,7 +117,7 @@ void L2A::GLOBAL::CheckGithubVersion()
 
         // TODO: The call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
         // 500ms. Check if we can to this without the specified maximum time.
-        L2A::UTIL::ExecuteCommandLine(command, result, 500);
+        L2A::UTIL::ExecuteCommandLine(command, result, true, 500);
         std::string curl_output = result.as_UTF8();
         if (curl_output == "") return;
 
@@ -130,6 +130,9 @@ void L2A::GLOBAL::CheckGithubVersion()
         for (auto& [key, value] : github_releases.items())
             if (value.contains("tag_name"))
                 github_versions.push_back(L2A::GLOBAL::Version(value["tag_name"].get<std::string>()));
+
+        // If for some reasons no version could be found, return here.
+        if (github_versions.size() == 0) l2a_error_quiet(ai::UnicodeString("Could not retrieve github versions."));
 
         // Get the current version.
         auto newest_version = max_element(std::begin(github_versions), std::end(github_versions))._Ptr;

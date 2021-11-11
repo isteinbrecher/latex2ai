@@ -11,7 +11,7 @@ Currently LaTeX2AI supports:
 Currently LaTeX2AI only works on Adobe Illustrator for Windows.
 The following software dependencies are required:
 - A LaTeX compiler such as [TeX Live](https://www.tug.org/texlive) or [MiKTeX](https://miktex.org)
-- [Ghost script 64bit](https://www.ghostscript.com)
+- [Ghost script](https://www.ghostscript.com)
 
 ## Install LaTeX2AI
 Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub release page](https://github.com/latex2ai/latex2ai/releases).
@@ -141,6 +141,11 @@ A few things to keep in mind:
 
 
 # Changelog
+- **v0.0.7**
+  - Bug fixes:
+    - Fix bug in check version.
+  - Other:
+    - Improve path finding at startup.
 - **v0.0.6**
   - Bug fixes:
     - Fix bug when saving a PDF for an unsaved AI document.

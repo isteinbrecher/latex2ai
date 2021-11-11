@@ -35,6 +35,7 @@
 #include "utility/string_functions.h"
 #include "l2a_names.h"
 
+#include <array>
 #include <filesystem>
 
 // File encoding.
@@ -262,8 +263,27 @@ int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
 /**
  *
  */
-int L2A::UTIL::ExecuteCommandLine(
-    const ai::UnicodeString& command, ai::UnicodeString& command_output, const unsigned long max_time_ms)
+int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeString& command_output, const bool quiet,
+    const unsigned long max_time_ms)
+{
+    ai::UnicodeString error_message;
+    int exit_code = ExecuteCommandLineNoErrors(command, command_output, error_message, max_time_ms);
+    if (exit_code == -69)
+    {
+        if (quiet)
+            l2a_error_quiet(error_message);
+        else
+            l2a_error(error_message);
+    }
+
+    return exit_code;
+}
+
+/**
+ *
+ */
+int L2A::UTIL::ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::UnicodeString& command_output,
+    ai::UnicodeString& error_message, const unsigned long max_time_ms)
 {
     // This code is mainly a combination of
     // https://www.codeproject.com/Tips/333559/CreateProcess-and-wait-for-result
@@ -278,8 +298,16 @@ int L2A::UTIL::ExecuteCommandLine(
     saAttr.lpSecurityDescriptor = nullptr;
     HANDLE g_hChildStd_OUT_Rd = nullptr;
     HANDLE g_hChildStd_OUT_Wr = nullptr;
-    if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0)) l2a_error("StdoutRd CreatePipe");
-    if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0)) l2a_error("Stdout SetHandleInformation");
+    if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0))
+    {
+        error_message = ai::UnicodeString("StdoutRd CreatePipe");
+        return -69;
+    }
+    if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0))
+    {
+        error_message = ai::UnicodeString("Stdout SetHandleInformation");
+        return -69;
+    }
 
     // Create the process.
     PROCESS_INFORMATION processInformation = {0};
@@ -308,7 +336,8 @@ int L2A::UTIL::ExecuteCommandLine(
         LocalFree(lpMsgBuf);
 
         // Create error message.
-        l2a_error("Error, process '" + command + "' could not be created!");
+        error_message = "Error, process '" + command + "' could not be created!";
+        return -69;
     }
     else
     {
@@ -340,7 +369,11 @@ int L2A::UTIL::ExecuteCommandLine(
             result_string += s;
         }
 
-        if (!result) l2a_error("Executed command but couldn't get exit code.");
+        if (!result)
+        {
+            error_message = ai::UnicodeString("Executed command but couldn't get exit code.");
+            return -69;
+        }
 
         // Convert comman output to unicode string.
         command_output = ai::UnicodeString(result_string);
@@ -372,30 +405,36 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
 {
     // Get the path to the programs folder.
     TCHAR pathBuffer[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_PROGRAM_FILES, nullptr, 0, pathBuffer)))
+    std::array<std::tuple<int, int>, 2> programm_shortcuts = {
+        std::make_tuple(CSIDL_PROGRAM_FILESX86, 32), std::make_tuple(CSIDL_PROGRAM_FILES, 64)};
+    for (unsigned int i = 0; i < 2; i++)
     {
-        ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
-        program_folder.AddComponent(ai::UnicodeString("gs"));
-
-        // Check if the ghostscript folder exists.
-        if (IsDirectory(program_folder))
+        if (SUCCEEDED(SHGetFolderPath(nullptr, std::get<0>(programm_shortcuts[i]), nullptr, 0, pathBuffer)))
         {
-            ai::FilePath gs_folder;
-            for (auto& p : std::filesystem::directory_iterator(program_folder.GetFullPath().as_Platform()))
-            {
-                // Check if the directory starts with "gs".
-                gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
-                if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
-                {
-                    // We do not care about the version -> use the first "gs*" folder that we find.
+            ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
+            program_folder.AddComponent(ai::UnicodeString("gs"));
 
-                    // Check if an execuable can be found.
-                    gs_folder.AddComponent(ai::UnicodeString("bin"));
-                    gs_folder.AddComponent(ai::UnicodeString("gswin64c.exe"));
-                    if (IsFile(gs_folder))
-                        return gs_folder.GetFullPath();
-                    else
-                        break;
+            // Check if the ghostscript folder exists.
+            if (IsDirectory(program_folder))
+            {
+                ai::FilePath gs_folder;
+                for (auto& p : std::filesystem::directory_iterator(program_folder.GetFullPath().as_Platform()))
+                {
+                    // Check if the directory starts with "gs".
+                    gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
+                    if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
+                    {
+                        // We do not care about the version -> use the first "gs*" folder that we find.
+
+                        // Check if an execuable can be found.
+                        gs_folder.AddComponent(ai::UnicodeString("bin"));
+                        gs_folder.AddComponent(ai::UnicodeString("gswin") +
+                            L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) + "c.exe");
+                        if (IsFile(gs_folder))
+                            return gs_folder.GetFullPath();
+                        else
+                            break;
+                    }
                 }
             }
         }
