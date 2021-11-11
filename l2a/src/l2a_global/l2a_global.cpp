@@ -40,8 +40,6 @@
 #include "l2a_constants.h"
 #include "l2a_version.h"
 
-#include "../tpl/json/single_include/nlohmann/json.hpp"
-using json = nlohmann::json;
 
 /**
  * Set the global variable to a null pointer.
