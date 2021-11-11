@@ -14,7 +14,7 @@ The following software dependencies are required:
 - [Ghost script 64bit](https://www.ghostscript.com)
 
 ## Install LaTeX2AI
-Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub release page](https://github.com/latex2ai/latex2ai/releases).
+Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases).
 They consist of two files `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
 There are two ways to add LaTeX2AI to Illustrator:
 - Both files can be copied to the default plug-in directory `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins`, preferably into a subdirectory `LaTeX2AI` (for this method administrator privileges are required).
@@ -36,7 +36,7 @@ The additional requirements to build LaTeX2AI from source are:
   - [Adobe Illustrator CC and newer](https://console.adobe.io/downloads)
 1. Go to the sample code folder `Adobe Illustrator <YOUR VERSION> SDK/sample code` and run
 	```
-	git clone https://github.com/latex2ai/latex2ai.git
+	git clone https://github.com/isteinbrecher/latex2ai.git
 	```
 1. Go to `Adobe Illustrator <YOUR VERSION> SDK/sample code/LaTeX2AI` and run
 	```
@@ -115,7 +115,7 @@ LaTeX2AI is under the MIT license, see [./LICENSE](LICENSE).
 If you use LaTeX2AI to create figures for your work, please acknowledge it with a link to the GitHub repository.
 For example:
 
-- Sketches in this work have been created using the Adobe Illustrator plug-in LaTeX2AI ([https://github.com/latex2ai/latex2ai](https://github.com/latex2ai/latex2ai)).
+- Sketches in this work have been created using the Adobe Illustrator plug-in LaTeX2AI ([https://github.com/isteinbrecher/latex2ai](https://github.com/isteinbrecher/latex2ai)).
 
 ## Work that uses LaTeX2AI
 1. Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Computational Mechanics, 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
@@ -125,10 +125,10 @@ For example:
 # Contributing
 
 If you are interested in contributing to LaTeX2AI, we welcome your collaboration.
-For general questions, feature request and bug reports please open an [issue](https://github.com/latex2ai/latex2ai/issues).
+For general questions, feature request and bug reports please open an [issue](https://github.com/isteinbrecher/latex2ai/issues).
 
 If you contribute actual code, fork the repository and make the changes in a feature branch.
-Depending on the topic and amount of changes you also might want to open an [issue](https://github.com/latex2ai/latex2ai/issues).
+Depending on the topic and amount of changes you also might want to open an [issue](https://github.com/isteinbrecher/latex2ai/issues).
 To merge your changes into the main LaTeX2AI repository, create a pull request to the `develop` branch (this branch will be merged into `main` with the next release).
 A few things to keep in mind:
 - Compile a debug build and run the framework tests in Illustrator ![Framework tests](/l2a/resources/testing_light.png?raw=true "Framework tests").

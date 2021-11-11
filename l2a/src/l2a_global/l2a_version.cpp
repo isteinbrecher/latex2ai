@@ -112,7 +112,7 @@ void L2A::GLOBAL::CheckGithubVersion()
     try
     {
         // Get the packages in the GitHub repository.
-        ai::UnicodeString command("curl -s https://api.github.com/repos/latex2ai/latex2ai/releases");
+        ai::UnicodeString command("curl -s https://api.github.com/repos/isteinbrecher/latex2ai/releases");
         ai::UnicodeString result;
 
         // TODO: The call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
