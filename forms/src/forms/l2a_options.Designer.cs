@@ -162,9 +162,9 @@ namespace L2A.FORMS
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(6, 182);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(220, 13);
+            this.label4.Size = new System.Drawing.Size(260, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Ghost Script Command (gswin32c, gswin64c)";
+            this.label4.Text = "Ghost Script Command (gswin32c.exe, gswin64c.exe)";
             // 
             // latex_path
             // 

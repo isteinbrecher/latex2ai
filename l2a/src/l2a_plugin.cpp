@@ -179,13 +179,13 @@ ASErr L2APlugin::StartupPlugin(SPInterfaceMessage* message)
 
             error = AddAnnotator(message);
             aisdk::check_ai_error(error);
-        }
 
 #ifdef _DEBUG
-        // In the debug mode perform all unit tests at startup.
-        static const bool print_status = false;
-        L2A::TEST::TestingMain(print_status);
+            // In the debug mode perform all unit tests at startup.
+            static const bool print_status = false;
+            L2A::TEST::TestingMain(print_status);
 #endif
+        }
     }
     catch (ai::Error& ex)
     {

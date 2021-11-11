@@ -83,8 +83,8 @@ class MyStackWalker : public StackWalker
 /**
  *
  */
-L2A::ERR::Exception::Exception(
-    const char* __file__, const int __line__, const char* __function__, const ai::UnicodeString& error_string)
+L2A::ERR::Exception::Exception(const char* __file__, const int __line__, const char* __function__,
+    const ai::UnicodeString& error_string, const bool display_error_message)
     : ExceptionBase()
 {
     ai::UnicodeString full_error_string(
@@ -118,7 +118,8 @@ L2A::ERR::Exception::Exception(
     full_error_string += ai::UnicodeString(__function__);
     full_error_string += "\n--------------------------------------------------------------------------------\n\n";
     full_error_string += error_string;
-    sAIUser->MessageAlert(full_error_string);
+
+    if (display_error_message) sAIUser->MessageAlert(full_error_string);
 }
 
 /**

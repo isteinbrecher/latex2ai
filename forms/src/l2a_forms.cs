@@ -91,6 +91,10 @@ namespace L2A
             {
                 Application.Run(new L2A.FORMS.Options(parameter_list, return_path));
             }
+            else if (arguments[1] == "l2a_check_forms")
+            {
+                CheckForms(return_path);
+            }
             else L2A.ERR.ExceptionClass.Exception("The form type \"" + arguments[1] + "\" is not defiend.");
         }
 
@@ -102,6 +106,22 @@ namespace L2A
             var return_parameter_list = new L2A.UTIL.ParameterList();
             return_parameter_list.options_["form_result"] = "ok";
             return_parameter_list.sub_lists_["LaTeX2AI_form_result"] = parameter_list;
+
+            // Write the parameter list to string.
+            string xml_string = return_parameter_list.ToString("LaTeX2AI_form_result");
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(return_xml, false))
+            {
+                file.WriteLine(xml_string);
+            }
+        }
+
+        /// <summary>
+        /// This is a very basic test where simply "ok" is returned.
+        /// </summary>
+        static private void CheckForms(string return_xml)
+        {
+            var return_parameter_list = new L2A.UTIL.ParameterList();
+            return_parameter_list.options_["form_result"] = "ok";
 
             // Write the parameter list to string.
             string xml_string = return_parameter_list.ToString("LaTeX2AI_form_result");
