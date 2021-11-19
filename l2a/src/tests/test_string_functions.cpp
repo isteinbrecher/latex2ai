@@ -89,4 +89,21 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
     ut.CompareStr(full_string,
         ai::UnicodeString("hello Full Name with s$other and more s$other and more Full Name and line breaks \n\n\n\n\n "
                           "just like that"));
+
+    // Test the split function.
+    ai::UnicodeString split_string("text1%text22%text333");
+    std::vector<ai::UnicodeString> split_ref = {
+        ai::UnicodeString("text1"), ai::UnicodeString("text22"), ai::UnicodeString("text333")};
+    auto split = L2A::UTIL::SplitString(split_string, ai::UnicodeString("%"));
+    ut.CompareStringVector(split, split_ref);
+
+    split_string = ai::UnicodeString("text1%%text22%%text333");
+    split = L2A::UTIL::SplitString(split_string, ai::UnicodeString("%%"));
+    ut.CompareStringVector(split, split_ref);
+
+    split_string = ai::UnicodeString("text1%%text22%%text333%");
+    split_ref = {ai::UnicodeString("text1"), ai::UnicodeString(""), ai::UnicodeString("text22"), ai::UnicodeString(""),
+        ai::UnicodeString("text333"), ai::UnicodeString("")};
+    split = L2A::UTIL::SplitString(split_string, ai::UnicodeString("%"));
+    ut.CompareStringVector(split, split_ref);
 }

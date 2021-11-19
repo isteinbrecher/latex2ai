@@ -127,6 +127,16 @@ void L2A::TEST::UTIL::UnitTest::CompareRect(const AIRealRect& val1, const AIReal
 /**
  *
  */
+void L2A::TEST::UTIL::UnitTest::CompareStringVector(
+    const std::vector<ai::UnicodeString>& val1, const std::vector<ai::UnicodeString>& val2)
+{
+    CompareInt((int)val1.size(), (int)val2.size());
+    for (size_t i = 0; i < val1.size(); i++) CompareStr(val1[i], val2[i]);
+}
+
+/**
+ *
+ */
 void L2A::TEST::UTIL::UnitTest::PrintTestSummary(const bool print_status)
 {
     if (print_status)
