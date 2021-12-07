@@ -142,6 +142,10 @@ A few things to keep in mind:
 
 
 # Changelog
+- **pre-release**
+  - Bug fixes:
+    - Fix bug in header include function.
+  - Other:
 - **v0.0.7**
   - Bug fixes:
     - Fix bug in check version.
