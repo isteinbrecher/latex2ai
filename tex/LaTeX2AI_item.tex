@@ -33,6 +33,9 @@
 
 % to create the line for baseline placement so Illustrator does not crop the pdf
 \usepackage{tikz}
+% deactivate externalization in case it is activated in the header
+\usetikzlibrary{external}
+\tikzexternaldisable
 
 % dimensions for tikzpicture
 \newlength\maxheight
