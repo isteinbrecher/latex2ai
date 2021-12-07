@@ -146,6 +146,7 @@ A few things to keep in mind:
   - Bug fixes:
     - Fix bug in header include function.
   - Other:
+    - Deactivate possible externalization in TikZ constructs.
 - **v0.0.7**
   - Bug fixes:
     - Fix bug in check version.
