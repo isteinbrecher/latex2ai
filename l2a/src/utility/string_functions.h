@@ -68,6 +68,11 @@ namespace L2A
          */
         void StringReplaceAll(
             ai::UnicodeString& string, const ai::UnicodeString& search_string, const ai::UnicodeString& replace_string);
+
+        /**
+         * \brief Split string at occurences of split_string.
+         */
+        std::vector<ai::UnicodeString> SplitString(ai::UnicodeString& string, const ai::UnicodeString& split_string);
     }  // namespace UTIL
 }  // namespace L2A
 

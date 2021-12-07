@@ -84,6 +84,12 @@ namespace L2A
                 void CompareRect(const AIRealRect& val1, const AIRealRect& val2);
 
                 /**
+                 * \brief Compare two string vectors.
+                 */
+                void CompareStringVector(
+                    const std::vector<ai::UnicodeString>& val1, const std::vector<ai::UnicodeString>& val2);
+
+                /**
                  * \brief Print summary of the tests.
                  */
                 void PrintTestSummary(const bool print_status);
