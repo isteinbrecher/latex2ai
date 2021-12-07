@@ -319,7 +319,10 @@ ai::UnicodeString L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& he
         input_path_string = input_path_string.substr(1, input_path_string.length() - 2);
         auto input_header_path = header_dir;
         input_header_path.AddComponent(ai::UnicodeString(input_path_string));
-        return_header += GetHeaderWithIncludedInputs(input_header_path).as_UTF8();
+        if (L2A::UTIL::IsFile(input_header_path))
+            return_header += GetHeaderWithIncludedInputs(input_header_path).as_UTF8();
+        else
+            return_header += input_path_string;
 
         last_pos = match.position() + match.length();
     }
