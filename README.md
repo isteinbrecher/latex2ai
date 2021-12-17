@@ -145,6 +145,7 @@ A few things to keep in mind:
 - **pre-release**
   - Bug fixes:
     - Fix bug in header include function.
+    - Fix a bug when using MikTeX.
   - Other:
     - Deactivate possible externalization in TikZ constructs.
 - **v0.0.7**
