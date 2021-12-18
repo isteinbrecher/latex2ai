@@ -36,14 +36,14 @@ from check_license import (get_license_text, license_to_source,
     get_repository_dir)
 
 
-def get_git_sha():
+def get_git_sha(repo=None):
     """
     Return the git sha of the repository.
     """
 
     # Get the git sha of the repository.
     process = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
-        stdout=subprocess.PIPE)
+        stdout=subprocess.PIPE, cwd=repo)
     out, _err = process.communicate()
     return out.decode('UTF-8').strip()
 
