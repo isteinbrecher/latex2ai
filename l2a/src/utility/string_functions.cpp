@@ -105,3 +105,22 @@ void L2A::UTIL::StringReplaceAll(
         start_pos += replace_string.length();  // In case 'to' contains 'from', like replacing 'x' with 'yx'
     }
 }
+
+/**
+ *
+ */
+std::vector<ai::UnicodeString> L2A::UTIL::SplitString(ai::UnicodeString& string, const ai::UnicodeString& split_string)
+{
+    if (split_string.empty()) l2a_error("Split string can not be empty");
+
+    std::vector<ai::UnicodeString> split_vector;
+    size_t split_pos = 0;
+    size_t start_pos = 0;
+    while ((split_pos = string.find(split_string, start_pos)) < string.size())
+    {
+        split_vector.push_back(string.substr(start_pos, split_pos - start_pos));
+        start_pos = split_pos + split_string.length();
+    }
+    split_vector.push_back(string.substr(start_pos, string.size() - start_pos));
+    return split_vector;
+}

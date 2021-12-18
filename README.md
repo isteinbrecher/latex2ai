@@ -118,8 +118,9 @@ For example:
 - Sketches in this work have been created using the Adobe Illustrator plug-in LaTeX2AI ([https://github.com/isteinbrecher/latex2ai](https://github.com/isteinbrecher/latex2ai)).
 
 ## Work that uses LaTeX2AI
-1. Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Computational Mechanics, 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
-2. Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
+1. Steinbrecher, I., Popp, A., Meier, C.: Consistent coupling of positions and rotations for embedding 1D Cosserat beams into 3D solid volumes. Comput Mech (2021). [Open Access](https://doi.org/10.1007/s00466-021-02111-4)
+1. Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Comput Mech (2020), 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
+1. Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
 
 
 # Contributing
@@ -141,6 +142,12 @@ A few things to keep in mind:
 
 
 # Changelog
+- **v0.0.8**
+  - Bug fixes:
+    - Fix bug in header include function.
+    - Fix a bug when using MikTeX.
+  - Other:
+    - Deactivate possible externalization in TikZ constructs.
 - **v0.0.7**
   - Bug fixes:
     - Fix bug in check version.
