@@ -36,25 +36,25 @@ from pathlib import Path
 from create_headers import get_git_sha
 
 
-def get_git_tag_or_hash():
+def get_git_tag_or_hash(repo=None):
     """
     Return the commit, if the commit has a tag, return the tag.
     """
 
     # Get current sha.
-    git_sha = get_git_sha()
+    git_sha = get_git_sha(repo)
 
     # Get all tags and their sha.
     process = subprocess.Popen(['git', 'show-ref', '--tags'],
-        stdout=subprocess.PIPE)
+        stdout=subprocess.PIPE, cwd=repo)
     out, _err = process.communicate()
     tags = out.decode('UTF-8').strip().split('\n')
     tags = [line.split(' ') for line in tags]
     for sha, tag in tags:
         if sha == git_sha:
             # This commit has a tag, return the tag.
-            return tag.split('/')[-1]
-    return git_sha[:7]
+            return git_sha, tag.split('/')[-1]
+    return git_sha, git_sha[:7]
 
 
 def get_illustrator_version(path):
@@ -122,14 +122,15 @@ def clean_repository(repository_dir):
 
     # Check if the repository is clean.
     os.chdir(repository_dir)
-    out = subprocess.check_output(['git', 'status', '--porcelain'])
+    out = subprocess.check_output(['git', 'status', '--untracked-files=no',
+        '--porcelain'])
     if out == b'':
         return True
     else:
         return False
 
 
-def correct_git_state(repository_dir, git_info_other):
+def correct_git_state(repository_dir, git_sha, git_build_name):
     """
     Check if the repositroy is at the correct state.
     """
@@ -139,27 +140,27 @@ def correct_git_state(repository_dir, git_info_other):
         raise ValueError('Repository {} not clean'.format(repository_dir))
 
     # Check if we are at the right commit.
-    git_info = get_git_tag_or_hash()
-    if (git_info_other is not None) and (not git_info == git_info_other):
+    git_current_sha, _ = get_git_tag_or_hash()
+    if not git_current_sha == git_sha:
         # We are in a clean state and the version does not match, so pull
         # the new version.
         os.chdir(repository_dir)
         subprocess.call(['git', 'fetch', '--all'])
         subprocess.call(['git', 'fetch', '--all', '--tags'])
-        subprocess.call(['git', 'checkout', git_info_other])
-        git_info = get_git_tag_or_hash()
-        if not git_info == git_info_other:
+        subprocess.call(['git', 'checkout', git_build_name])
+        subprocess.call(['git', 'submodule', 'update', '--init'])
+        git_current_sha, _ = get_git_tag_or_hash()
+        if not git_current_sha == git_sha:
             raise ValueError(('Could not obtain the correct commit {} in {}'
-                ).format(git_info_other, repository_dir))
-    return git_info
+                ).format(git_sha, repository_dir))
 
 
-def build_all_types(repository_dir, git_info_other=None):
+def build_all_types(repository_dir, git_sha, git_build_name):
     """
     Build all build types in a repository.
     """
 
-    git_info = correct_git_state(repository_dir, git_info_other)
+    correct_git_state(repository_dir, git_sha, git_build_name)
     illustrator_version = get_illustrator_version(repository_dir)
 
     # Remove output directory.
@@ -177,8 +178,8 @@ def build_all_types(repository_dir, git_info_other=None):
         ]
     zip_files = []
     for build_type in build_types:
-        zip_files.append(build_solution(repository_dir, build_type, git_info,
-            illustrator_version))
+        zip_files.append(build_solution(repository_dir, build_type,
+            git_build_name, illustrator_version))
     return zip_files
 
 
@@ -190,20 +191,42 @@ if __name__ == '__main__':
     script_dir = os.path.dirname(file_path)
     base_dir = os.path.dirname(script_dir)
 
+    # Check that this repository is in a clean state.
+    if not clean_repository(base_dir):
+        raise ValueError('This repository is not clean!')
+
+    # Get the sha and the name, i.e. tag or short sha of this commit.
+    git_sha, git_buid_name = get_git_tag_or_hash(base_dir)
+    print('The LaTeX2AI state that will be built is: {}'.format(git_buid_name))
+
+    # Get all repositories that should be build.
+    env_key = 'LATEX2AI_REPOSITORIES'
+    if env_key not in os.environ.keys():
+        raise KeyError('No repositories are defined in the enviroment '
+            'variable {}'.format(env_key))
+    repositories = os.environ[env_key].strip().split(';')
+    if repositories[-1] == '':
+        del repositories[-1]
+    print('The following repositories will be built:')
+    all_clean = True
+    for repo in repositories:
+        print('    {}'.format(repo))
+        is_clean = clean_repository(repo)
+        if not is_clean:
+            all_clean = False
+            print('        Git state is not clean')
+    if not all_clean:
+        raise ValueError('At least one repository is not clean, abort!')
+
+    # Set the repositories to the desired commit or tag.
+    for repo in repositories:
+        correct_git_state(repo, git_sha, git_buid_name)
+
     zip_files = []
 
-    if 'LATEX2AI_REPOSITORIES' in os.environ.keys():
-        # Build all.
-        repositories = os.environ['LATEX2AI_REPOSITORIES'].strip().split(';')
-        if repositories[-1] == '':
-            del repositories[-1]
-        os.chdir(base_dir)
-        git_info = get_git_tag_or_hash()
-        for repository in repositories:
-            zip_files.extend(build_all_types(repository,
-                git_info_other=git_info))
-    else:
-        zip_files.extend(build_all_types(base_dir))
+    # Build all repositories.
+    for repo in repositories:
+        zip_files.extend(build_all_types(repo, git_sha, git_buid_name))
 
     # Move all zip files to this dir.
     zip_dir = script_dir = os.path.join(script_dir, 'executables')
