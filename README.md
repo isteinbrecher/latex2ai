@@ -142,7 +142,7 @@ A few things to keep in mind:
 
 
 # Changelog
-- **pre-release**
+- **v0.0.8**
   - Bug fixes:
     - Fix bug in header include function.
     - Fix a bug when using MikTeX.
