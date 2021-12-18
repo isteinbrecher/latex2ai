@@ -364,7 +364,7 @@ bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) cons
         // The directory does not exist and is not empty -> this will not work.
         return false;
 
-    command_latex += " -v";
+    command_latex += " -version";
     ai::UnicodeString command_output;
     try
     {
