@@ -81,18 +81,20 @@ L2A::Item::Item(const AIRealPoint& position)
     // Convert pdf with postscript.
     pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
 
-    // Get the path to the pdf file for this item and copy the created item there.
-    ai::FilePath next_item;
-    unsigned int item_index = L2A::UTIL::GetNextItemIndex(next_item);
-    L2A::UTIL::CopyFileL2A(pdf_file, next_item);
+    // Store the pdf data in the property.
+    this->property_.SetPDFFile(pdf_file);
+
+    // Create and link to the pdf file. We do not check here if the file already exists, because the hash of a newly
+    // created item will always be different, even if the LaTeX code is exactly the same.
+    pdf_file = GetPDFPath();
+    this->SaveEncodedPDFFile(pdf_file);
 
     // Create the placed item.
-    placed_item_ = L2A::AI::CreatePlacedItem(next_item);
+    placed_item_ = L2A::AI::CreatePlacedItem(pdf_file);
     L2A::AI::SetPlacement(placed_item_, property_);
 
     // Set the name and tag for the item.
-    SetNote();
-    L2A::AI::SetName(placed_item_, L2A::NAMES::ai_item_name_prefix_ + L2A::UTIL::IntegerToString(item_index, 3));
+    SetNoteAndName();
 
     // Move the file to the cursor position.
     MoveItem(position);
@@ -194,17 +196,14 @@ void L2A::Item::Change()
         // Convert pdf with postscript.
         pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
 
-        // Move new latex file to l2a folder (replace the old one). If the old one does not exist (for whatever reason)
-        // a new one is created.
-        ai::FilePath placed_item_file = L2A::AI::GetPlacedItemPath(placed_item_);
-        if (!L2A::UTIL::IsFile(placed_item_file)) L2A::UTIL::GetNextItemIndex(placed_item_file);
-        L2A::UTIL::CopyFileL2A(pdf_file, placed_item_file);
-
-        // Everything worked fine, set the property of the current item.
+        // Store the pdf file in the placed item.
+        new_input.SetPDFFile(pdf_file);
         property_ = new_input;
+        pdf_file = GetPDFPath();
+        SaveEncodedPDFFile(pdf_file);
 
         // Relink the placed item with the pdf file.
-        L2A::AI::RelinkPlacedItem(placed_item_, placed_item_file);
+        L2A::AI::RelinkPlacedItem(placed_item_, pdf_file);
 
         // Redo the boundary.
         RedoBoundary();
@@ -221,7 +220,7 @@ void L2A::Item::Change()
     if (diff.Changed())
     {
         property_ = new_input;
-        SetNote();
+        SetNoteAndName();
     }
 }
 
@@ -257,7 +256,7 @@ void L2A::Item::RedoBoundary()
 
     // Relink the file so that the boundary box is reset.
     L2A::AI::RelinkPlacedItem(placed_item_, L2A::AI::GetPlacedItemPath(placed_item_));
-    SetNote();
+    SetNoteAndName();
 
     // Move back to original position.
     MoveItem(old_position);
@@ -266,7 +265,39 @@ void L2A::Item::RedoBoundary()
 /**
  *
  */
-void L2A::Item::SetNote() const { L2A::AI::SetNote(placed_item_, property_.ToString()); }
+void L2A::Item::SetNoteAndName() const
+{
+    L2A::AI::SetNote(placed_item_, property_.ToString(true));
+    L2A::AI::SetName(placed_item_, ai::UnicodeString(L2A::NAMES::ai_item_name_));
+}
+
+/**
+ *
+ */
+ai::FilePath L2A::Item::GetPDFPath() const
+{
+    ai::UnicodeString pdf_file_hash = property_.GetPDFFileHash();
+    if (pdf_file_hash.empty()) l2a_error("File hash should not be empty.");
+    ai::FilePath pdf_path = L2A::UTIL::GetPdfFileDirectory();
+    ai::UnicodeString document_name = L2A::UTIL::GetDocumentName();
+    pdf_path.AddComponent(document_name + L2A::NAMES::pdf_item_post_fix_ + pdf_file_hash + ".pdf");
+    return pdf_path;
+}
+
+/**
+ *
+ */
+void L2A::Item::SaveEncodedPDFFile(const ai::FilePath& pdf_path) const
+{
+    // Make sure the directory exists.
+    if (!L2A::UTIL::IsDirectory(pdf_path.GetParent())) L2A::UTIL::CreateDirectoryL2A(pdf_path.GetParent());
+
+    const ai::UnicodeString& pdf_contents = property_.GetPDFFileContents();
+    if (!pdf_contents.empty())
+        L2A::UTIL::decode_file_base64(pdf_path, pdf_contents.as_UTF8());
+    else
+        l2a_error("Could not save the encoded pdf file, got empty encoded data.");
+}
 
 /**
  *
@@ -643,64 +674,12 @@ void L2A::RedoItems()
         ai::UnicodeString message_text("The LaTeX2AI Redo function got ");
         message_text += L2A::UTIL::IntegerToString(locked_counter);
         message_text += " hidden / locked items. They will be skipped.";
-        if (is_all_items && redo_latex)
-            message_text += "\nThe LaTeX2AI label PDFs in the PDF direcory will not be cleaned.";
         sAIUser->MessageAlert(message_text);
     }
 
     if (redo_latex)
     {
-        // Loop over every element and get the latex code as string.
-        ai::UnicodeString global_latex_code("\n\n");
-        for (const auto& item : l2a_items)
-        {
-            global_latex_code += "% Name of the item in Illustrator: \"" + item.GetAIName() + "\"\n";
-            global_latex_code += item.GetProperty().GetLaTeXCode();
-            global_latex_code += "\n\n";
-        }
-
-        // Create a latex document with the code from all items to redo.
-        ai::FilePath pdf_path;
-        L2A::LATEX::LatexCreationResult result =
-            L2A::LATEX::CreateLatexWithDebug(global_latex_code, pdf_path, ai::UnicodeString("redo_all"));
-        if (result == L2A::LATEX::LatexCreationResult::fail_quit ||
-            result == L2A::LATEX::LatexCreationResult::fail_redo)
-            return;
-
-        // Split up the created items into the individual pdf files.
-        std::vector<ai::FilePath> pdf_files = L2A::LATEX::SplitPdfPages(pdf_path, (unsigned int)l2a_items.size());
-
-        if (is_all_items && locked_counter == 0)
-        {
-            // Delete all the items for this document, and restart the counter.
-            ai::UnicodeString document_name = L2A::UTIL::GetDocumentName();
-            ai::FilePath pdf_file_directory = L2A::UTIL::GetPdfFileDirectory();
-            ai::UnicodeString pattern = "\\" + document_name + "_LaTeX2AI_*.pdf";
-            std::vector<ai::FilePath> old_pdf_files = L2A::UTIL::FindFilesInFolder(pdf_file_directory, pattern);
-            for (const auto& pdf : old_pdf_files) L2A::UTIL::RemoveFile(pdf);
-
-            for (unsigned int i = 0; i < l2a_items.size(); i++)
-            {
-                // Move the new pdf to the header directory.
-                ai::FilePath item_pdf_path = pdf_file_directory;
-                item_pdf_path.AddComponent(L2A::NAMES::GetPdfItemName(document_name, i + 1));
-                L2A::UTIL::CopyFileL2A(pdf_files[i], item_pdf_path);
-                L2A::AI::RelinkPlacedItem(l2a_items[i].GetPlacedItemMutable(), item_pdf_path);
-                l2a_items[i].SetNote();
-                L2A::AI::SetName(l2a_items[i].GetPlacedItemMutable(), L2A::NAMES::GetAIItemName(i + 1));
-            }
-        }
-        else
-        {
-            // Replace the old pdfs with the new ones, and relink the items.
-            for (unsigned int i_rename = 0; i_rename < (unsigned int)l2a_items.size(); i_rename++)
-            {
-                ai::FilePath item_pdf_path = L2A::AI::GetPlacedItemPath(l2a_items[i_rename].GetPlacedItemMutable());
-                L2A::UTIL::CopyFileL2A(pdf_files[i_rename], item_pdf_path);
-                L2A::AI::RelinkPlacedItem(l2a_items[i_rename].GetPlacedItemMutable(), item_pdf_path);
-                l2a_items[i_rename].SetNote();
-            }
-        }
+        RedoLaTeXItems(l2a_items);
     }
 
     // Redo the boundaries of all items.
@@ -711,86 +690,156 @@ void L2A::RedoItems()
 /**
  *
  */
-void L2A::RelinkCopiedItems()
+void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
 {
-    // If the document is not saved, nothing needs to be done in this function.
+    // Loop over every element and get the latex code as string.
+    ai::UnicodeString global_latex_code("\n\n");
+    for (const auto& item : l2a_items)
+    {
+        global_latex_code += "% Name of the item in Illustrator: \"" + item.GetAIName() + "\"\n";
+        global_latex_code += item.GetProperty().GetLaTeXCode();
+        global_latex_code += "\n\n";
+    }
+
+    // Create a latex document with the code from all items to redo.
+    ai::FilePath pdf_path;
+    L2A::LATEX::LatexCreationResult result =
+        L2A::LATEX::CreateLatexWithDebug(global_latex_code, pdf_path, ai::UnicodeString("redo_all"));
+    if (result == L2A::LATEX::LatexCreationResult::fail_quit || result == L2A::LATEX::LatexCreationResult::fail_redo)
+        return;
+
+    // Split up the created items into the individual pdf files.
+    std::vector<ai::FilePath> pdf_files = L2A::LATEX::SplitPdfPages(pdf_path, (unsigned int)l2a_items.size());
+
+    // Create the PDFs for the items and store them in the placed items.
+    for (unsigned int i = 0; i < l2a_items.size(); i++)
+    {
+        // Get the PDF path.
+        auto& l2a_item = l2a_items[i];
+        l2a_item.GetPropertyMutable().SetPDFFile(pdf_files[i]);
+        ai::FilePath new_path = l2a_item.GetPDFPath();
+        l2a_item.SaveEncodedPDFFile(new_path);
+        L2A::AI::RelinkPlacedItem(l2a_item.GetPlacedItemMutable(), new_path);
+        l2a_item.SetNoteAndName();
+    }
+}
+
+/**
+ *
+ */
+void L2A::CheckItemDataStructure()
+{
+    // We need a valid document path for this function to work.
     if (!L2A::UTIL::IsFile(L2A::UTIL::GetDocumentPath(false))) return;
 
-    // Get all selected items and store them. Those items have to be reselected at the end of this function, to ensure
-    // that all copied items are selected and the user can directly modify (e.g. move) them.
-    std::vector<AIArtHandle> selected_items_all;
-    L2A::AI::GetItems(selected_items_all, L2A::AI::SelectionState::selected);
+    // Get all LaTeX2AI placed items in this document.
+    std::vector<AIArtHandle> items_all;
+    L2A::AI::GetDocumentItems(items_all, L2A::AI::SelectionState::all);
 
-    // Get the selected items. Those are candidates for items that were just paste into the document.
-    std::vector<AIArtHandle> selected_items;
-    L2A::AI::GetDocumentItems(selected_items, L2A::AI::SelectionState::selected);
-
-    // No L2A items were changed, nothing needs to be done here.
-    if (selected_items.size() == 0) return;
-
-    // Get the deselected items. Those will be used to compare to the selected ones.
-    std::vector<AIArtHandle> deselected_items;
-    L2A::AI::GetDocumentItems(deselected_items, L2A::AI::SelectionState::deselected);
-
-    // No L2A items existed prior to the change, nothing needs to be done here.
-    if (selected_items.size() == 0) return;
-
-    // Get all paths to the linked pdfs of the unselected items. Those are assumed to be correct.
-    std::vector<ai::UnicodeString> linked_paths;
-    for (const auto& item : deselected_items) linked_paths.push_back(L2A::AI::GetPlacedItemPath(item).GetFullPath());
-
-    // This vector will contain all items that need to be relinked.
-    std::vector<AIArtHandle> copied_items;
-
-    for (const auto& item : selected_items)
+    // Loop over each item and check if the pdf file is encoded and stored within the item.
+    std::vector<L2A::Item> working_items;
+    std::vector<L2A::Item> redo_items;
+    for (auto& item : items_all)
     {
-        ai::FilePath placed_item_path = L2A::AI::GetPlacedItemPath(item);
+        const ai::FilePath old_path = L2A::AI::GetPlacedItemPath(item);
 
-        // Check if the item links to a file that exists. If the linked file does not exist, the item will be skipped,
-        // as the TeX file has to be recompiled.
-        if (!L2A::UTIL::IsFile(placed_item_path)) continue;
-
-        // Check if the selected item links to a file that other items in this document already link to.
-        if (std::find(linked_paths.begin(), linked_paths.end(), placed_item_path.GetFullPath()) != linked_paths.end())
+        L2A::Item l2a_item(item);
+        if (!l2a_item.GetProperty().GetPDFFileHash().empty())
         {
-            copied_items.push_back(item);
-            continue;
+#ifdef _DEBUG
+            // The pdf file is stored in the item -> Check if the hash and the encoded data match.
+            if (l2a_item.GetProperty().GetPDFFileHash() !=
+                L2A::UTIL::StringHash(l2a_item.GetProperty().GetPDFFileContents()))
+                l2a_error("Hash and pdf contents do not match. This should not happen!");
+#endif
+            working_items.push_back(l2a_item);
         }
-
-        // Check if the item links to a file with a name which is not valid for this document (i.e. files copied from
-        // other documents).
-        ai::UnicodeString placed_item_path_string = placed_item_path.GetFileName();
-        ai::UnicodeString compare_string = placed_item_path_string.substr(0, placed_item_path_string.size() - 7);
-        const bool same_name = compare_string == L2A::UTIL::GetDocumentName() + L2A::NAMES::pdf_item_post_fix_;
-        const bool same_directory = placed_item_path.GetParent() == L2A::UTIL::GetPdfFileDirectory();
-        if (!(same_directory && same_name))
+        else if (L2A::UTIL::IsFile(old_path))
         {
-            copied_items.push_back(item);
-            continue;
+            // No pdf data is stored in the item and the pdf file exists -> Save the data to the item.
+            l2a_item.GetPropertyMutable().SetPDFFile(old_path);
+            l2a_item.SetNoteAndName();
+            working_items.push_back(l2a_item);
+        }
+        else
+        {
+            // The LaTeX label has to be redone.
+            redo_items.push_back(l2a_item);
         }
     }
 
-    // Copy the pdfs and relink the items.
-    if (copied_items.size() > 0)
+    if (redo_items.size() > 0)
     {
-        // Make sure the directory exists.
-        L2A::UTIL::CreateDirectoryL2A(L2A::UTIL::GetPdfFileDirectory());
-
-        for (auto& item : copied_items)
+        // Ask the user if the missing items should be redone.
+        ai::UnicodeString message_string("There are ");
+        message_string += L2A::UTIL::IntegerToString((int)redo_items.size());
+        message_string +=
+            " LaTeX2AI item(s) in the document that have to be redone due to missing PDF links.\nRedo now?";
+        if (L2A::AI::YesNoAlert(message_string))
         {
-            // Copy the pdf file.
-            ai::FilePath next_item;
-            unsigned int item_index = L2A::UTIL::GetNextItemIndex(next_item);
-            L2A::UTIL::CopyFileL2A(L2A::AI::GetPlacedItemPath(item), next_item);
+            RedoLaTeXItems(redo_items);
 
-            // Relink the placed item.
-            L2A::AI::SetPlacedItemPath(item, next_item);
-
-            // Set the name for the  AI item.
-            L2A::AI::SetName(item, L2A::NAMES::ai_item_name_prefix_ + L2A::UTIL::IntegerToString(item_index, 3));
+            // Add the items to the working_items vector.
+            for (auto& item : redo_items) working_items.push_back(item);
         }
+    }
 
-        // Select the items again that were selected after the copy mechanism.
-        L2A::AI::SelectItems(selected_items_all);
+    // Make sure the pdf folder exists.
+    const ai::FilePath pdf_file_directory = L2A::UTIL::GetPdfFileDirectory();
+    if (working_items.size() > 0) L2A::UTIL::CreateDirectoryL2A(pdf_file_directory);
+
+    // Loop over each LaTeX2AI item and check if it is stored correctly.
+    std::vector<ai::FilePath> used_pdf_files;
+    for (auto& item : working_items)
+    {
+        const ai::FilePath new_pdf_path = item.GetPDFPath();
+        const ai::FilePath old_pdf_path = L2A::AI::GetPlacedItemPath(item.GetPlacedItem());
+        if (!(L2A::UTIL::IsEqualFile(new_pdf_path, old_pdf_path) && L2A::UTIL::IsFile(new_pdf_path)))
+        {
+            // Store the pdf in the correct path and relink it.
+            item.SaveEncodedPDFFile(new_pdf_path);
+            L2A::AI::SetPlacedItemPath(item.GetPlacedItemMutable(), new_pdf_path);
+        }
+        used_pdf_files.push_back(new_pdf_path);
+    }
+
+    // Cleanup pdf links directory.
+    {
+        // Get all pdf items.
+        ai::UnicodeString pattern = ai::UnicodeString("\\*") + L2A::NAMES::pdf_item_post_fix_ + "*.pdf";
+        std::vector<ai::FilePath> pdf_item_files = L2A::UTIL::FindFilesInFolder(pdf_file_directory, pattern);
+
+        // Get all documents parallel to the current document.
+        pattern = ai::UnicodeString("\\*.ai");
+        std::vector<ai::FilePath> ai_document_files =
+            L2A::UTIL::FindFilesInFolder(L2A::UTIL::GetDocumentPath().GetParent(), pattern);
+
+        // Loop over each pdf label and check if it should be deleted.
+        for (const auto& pdf_path : pdf_item_files)
+        {
+            bool delete_this_file = true;
+
+            // Check if the pdf if part of this document.
+            for (const auto& used_file : used_pdf_files)
+            {
+                if (pdf_path == used_file) delete_this_file = false;
+            }
+
+            // Check if the pdf fits to another Illustrator document by its name.
+            const ai::UnicodeString pdf_name = pdf_path.GetFileName();
+            for (const auto& ai_file : ai_document_files)
+            {
+                // Do not check the name of this document, as the individual items are already checked above.
+                if (L2A::UTIL::GetDocumentPath() == ai_file) continue;
+
+                ai::UnicodeString ai_name = ai_file.GetFileNameNoExt();
+                if (L2A::UTIL::StartsWith(pdf_name, ai_name + L2A::NAMES::pdf_item_post_fix_, true))
+                    delete_this_file = false;
+            }
+
+            // If the file is not used by this document or shares the name with an existing Illustrator document, delete
+            // it.
+            if (delete_this_file) L2A::UTIL::RemoveFile(pdf_path);
+        }
     }
 }
