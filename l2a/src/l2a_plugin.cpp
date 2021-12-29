@@ -250,6 +250,10 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
         {
             if (annotator_->IsArtHit())
             {
+                ai::UnicodeString undo_string("Undo Change LaTeX2AI item");
+                ai::UnicodeString redo_string("Redo Change LaTeX2AI item");
+                sAIUndo->SetUndoTextUS(undo_string, redo_string);
+
                 // Get the existing item and change it.
                 L2A::Item hit_item(annotator_->GetArtHit());
                 hit_item.Change();
@@ -259,6 +263,10 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
                 // Check if the current insertion point is locked.
                 if (!L2A::AI::GetLockedInsertionPoint())
                 {
+                    ai::UnicodeString undo_string("Undo Create LaTeX2AI item");
+                    ai::UnicodeString redo_string("Redo Create LaTeX2AI item");
+                    sAIUndo->SetUndoTextUS(undo_string, redo_string);
+
                     // Create am item at the clicked position.
                     L2A::Item(message->cursor);
                 }
@@ -426,6 +434,9 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
     else if (message->tool == this->fToolHandle[1] && L2A::AI::GetDocumentCount() > 0)
     {
         // Activate undo.
+        ai::UnicodeString undo_string("Undo Update LaTeX2AI item");
+        ai::UnicodeString redo_string("Redo Update LaTeX2AI item");
+        sAIUndo->SetUndoTextUS(undo_string, redo_string);
         L2A::AI::UndoActivate();
 
         // Redo tool is selected.
