@@ -66,6 +66,10 @@ void L2A::Property::DefaultPropertyValues()
 
     // Cursor position in the form.
     cursor_position_ = 0;
+
+    // PDF file contents.
+    pdf_file_encoded_ = ai::UnicodeString("");
+    pdf_file_hash_ = ai::UnicodeString("");
 }
 
 /**
@@ -87,6 +91,14 @@ void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& propert
     // Cursor position.
     cursor_position_ = property_parameter_list.GetSubList(ai::UnicodeString("latex"))
                            ->GetIntOption(ai::UnicodeString("cursor_position"));
+
+    if (property_parameter_list.SubListExists(ai::UnicodeString("pdf_file_contents")))
+    {
+        const std::shared_ptr<const L2A::UTIL::ParameterList>& pdf_sub_list =
+            property_parameter_list.GetSubList(ai::UnicodeString("pdf_file_contents"));
+        pdf_file_encoded_ = pdf_sub_list->GetMainOption();
+        pdf_file_hash_ = pdf_sub_list->GetStringOption(ai::UnicodeString("hash"));
+    }
 }
 
 /**
@@ -102,7 +114,7 @@ void L2A::Property::SetFromString(const ai::UnicodeString& string)
 /**
  *
  */
-L2A::UTIL::ParameterList L2A::Property::ToParameterList() const
+L2A::UTIL::ParameterList L2A::Property::ToParameterList(const bool write_pdf_content) const
 {
     // Create an ParameterList object and fill it up with the options.
     L2A::UTIL::ParameterList property_parameter_list;
@@ -123,15 +135,23 @@ L2A::UTIL::ParameterList L2A::Property::ToParameterList() const
     // Cursor position.
     tex_sub_list->SetOption(ai::UnicodeString("cursor_position"), cursor_position_);
 
+    if (write_pdf_content && !pdf_file_hash_.empty())
+    {
+        // Add the encoded pdf file to the parameter list.
+        std::shared_ptr<L2A::UTIL::ParameterList> pdf_sub_list =
+            property_parameter_list.SetSubList(ai::UnicodeString("pdf_file_contents"));
+        pdf_sub_list->SetMainOption(pdf_file_encoded_);
+        pdf_sub_list->SetOption(ai::UnicodeString("hash"), pdf_file_hash_, true);
+    }
     return property_parameter_list;
 }
 
 /**
  *
  */
-ai::UnicodeString L2A::Property::ToString() const
+ai::UnicodeString L2A::Property::ToString(const bool write_pdf_content) const
 {
-    return ToParameterList().ToXMLString(ai::UnicodeString("LaTeX2AI_item"));
+    return ToParameterList(write_pdf_content).ToXMLString(ai::UnicodeString("LaTeX2AI_item"));
 }
 
 /**
@@ -208,4 +228,16 @@ void L2A::Property::SetFromLastInput()
         else
             L2A::UTIL::RemoveFile(last_input);
     }
+}
+
+/**
+ *
+ */
+void L2A::Property::SetPDFFile(const ai::FilePath& pdf_file)
+{
+    // Encode the pdf file.
+    pdf_file_encoded_ = ai::UnicodeString(L2A::UTIL::encode_file_base64(pdf_file));
+
+    // Set the hash.
+    pdf_file_hash_ = L2A::UTIL::StringHash(pdf_file_encoded_);
 }
