@@ -156,7 +156,7 @@ A few things to keep in mind:
 
 
 # Changelog
-- **pre-release**
+- **v0.0.9**
   - Features:
     - Add storage of labels inside Illustrator.
     - Add undo and redo text.
