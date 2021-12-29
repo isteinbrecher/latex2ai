@@ -151,11 +151,6 @@ namespace L2A
         std::vector<ai::FilePath> FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& pattern);
 
         /**
-         * \brief Get the index of the next available l2a pdf file for the current document.
-         */
-        unsigned int GetNextItemIndex(ai::FilePath& next_path);
-
-        /**
          * \brief Return the full file path for a given path. This also resolves ".." inside the file path.
          */
         ai::FilePath GetFullFilePath(const ai::FilePath& path);
@@ -164,6 +159,21 @@ namespace L2A
          * \brief Set the working directory of the plugin.
          */
         void SetWorkingDirectory(const ai::FilePath& path);
+
+        /**
+         * \brief Check if two file paths point to the same file object.
+         */
+        bool IsEqualFile(const ai::FilePath& path_a, const ai::FilePath& path_b);
+
+        /*
+         * \brief Encode a file to base 64.
+         */
+        std::string encode_file_base64(const ai::FilePath& path);
+
+        /*
+         * \brief Write a base64 encoded string to a file.
+         */
+        void decode_file_base64(const ai::FilePath& path, const std::string& encoded_string);
     }  // namespace UTIL
 }  // namespace L2A
 

@@ -100,9 +100,19 @@ namespace L2A
         void Change();
 
         /**
+         * \brief Get a non-const reference to the property of this item.
+         */
+        L2A::Property& GetPropertyMutable() { return property_; }
+
+        /**
          * \brief Get a const reference to the property of this item.
          */
         const L2A::Property& GetProperty() const { return property_; }
+
+        /**
+         * \brief Get a const reference to a placed item.
+         */
+        const AIArtHandle& GetPlacedItem() const { return placed_item_; }
 
         /**
          * \brief Get a mutable reference to a placed item.
@@ -115,9 +125,19 @@ namespace L2A
         void RedoBoundary();
 
         /**
-         * \brief Set the string of the property to the placed item.
+         * \brief Set displayed name of the placed item in iIllustrator and set the property data as note.
          */
-        void SetNote() const;
+        void SetNoteAndName() const;
+
+        /**
+         * \brief Get the name of the PDF file for this item.
+         */
+        ai::FilePath GetPDFPath() const;
+
+        /**
+         * \brief Create the encoded PDF file.
+         */
+        void SaveEncodedPDFFile(const ai::FilePath& pdf_path) const;
 
         /**
          * \brief Get the name of the item in Illustrator.
@@ -189,17 +209,14 @@ namespace L2A
     void RedoItems();
 
     /**
-     * \brief Check if items are copied into the current document.
-     *
-     * If items are copied, the link to the pdf stays the same. This can lead to the unwanted effect, that if the copied
-     * item is changed, the linked image on the original item also changes. This is not fatal, as the notes with the
-     * latex code in each item are correct, so a full redo will solve this, but this reduced the usabilit, especially if
-     * there are many l2a items in a document. There is no way to call the plugin if items are copied into a document. A
-     * way to stiff find out if relevant actions occured, is to check the selected items after a selection change. Paste
-     * items will be selected, therefore we need to check if the selected items link to a pdf that another item in this
-     * document links to or if the pdf path does not match the current document name.
+     * \brief Redo the LaTeX code for all items in the vector.
      */
-    void RelinkCopiedItems();
+    void RedoLaTeXItems(std::vector<L2A::Item>& l2a_items);
+
+    /**
+     * \brief Check if the pdf files of the items are stored and linked correctly.
+     */
+    void CheckItemDataStructure();
 
 }  // namespace L2A
 #endif

@@ -7,3 +7,6 @@
 [submodule "l2a/tpl/json"]
 	path = l2a/tpl/json
 	url = https://github.com/nlohmann/json.git
+[submodule "l2a/tpl/base64"]
+	path = l2a/tpl/base64
+	url = git@github.com:isteinbrecher/base64.git

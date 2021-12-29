@@ -106,4 +106,8 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
         ai::UnicodeString("text333"), ai::UnicodeString("")};
     split = L2A::UTIL::SplitString(split_string, ai::UnicodeString("%"));
     ut.CompareStringVector(split, split_ref);
+
+    // Test the hash function.
+    ut.CompareStr(L2A::UTIL::StringHash(ai::UnicodeString(L2A::TEST::UTIL::test_string_1_)),
+        ai::UnicodeString("4e496d7d9d7ae4a3"));
 }
