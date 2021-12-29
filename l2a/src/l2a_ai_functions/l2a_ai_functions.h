@@ -101,10 +101,6 @@ namespace L2A
 
         /**
          * \brief Relink a placed item with a file.
-         *
-         * The difference to SetPlacedItemPath is that here the boundary box is reset.
-         * The note and name have to be updated after this.
-         *
          * @param placed_item (in/out) placed item to be linked. The new linked item is assigned to this variable.
          * @param path (in) Path to the file.
          */
@@ -206,7 +202,7 @@ namespace L2A
         void UndoDeactivate();
 
         /**
-         * \brief Set undo state.
+         * \brief Deactivate undo tracking.
          */
         void UndoSetActive(bool silent);
 
@@ -316,12 +312,6 @@ namespace L2A
          * \brief Check if the current insertion point is locked and or hidden, i.e. no item can be created.
          */
         bool GetLockedInsertionPoint();
-
-        /**
-         * \brief Ask the user a Yes or no question.
-         */
-        bool YesNoAlert(const ai::UnicodeString& message);
-
     }  // namespace AI
 }  // namespace L2A
 

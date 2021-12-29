@@ -8,7 +8,7 @@ Currently LaTeX2AI supports:
 - Illustrator 2021 (tested)
 
 ## Requirements
-Currently LaTeX2AI only works on Adobe Illustrator for Microsoft Windows.
+Currently LaTeX2AI only works on Adobe Illustrator for Windows.
 The following software dependencies are required:
 - A LaTeX compiler such as [TeX Live](https://www.tug.org/texlive) or [MiKTeX](https://miktex.org)
 - [Ghost script](https://www.ghostscript.com)
@@ -18,7 +18,7 @@ Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub releas
 They consist of two files `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
 There are two ways to add LaTeX2AI to Illustrator:
 - Both files can be copied to the default plug-in directory `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins`, preferably into a subdirectory `LaTeX2AI` (for this method administrator privileges are required).
-- Both files can be copied into an arbitrary directory and this directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder`.
+- Both files can be copied into an arbitrary directory and this directory has to be set as the Adobe Illustrator Plugin directory.
 
 ## Build LaTeX2AI from source
 
@@ -103,26 +103,12 @@ Every time a label changes the boundary box is reset so that it matches the size
 With the **Redo items** button the boundary box of all labels can be redone.
 It is generally advisable to redo all boundary boxes before exporting the Illustrator document, to ensure that the font size will be correct for each label.
 
-## LaTeX header
+## File structure
+LaTeX2AI requires a certain file structure.
 It is assumed that all Illustrator files in the same directory use the same LaTeX header `LaTeX2AI_header.tex` (if no one exits in the directory, it will be created the first time it is needed).
 This header can be edited to include packages and macros needed for the labels (LaTeX2AI supports `\input` commands in the header, also recursively).
+A sub directory of that directory will be created with the name `LaTeX2AI` which stores the `.pdf` files for the labels of all Illustrator documents in that directory.
 
-## File structure
-The `.pdf` files for the LaTeX labels are stored in the `links` subfolder of the document directory.
-It is not required to keep track of the files in the `links` folder, LaTeX2AI manages and deletes unused label files.
-
-# Known issues
-
-## Missing image files
-When opening a document after it is moved / copied it can happen that Illustrator can not find the `.pdf` files for the labels.
-In that case the following warning message appears:
-![Missing labels](/doc/missing_image_marked.png?raw=true)
-The missing labels can be ignored by selecting `Apply to All` and `Ignore`.
-After the document is loaded, LaTeX2AI automatically restores the missing items.
-
-## Redo not working when changing an item
-Redoing an item by double clicking on it will not trigger an individual undo entry.
-The changes made in the redo process will be appended to the last undo entry.
 
 # License & How to cite
 LaTeX2AI is under the MIT license, see [./LICENSE](LICENSE).
@@ -156,10 +142,6 @@ A few things to keep in mind:
 
 
 # Changelog
-- **pre-release**
-  - Features:
-    - Add storage of labels inside Illustrator.
-    - Add undo and redo text.
 - **v0.0.8**
   - Bug fixes:
     - Fix bug in header include function.

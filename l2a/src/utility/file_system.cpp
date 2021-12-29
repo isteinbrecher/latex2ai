@@ -34,7 +34,6 @@
 #include "l2a_error/l2a_error.h"
 #include "utility/string_functions.h"
 #include "l2a_names.h"
-#include "../tpl/base64/src/base64.h"
 
 #include <array>
 #include <filesystem>
@@ -491,9 +490,15 @@ ai::FilePath L2A::UTIL::GetFormsPath()
  */
 ai::FilePath L2A::UTIL::GetPdfFileDirectory()
 {
+    // Get the document path.
     ai::FilePath path = L2A::UTIL::GetDocumentPath();
+
+    // Check that the header directory exists.
     path = path.GetParent();
     path.AddComponent(ai::UnicodeString(L2A::NAMES::pdf_file_directory_));
+    L2A::UTIL::CreateDirectoryL2A(path);
+
+    // Return the header directory.
     return path;
 }
 
@@ -531,6 +536,32 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
 /**
  *
  */
+unsigned int L2A::UTIL::GetNextItemIndex(ai::FilePath& next_path)
+{
+    unsigned int i = 1;
+    ai::UnicodeString document_name = GetDocumentName();
+    ai::FilePath pdf_directory = GetPdfFileDirectory();
+    ai::FilePath file;
+
+    // Loop through the header directory.
+    bool while_value = true;
+    while (while_value)
+    {
+        file = pdf_directory;
+        file.AddComponent(L2A::NAMES::GetPdfItemName(document_name, i));
+        if (IsFile(file))
+            i++;
+        else
+            while_value = false;
+    }
+
+    next_path = file;
+    return i;
+}
+
+/**
+ *
+ */
 ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
 {
     std::filesystem::path path_std = path.GetFullPath().as_Platform();
@@ -543,53 +574,4 @@ ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
 void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
 {
     std::filesystem::current_path(path.GetFullPath().as_UTF8());
-}
-
-/**
- *
- */
-bool L2A::UTIL::IsEqualFile(const ai::FilePath& path_a, const ai::FilePath& path_b)
-{
-    // TODO: This function returns false if the files are equal and one of the paths points to a network folder and the
-    // other one to a mounted drive.
-    return path_a.Equal(path_b, true);
-}
-
-/*
- *
- */
-std::string L2A::UTIL::encode_file_base64(const ai::FilePath& path)
-{
-    // https://www.cplusplus.com/reference/istream/istream/read/
-
-    std::ifstream input_stream(path.GetFullPath().as_UTF8(), std::ifstream::binary);
-    if (!input_stream) l2a_error("Error in loading file");
-
-    // Get length of the file.
-    input_stream.seekg(0, input_stream.end);
-    unsigned int length = (unsigned int)input_stream.tellg();
-    input_stream.seekg(0, input_stream.beg);
-
-    // Storage for data.
-    std::vector<char> buffer_vector(length);
-    char* buffer = buffer_vector.data();
-
-    // Read data as a block.
-    input_stream.read(buffer, length);
-    if (!input_stream) l2a_error("Error in readig file");
-    input_stream.close();
-
-    // Encode file data.
-    return base64::encode(buffer, length);
-}
-
-/*
- *
- */
-void L2A::UTIL::decode_file_base64(const ai::FilePath& path, const std::string& encoded_string)
-{
-    auto char_vector = base64::decode(encoded_string);
-    std::ofstream output_stream(path.GetFullPath().as_UTF8(), std::ofstream::binary);
-    output_stream.write(char_vector.data(), char_vector.size());
-    output_stream.close();
 }

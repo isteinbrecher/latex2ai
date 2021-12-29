@@ -124,15 +124,3 @@ std::vector<ai::UnicodeString> L2A::UTIL::SplitString(ai::UnicodeString& string,
     split_vector.push_back(string.substr(start_pos, string.size() - start_pos));
     return split_vector;
 }
-
-/**
- *
- */
-ai::UnicodeString L2A::UTIL::StringHash(const ai::UnicodeString& string)
-{
-    std::size_t hash_int = std::hash<std::string>{}(string.as_UTF8());
-    std::stringstream stream;
-    stream << std::hex << hash_int;
-    std::string hash(stream.str());
-    return ai::UnicodeString(hash);
-}

@@ -222,17 +222,13 @@ namespace L2A
 
         /**
          * \brief Convert the parameters of this item to a string.
-         * @param write_pdf_content If the content of the pdf file should be written to the parameter list. This content
-         * can be large and should only be written if it is actually needed.
          */
-        L2A::UTIL::ParameterList ToParameterList(const bool write_pdf_content = false) const;
+        L2A::UTIL::ParameterList ToParameterList() const;
 
         /**
          * \brief Convert the parameters of this item to a string.
-         * @param write_pdf_content If the content of the pdf file should be written to the parameter list. This content
-         * can be large and should only be written if it is actually needed.
          */
-        ai::UnicodeString ToString(const bool write_pdf_content = false) const;
+        ai::UnicodeString ToString() const;
 
         /**
          * \brief Compare with other property.
@@ -280,21 +276,6 @@ namespace L2A
          */
         void SetFromLastInput();
 
-        /**
-         * \brief Get the pdf contents of the property.
-         */
-        ai::UnicodeString GetPDFFileContents() const { return pdf_file_encoded_; }
-
-        /**
-         * \brief Get the hash of the encoded pdf file.
-         */
-        ai::UnicodeString GetPDFFileHash() const { return pdf_file_hash_; }
-
-        /**
-         * \brief Encode a pdf file and store it in this property.
-         */
-        void SetPDFFile(const ai::FilePath& pdf_file);
-
        private:
         //! Horizontal and Vertical alignment of the text.
         TextAlignHorizontal text_align_horizontal_;
@@ -308,12 +289,6 @@ namespace L2A
 
         //! Position of the cursor in the form.
         unsigned int cursor_position_;
-
-        //! Encoded pdf file.
-        ai::UnicodeString pdf_file_encoded_;
-
-        //! Hash of encoded pdf file.
-        ai::UnicodeString pdf_file_hash_;
     };
 }  // namespace L2A
 

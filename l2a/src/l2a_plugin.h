@@ -169,11 +169,6 @@ class L2APlugin : public Plugin
     //! Handle for the selection changed notifier.
     AINotifierHandle fNotifySelectionChanged;
 
-    //! Handle for docuement actions.
-    AINotifierHandle fNotifyDocumentSave;
-    AINotifierHandle fNotifyDocumentSaveAs;
-    AINotifierHandle fNotifyDocumentOpened;
-
     //! Handle for the resource manager added by this plug-in used for setting cursor
     AIResourceManagerHandle fResourceManagerHandle;
 

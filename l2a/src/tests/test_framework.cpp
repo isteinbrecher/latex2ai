@@ -237,7 +237,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             i_vertical++;
         }
 
-        // Delete the first two items -> they are copied.
+        // Delete the first two items -> hey are copied.
         error = sAIArt->DisposeArt(item_standard.GetPlacedItemMutable());
         l2a_check_ai_error(error);
         error = sAIArt->DisposeArt(item_baseline.GetPlacedItemMutable());
@@ -274,7 +274,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
                 reference_box.right = (ASReal)7969.06982;
                 reference_box.bottom = (ASReal)7753.00977;
             }
-            AIRealRect image_box = L2A::AI::GetPlacedBoundingBox(l2a_item.GetPlacedItem());
+            AIRealRect image_box = L2A::AI::GetPlacedBoundingBox(l2a_item.GetPlacedItemMutable());
             ut.CompareRect(image_box, reference_box);
         }
 

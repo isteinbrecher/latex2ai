@@ -38,7 +38,7 @@ namespace L2A
     namespace NAMES
     {
         //! Name of the directory where the L2A header and pdfs will be stored.
-        static const char* pdf_file_directory_ = "links";
+        static const char* pdf_file_directory_ = "LaTeX2AI";
 
         //! Name of header in the L2A directory.
         static const char* tex_header_name_ = "LaTeX2AI_header.tex";
@@ -47,7 +47,7 @@ namespace L2A
         static const char* pdf_item_post_fix_ = "_LaTeX2AI_";
 
         //! Name for the item in ai.
-        static const char* ai_item_name_ = "LaTeX2AI";
+        static const char* ai_item_name_prefix_ = "LaTeX2AI_";
 
         //! Name for the tex file when creating a latex item.
         static const char* create_pdf_tex_name_base_ = "LaTeX2AI_item";
@@ -67,6 +67,14 @@ namespace L2A
         inline ai::UnicodeString GetPdfItemName(const ai::UnicodeString& document_name, const unsigned int i)
         {
             return document_name + L2A::NAMES::pdf_item_post_fix_ + L2A::UTIL::IntegerToString(i, 3) + ".pdf";
+        }
+
+        /**
+         * \brief Get the name of an ai item.
+         */
+        inline ai::UnicodeString GetAIItemName(const unsigned int i)
+        {
+            return ai_item_name_prefix_ + L2A::UTIL::IntegerToString(i, 3);
         }
     }  // namespace NAMES
 }  // namespace L2A
