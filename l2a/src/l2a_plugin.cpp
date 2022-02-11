@@ -326,12 +326,12 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
     for (short i = 0; i < n_tools; i++)
     {
         // Define the name and icon for the tool.
-#if ILLUSTRATOR_VERSION <= 2200
-        data.title = toolTitleStr[i];
-        data.tooltip = toolTipStr[i];
-#else
+#if kPluginInterfaceVersion >= 0x23000001
         data.title = ai::UnicodeString(toolTitleStr[i]);
         data.tooltip = ai::UnicodeString(toolTipStr[i]);
+#else
+        data.title = toolTitleStr[i];
+        data.tooltip = toolTipStr[i];
 #endif
         data.normalIconResID = light_icon_id[i];
         data.darkIconResID = dark_icon_id[i];
@@ -353,10 +353,10 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-#if ILLUSTRATOR_VERSION <= 2200
-        error = sAITool->AddTool(message->d.self, toolTitleStr[i], &data, options, &fToolHandle[i]);
-#else
+#if kPluginInterfaceVersion >= 0x23000001
         error = sAITool->AddTool(message->d.self, toolTitleStr[i], data, options, &fToolHandle[i]);
+#else
+        error = sAITool->AddTool(message->d.self, toolTitleStr[i], &data, options, &fToolHandle[i]);
 #endif
         l2a_check_ai_error(error);
     }

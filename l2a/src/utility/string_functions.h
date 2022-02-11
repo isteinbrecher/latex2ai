@@ -92,7 +92,9 @@ namespace L2A
 
 namespace ai
 {
-#if ILLUSTRATOR_VERSION <= 2100
+#if kPluginInterfaceVersion >= 0x22000001
+    //! This function is not required in newer SDK versions.
+#else
     /**
      * \brief Overload the + operator for strings. Now existing strings can be simply added.
      */
