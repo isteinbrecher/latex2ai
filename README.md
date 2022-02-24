@@ -156,6 +156,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **pre-release**
+  - Other:
+    - Improve drawing of borders in preview mode.
 - **v0.0.9**
   - Features:
     - Add storage of labels inside Illustrator.
