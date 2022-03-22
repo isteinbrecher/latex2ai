@@ -156,6 +156,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **pre release**
+  - Features:
+    - Add optional warnings when saving as PDF.
 - **v0.0.9**
   - Features:
     - Add storage of labels inside Illustrator.
