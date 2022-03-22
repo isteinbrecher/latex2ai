@@ -183,6 +183,10 @@ void L2A::GLOBAL::Global::SetFromUserForm()
                     form_return_parameter_list->GetStringOption(ai::UnicodeString("command_latex_options")));
                 form_parameter_list->SetOption(ai::UnicodeString("command_gs"),
                     form_return_parameter_list->GetStringOption(ai::UnicodeString("command_gs")));
+                form_parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"),
+                    form_return_parameter_list->GetIntOption(ai::UnicodeString("warning_ai_not_saved")));
+                form_parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"),
+                    form_return_parameter_list->GetIntOption(ai::UnicodeString("warning_boundary_boxes")));
 
                 L2A::LATEX::GetHeaderPath();
             }
@@ -390,6 +394,8 @@ void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterLi
     parameter_list->SetOption(ai::UnicodeString("command_latex_options"), command_latex_options_);
     parameter_list->SetOption(ai::UnicodeString("command_gs"), command_gs_);
     parameter_list->SetOption(ai::UnicodeString("path_form_exe"), path_form_exe_);
+    parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), warning_boundary_boxes_);
+    parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), warning_ai_not_saved_);
 }
 
 /**
@@ -413,6 +419,8 @@ void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::Par
         ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
     parameter_list->SetOption(ai::UnicodeString("command_gs"), ai::UnicodeString(""));
     parameter_list->SetOption(ai::UnicodeString("path_form_exe"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
+    parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
 }
 
 /**
@@ -449,6 +457,18 @@ bool L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
     value = ai::UnicodeString("path_form_exe");
     if (parameter_list.OptionExists(value))
         path_form_exe_ = ai::FilePath(parameter_list.GetStringOption(value));
+    else
+        set_all = false;
+
+    value = ai::UnicodeString("warning_boundary_boxes");
+    if (parameter_list.OptionExists(value))
+        warning_boundary_boxes_ = bool(parameter_list.GetIntOption(value));
+    else
+        set_all = false;
+
+    value = ai::UnicodeString("warning_ai_not_saved");
+    if (parameter_list.OptionExists(value))
+        warning_ai_not_saved_ = bool(parameter_list.GetIntOption(value));
     else
         set_all = false;
 

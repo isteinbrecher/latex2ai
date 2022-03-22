@@ -170,6 +170,12 @@ namespace L2A
             //! File that stores last item input.
             ai::FilePath l2a_item_last_input_;
 
+            //! Flag for warning if ai file is not saved.
+            bool warning_ai_not_saved_;
+
+            //! Flag for warning if boundary boxes are not OK.
+            bool warning_boundary_boxes_;
+
             //! Flag if testing is currently active.
             bool is_testing_;
 
