@@ -84,6 +84,16 @@ namespace L2A
              */
             ai::UnicodeString GetLatexCommand() const;
 
+            /**
+             * \brief Return the flag for warnings if the AI file is saved, while saving as PDF.
+             */
+            bool GetWarningSave() const { return warning_ai_not_saved_; }
+
+            /**
+             * \brief Return the flag for warnings if all boundary boxes are ok, while saving as PDF.
+             */
+            bool GetWarningBoundaryBox() const { return warning_boundary_boxes_; }
+
            private:
             /**
              * \brief Set path to the executable of the forms application and check if it is correct.

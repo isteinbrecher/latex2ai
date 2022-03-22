@@ -30,6 +30,8 @@
 #include "IllustratorSDK.h"
 #include "l2a_ai_functions/l2a_ai_functions.h"
 
+#include "l2a_global/l2a_global.h"
+#include "l2a_item/l2a_item.h"
 #include "l2a_property/l2a_property.h"
 #include "l2a_error/l2a_error.h"
 #include "l2a_suites.h"
@@ -535,12 +537,46 @@ void L2A::AI::SaveToPDF()
         return;
     }
 
-    // First it is checked if the active document is saved. It is advisable to save the document before exporting to
-    // pdf.
+    // Check if all boundary boxes are ok.
+    if (L2A::Global().GetWarningBoundaryBox())
+    {
+        std::vector<AIArtHandle> all_items;
+        L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
+        std::vector<L2A::Item> l2a_items;
+        unsigned int n_hidden_bad_boundary_box_items = 0;
+        for (const auto& placed_item : all_items)
+        {
+            bool is_hidden;
+            bool is_locked;
+            L2A::Item item_temp(placed_item);
+            if (item_temp.IsStreched() || item_temp.IsDiamond())
+            {
+                L2A::AI::GetIsHiddenLocked(placed_item, is_hidden, is_locked);
+
+                if (is_hidden || is_locked)
+                    n_hidden_bad_boundary_box_items++;
+                else
+                    l2a_items.push_back(item_temp);
+            }
+        }
+
+        const unsigned int n_bad_items = n_hidden_bad_boundary_box_items + unsigned int(l2a_items.size());
+        if (n_bad_items > 0)
+        {
+            ai::UnicodeString warning_string("There are ");
+            warning_string += L2A::UTIL::IntegerToString(n_bad_items) + " items with bad boundary boxes.";
+            if (n_hidden_bad_boundary_box_items > 0)
+                warning_string +=
+                    " Of them, " + L2A::UTIL::IntegerToString(n_hidden_bad_boundary_box_items) + " are locked.";
+            sAIUser->MessageAlert(warning_string);
+        }
+    }
+
+    // Check if the active document is saved. It is advisable to save the document before exporting to pdf.
     AIBoolean is_modified = true;
     result = sAIDocument->GetDocumentModified(&is_modified);
     l2a_check_ai_error(result);
-    if (is_modified)
+    if (is_modified && L2A::Global().GetWarningSave())
     {
         if (YesNoAlert(ai::UnicodeString(
                 "The curent document is not saved. It is advisable to save the document before exporting to pdf.")))
