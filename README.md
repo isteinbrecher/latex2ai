@@ -5,7 +5,8 @@ Currently LaTeX2AI supports:
 - Illustrator CS6 (tested)
 - Illustrator CC 2017
 - Illustrator CC 2018
-- Illustrator 2021 (tested)
+- Illustrator 2021
+- Illustrator 2022 (tested)
 
 ## Requirements
 Currently LaTeX2AI only works on Adobe Illustrator for Microsoft Windows.
@@ -164,6 +165,7 @@ A few things to keep in mind:
 - **pre-release**
   - Other:
     - Add warning that LaTeX2AI is not compatible with non ASCII characters in the document path.
+    - Support Illustrator 2022
 - **v0.0.9**
   - Features:
     - Add storage of labels inside Illustrator.
