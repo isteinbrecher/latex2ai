@@ -5,7 +5,8 @@ Currently LaTeX2AI supports:
 - Illustrator CS6 (tested)
 - Illustrator CC 2017
 - Illustrator CC 2018
-- Illustrator 2021 (tested)
+- Illustrator 2021
+- Illustrator 2022 (tested)
 
 ## Requirements
 Currently LaTeX2AI only works on Adobe Illustrator for Microsoft Windows.
@@ -124,6 +125,10 @@ After the document is loaded, LaTeX2AI automatically restores the missing items.
 Redoing an item by double clicking on it will not trigger an individual undo entry.
 The changes made in the redo process will be appended to the last undo entry.
 
+## Non ASCII characters in the document name or path
+LaTeX2AI does not work if there are non ASCII characters in the document name or full document path.
+
+
 # License & How to cite
 LaTeX2AI is under the MIT license, see [./LICENSE](LICENSE).
 If you use LaTeX2AI to create figures for your work, please acknowledge it with a link to the GitHub repository.
@@ -132,9 +137,10 @@ For example:
 - Sketches in this work have been created using the Adobe Illustrator plug-in LaTeX2AI ([https://github.com/isteinbrecher/latex2ai](https://github.com/isteinbrecher/latex2ai)).
 
 ## Work that uses LaTeX2AI
-1. Steinbrecher, I., Popp, A., Meier, C.: Consistent coupling of positions and rotations for embedding 1D Cosserat beams into 3D solid volumes. Comput Mech (2021). [Open Access](https://doi.org/10.1007/s00466-021-02111-4)
-1. Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Comput Mech (2020), 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
-1. Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
+- F. Toenniessen, Die Homotopie der Sphären, eine Einführung in die Technik der Faserungen, Spektralsequenzen und Kohomologie-Operationen, Springer Verlag Heidelberg (to appear in 2022). 
+- Steinbrecher, I., Popp, A., Meier, C.: Consistent coupling of positions and rotations for embedding 1D Cosserat beams into 3D solid volumes. Comput Mech (2021), [Open Access](https://doi.org/10.1007/s00466-021-02111-4)
+- Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Comput Mech (2020), 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
+- Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
 
 
 # Contributing
@@ -158,6 +164,8 @@ A few things to keep in mind:
 # Changelog
 - **pre-release**
   - Other:
+    - Add warning that LaTeX2AI is not compatible with non ASCII characters in the document path.
+    - Support Illustrator 2022
     - Improve drawing of borders in preview mode.
 - **v0.0.9**
   - Features:

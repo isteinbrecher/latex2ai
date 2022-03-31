@@ -109,4 +109,9 @@ namespace L2A
 #define l2a_check_ai_error(err) \
     if (err) l2a_error(L2A::ERR::AIErrorCodeToErrorString(err))
 
+/**
+ * \brief Throw a warning.
+ */
+#define l2a_warning(warning) throw L2A::ERR::Warning(warning);
+
 #endif  // L2A_ERROR_H_
