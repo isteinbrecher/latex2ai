@@ -124,6 +124,10 @@ After the document is loaded, LaTeX2AI automatically restores the missing items.
 Redoing an item by double clicking on it will not trigger an individual undo entry.
 The changes made in the redo process will be appended to the last undo entry.
 
+## Non ASCII characters in the document name or path
+LaTeX2AI does not work if there are non ASCII characters in the document name or full document path.
+
+
 # License & How to cite
 LaTeX2AI is under the MIT license, see [./LICENSE](LICENSE).
 If you use LaTeX2AI to create figures for your work, please acknowledge it with a link to the GitHub repository.
@@ -156,6 +160,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **pre-release**
+  - Other:
+    - Add warning that LaTeX2AI is not compatible with non ASCII characters in the document path.
 - **v0.0.9**
   - Features:
     - Add storage of labels inside Illustrator.
