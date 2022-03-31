@@ -166,6 +166,7 @@ A few things to keep in mind:
   - Other:
     - Add warning that LaTeX2AI is not compatible with non ASCII characters in the document path.
     - Support Illustrator 2022
+    - Improve drawing of borders in preview mode.
 - **v0.0.9**
   - Features:
     - Add storage of labels inside Illustrator.
