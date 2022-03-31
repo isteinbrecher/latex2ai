@@ -77,9 +77,15 @@ namespace L2A.FORMS
             this.header_button = new System.Windows.Forms.Button();
             this.document_header = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.check_box_boundary = new System.Windows.Forms.CheckBox();
+            this.check_box_save = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // latex_command
@@ -93,7 +99,7 @@ namespace L2A.FORMS
             // 
             // button_default
             // 
-            this.button_default.Location = new System.Drawing.Point(12, 407);
+            this.button_default.Location = new System.Drawing.Point(12, 487);
             this.button_default.Name = "button_default";
             this.button_default.Size = new System.Drawing.Size(95, 23);
             this.button_default.TabIndex = 1;
@@ -103,7 +109,7 @@ namespace L2A.FORMS
             // 
             // button_ok
             // 
-            this.button_ok.Location = new System.Drawing.Point(308, 407);
+            this.button_ok.Location = new System.Drawing.Point(308, 487);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(95, 23);
             this.button_ok.TabIndex = 2;
@@ -113,7 +119,7 @@ namespace L2A.FORMS
             // 
             // button_cancel
             // 
-            this.button_cancel.Location = new System.Drawing.Point(409, 407);
+            this.button_cancel.Location = new System.Drawing.Point(409, 487);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(95, 23);
             this.button_cancel.TabIndex = 3;
@@ -272,7 +278,7 @@ namespace L2A.FORMS
             this.groupBox3.Controls.Add(this.header_button);
             this.groupBox3.Controls.Add(this.document_header);
             this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Location = new System.Drawing.Point(12, 327);
+            this.groupBox3.Location = new System.Drawing.Point(12, 407);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(492, 74);
             this.groupBox3.TabIndex = 11;
@@ -305,11 +311,61 @@ namespace L2A.FORMS
             this.label6.TabIndex = 2;
             this.label6.Text = "LaTeX Header";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.check_box_boundary);
+            this.groupBox4.Controls.Add(this.check_box_save);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.label8);
+            this.groupBox4.Location = new System.Drawing.Point(12, 327);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(492, 74);
+            this.groupBox4.TabIndex = 13;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Warnings";
+            // 
+            // check_box_boundary
+            // 
+            this.check_box_boundary.AutoSize = true;
+            this.check_box_boundary.Location = new System.Drawing.Point(471, 45);
+            this.check_box_boundary.Name = "check_box_boundary";
+            this.check_box_boundary.Size = new System.Drawing.Size(15, 14);
+            this.check_box_boundary.TabIndex = 5;
+            this.check_box_boundary.UseVisualStyleBackColor = true;
+            // 
+            // check_box_save
+            // 
+            this.check_box_save.AutoSize = true;
+            this.check_box_save.Location = new System.Drawing.Point(471, 19);
+            this.check_box_save.Name = "check_box_save";
+            this.check_box_save.Size = new System.Drawing.Size(15, 14);
+            this.check_box_save.TabIndex = 4;
+            this.check_box_save.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 45);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(248, 13);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "On \"save to PDF\", if there are bad boundary boxes";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 22);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(225, 13);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "On \"save to PDF\", if Illustrator file is not saved";
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(516, 441);
+            this.ClientSize = new System.Drawing.Size(516, 519);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -328,6 +384,8 @@ namespace L2A.FORMS
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -359,5 +417,10 @@ namespace L2A.FORMS
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox version;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox check_box_boundary;
+        private System.Windows.Forms.CheckBox check_box_save;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
     }
 }

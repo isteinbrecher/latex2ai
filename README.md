@@ -163,6 +163,8 @@ A few things to keep in mind:
 
 # Changelog
 - **pre-release**
+  - Features:
+    - Add optional warnings when saving as PDF.
   - Other:
     - Add warning that LaTeX2AI is not compatible with non ASCII characters in the document path.
     - Support Illustrator 2022
