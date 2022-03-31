@@ -71,7 +71,6 @@ void L2A::TEST::TestVersion(L2A::TEST::UTIL::UnitTest& ut)
 
     L2A::GLOBAL::Version main_version(L2A_VERSION_STRING_);
     ut.CompareStr(main_version.ToString(), ai::UnicodeString(L2A_VERSION_STRING_));
-    ut.CompareInt(1, main_version.GetVersionInt() == L2A_VERSION_INT_);
 
     L2A::GLOBAL::Version version_from_github("v0.0.5");
     ut.CompareStr(version_from_github.ToString(), ai::UnicodeString("0.0.5"));
