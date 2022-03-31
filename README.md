@@ -162,7 +162,7 @@ A few things to keep in mind:
 
 
 # Changelog
-- **pre-release**
+- **v0.0.10**
   - Features:
     - Add optional warnings when saving as PDF.
   - Other:
