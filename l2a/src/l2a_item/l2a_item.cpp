@@ -459,23 +459,18 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     sAIAnnotatorDrawer->SetColor(message->drawer, item_color);
     sAIAnnotatorDrawer->SetLineDashed(message->drawer, false);
 
-    // Get the coordinates of all Array with the relevant view positions. The first 5 are for the rectangle, the last
-    // two for the baseline.
-    std::vector<PlaceAlignment> boundary_placements = {
-        kTopLeft, kTopRight, kBotRight, kBotLeft, kTopLeft, kMidLeft, kMidRight};
-    std::vector<AIPoint> boundary_positions_view;
-    for (const auto& placement : boundary_placements)
-    {
-        // Look for the entry in the dictionary.
-        auto find_key = item_boundaries.find(placement);
-        if (find_key != item_boundaries.end())
-            boundary_positions_view.push_back(L2A::AI::ArtworkPointToViewPoint(find_key->second));
-        else
-            l2a_error("Key in item_boundaries could not be found!");
-    }
+
+    // Get the coordinates of all Array with the relevant view positions.
+    std::vector<AIPoint> polygon_points_view;
+    for (auto const& placement : {kMidLeft, kTopLeft, kTopRight, kBotRight, kBotLeft, kMidLeft})
+        polygon_points_view.push_back(L2A::AI::ArtworkPointToViewPoint(item_boundaries.at(placement)));
+    std::vector<AIPoint> baseline_points_view;
+    for (auto const& placement : {kMidLeft, kMidRight})
+        baseline_points_view.push_back(L2A::AI::ArtworkPointToViewPoint(item_boundaries.at(placement)));
 
     // Draw the boundary.
-    AIErr error = sAIAnnotatorDrawer->DrawPolygon(message->drawer, &boundary_positions_view[0], 5, false);
+    AIErr error = sAIAnnotatorDrawer->DrawPolygon(
+        message->drawer, polygon_points_view.data(), (ai::uint32)polygon_points_view.size(), false);
     l2a_check_ai_error(error);
 
     // Draw the placement point.
@@ -492,15 +487,15 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     if (property_.IsBaseline())
     {
         // Dash data for dashed line to display baseline items.
-#if ILLUSTRATOR_VERSION == 1600
-        std::vector<AIReal> dash_data_ = {20, 7};
-#else
+#if kPluginInterfaceVersion >= 0x17000001
         std::vector<AIFloat> dash_data_ = {20, 7};
+#else
+        std::vector<AIReal> dash_data_ = {20, 7};
 #endif
 
         // Draw the base line of a baseline item.
         error = sAIAnnotatorDrawer->SetLineDashedEx(message->drawer, &dash_data_[0], (ai::int32)dash_data_.size());
-        error = sAIAnnotatorDrawer->DrawLine(message->drawer, boundary_positions_view[5], boundary_positions_view[6]);
+        error = sAIAnnotatorDrawer->DrawLine(message->drawer, baseline_points_view[0], baseline_points_view[1]);
         l2a_check_ai_error(error);
     }
 }

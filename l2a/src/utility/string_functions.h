@@ -47,6 +47,14 @@ namespace L2A
         ai::UnicodeString IntegerToString(const unsigned int& number, const unsigned int& pad_len = 0);
 
         /**
+         * \brief Convert an integer to an std::string representing its hex value.
+         * @value The integer value to convert.
+         * @return The integer in hex formating.
+         */
+        template <typename int_type>
+        std::string IntegerToHexString(int_type value);
+
+        /**
          * \brief Convert an ai::UnicodeString to an integer.
          */
         int StringToInteger(const ai::UnicodeString& string);
@@ -84,7 +92,9 @@ namespace L2A
 
 namespace ai
 {
-#if ILLUSTRATOR_VERSION <= 2100
+#if kPluginInterfaceVersion >= 0x22000001
+    //! This function is not required in newer SDK versions.
+#else
     /**
      * \brief Overload the + operator for strings. Now existing strings can be simply added.
      */
