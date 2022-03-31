@@ -114,6 +114,10 @@ namespace L2A.FORMS
 
             // Set the ghostscript path.
             gs_path.Text = parameter_list.options_["command_gs"];
+
+            // Set the warning flags.
+            check_box_save.Checked = Convert.ToBoolean(Int32.Parse(parameter_list.options_["warning_ai_not_saved"]));
+            check_box_boundary.Checked = Convert.ToBoolean(Int32.Parse(parameter_list.options_["warning_boundary_boxes"]));
         }
 
         private void OkClick(object sender, EventArgs e)
@@ -178,6 +182,8 @@ namespace L2A.FORMS
             return_parameter_list_.options_["command_latex"] = latex_command.Text;
             return_parameter_list_.options_["command_latex_options"] = latex_command_options.Text;
             return_parameter_list_.options_["command_gs"] = gs_path.Text;
+            return_parameter_list_.options_["warning_ai_not_saved"] = Convert.ToInt32(check_box_save.Checked).ToString();
+            return_parameter_list_.options_["warning_boundary_boxes"] = Convert.ToInt32(check_box_boundary.Checked).ToString();
         }
 
         // Store the default parameters in case the user wants them.

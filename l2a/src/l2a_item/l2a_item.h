@@ -164,6 +164,16 @@ namespace L2A
          */
         ItemFormReturnValues OpenUserForm(L2A::Property& input_property) const;
 
+        /**
+         * \brief Check if the item is of diamond shape.
+         */
+        bool IsDiamond() const;
+
+        /**
+         * \brief Check if the item is streched.
+         */
+        bool IsStreched() const;
+
        private:
         /**
          * \brief Move the placed item to a desired position.
@@ -181,19 +191,9 @@ namespace L2A
         bool IsRotated() const;
 
         /**
-         * \brief Check if the item is of diamond shape.
-         */
-        bool IsDiamond() const;
-
-        /**
          * \brief Get the strech of the item in a direction.
          */
         AIReal GetStrech(unsigned short director = 0) const;
-
-        /**
-         * \brief Check if the item is streched.
-         */
-        bool IsStreched() const;
 
        private:
         //! Properties of this item.

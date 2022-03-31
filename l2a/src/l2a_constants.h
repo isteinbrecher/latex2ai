@@ -30,20 +30,6 @@
 #ifndef L2A_DEFINES_H_
 #define L2A_DEFINES_H_
 
-//! Check the Illustrator version.
-#if kPluginInterfaceVersion == kPluginInterfaceVersion16001
-#define ILLUSTRATOR_VERSION 1600
-#elif kPluginInterfaceVersion == kPluginInterfaceVersion21001
-#define ILLUSTRATOR_VERSION 2100
-#elif kPluginInterfaceVersion == kPluginInterfaceVersion22001
-#define ILLUSTRATOR_VERSION 2200
-#elif kPluginInterfaceVersion == kPluginInterfaceVersion25001
-#define ILLUSTRATOR_VERSION 2500
-#else
-#error Currently LaTeX2AI only supports Illustrator CS6, Illustrator CC2017, Illustrator CC2018 and Illustrator 2021
-#endif
-
-
 //! Include information regarding the curent git version.
 #include "auto_generated/version.h"
 
@@ -51,8 +37,7 @@
 #define L2A_PLUGIN_NAME "LaTeX2AI"
 
 //! Version of the plugin.
-#define L2A_VERSION_STRING_ "0.0.9"
-#define L2A_VERSION_INT_ 0x9
+#define L2A_VERSION_STRING_ "0.0.10"
 
 //! Icon IDs.
 #define TOOL_ICON_CREATE_LIGHT_ID 16051       // icon for create mode in light mode
