@@ -29,6 +29,8 @@
 #include "IllustratorSDK.h"
 #include "string_functions.h"
 
+#include <iomanip>
+
 #include "../l2a_suites.h"
 #include "../l2a_error/l2a_error.h"
 
@@ -61,6 +63,20 @@ ai::UnicodeString L2A::UTIL::IntegerToString(const unsigned int& number, const u
         return number_string;
     }
 }
+
+/**
+ *
+ */
+template <typename int_type>
+std::string L2A::UTIL::IntegerToHexString(int_type value)
+{
+    std::stringstream stream;
+    stream << "0x" << std::setfill('0') << std::setw(sizeof(int_type) * 2) << std::hex << value;
+    return stream.str();
+}
+
+//! Explicit template instantiation.
+template std::string L2A::UTIL::IntegerToHexString<int>(int);
 
 /**
  *

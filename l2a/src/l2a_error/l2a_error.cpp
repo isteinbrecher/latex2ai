@@ -97,7 +97,7 @@ L2A::ERR::Exception::Exception(const char* __file__, const int __line__, const c
     full_error_string += "\nLaTeX2AI git sha:\n";
     full_error_string += L2A_VERSION_GIT_SHA_HEAD_;
     full_error_string += "\n\nIllustrator Version:\n";
-    full_error_string += L2A::UTIL::IntegerToString(ILLUSTRATOR_VERSION);
+    full_error_string += ai::UnicodeString(L2A::UTIL::IntegerToHexString(kPluginInterfaceVersion));
     full_error_string += "\n--------------------------------------------------------------------------------\n";
 #ifdef _DEBUG
     full_error_string += "Stack:\n";

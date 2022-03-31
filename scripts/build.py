@@ -67,7 +67,8 @@ def get_illustrator_version(path):
         'Adobe Illustrator CS6 SDK': 'IllustratorCS6',
         'Adobe Illustrator CC 2017 SDK': 'IllustratorCC2017',
         'Adobe Illustrator CC 2018 SDK': 'IllustratorCC2018',
-        'Adobe Illustrator 2021 SDK': 'Illustrator2021'
+        'Adobe Illustrator 2021 SDK': 'Illustrator2021',
+        'Adobe Illustrator 2022 SDK': 'Illustrator2022'
         }
     illustrator_version = None
     for path_part in split_path:
