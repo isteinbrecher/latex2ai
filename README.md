@@ -1,7 +1,7 @@
 ![LaTeX2AI](/logo/logo_black.png?raw=true)
 
 LaTeX2AI is a plugin for Adobe Illustrator that enables the use of text labels typeset in LaTeX inside an Illustrator document.
-Currently LaTeX2AI supports:
+Currently LaTeX2AI supports following Illustrator versions on Microsoft Windows:
 - Illustrator CS6 (tested)
 - Illustrator CC 2017
 - Illustrator CC 2018
@@ -9,13 +9,12 @@ Currently LaTeX2AI supports:
 - Illustrator 2022 (tested)
 
 ## Requirements
-Currently LaTeX2AI only works on Adobe Illustrator for Microsoft Windows.
 The following software dependencies are required:
 - A LaTeX compiler such as [TeX Live](https://www.tug.org/texlive) or [MiKTeX](https://miktex.org)
 - [Ghost script](https://www.ghostscript.com)
 
 ## Install LaTeX2AI
-Install LaTeX2AI from rebuild binaries can be downloaded from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases).
+Pre-build LaTeX2AI binaries can be downloaded from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases).
 They consist of two files `LaTeX2AI.aip` and `LaTeX2AIForms.exe`.
 There are two ways to add LaTeX2AI to Illustrator:
 - Both files can be copied to the default plug-in directory `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins`, preferably into a subdirectory `LaTeX2AI` (for this method administrator privileges are required).
