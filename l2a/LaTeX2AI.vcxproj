@@ -111,7 +111,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -170,7 +170,7 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py" cpp</Command>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
