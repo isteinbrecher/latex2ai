@@ -160,15 +160,11 @@ def create_cs_headers():
 if __name__ == '__main__':
     """Execution part of script"""
 
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 1:
         raise ValueError('Wrong number of system arguments.')
 
     # Change working directory to script directory.
     os.chdir(os.path.dirname(__file__))
 
-    if sys.argv[1] == 'cpp':
-        create_cpp_headers()
-    elif sys.argv[1] == 'cs':
-        create_cs_headers()
-    else:
-        raise ValueError('Got unexpected comandline argument.')
+    create_cpp_headers()
+    create_cs_headers()
