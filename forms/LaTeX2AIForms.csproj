@@ -159,6 +159,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py" cs</PreBuildEvent>
+    <PreBuildEvent>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py"</PreBuildEvent>
   </PropertyGroup>
 </Project>
