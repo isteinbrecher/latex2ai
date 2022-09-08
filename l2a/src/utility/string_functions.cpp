@@ -152,3 +152,23 @@ ai::UnicodeString L2A::UTIL::StringHash(const ai::UnicodeString& string)
     std::string hash(stream.str());
     return ai::UnicodeString(hash);
 }
+
+/**
+ *
+ */
+bool L2A::UTIL::IsAsciiString(const ai::UnicodeString& string)
+{
+    const size_t n_char = string.size();
+    for (size_t i_char = 0; i_char < n_char; i_char++)
+    {
+        string.at();
+    }
+
+    return true;
+
+
+
+    {
+        return !std::any_of(s.begin(), s.end(), [](char c) { return static_cast<unsigned char>(c) > 127; });
+    }
+}

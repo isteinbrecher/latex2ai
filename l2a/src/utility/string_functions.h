@@ -86,6 +86,11 @@ namespace L2A
          * \brief Calculate a hash from a string.
          */
         ai::UnicodeString StringHash(const ai::UnicodeString& string);
+
+        /**
+         * \brief Check if a string contains only ASCII characters.
+         */
+        bool IsAsciiString(const ai::UnicodeString& string);
     }  // namespace UTIL
 }  // namespace L2A
 

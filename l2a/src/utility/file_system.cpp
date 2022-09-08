@@ -84,11 +84,11 @@ bool L2A::UTIL::IsWriteable(const ai::FilePath& file)
 {
     bool file_exits = IsFile(file);
     std::fstream stream;
-    stream.open(file.GetFullPath().as_Platform(), std::fstream::out | std::fstream::app);
+    stream.open(PathToSTDPath(file), std::fstream::out | std::fstream::app);
     bool is_writeable = stream.is_open();
     stream.close();
     if (!file_exits && is_writeable)
-        // The file did not exits prior and it could be created, therefore it has to be deleted here.
+        // The file did not exist prior and it could be created, therefore it has to be deleted here.
         RemoveFile(file);
     return is_writeable;
 }
@@ -101,10 +101,14 @@ void L2A::UTIL::RemoveFile(const ai::FilePath& file, const bool& fail_if_not_exi
     // Check that it exists and is file.
     if (IsFile(file))
     {
-        const int return_value = remove(file.GetFullPath().as_Platform().c_str());
-
-        // Check if file could be deleted.
-        if (return_value != 0) l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
+        try
+        {
+            std::filesystem::remove(PathToSTDPath(file));
+        }
+        catch (...)
+        {
+            l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
+        }
     }
     else if (IsDirectory(file))
         l2a_error("The given path " + file.GetFullPath() + " is a directory!");
@@ -122,7 +126,7 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
     {
         try
         {
-            std::filesystem::remove_all(directory.GetFullPath().as_Platform());
+            std::filesystem::remove_all(PathToSTDPath(directory));
         }
         catch (...)
         {
@@ -150,7 +154,7 @@ void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString&
         l2a_error("The file '" + path.GetFullPath() + "' alreday exists and the option overwrite is false!");
 
     // Write text to file.
-    std::ofstream f(path.GetFullPath().as_Platform());
+    std::ofstream f(PathToSTDPath(path));
     f << text.as_UTF8();
     f.close();
 }
@@ -164,7 +168,7 @@ ai::UnicodeString L2A::UTIL::ReadFileUTF8(const ai::FilePath& path)
     if (!IsFile(path)) l2a_error("The file '" + path.GetFullPath() + "' does not exist!");
 
     // Open the file stream.
-    std::wifstream wif(path.GetFullPath().as_Platform());
+    std::wifstream wif(PathToSTDPath(path));
     wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
     std::wstringstream wss;
     wss << wif.rdbuf();
@@ -178,27 +182,13 @@ ai::UnicodeString L2A::UTIL::ReadFileUTF8(const ai::FilePath& path)
  */
 void L2A::UTIL::CreateDirectoryL2A(const ai::FilePath& directory)
 {
-    // This vector stores all parts of the directory that do not exist.
-    ai::FilePath path = directory;
-    std::vector<ai::UnicodeString> parts;
-    while (!IsDirectory(path))
+    try
     {
-        // Check if the path is not a valid file.
-        if (IsFile(path)) l2a_error("A parent of the path '" + directory.GetFullPath() + "' is a file!");
-
-        // Add the current item to the vector.
-        parts.push_back(path.GetFileName());
-
-        // Go one level higher.
-        path = path.GetParent();
+        std::filesystem::create_directories(PathToSTDPath(directory));
     }
-
-    // Create the missing directories.
-    size_t n_parts = parts.size();
-    for (size_t i = 0; i < n_parts; i++)
+    catch (...)
     {
-        path.AddComponent(parts[n_parts - i - 1]);
-        CreateDirectory(path.GetFullPath().as_Platform().c_str(), nullptr);
+        l2a_error("The directory structure \"" + directory.GetFullPath() + "\" could not be created!");
     }
 }
 
@@ -255,17 +245,6 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
         l2a_warning(ai::UnicodeString(
             "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved."));
     }
-    // else
-    //{
-    //    // Check if non ASCII characters appear in the path.
-    //    ai::UnicodeString unicode_path = path.GetFullPath();
-    //    ai::UnicodeString utf8_path(path.GetFullPath().as_UTF8());
-    //    if (unicode_path != utf8_path)
-    //        l2a_warning(
-    //            ai::UnicodeString("The document path contains non ASCII characters. LaTeX2AI is only working if there
-    //            "
-    //                              "are non ASCII characters in the document name / path."));
-    //}
 
     return path;
 }
@@ -563,10 +542,7 @@ ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
 /**
  *
  */
-void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
-{
-    std::filesystem::current_path(PathToSTDPath(path));
-}
+void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path) { std::filesystem::current_path(PathToSTDPath(path)); }
 
 /**
  *

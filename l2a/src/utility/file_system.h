@@ -47,7 +47,7 @@ namespace L2A
     namespace UTIL
     {
         /**
-         * \brief Checks if the path is a file and exists.
+         * \brief Convert an Illustrator path to a std path object.
          */
         std::filesystem::path PathToSTDPath(const ai::FilePath& path);
 
