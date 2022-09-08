@@ -33,10 +33,24 @@
 #include "IllustratorSDK.h"
 
 
+namespace std
+{
+    namespace filesystem
+    {
+        class path;
+    }
+}  // namespace std
+
+
 namespace L2A
 {
     namespace UTIL
     {
+        /**
+         * \brief Checks if the path is a file and exists.
+         */
+        std::filesystem::path PathToSTDPath(const ai::FilePath& path);
+
         /**
          * \brief Checks if the path is a file and exists.
          */

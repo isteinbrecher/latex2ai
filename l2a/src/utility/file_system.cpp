@@ -49,6 +49,17 @@
 /**
  *
  */
+std::filesystem::path L2A::UTIL::PathToSTDPath(const ai::FilePath& path)
+{
+    ai::UnicodeString path_string = path.GetFullPath();
+    std::wstring path_w_string = path_string.as_WCHARStr();
+    std::filesystem::path path_std(path_w_string);
+    return path_std;
+}
+
+/**
+ *
+ */
 bool L2A::UTIL::IsFile(const ai::FilePath& file)
 {
     bool is_file = false;
@@ -200,8 +211,7 @@ void L2A::UTIL::CopyFileL2A(const ai::FilePath& source, const ai::FilePath& targ
     if (!IsDirectory(target.GetParent())) l2a_error("The target dir '" + target.GetFullPath() + "'does not exist!");
 
     // Copy the file.
-    bool copy_ok =
-        CopyFile(source.GetFullPath().as_Platform().c_str(), target.GetFullPath().as_Platform().c_str(), false);
+    bool copy_ok = std::filesystem::copy_file(PathToSTDPath(source), PathToSTDPath(target));
 
     // Check if everything was ok
     if (!copy_ok) l2a_error("Error in copy process!");
@@ -245,16 +255,17 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
         l2a_warning(ai::UnicodeString(
             "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved."));
     }
-    else
-    {
-        // Check if non ASCII characters appear in the path.
-        ai::UnicodeString unicode_path = path.GetFullPath();
-        ai::UnicodeString utf8_path(path.GetFullPath().as_UTF8());
-        if (unicode_path != utf8_path)
-            l2a_warning(
-                ai::UnicodeString("The document path contains non ASCII characters. LaTeX2AI is only working if there "
-                                  "are non ASCII characters in the document name / path."));
-    }
+    // else
+    //{
+    //    // Check if non ASCII characters appear in the path.
+    //    ai::UnicodeString unicode_path = path.GetFullPath();
+    //    ai::UnicodeString utf8_path(path.GetFullPath().as_UTF8());
+    //    if (unicode_path != utf8_path)
+    //        l2a_warning(
+    //            ai::UnicodeString("The document path contains non ASCII characters. LaTeX2AI is only working if there
+    //            "
+    //                              "are non ASCII characters in the document name / path."));
+    //}
 
     return path;
 }
@@ -554,7 +565,7 @@ ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
  */
 void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
 {
-    std::filesystem::current_path(path.GetFullPath().as_UTF8());
+    std::filesystem::current_path(PathToSTDPath(path));
 }
 
 /**
@@ -574,7 +585,7 @@ std::string L2A::UTIL::encode_file_base64(const ai::FilePath& path)
 {
     // https://www.cplusplus.com/reference/istream/istream/read/
 
-    std::ifstream input_stream(path.GetFullPath().as_UTF8(), std::ifstream::binary);
+    std::ifstream input_stream(PathToSTDPath(path), std::ifstream::binary);
     if (!input_stream) l2a_error("Error in loading file");
 
     // Get length of the file.
@@ -601,7 +612,7 @@ std::string L2A::UTIL::encode_file_base64(const ai::FilePath& path)
 void L2A::UTIL::decode_file_base64(const ai::FilePath& path, const std::string& encoded_string)
 {
     auto char_vector = base64::decode(encoded_string);
-    std::ofstream output_stream(path.GetFullPath().as_UTF8(), std::ofstream::binary);
+    std::ofstream output_stream(PathToSTDPath(path), std::ofstream::binary);
     output_stream.write(char_vector.data(), char_vector.size());
     output_stream.close();
 }
