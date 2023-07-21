@@ -35,6 +35,7 @@
 
 
 // Forward declarations.
+class L2APlugin;
 namespace L2A
 {
     namespace UTIL
@@ -202,6 +203,12 @@ namespace L2A
          */
         extern Global* _l2a_global;
 
+        /**
+         * \brief Define global pointer to the plugin, this object should not be used, only accessed via the Get
+         * functions.
+         */
+        extern L2APlugin* _l2a_plugin;
+
     }  // namespace GLOBAL
 
     /**
@@ -213,6 +220,11 @@ namespace L2A
      * \brief Return the global object mutable.
      */
     L2A::GLOBAL::Global& GlobalMutable();
+
+    /**
+     * \brief Return the plugin pointer mutable.
+     */
+    L2APlugin* GlobalPluginPointerMutable();
 
 }  // namespace L2A
 

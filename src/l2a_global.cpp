@@ -44,9 +44,10 @@
 
 
 /**
- * Set the global variable to a null pointer.
+ * Set the global variables to a null pointer
  */
 L2A::GLOBAL::Global* L2A::GLOBAL::_l2a_global = nullptr;
+L2APlugin* L2A::GLOBAL::_l2a_plugin = nullptr;
 
 /**
  *
@@ -539,4 +540,13 @@ L2A::GLOBAL::Global& L2A::GlobalMutable()
 {
     L2A::GLOBAL::CheckGlobal();
     return *L2A::GLOBAL::_l2a_global;
+}
+
+/**
+ *
+ */
+L2APlugin* L2A::GlobalPluginPointerMutable()
+{
+    if (L2A::GLOBAL::_l2a_plugin == nullptr) l2a_error("The global plugin pointer object is not defined!");
+    return L2A::GLOBAL::_l2a_plugin;
 }

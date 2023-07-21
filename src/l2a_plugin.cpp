@@ -66,6 +66,14 @@ L2APlugin::L2APlugin(SPPluginRef pluginRef)
 }
 
 /*
+ */
+ASErr L2APlugin::SetGlobal(Plugin* plugin)
+{
+    L2A::GLOBAL::_l2a_plugin = ((L2APlugin*)plugin);
+    return kNoErr;
+}
+
+/*
  *
  */
 ASErr L2APlugin::Notify(AINotifierMessage* message)

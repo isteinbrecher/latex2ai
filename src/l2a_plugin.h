@@ -93,6 +93,11 @@ class L2APlugin : public Plugin
 
    protected:
     /**
+     * \brief Set a link to this plugin in the global object
+     */
+    ASErr SetGlobal(Plugin* plugin);
+
+    /**
      * \brief Calls Plugin::Message and handles any errors returned.
      * @param caller IN sender of the message.
      * @param selector IN nature of the message.
