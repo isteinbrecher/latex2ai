@@ -77,10 +77,13 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
         new_doc_settings.docWidth = (AIReal)595.2800292969;
         new_doc_settings.docHeight = (AIReal)841.8900146484;
         new_doc_settings.docNumArtboards = 1;
+        new_doc_settings.docArtboardSpacing = 100;
         new_doc_settings.docColorMode = kAICMYKColorModel;
         new_doc_settings.docUnits = kPointsUnits;
         new_doc_settings.docPreviewMode = kAIPreviewModeDefault;
-        new_doc_settings.docArtboardSpacing = 100;
+#if kPluginInterfaceVersion >= 0x26000001
+        new_doc_settings.docBleedOffset = AIRealRect{0.0, 0.0, 0.0, 0.0};
+#endif
 
         error = sAIDocumentList->New(empty, &new_doc_settings, kDialogOff, &new_doc);
         l2a_check_ai_error(error);
