@@ -40,11 +40,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\output\win\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\output\objects\$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\output\win\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\output\objects\$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\output\win\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\output\objects\$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\output\win\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\output\objects\$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</LinkIncremental>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
@@ -67,13 +67,13 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\src;.\src\utils;.\src\tests;.\resources;..\..\common\includes;..\..\common\win;..\..\..\illustratorapi\adm;..\..\..\illustratorapi\ate;..\..\..\illustratorapi\illustrator;..\..\..\illustratorapi\illustrator\actions;..\..\..\illustratorapi\pica_sp;..\..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>IllustratorSDK.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>..\..\output\precompiled_header\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>..\output\precompiled_header\$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
@@ -94,24 +94,24 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>.\src;..\..\common\win;..\..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
+      <OutputFile>..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ModuleDefinitionFile>..\..\common\win\PluginMain.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>..\common\win\PluginMain.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\..\output\$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\output\$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>..\..\output\$(ProjectName)\$(ProjectName).lib</ImportLibrary>
+      <ImportLibrary>..\output\$(ProjectName)\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -126,13 +126,13 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\src;.\src\utils;.\src\tests;.\resources;..\..\common\includes;..\..\common\win;..\..\..\illustratorapi\adm;..\..\..\illustratorapi\ate;..\..\..\illustratorapi\illustrator;..\..\..\illustratorapi\illustrator\actions;..\..\..\illustratorapi\pica_sp;..\..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>IllustratorSDK.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>..\..\output\precompiled_header\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>..\output\precompiled_header\$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
@@ -153,63 +153,63 @@
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>.\src;..\..\common\win;..\..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <OutputFile>..\..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
+      <OutputFile>..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ModuleDefinitionFile>..\..\common\win\PluginMain.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>..\common\win\PluginMain.def</ModuleDefinitionFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\..\output\$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>..\output\$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>..\..\output\$(ProjectName)\$(ProjectName).lib</ImportLibrary>
+      <ImportLibrary>..\output\$(ProjectName)\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py"</Command>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIFilePath.cpp">
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIFilePath.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\l2a_annotator.cpp" />
     <ClCompile Include="src\l2a_forms.cpp" />
     <ClCompile Include="src\l2a_global.cpp" />
-    <ClCompile Include="..\..\common\source\AppContext.cpp">
+    <ClCompile Include="..\common\source\AppContext.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIStringFormatUtils.cpp">
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIStringFormatUtils.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIUnicodeString.cpp">
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIUnicodeString.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\common\source\IllustratorSDK.cpp">
+    <ClCompile Include="..\common\source\IllustratorSDK.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\common\source\Main.cpp">
+    <ClCompile Include="..\common\source\Main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\common\source\Plugin.cpp">
+    <ClCompile Include="..\common\source\Plugin.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -217,8 +217,8 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4100</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4100</DisableSpecificWarnings>
     </ClCompile>
-    <ClCompile Include="..\..\common\source\SDKAboutPluginsHelper.cpp" />
-    <ClCompile Include="..\..\common\source\Suites.cpp">
+    <ClCompile Include="..\common\source\SDKAboutPluginsHelper.cpp" />
+    <ClCompile Include="..\common\source\Suites.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

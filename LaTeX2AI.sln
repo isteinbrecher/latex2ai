@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LaTeX2AI", "l2a\LaTeX2AI.vcxproj", "{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LaTeX2AI", "LaTeX2AI.vcxproj", "{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaTeX2AIForms", "forms\LaTeX2AIForms.csproj", "{0812436F-B188-4A77-B266-9A892CC1286A}"
 EndProject
