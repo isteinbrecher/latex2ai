@@ -31,12 +31,12 @@
 #include "l2a_global.h"
 
 #include "l2a_suites.h"
-#include "l2a_error/l2a_error.h"
-#include "utility/file_system.h"
-#include "utility/string_functions.h"
-#include "utility/parameter_list.h"
-#include "l2a_forms/l2a_forms.h"
-#include "l2a_latex/l2a_latex.h"
+#include "l2a_error.h"
+#include "l2a_file_system.h"
+#include "l2a_string_functions.h"
+#include "l2a_parameter_list.h"
+#include "l2a_forms.h"
+#include "l2a_latex.h"
 #include "l2a_constants.h"
 #include "l2a_version.h"
 

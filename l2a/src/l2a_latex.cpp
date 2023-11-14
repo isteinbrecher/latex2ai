@@ -31,11 +31,11 @@
 #include "l2a_latex.h"
 
 #include "auto_generated/tex.h"
-#include "utility/string_functions.h"
-#include "utility/file_system.h"
-#include "utility/parameter_list.h"
-#include "l2a_forms/l2a_forms.h"
-#include "l2a_global/l2a_global.h"
+#include "l2a_string_functions.h"
+#include "l2a_file_system.h"
+#include "l2a_parameter_list.h"
+#include "l2a_forms.h"
+#include "l2a_global.h"
 #include "l2a_names.h"
 
 #include <regex>

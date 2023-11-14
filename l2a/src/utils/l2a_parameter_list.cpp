@@ -28,12 +28,12 @@
 
 
 #include "IllustratorSDK.h"
-#include "parameter_list.h"
+#include "l2a_parameter_list.h"
 
-#include "string_functions.h"
-#include "l2a_error/l2a_error.h"
+#include "l2a_string_functions.h"
+#include "l2a_error.h"
 
-#include "../../tpl/tinyxml2/tinyxml2.h"
+#include "tinyxml2.h"
 
 
 /**

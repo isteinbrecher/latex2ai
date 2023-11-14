@@ -28,17 +28,17 @@
 
 
 #include "IllustratorSDK.h"
-#include "l2a_ai_functions/l2a_ai_functions.h"
+#include "l2a_ai_functions.h"
 
-#include "l2a_global/l2a_global.h"
-#include "l2a_item/l2a_item.h"
-#include "l2a_property/l2a_property.h"
-#include "l2a_error/l2a_error.h"
+#include "l2a_global.h"
+#include "l2a_item.h"
+#include "l2a_property.h"
+#include "l2a_error.h"
 #include "l2a_suites.h"
 #include "l2a_names.h"
-#include "utility/string_functions.h"
-#include "utility/file_system.h"
-#include "utility/utils.h"
+#include "l2a_string_functions.h"
+#include "l2a_file_system.h"
+#include "l2a_utils.h"
 
 #include "AIDocumentAction.h"
 #include "AIPDFFormatAction.h"

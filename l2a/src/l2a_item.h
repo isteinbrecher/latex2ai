@@ -31,7 +31,7 @@
 #define L2A_ITEM_H_
 
 
-#include "l2a_property/l2a_property.h"
+#include "l2a_property.h"
 
 #include <map>
 

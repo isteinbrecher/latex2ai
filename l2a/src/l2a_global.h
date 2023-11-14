@@ -31,7 +31,7 @@
 #define L2A_GLOBAL_H_
 
 
-#include "../l2a_forms/l2a_forms.h"
+#include "l2a_forms.h"
 
 
 // Forward declarations.

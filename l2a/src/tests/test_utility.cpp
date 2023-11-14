@@ -31,8 +31,8 @@
 #include "test_utlity.h"
 
 #include "testing_utlity.h"
-#include "l2a_error/l2a_error.h"
-#include "l2a_global/l2a_version.h"
+#include "l2a_error.h"
+#include "l2a_version.h"
 #include "l2a_constants.h"
 
 

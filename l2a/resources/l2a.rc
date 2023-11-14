@@ -7,7 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "../src/l2a_constants.h"
+#include "l2a_constants.h"
 #include "windows.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ END
 
 2 TEXTINCLUDE DISCARDABLE 
 BEGIN
-    "#include ""../src/l2a_constants.h""\r\n"
+    "#include ""l2a_constants.h""\r\n"
 	"#include ""windows.h""\r\n"
 END
 

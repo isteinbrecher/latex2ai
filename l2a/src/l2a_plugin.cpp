@@ -34,13 +34,13 @@
 
 #include "l2a_constants.h"
 #include "l2a_plugin.h"
-#include "l2a_error/l2a_error.h"
-#include "l2a_global/l2a_global.h"
-#include "l2a_item/l2a_item.h"
-#include "l2a_ai_functions/l2a_ai_functions.h"
-#include "l2a_annotator/l2a_annotator.h"
+#include "l2a_error.h"
+#include "l2a_global.h"
+#include "l2a_item.h"
+#include "l2a_ai_functions.h"
+#include "l2a_annotator.h"
 
-#include "tests/testing.h"
+#include "testing.h"
 
 
 /**

@@ -30,7 +30,7 @@
 #define UTILS_H_
 
 
-#include "l2a_error/l2a_error.h"
+#include "l2a_error.h"
 
 
 namespace L2A

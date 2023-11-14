@@ -27,12 +27,12 @@
  */
 
 #include "IllustratorSDK.h"
-#include "string_functions.h"
+#include "l2a_string_functions.h"
 
 #include <iomanip>
 
-#include "../l2a_suites.h"
-#include "../l2a_error/l2a_error.h"
+#include "l2a_suites.h"
+#include "l2a_error.h"
 
 
 /**

@@ -30,12 +30,12 @@
 #include "IllustratorSDK.h"
 #include "l2a_property.h"
 
-#include "utility/parameter_list.h"
-#include "utility/string_functions.h"
-#include "utility/utils.h"
-#include "utility/file_system.h"
-#include "l2a_error/l2a_error.h"
-#include "l2a_global/l2a_global.h"
+#include "l2a_parameter_list.h"
+#include "l2a_string_functions.h"
+#include "l2a_utils.h"
+#include "l2a_file_system.h"
+#include "l2a_error.h"
+#include "l2a_global.h"
 
 
 /**

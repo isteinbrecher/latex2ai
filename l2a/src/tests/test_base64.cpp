@@ -30,9 +30,9 @@
 #include "IllustratorSDK.h"
 #include "test_base64.h"
 
-#include "../tpl/base64/src/base64.h"
+#include "base64.h"
 #include "testing_utlity.h"
-#include "../utility/file_system.h"
+#include "l2a_file_system.h"
 
 
 /**

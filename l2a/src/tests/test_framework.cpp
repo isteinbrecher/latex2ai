@@ -32,15 +32,15 @@
 
 #include "l2a_suites.h"
 #include "testing_utlity.h"
-#include "l2a_item/l2a_item.h"
-#include "l2a_global/l2a_global.h"
-#include "l2a_ai_functions/l2a_ai_functions.h"
-#include "utility/file_system.h"
+#include "l2a_item.h"
+#include "l2a_global.h"
+#include "l2a_ai_functions.h"
+#include "l2a_file_system.h"
 #include "l2a_names.h"
-#include "l2a_property/l2a_property.h"
-#include "l2a_error/l2a_error.h"
-#include "utility/parameter_list.h"
-#include "utility/math.h"
+#include "l2a_property.h"
+#include "l2a_error.h"
+#include "l2a_parameter_list.h"
+#include "l2a_math.h"
 #include "l2a_constants.h"
 
 

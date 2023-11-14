@@ -30,11 +30,11 @@
 #include "IllustratorSDK.h"
 #include "l2a_error.h"
 
-#include "utility/string_functions.h"
+#include "l2a_string_functions.h"
 
 
 #ifdef _DEBUG
-#include "../../tpl/StackWalker/Main/StackWalker/StackWalker.h"
+#include "StackWalker.h"
 
 /**
  * \brief User class to obtain a vector with the current stack.

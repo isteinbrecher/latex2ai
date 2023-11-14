@@ -28,13 +28,13 @@
 
 
 #include "IllustratorSDK.h"
-#include "file_system.h"
+#include "l2a_file_system.h"
 
 #include "l2a_suites.h"
-#include "l2a_error/l2a_error.h"
-#include "utility/string_functions.h"
+#include "l2a_error.h"
+#include "l2a_string_functions.h"
 #include "l2a_names.h"
-#include "../tpl/base64/src/base64.h"
+#include "base64.h"
 
 #include <array>
 #include <filesystem>

@@ -28,7 +28,7 @@
 
 
 #include "IllustratorSDK.h"
-#include "math.h"
+#include "l2a_math.h"
 
 
 /**

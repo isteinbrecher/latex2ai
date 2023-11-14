@@ -31,10 +31,10 @@
 #include "l2a_version.h"
 
 #include "l2a_constants.h"
-#include "l2a_error/l2a_error.h"
-#include "utility/string_functions.h"
-#include "utility/file_system.h"
-#include "../tpl/json/single_include/nlohmann/json.hpp"
+#include "l2a_error.h"
+#include "l2a_string_functions.h"
+#include "l2a_file_system.h"
+#include "json.hpp"
 
 
 /**

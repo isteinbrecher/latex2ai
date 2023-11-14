@@ -31,7 +31,7 @@
 #define L2A_NAMES_H_
 
 
-#include "utility/string_functions.h"
+#include "l2a_string_functions.h"
 
 namespace L2A
 {

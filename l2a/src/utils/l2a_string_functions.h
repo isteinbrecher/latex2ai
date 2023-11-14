@@ -32,7 +32,7 @@
 
 #include "IllustratorSDK.h"
 
-#include "../l2a_constants.h"
+#include "l2a_constants.h"
 
 
 namespace L2A
