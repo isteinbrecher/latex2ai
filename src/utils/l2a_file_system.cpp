@@ -212,9 +212,10 @@ void L2A::UTIL::CopyFileL2A(const ai::FilePath& source, const ai::FilePath& targ
  */
 ai::FilePath L2A::UTIL::GetTemporaryDirectory()
 {
-    TCHAR pathBuffer[MAX_PATH];
-    GetTempPath(MAX_PATH, pathBuffer);
-    return ai::FilePath(ai::UnicodeString(pathBuffer));
+    ai::FilePath temp_directory;
+    AIErr error = sAIFolders->FindFolder(kAITemporayFolder, false, temp_directory);
+    l2a_check_ai_error(error);
+    return temp_directory;
 }
 
 /**
@@ -222,11 +223,11 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
  */
 ai::FilePath L2A::UTIL::GetApplicationDataDirectory()
 {
-    TCHAR pathBuffer[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(nullptr, CSIDL_LOCAL_APPDATA, nullptr, 0, pathBuffer)))
-        return ai::FilePath(ai::UnicodeString(pathBuffer));
-    else
-        l2a_error("The application data directory could not be retrieved!");
+    ai::FilePath application_data_directory;
+    AIErr error = sAIFolders->FindFolder(kAIUserSupportFolderType, false, application_data_directory);
+    l2a_check_ai_error(error);
+    application_data_directory.AddComponent(ai::UnicodeString("LaTeX2AI"));
+    return application_data_directory;
 }
 
 /**

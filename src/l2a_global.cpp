@@ -73,9 +73,6 @@ void L2A::GLOBAL::Global::SetUp()
     {
         // Application data path.
         ai::FilePath application_data_directory = L2A::UTIL::GetApplicationDataDirectory();
-        application_data_directory.AddComponent(ai::UnicodeString("Adobe"));
-        application_data_directory.AddComponent(ai::UnicodeString("Illustrator"));
-        application_data_directory.AddComponent(ai::UnicodeString("LaTeX2AI"));
         L2A::UTIL::CreateDirectoryL2A(application_data_directory);
         application_data_path_ = application_data_directory;
         application_data_path_.AddComponent(ai::UnicodeString("LaTeX2AI_application_data.xml"));
