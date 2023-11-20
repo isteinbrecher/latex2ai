@@ -213,12 +213,12 @@ namespace L2A
         /**
          * \brief Set the parameters form a parameter list object.
          */
-        void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& property_parameter_list);
+        void SetFromParameterList(const L2A::UTIL::ParameterList& property_parameter_list);
 
         /**
          * \brief Set the parameters form a string.
          */
-        void Property::SetFromString(const ai::UnicodeString& string);
+        void SetFromString(const ai::UnicodeString& string);
 
         /**
          * \brief Convert the parameters of this item to a string.
