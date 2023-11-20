@@ -115,7 +115,7 @@ def create_cpp_headers():
     license_c = license_to_source(license_text, 'c')
 
     # Clean the directory for the automatic generated headers.
-    dir_path = os.path.join(get_repository_dir(), 'l2a/src/auto_generated')
+    dir_path = os.path.join(get_repository_dir(), 'src/auto_generated')
     if os.path.exists(dir_path):
         shutil.rmtree(dir_path)
     os.makedirs(dir_path)

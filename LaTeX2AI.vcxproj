@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{43DFFFAC-95F5-4D21-BB85-EA1BA160E9C2}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>LaTeX2AI</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\output\win\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\output\objects\$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\output\win\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\output\objects\$(Platform)\$(ProjectName)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.aip</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.aip</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>./LaTeX2AI.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>IllustratorSDK.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>..\output\precompiled_header\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ForcedIncludeFiles>pragma.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <EnablePREfast>true</EnablePREfast>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ModuleDefinitionFile>..\common\win\PluginMain.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>..\output\$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>..\output\$(ProjectName)\$(ProjectName).lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>./LaTeX2AI.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>IllustratorSDK.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>..\output\precompiled_header\$(ProjectName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ForcedIncludeFiles>pragma.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <EnablePREfast>true</EnablePREfast>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ModuleDefinitionFile>..\common\win\PluginMain.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ProgramDatabaseFile>..\output\$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>..\output\$(ProjectName)\$(ProjectName).lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIFilePath.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\l2a_annotator.cpp" />
+    <ClCompile Include="src\l2a_forms.cpp" />
+    <ClCompile Include="src\l2a_global.cpp" />
+    <ClCompile Include="..\common\source\AppContext.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIStringFormatUtils.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIUnicodeString.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\common\source\IllustratorSDK.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\common\source\Main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\common\source\Plugin.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4100</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4100</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="..\common\source\SDKAboutPluginsHelper.cpp" />
+    <ClCompile Include="..\common\source\Suites.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\l2a_item.cpp" />
+    <ClCompile Include="src\l2a_latex.cpp" />
+    <ClCompile Include="src\l2a_plugin.cpp" />
+    <ClCompile Include="src\l2a_property.cpp" />
+    <ClCompile Include="src\l2a_suites.cpp" />
+    <ClCompile Include="src\tests\testing.cpp" />
+    <ClCompile Include="src\tests\test_base64.cpp" />
+    <ClCompile Include="src\tests\test_file_system.cpp" />
+    <ClCompile Include="src\tests\test_forms.cpp" />
+    <ClCompile Include="src\tests\test_framework.cpp" />
+    <ClCompile Include="src\tests\test_parameter_list.cpp" />
+    <ClCompile Include="src\tests\test_string_functions.cpp" />
+    <ClCompile Include="src\tests\testing_utility.cpp" />
+    <ClCompile Include="src\tests\test_utility.cpp" />
+    <ClCompile Include="src\utils\l2a_ai_functions.cpp" />
+    <ClCompile Include="src\utils\l2a_error.cpp" />
+    <ClCompile Include="src\utils\l2a_file_system.cpp" />
+    <ClCompile Include="src\utils\l2a_math.cpp" />
+    <ClCompile Include="src\utils\l2a_parameter_list.cpp" />
+    <ClCompile Include="src\utils\l2a_string_functions.cpp" />
+    <ClCompile Include="src\utils\l2a_version.cpp" />
+    <ClCompile Include="tpl\base64\src\base64.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="tpl\StackWalker\Main\StackWalker\StackWalker.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6340;28159;6011;6388;6387</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6340;28159;6011;6388;6387</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="tpl\tinyxml2\tinyxml2.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\l2a_annotator.h" />
+    <ClInclude Include="src\l2a_constants.h" />
+    <ClInclude Include="src\l2a_forms.h" />
+    <ClInclude Include="src\l2a_global.h" />
+    <ClInclude Include="src\l2a_item.h" />
+    <ClInclude Include="src\l2a_latex.h" />
+    <ClInclude Include="src\l2a_names.h" />
+    <ClInclude Include="src\l2a_plugin.h" />
+    <ClInclude Include="src\l2a_property.h" />
+    <ClInclude Include="src\l2a_suites.h" />
+    <ClInclude Include="src\tests\testing.h" />
+    <ClInclude Include="src\tests\test_base64.h" />
+    <ClInclude Include="src\tests\test_file_system.h" />
+    <ClInclude Include="src\tests\test_forms.h" />
+    <ClInclude Include="src\tests\test_framework.h" />
+    <ClInclude Include="src\tests\test_parameter_list.h" />
+    <ClInclude Include="src\tests\test_string_functions.h" />
+    <ClInclude Include="src\tests\testing_utlity.h" />
+    <ClInclude Include="src\tests\test_utlity.h" />
+    <ClInclude Include="src\utils\l2a_ai_functions.h" />
+    <ClInclude Include="src\utils\l2a_error.h" />
+    <ClInclude Include="src\utils\l2a_file_system.h" />
+    <ClInclude Include="src\utils\l2a_math.h" />
+    <ClInclude Include="src\utils\l2a_parameter_list.h" />
+    <ClInclude Include="src\utils\l2a_string_functions.h" />
+    <ClInclude Include="src\utils\l2a_utils.h" />
+    <ClInclude Include="src\utils\l2a_version.h" />
+    <ClInclude Include="tpl\base64\src\base64.h" />
+    <ClInclude Include="tpl\StackWalker\Main\StackWalker\StackWalker.h" />
+    <ClInclude Include="tpl\tinyxml2\tinyxml2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\l2a.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -6,7 +6,9 @@ Currently LaTeX2AI supports following Illustrator versions on Microsoft Windows:
 - Illustrator CC 2017
 - Illustrator CC 2018
 - Illustrator 2021
-- Illustrator 2022 (tested)
+- Illustrator 2022
+- Illustrator 2023
+- Illustrator 2024 (tested)
 
 ## Requirements
 The following software dependencies are required:
@@ -24,7 +26,7 @@ There are two ways to add LaTeX2AI to Illustrator:
 
 ### Requirements
 The additional requirements to build LaTeX2AI from source are:
-- A C++ compiler has to be available on the system. This repository includes a Visual Studio 2017 solution for Windows.
+- A C++ compiler has to be available on the system. This repository includes a Visual Studio 2022 solution for Windows.
 - `python3` and `git` have to be available on the system.
 - Environment variables:
   - `PYTHON_EXE` has to points to a valid `python3` executable on the system.
@@ -161,6 +163,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **pre-release***
+  - Other:
+    - Support Illustrator 2023 and 2024
 - **v0.0.10**
   - Features:
     - Add optional warnings when saving as PDF.

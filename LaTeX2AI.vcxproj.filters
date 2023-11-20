@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="tpl\tinyxml2\tinyxml2.cpp">
+      <Filter>tpl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_parameter_list.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_string_functions.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\testing.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_file_system.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_framework.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\source\Suites.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\source\SDKAboutPluginsHelper.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\source\Plugin.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\source\Main.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\source\IllustratorSDK.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIUnicodeString.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIStringFormatUtils.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIFilePath.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\source\AppContext.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="tpl\StackWalker\Main\StackWalker\StackWalker.cpp">
+      <Filter>tpl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_forms.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\testing_utility.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_utility.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tpl\base64\src\base64.cpp">
+      <Filter>tpl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_base64.cpp">
+      <Filter>src\test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_latex.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_plugin.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_property.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_suites.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_annotator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_forms.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_global.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\l2a_item.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\l2a_error.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\l2a_file_system.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\l2a_math.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\l2a_parameter_list.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\l2a_string_functions.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\l2a_version.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\l2a_ai_functions.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\test_base64.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
+      <Filter>tpl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_parameter_list.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_string_functions.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\testing.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_file_system.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_framework.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="tpl\StackWalker\Main\StackWalker\StackWalker.h">
+      <Filter>tpl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_forms.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\testing_utlity.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_utlity.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="tpl\base64\src\base64.h">
+      <Filter>tpl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_base64.h">
+      <Filter>src\test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_latex.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_names.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_plugin.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_property.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_suites.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_annotator.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_constants.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_forms.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_global.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\l2a_item.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_ai_functions.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_error.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_file_system.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_math.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_parameter_list.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_string_functions.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_utils.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\l2a_version.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_base64.h">
+      <Filter>src\tests</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="sdk">
+      <UniqueIdentifier>{78d001d9-21ca-47c1-ac63-c6fd0e57c95b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{3a0fd8ac-d085-4b65-a326-0309e8c14b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{e7dd128d-f086-4d2a-b68f-83e6326551bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tpl">
+      <UniqueIdentifier>{dece3105-7a03-461a-97af-4bb028e4aff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{0437dc2a-a212-4e76-b737-3e58de8227fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\tests">
+      <UniqueIdentifier>{fc5f9b63-3b3c-4088-8c3e-599a8a72340f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\l2a.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
