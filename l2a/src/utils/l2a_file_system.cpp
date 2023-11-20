@@ -477,7 +477,7 @@ ai::FilePath L2A::UTIL::GetFormsPath()
             for (const auto& item :
                 std::filesystem::recursive_directory_iterator(plugin_directory.GetFullPath().as_Platform()))
             {
-                ai::FilePath current_item(ai::UnicodeString(item.path()));
+                ai::FilePath current_item(ai::UnicodeString(item.path().string()));
                 if (current_item.GetFileName() == "LaTeX2AIForms.exe") forms_paths.push_back(current_item);
             }
         }
