@@ -33,7 +33,7 @@
 #include "l2a_string_functions.h"
 
 
-#ifdef _DEBUG
+#if defined(WIN_ENV) && defined(_DEBUG)
 #include "StackWalker.h"
 
 /**
@@ -99,7 +99,7 @@ L2A::ERR::Exception::Exception(const char* __file__, const int __line__, const c
     full_error_string += "\n\nIllustrator Version:\n";
     full_error_string += ai::UnicodeString(L2A::UTIL::IntegerToHexString(kPluginInterfaceVersion));
     full_error_string += "\n--------------------------------------------------------------------------------\n";
-#ifdef _DEBUG
+#if defined(WIN_ENV) && defined(_DEBUG)
     full_error_string += "Stack:\n";
     full_error_string += "--------------------------------------------------------------------------------\n";
     MyStackWalker sw;
@@ -127,15 +127,15 @@ L2A::ERR::Exception::Exception(const char* __file__, const int __line__, const c
  */
 ai::UnicodeString L2A::ERR::AIErrorCodeToString(const int& err)
 {
-    int err_local = err;
+    int error_local = err;
     std::vector<char> chars(4);
     for (unsigned int i = 0; i < 4; i++)
     {
         // Get the first 8 bits.
-        chars[3 - i] = err_local & 0xFF;
+        chars[3 - i] = error_local & 0xFF;
 
         // Shift by 8 bits.
-        err_local >>= 8;
+        error_local >>= 8;
     }
 
     // Return the Illustrator error code.

@@ -47,7 +47,7 @@ namespace L2A
          * @tparam V Type of value.
          * @tparam n Number of elements.
          */
-        template <typename T, typename V, unsigned int n>
+        template <typename T, typename V, size_t n>
         V KeyToValue(const std::array<T, n>& key_array, const std::array<V, n>& value_array, const T& key)
         {
             for (unsigned int i = 0; i < n; i++)

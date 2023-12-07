@@ -240,6 +240,7 @@
     <ClCompile Include="src\tests\test_utility.cpp" />
     <ClCompile Include="src\utils\l2a_ai_functions.cpp" />
     <ClCompile Include="src\utils\l2a_error.cpp" />
+    <ClCompile Include="src\utils\l2a_execute.cpp" />
     <ClCompile Include="src\utils\l2a_file_system.cpp" />
     <ClCompile Include="src\utils\l2a_math.cpp" />
     <ClCompile Include="src\utils\l2a_parameter_list.cpp" />
@@ -282,6 +283,7 @@
     <ClInclude Include="src\tests\test_utlity.h" />
     <ClInclude Include="src\utils\l2a_ai_functions.h" />
     <ClInclude Include="src\utils\l2a_error.h" />
+    <ClInclude Include="src\utils\l2a_execute.h" />
     <ClInclude Include="src\utils\l2a_file_system.h" />
     <ClInclude Include="src\utils\l2a_math.h" />
     <ClInclude Include="src\utils\l2a_parameter_list.h" />

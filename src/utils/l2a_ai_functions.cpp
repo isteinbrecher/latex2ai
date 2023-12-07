@@ -560,7 +560,7 @@ void L2A::AI::SaveToPDF()
             }
         }
 
-        const unsigned int n_bad_items = n_hidden_bad_boundary_box_items + unsigned int(l2a_items.size());
+        const unsigned int n_bad_items = n_hidden_bad_boundary_box_items + (unsigned int)l2a_items.size();
         if (n_bad_items > 0)
         {
             ai::UnicodeString warning_string("There are ");

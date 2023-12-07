@@ -39,6 +39,7 @@
 #include "l2a_latex.h"
 #include "l2a_constants.h"
 #include "l2a_version.h"
+#include "l2a_execute.h"
 
 
 /**
@@ -73,9 +74,6 @@ void L2A::GLOBAL::Global::SetUp()
     {
         // Application data path.
         ai::FilePath application_data_directory = L2A::UTIL::GetApplicationDataDirectory();
-        application_data_directory.AddComponent(ai::UnicodeString("Adobe"));
-        application_data_directory.AddComponent(ai::UnicodeString("Illustrator"));
-        application_data_directory.AddComponent(ai::UnicodeString("LaTeX2AI"));
         L2A::UTIL::CreateDirectoryL2A(application_data_directory);
         application_data_path_ = application_data_directory;
         application_data_path_.AddComponent(ai::UnicodeString("LaTeX2AI_application_data.xml"));
@@ -207,7 +205,7 @@ ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
     {
         ai::FilePath exe_path = path_latex_;
         exe_path.AddComponent(command_latex_ + ".exe");
-        return exe_path.GetFullPath();
+        return "\"" + exe_path.GetFullPath() + "\"" ;
     }
     else
         return command_latex_;
@@ -309,8 +307,8 @@ bool L2A::GLOBAL::Global::CheckGhostscriptCommand(const ai::UnicodeString& gs_co
 
     try
     {
-        L2A::UTIL::ExecuteCommandLine(full_gs_command, command_output, true);
-        if (command_output.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
+        auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
+        if (command_result.output_.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
             return true;
         else
             return false;
@@ -372,8 +370,8 @@ bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) cons
     ai::UnicodeString command_output;
     try
     {
-        L2A::UTIL::ExecuteCommandLine(command_latex, command_output, true);
-        if (command_output.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
+        auto command_result = L2A::UTIL::ExecuteCommandLine(command_latex, true);
+        if (command_result.output_.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
             return true;
         else
             return false;

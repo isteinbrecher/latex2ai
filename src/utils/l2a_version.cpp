@@ -30,6 +30,7 @@
 #include "IllustratorSDK.h"
 #include "l2a_version.h"
 
+#include "l2a_execute.h"
 #include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_string_functions.h"
@@ -115,10 +116,11 @@ void L2A::GLOBAL::CheckGithubVersion()
         ai::UnicodeString command("curl -s https://api.github.com/repos/isteinbrecher/latex2ai/releases");
         ai::UnicodeString result;
 
-        // TODO: The call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
+        // TODO: On Windows the call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
         // 500ms. Check if we can to this without the specified maximum time.
-        L2A::UTIL::ExecuteCommandLine(command, result, true, 500);
-        std::string curl_output = result.as_UTF8();
+        // The reason for that is that the output pipe is not fully read by the command line interface in c++
+        auto command_result = L2A::UTIL::ExecuteCommandLine(command, true, 500);
+        std::string curl_output = command_result.output_.as_Platform();
         if (curl_output == "") return;
 
         // Convert the string to a json object.
@@ -135,12 +137,12 @@ void L2A::GLOBAL::CheckGithubVersion()
         if (github_versions.size() == 0) l2a_error_quiet(ai::UnicodeString("Could not retrieve github versions."));
 
         // Get the current version.
-        auto newest_version = max_element(std::begin(github_versions), std::end(github_versions))._Ptr;
+        auto& newest_version = *(std::max_element(std::begin(github_versions), std::end(github_versions)));
         L2A::GLOBAL::Version current_version(L2A_VERSION_STRING_);
-        if (current_version < *newest_version)
+        if (current_version < newest_version)
         {
             ai::UnicodeString message_string("The new LaTeX2AI version v");
-            message_string += newest_version->ToString();
+            message_string += newest_version.ToString();
             message_string += " is available at GitHub. The currently used version is v";
             message_string += current_version.ToString() + ".";
             sAIUser->MessageAlert(message_string);

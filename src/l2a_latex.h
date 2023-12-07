@@ -60,11 +60,9 @@ namespace L2A
         ai::UnicodeString GetLatexString(const ai::UnicodeString& latex_code);
 
         /**
-         * \brief Get string that will be put in the bat file to create the latex item.
+         * \brief Get command to compile the tex document.
          */
-        ai::UnicodeString GetBatchString(const ai::FilePath& batch_directory, const ai::UnicodeString& latex_compiler,
-            const ai::UnicodeString& latex_options,
-            const ai::UnicodeString& tex_name = ai::UnicodeString(L2A::NAMES::create_pdf_tex_name_));
+        ai::UnicodeString GetLatexCompileCommand(const ai::FilePath& tex_file);
 
         /**
          * \brief Split up a pdf document in a single pdf file for each page.
@@ -92,7 +90,7 @@ namespace L2A
 
         /**
          * \brief Create all the files that are needed to create a latex document.
-         * @return Path to the batch file.
+         * @return Path to the main latex document.
          */
         ai::FilePath WriteLatexFiles(const ai::UnicodeString& latex_code, const ai::FilePath& tex_folder);
 

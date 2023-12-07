@@ -125,7 +125,7 @@ void L2A::UTIL::StringReplaceAll(
 /**
  *
  */
-std::vector<ai::UnicodeString> L2A::UTIL::SplitString(ai::UnicodeString& string, const ai::UnicodeString& split_string)
+std::vector<ai::UnicodeString> L2A::UTIL::SplitString(const ai::UnicodeString& string, const ai::UnicodeString& split_string)
 {
     if (split_string.empty()) l2a_error("Split string can not be empty");
 

@@ -37,6 +37,7 @@
 #include "l2a_forms.h"
 #include "l2a_global.h"
 #include "l2a_names.h"
+#include "l2a_execute.h"
 
 #include <regex>
 
@@ -60,23 +61,17 @@ ai::UnicodeString L2A::LATEX::GetLatexString(const ai::UnicodeString& latex_code
 /**
  *
  */
-ai::UnicodeString L2A::LATEX::GetBatchString(const ai::FilePath& batch_directory,
-    const ai::UnicodeString& latex_compiler, const ai::UnicodeString& latex_options, const ai::UnicodeString& tex_name)
+ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_file)
 {
-    ai::UnicodeString path_unicode = batch_directory.GetFullPath();
-    ai::UnicodeString temp(path_unicode.substr(0, 1));
-    temp += ":\n";
-    temp += "cd ";
-    temp += path_unicode;
-    temp += "\n\"";
-    temp += latex_compiler;
-    temp += "\" ";
-    temp += latex_options;
-    temp += " \"";
-    temp += tex_name;
-    temp += "\"\n\n";
+    ai::UnicodeString command;
+    command += L2A::Global().GetLatexCommand();
+    command += " ";
+    command += L2A::Global().command_latex_options_;
+    command += " \"";
+    command += tex_file.GetFullPath();
+    command += "\"";
 
-    return temp;
+    return command;
 }
 
 /**
@@ -115,7 +110,8 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
 
     // Call the command to split up the pdf file.
     L2A::UTIL::SetWorkingDirectory(pdf_folder);
-    std::system(gs_command.as_UTF8().c_str());
+    auto command_result = L2A::UTIL::ExecuteCommandLine(gs_command, true);
+    if (command_result.exit_status_ != 0) l2a_error("Error in the ghostscript call >>" + gs_command + "<<");
 
     // Get vector of pdf files for the single items.
     std::vector<ai::FilePath> pdf_files;
@@ -140,17 +136,18 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
  */
 bool L2A::LATEX::CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
 {
-    // Remove a mabe existing file.
-    ai::FilePath batch_file;
-    pdf_file = batch_file = L2A::Global().path_temp_;
-    pdf_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_tex_name_base_) + ".pdf");
+    // Create the latex and batch files.
+    const ai::FilePath tex_file = WriteLatexFiles(latex_code, Global().path_temp_);
+
+    // Remove a mabe existing pdf file.
+    pdf_file = tex_file.GetParent();
+    pdf_file.AddComponent(tex_file.GetFileNameNoExt() + ".pdf");
     L2A::UTIL::RemoveFile(pdf_file, false);
 
-    // Create the latex and batch files.
-    batch_file = WriteLatexFiles(latex_code, Global().path_temp_);
-
-    // Execute the batch file.
-    L2A::UTIL::ExecuteFile(batch_file);
+    // Compile the latex file
+    L2A::UTIL::SetWorkingDirectory(tex_file.GetParent());
+    const ai::UnicodeString latex_command = GetLatexCompileCommand(tex_file);
+    L2A::UTIL::ExecuteCommandLine(latex_command, false);
 
     // Check if the pdf file was created.
     if (L2A::UTIL::IsFile(pdf_file))
@@ -214,6 +211,7 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
 
                     // Create all relevant latex files in the debug folder.
                     L2A::LATEX::WriteLatexFiles(latex_code, debug_directory);
+                    // TODO: Add command call here as well
                     sAIUser->MessageAlert("The debug files were created in \"" + debug_directory.GetFullPath() + "\"");
 
                     // Open explorer in the debug folder.
@@ -253,12 +251,8 @@ ai::FilePath L2A::LATEX::WriteLatexFiles(const ai::UnicodeString& latex_code, co
     // Creates the LaTeX file.
     L2A::UTIL::WriteFileUTF8(tex_file, GetLatexString(latex_code), true);
 
-    // Create the batch file.
-    L2A::UTIL::WriteFileUTF8(batch_file,
-        GetBatchString(tex_folder, L2A::Global().GetLatexCommand(), L2A::Global().command_latex_options_), true);
-
-    // Return the batch file so it can be executed.
-    return batch_file;
+    // Return the path to the tex file.
+    return tex_file;
 }
 
 /**

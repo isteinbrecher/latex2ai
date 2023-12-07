@@ -220,6 +220,7 @@ void L2A::Property::SetFromLastInput()
     if (L2A::UTIL::IsFile(last_input))
     {
         const ai::UnicodeString xml_string = L2A::UTIL::ReadFileUTF8(last_input);
+        // TODO: Replace this with a try where we simply check if the parameter list could be created from the xml
         if (L2A::UTIL::IsValidXML(xml_string))
         {
             L2A::UTIL::ParameterList property_parameter_list(xml_string);
