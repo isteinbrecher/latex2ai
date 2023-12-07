@@ -80,7 +80,7 @@ namespace L2A
         /**
          * \brief Split string at occurences of split_string.
          */
-        std::vector<ai::UnicodeString> SplitString(ai::UnicodeString& string, const ai::UnicodeString& split_string);
+        std::vector<ai::UnicodeString> SplitString(const ai::UnicodeString& string, const ai::UnicodeString& split_string);
 
         /**
          * \brief Calculate a hash from a string.

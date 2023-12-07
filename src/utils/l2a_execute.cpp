@@ -40,10 +40,17 @@
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, const unsigned long max_time_ms)
+L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
 {
 #ifdef _WIN32
-    return INTERNAL::ExecuteCommandLineWindowsNoConsole(command, max_time_ms);
+    if (quiet)
+    {
+        return INTERNAL::ExecuteCommandLineWindowsNoConsole(command, max_time_ms);
+    }
+    else
+    {
+        return INTERNAL::ExecuteCommandLineStd(command);
+    }
 #else
     return INTERNAL::ExecuteCommandLineStd(command);
 #endif

@@ -87,7 +87,7 @@ L2A::FormReturnValue L2A::Form(const ai::UnicodeString& form_type, const L2A::UT
     form_command_string += "\"";
 
     // Call the form.
-    L2A::UTIL::ExecuteCommandLine(form_command_string);
+    L2A::UTIL::ExecuteCommandLine(form_command_string, true);
 
     // Check if a return file was created.
     if (L2A::UTIL::IsFile(output_path))

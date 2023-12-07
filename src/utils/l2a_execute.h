@@ -52,7 +52,8 @@ namespace L2A
         /**
          * \brief Execute a command line. Return the exit code and the comand output.
          */
-        CommandResult ExecuteCommandLine(const ai::UnicodeString& command, const unsigned long max_time_ms = INFINITE);
+        CommandResult ExecuteCommandLine(
+            const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms = 10000);
 
         /**
          * \brief Execute a file on disc.
