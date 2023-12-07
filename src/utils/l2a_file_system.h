@@ -106,29 +106,6 @@ namespace L2A
         ai::UnicodeString GetDocumentName();
 
         /**
-         * \brief Execute a command line. Return the exit code.
-         */
-        int ExecuteCommandLine(const ai::UnicodeString& command);
-
-        /**
-         * \brief Execute a command line. Return the exit code and the comand output.
-         */
-        int ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeString& command_output,
-            const bool quiet = true, const unsigned long max_time_ms = INFINITE);
-
-        /**
-         * \brief Execute a command line. Return the exit code and the comand output. Do not throw erros in this
-         * function.
-         */
-        int ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::UnicodeString& command_output,
-            ai::UnicodeString& error_message, const unsigned long max_time_ms);
-
-        /**
-         * \brief Execute a file on disc.
-         */
-        int ExecuteFile(const ai::FilePath& file_path);
-
-        /**
          * \brief Search the path to ghostscript on the system.
          */
         ai::UnicodeString GetGhostScriptCommand();

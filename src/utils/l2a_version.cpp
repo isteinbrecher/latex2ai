@@ -30,6 +30,7 @@
 #include "IllustratorSDK.h"
 #include "l2a_version.h"
 
+#include "l2a_execute.h"
 #include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_string_functions.h"

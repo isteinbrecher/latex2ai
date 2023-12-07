@@ -19,33 +19,6 @@
     <ClCompile Include="src\tests\test_framework.cpp">
       <Filter>src\tests</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\common\source\Suites.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\source\SDKAboutPluginsHelper.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\source\Plugin.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\source\Main.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\source\IllustratorSDK.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIUnicodeString.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIStringFormatUtils.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\illustratorapi\illustrator\IAIFilePath.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\source\AppContext.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
     <ClCompile Include="tpl\StackWalker\Main\StackWalker\StackWalker.cpp">
       <Filter>tpl</Filter>
     </ClCompile>
@@ -60,9 +33,6 @@
     </ClCompile>
     <ClCompile Include="tpl\base64\src\base64.cpp">
       <Filter>tpl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tests\test_base64.cpp">
-      <Filter>src\test</Filter>
     </ClCompile>
     <ClCompile Include="src\l2a_latex.cpp">
       <Filter>src</Filter>
@@ -112,6 +82,19 @@
     <ClCompile Include="src\tests\test_base64.cpp">
       <Filter>src\tests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIFilePath.cpp" />
+    <ClCompile Include="..\common\source\AppContext.cpp" />
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIStringFormatUtils.cpp" />
+    <ClCompile Include="..\..\illustratorapi\illustrator\IAIUnicodeString.cpp" />
+    <ClCompile Include="..\common\source\IllustratorSDK.cpp" />
+    <ClCompile Include="..\common\source\Main.cpp" />
+    <ClCompile Include="..\common\source\Plugin.cpp" />
+    <ClCompile Include="..\common\source\SDKAboutPluginsHelper.cpp" />
+    <ClCompile Include="..\common\source\Suites.cpp" />
+    <ClCompile Include="src\tests\test_base64.cpp" />
+    <ClCompile Include="src\utils\l2a_execute.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -146,9 +129,6 @@
     </ClInclude>
     <ClInclude Include="tpl\base64\src\base64.h">
       <Filter>tpl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tests\test_base64.h">
-      <Filter>src\test</Filter>
     </ClInclude>
     <ClInclude Include="src\l2a_latex.h">
       <Filter>src</Filter>
@@ -206,6 +186,10 @@
     </ClInclude>
     <ClInclude Include="src\tests\test_base64.h">
       <Filter>src\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_base64.h" />
+    <ClInclude Include="src\utils\l2a_execute.h">
+      <Filter>src\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

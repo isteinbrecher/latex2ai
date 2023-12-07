@@ -39,6 +39,7 @@
 #include "l2a_latex.h"
 #include "l2a_constants.h"
 #include "l2a_version.h"
+#include "l2a_execute.h"
 
 
 /**
