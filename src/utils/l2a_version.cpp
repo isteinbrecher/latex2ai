@@ -116,10 +116,10 @@ void L2A::GLOBAL::CheckGithubVersion()
         ai::UnicodeString command("curl -s https://api.github.com/repos/isteinbrecher/latex2ai/releases");
         ai::UnicodeString result;
 
-        // TODO: The call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
+        // TODO: On Windows the call to curl never finishes, but it seems that the output is OK. Therefore, we stop this after
         // 500ms. Check if we can to this without the specified maximum time.
-        L2A::UTIL::ExecuteCommandLine(command, result, true, 500);
-        std::string curl_output = result.as_UTF8();
+        auto command_result = L2A::UTIL::ExecuteCommandLine(command, 500);
+        std::string curl_output = command_result.output_.as_Platform();
         if (curl_output == "") return;
 
         // Convert the string to a json object.

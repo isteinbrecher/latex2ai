@@ -50,36 +50,34 @@ namespace L2A
         };
 
         /**
-         * \brief Execute system command and get stdout result
-         *
-         * Taken from https://github.com/RaymiiOrg/cpp-command-output
-         *
-         * If you want stderr, use shell redirection (2&>1).
-         */
-        CommandResult ExecuteCommandLineNew(const ai::UnicodeString& command);
-
-        /**
-         * \brief Execute a command line. Return the exit code.
-         */
-        int ExecuteCommandLine(const ai::UnicodeString& command);
-
-        /**
          * \brief Execute a command line. Return the exit code and the comand output.
          */
-        int ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeString& command_output,
-            const bool quiet = true, const unsigned long max_time_ms = INFINITE);
-
-        /**
-         * \brief Execute a command line. Return the exit code and the comand output. Do not throw erros in this
-         * function.
-         */
-        int ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::UnicodeString& command_output,
-            ai::UnicodeString& error_message, const unsigned long max_time_ms);
+        CommandResult ExecuteCommandLine(const ai::UnicodeString& command, const unsigned long max_time_ms = INFINITE);
 
         /**
          * \brief Execute a file on disc.
          */
         int ExecuteFile(const ai::FilePath& file_path);
+
+        namespace INTERNAL
+        {
+            /**
+             * \brief Execute system command and get stdout result. Do not throw erros in this
+             * function.
+             *
+             * Taken from https://github.com/RaymiiOrg/cpp-command-output
+             *
+             * If you want stderr, use shell redirection (2&>1).
+             */
+            CommandResult ExecuteCommandLineStd(const ai::UnicodeString& command);
+
+            /**
+             * \brief Execute a command line. Return the exit code and the comand output. Do not throw erros in this
+             * function.
+             */
+            CommandResult ExecuteCommandLineWindowsNoConsole(
+                const ai::UnicodeString& command, const unsigned long max_time_ms);
+        }
     }  // namespace UTIL
 }  // namespace L2A
 

@@ -31,26 +31,45 @@
 #include "l2a_execute.h"
 
 #include "l2a_file_system.h"
-#include "l2a_suites.h"
 #include "l2a_error.h"
 #include "l2a_string_functions.h"
-#include "l2a_names.h"
-#include "base64.h"
 
 #include <array>
-#include <filesystem>
-
-// File encoding.
-#include <codecvt>
-
-// To get the application path folder.
-#include "shlobj.h"
 
 
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLineNew(const ai::UnicodeString& command)
+L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, const unsigned long max_time_ms)
+{
+#ifdef _WIN32
+    return INTERNAL::ExecuteCommandLineWindowsNoConsole(command, max_time_ms);
+#else
+    return INTERNAL::ExecuteCommandLineStd(command);
+#endif
+}
+
+/**
+ *
+ */
+int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
+{
+    if (L2A::UTIL::IsFile(file_path))
+    {
+        std::string command = "\"" + file_path.GetFullPath().as_Platform() + "\"";
+
+        return system(command.c_str());
+    }
+    else
+        l2a_error("The file " + file_path.GetFullPath() + " does not exist!");
+}
+
+
+/**
+ *
+ */
+L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(
+    const ai::UnicodeString& command)
 {
     std::array<char, 8192> buffer{};
     std::string result;
@@ -62,7 +81,7 @@ L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLineNew(const ai::UnicodeStrin
     FILE* pipe = popen(command.as_Platform().c_str(), "r");
     if (pipe == nullptr)
     {
-        throw std::runtime_error("popen() failed!");
+        l2a_error("popen() failed!");
     }
     try
     {
@@ -75,11 +94,7 @@ L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLineNew(const ai::UnicodeStrin
     catch (...)
     {
         pclose(pipe);
-        
-        ai::UnicodeString error_string("Internal error in the command >>");
-        error_string += command;
-        error_string += "<<";
-        l2a_error(error_string);
+        l2a_error("popen() failed!");
     }
     // Workaround "error: cannot take the address of an rvalue of type 'int'" on MacOS
     // see e.g. https://github.com/BestImageViewer/geeqie/commit/75c7df8b96592e10f7936dc1a28983be4089578c
@@ -90,44 +105,18 @@ L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLineNew(const ai::UnicodeStrin
 /**
  *
  */
-int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
+L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole(
+    const ai::UnicodeString& command, const unsigned long max_time_ms)
 {
-    ai::UnicodeString unused_variable;
-    return ExecuteCommandLine(command, unused_variable);
-}
-
-/**
- *
- */
-int L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, ai::UnicodeString& command_output, const bool quiet,
-    const unsigned long max_time_ms)
-{
-    ai::UnicodeString error_message;
-    int exit_code = ExecuteCommandLineNoErrors(command, command_output, error_message, max_time_ms);
-    if (exit_code == -69)
-    {
-        if (quiet)
-            l2a_error_quiet(error_message);
-        else
-            l2a_error(error_message);
-    }
-
-    return exit_code;
-}
-
-/**
- *
- */
-int L2A::UTIL::ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::UnicodeString& command_output,
-    ai::UnicodeString& error_message, const unsigned long max_time_ms)
-{
+#ifndef _WIN32
+    l2a_error("You are using the function for the wrong OS! Use the system calls via ExecuteCommandLine!");
+#else
     // This code is mainly a combination of
     // https://www.codeproject.com/Tips/333559/CreateProcess-and-wait-for-result
     // https://docs.microsoft.com/en-us/windows/win32/procthread/creating-a-child-process-with-redirected-input-and-output
 
     // Convert the string to platform text.
     std::string cmdLine = command.as_Platform();
-    // cmdLine = "pdflatex -v";
     SECURITY_ATTRIBUTES saAttr;
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
@@ -136,13 +125,11 @@ int L2A::UTIL::ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::
     HANDLE g_hChildStd_OUT_Wr = nullptr;
     if (!CreatePipe(&g_hChildStd_OUT_Rd, &g_hChildStd_OUT_Wr, &saAttr, 0))
     {
-        error_message = ai::UnicodeString("StdoutRd CreatePipe");
-        return -69;
+        l2a_error("StdoutRd CreatePipe");
     }
     if (!SetHandleInformation(g_hChildStd_OUT_Rd, HANDLE_FLAG_INHERIT, 0))
     {
-        error_message = ai::UnicodeString("Stdout SetHandleInformation");
-        return -69;
+        l2a_error("Stdout SetHandleInformation");
     }
 
     // Create the process.
@@ -172,8 +159,7 @@ int L2A::UTIL::ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::
         LocalFree(lpMsgBuf);
 
         // Create error message.
-        error_message = "Error, process '" + command + "' could not be created!";
-        return -69;
+        l2a_error("Error, process '" + command.as_Platform() + "' could not be created!");
     }
     else
     {
@@ -207,29 +193,11 @@ int L2A::UTIL::ExecuteCommandLineNoErrors(const ai::UnicodeString& command, ai::
 
         if (!result)
         {
-            error_message = ai::UnicodeString("Executed command but couldn't get exit code.");
-            return -69;
+            l2a_error("Executed command but couldn't get exit code.");
         }
 
-        // Convert comman output to unicode string.
-        command_output = ai::UnicodeString(result_string);
-
-        // Everything succeeded and return the exit code.
-        return (int)exitCode;
+        // Return exit code, and command output as unicode string.
+        return CommandResult{(int)exitCode, ai::UnicodeString(result_string)};
     }
-}
-
-/**
- *
- */
-int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
-{
-    if (L2A::UTIL::IsFile(file_path))
-    {
-        std::string command = "\"" + file_path.GetFullPath().as_Platform() + "\"";
-
-        return system(command.c_str());
-    }
-    else
-        l2a_error("The file " + file_path.GetFullPath() + " does not exist!");
+#endif
 }
