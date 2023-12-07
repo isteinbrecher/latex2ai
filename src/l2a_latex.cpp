@@ -116,7 +116,8 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
 
     // Call the command to split up the pdf file.
     L2A::UTIL::SetWorkingDirectory(pdf_folder);
-    std::system(gs_command.as_UTF8().c_str());
+    auto command_result = L2A::UTIL::ExecuteCommandLine(gs_command);
+    if (command_result.exit_status_ != 0) l2a_error("Error in the ghostscript call >>" + gs_command + "<<");
 
     // Get vector of pdf files for the single items.
     std::vector<ai::FilePath> pdf_files;
