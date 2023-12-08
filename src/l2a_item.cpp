@@ -801,11 +801,11 @@ void L2A::CheckItemDataStructure()
     // Cleanup pdf links directory.
     {
         // Get all pdf items.
-        ai::UnicodeString pattern = ai::UnicodeString("\\*") + L2A::NAMES::pdf_item_post_fix_ + "*.pdf";
+        ai::UnicodeString pattern = ai::UnicodeString(".*") + L2A::NAMES::pdf_item_post_fix_ + ".*\\.pdf$";
         std::vector<ai::FilePath> pdf_item_files = L2A::UTIL::FindFilesInFolder(pdf_file_directory, pattern);
 
         // Get all documents parallel to the current document.
-        pattern = ai::UnicodeString("\\*.ai");
+        pattern = ai::UnicodeString(".*\\.ai$");
         std::vector<ai::FilePath> ai_document_files =
             L2A::UTIL::FindFilesInFolder(L2A::UTIL::GetDocumentPath().GetParent(), pattern);
 

@@ -37,13 +37,32 @@
 #include "base64.h"
 
 #include <array>
-#include <filesystem>
+#include <regex>
 
 // File encoding.
 #include <codecvt>
 
 // To get the application path folder.
+#ifdef WIN_ENV
 #include "shlobj.h"
+#endif
+
+
+/**
+ *
+ */
+ai::FilePath L2A::UTIL::FilePathStdToAi(const std::filesystem::path& path_std)
+{
+    return ai::FilePath(ai::UnicodeString(path_std.string()));
+}
+
+/**
+ *
+ */
+std::filesystem::path L2A::UTIL::FilePathAiToStd(const ai::FilePath& path_ai)
+{
+    return std::filesystem::path(path_ai.GetFullPath().as_Platform());
+}
 
 
 /**
@@ -52,7 +71,7 @@
 bool L2A::UTIL::IsFile(const ai::FilePath& file)
 {
     bool is_file = false;
-    bool exists = file.Exists(true, nullptr, &is_file);
+    const bool exists = file.Exists(true, nullptr, &is_file);
     return (exists && is_file);
 }
 
@@ -62,7 +81,7 @@ bool L2A::UTIL::IsFile(const ai::FilePath& file)
 bool L2A::UTIL::IsDirectory(const ai::FilePath& directory)
 {
     bool is_file = true;
-    bool exists = directory.Exists(true, nullptr, &is_file);
+    const bool exists = directory.Exists(true, nullptr, &is_file);
     return (exists && (!is_file));
 }
 
@@ -71,10 +90,10 @@ bool L2A::UTIL::IsDirectory(const ai::FilePath& directory)
  */
 bool L2A::UTIL::IsWriteable(const ai::FilePath& file)
 {
-    bool file_exits = IsFile(file);
+    const bool file_exits = IsFile(file);
     std::fstream stream;
-    stream.open(file.GetFullPath().as_Platform(), std::fstream::out | std::fstream::app);
-    bool is_writeable = stream.is_open();
+    stream.open(FilePathAiToStd(file), std::fstream::out | std::fstream::app);
+    const bool is_writeable = stream.is_open();
     stream.close();
     if (!file_exits && is_writeable)
         // The file did not exits prior and it could be created, therefore it has to be deleted here.
@@ -87,13 +106,11 @@ bool L2A::UTIL::IsWriteable(const ai::FilePath& file)
  */
 void L2A::UTIL::RemoveFile(const ai::FilePath& file, const bool& fail_if_not_exist)
 {
-    // Check that it exists and is file.
     if (IsFile(file))
     {
-        const int return_value = remove(file.GetFullPath().as_Platform().c_str());
-
-        // Check if file could be deleted.
-        if (return_value != 0) l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
+        std::error_code ec;
+        if (!std::filesystem::remove(FilePathAiToStd(file), ec))
+            l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
     }
     else if (IsDirectory(file))
         l2a_error("The given path " + file.GetFullPath() + " is a directory!");
@@ -109,14 +126,9 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
     // Check that it exists and is directroy.
     if (IsDirectory(directory))
     {
-        try
-        {
-            std::filesystem::remove_all(directory.GetFullPath().as_Platform());
-        }
-        catch (...)
-        {
+        std::error_code ec;
+        if (!std::filesystem::remove_all(FilePathAiToStd(directory)))
             l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
-        }
     }
     else if (IsFile(directory))
         l2a_error("The given path " + directory.GetFullPath() + " is a file!");
@@ -139,7 +151,7 @@ void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString&
         l2a_error("The file '" + path.GetFullPath() + "' alreday exists and the option overwrite is false!");
 
     // Write text to file.
-    std::ofstream f(path.GetFullPath().as_Platform());
+    std::ofstream f(FilePathAiToStd(path));
     f << text.as_UTF8();
     f.close();
 }
@@ -167,44 +179,24 @@ ai::UnicodeString L2A::UTIL::ReadFileUTF8(const ai::FilePath& path)
  */
 void L2A::UTIL::CreateDirectoryL2A(const ai::FilePath& directory)
 {
-    // This vector stores all parts of the directory that do not exist.
-    ai::FilePath path = directory;
-    std::vector<ai::UnicodeString> parts;
-    while (!IsDirectory(path))
-    {
-        // Check if the path is not a valid file.
-        if (IsFile(path)) l2a_error("A parent of the path '" + directory.GetFullPath() + "' is a file!");
-
-        // Add the current item to the vector.
-        parts.push_back(path.GetFileName());
-
-        // Go one level higher.
-        path = path.GetParent();
-    }
-
-    // Create the missing directories.
-    size_t n_parts = parts.size();
-    for (size_t i = 0; i < n_parts; i++)
-    {
-        path.AddComponent(parts[n_parts - i - 1]);
-        CreateDirectory(path.GetFullPath().as_Platform().c_str(), nullptr);
-    }
+    std::error_code ec;
+    std::filesystem::create_directory(FilePathAiToStd(directory), ec);
+    if (ec.value() != 0) l2a_error("Could not create the directory " + directory.GetFullPath().as_Platform());
 }
 
 void L2A::UTIL::CopyFileL2A(const ai::FilePath& source, const ai::FilePath& target)
 {
-    // Check if source exists.
+    // Check if source exists
     if (!IsFile(source)) l2a_error("The source file '" + source.GetFullPath() + "'does not exist!");
 
-    // Check if destination directory exists.
+    // Check if destination directory exists
     if (!IsDirectory(target.GetParent())) l2a_error("The target dir '" + target.GetFullPath() + "'does not exist!");
 
-    // Copy the file.
-    bool copy_ok =
-        CopyFile(source.GetFullPath().as_Platform().c_str(), target.GetFullPath().as_Platform().c_str(), false);
-
-    // Check if everything was ok
-    if (!copy_ok) l2a_error("Error in copy process!");
+    // Copy the file
+    std::error_code ec;
+    std::filesystem::copy(
+        FilePathAiToStd(source), FilePathAiToStd(target), std::filesystem::copy_options::overwrite_existing, ec);
+    if (ec.value()) l2a_error("Could not copy the file " + source.GetFullPath() + " to " + target.GetFullPath());
 }
 
 /**
@@ -270,6 +262,7 @@ ai::UnicodeString L2A::UTIL::GetDocumentName() { return GetDocumentPath(false).G
  */
 ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
 {
+#ifdef WIN_ENV
     // Get the path to the programs folder.
     TCHAR pathBuffer[MAX_PATH];
     std::array<std::tuple<int, int>, 2> programm_shortcuts = {
@@ -306,9 +299,10 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
             }
         }
     }
-
+#else
     // Default return value.
-    return ai::UnicodeString("");
+    return ai::UnicodeString("/opt/homebrew/bin/gs");
+#endif
 }
 
 /**
@@ -366,31 +360,22 @@ ai::FilePath L2A::UTIL::GetPdfFileDirectory()
 /**
  *
  */
-std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& pattern)
+std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& regex)
 {
-    // Set up the return vector.
+    const std::regex regex_string(regex.as_Platform());
     std::vector<ai::FilePath> file_vector;
-    file_vector.clear();
-
-    // Create the search string.
-    ai::UnicodeString search_string = folder.GetFullPath() + "\\" + pattern;
-
-    // Find the files.
-    WIN32_FIND_DATA search_data;
-    memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
-    HANDLE handle = FindFirstFile(search_string.as_Platform().c_str(), &search_data);
-    while (handle != INVALID_HANDLE_VALUE)
+    for (auto const& dir_entry : std::filesystem::directory_iterator{FilePathAiToStd(folder)})
     {
-        // Add file path to output vector.
-        ai::FilePath file_path = folder;
-        file_path.AddComponent(ai::UnicodeString(search_data.cFileName));
-        file_vector.push_back(file_path);
-
-        // Look for next file.
-        if (FindNextFile(handle, &search_data) == FALSE) break;
+        if (std::filesystem::is_regular_file(dir_entry))
+        {
+            // TODO: Possible unicode issues here with the path
+            const auto file_name = dir_entry.path().string();
+            if (std::regex_match(file_name, regex_string))
+            {
+                file_vector.push_back(FilePathStdToAi(dir_entry.path()));
+            }
+        }
     }
-    FindClose(handle);
-
     return file_vector;
 }
 
@@ -399,16 +384,16 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
  */
 ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
 {
-    std::filesystem::path path_std = path.GetFullPath().as_Platform();
-    return ai::FilePath(ai::UnicodeString(std::filesystem::absolute(path_std).string()));
-}
+    const auto path_std = FilePathAiToStd(path);
+    const auto absolute_path = std::filesystem::absolute(path_std);
+    return FilePathStdToAi(absolute_path);}
 
 /**
  *
  */
 void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
 {
-    std::filesystem::current_path(path.GetFullPath().as_UTF8());
+    std::filesystem::current_path(FilePathAiToStd(path));
 }
 
 /**
@@ -428,7 +413,7 @@ std::string L2A::UTIL::encode_file_base64(const ai::FilePath& path)
 {
     // https://www.cplusplus.com/reference/istream/istream/read/
 
-    std::ifstream input_stream(path.GetFullPath().as_UTF8(), std::ifstream::binary);
+    std::ifstream input_stream(FilePathAiToStd(path), std::ifstream::binary);
     if (!input_stream) l2a_error("Error in loading file");
 
     // Get length of the file.
@@ -442,7 +427,7 @@ std::string L2A::UTIL::encode_file_base64(const ai::FilePath& path)
 
     // Read data as a block.
     input_stream.read(buffer, length);
-    if (!input_stream) l2a_error("Error in readig file");
+    if (!input_stream) l2a_error("Error in reading file");
     input_stream.close();
 
     // Encode file data.
