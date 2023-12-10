@@ -31,12 +31,22 @@
 
 
 #include "IllustratorSDK.h"
-
+#include <filesystem>
 
 namespace L2A
 {
     namespace UTIL
     {
+        /**
+         * \brief Convert a std::path to an ai::FilePath
+         */
+        ai::FilePath FilePathStdToAi(const std::filesystem::path& path_std);
+
+        /**
+         * \brief Convert an ai::FilePath to a std::path
+         */
+        std::filesystem::path FilePathAiToStd(const ai::FilePath& path_ai);
+
         /**
          * \brief Checks if the path is a file and exists.
          */
@@ -123,9 +133,9 @@ namespace L2A
         ai::FilePath GetPdfFileDirectory();
 
         /**
-         * \brief Find all files in a folder matching a pattern.
+         * \brief Find all files in a folder matching a regular expression.
          */
-        std::vector<ai::FilePath> FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& pattern);
+        std::vector<ai::FilePath> FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& regex);
 
         /**
          * \brief Return the full file path for a given path. This also resolves ".." inside the file path.

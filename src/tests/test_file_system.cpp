@@ -70,25 +70,42 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
     {
         ai::FilePath test_directory = temp_directory;
         test_directory.AddComponent(ai::UnicodeString("test1"));
-        ai::FilePath test_directory_first = test_directory;
-        ai::FilePath file_path = test_directory;
-        file_path.AddComponent(ai::UnicodeString("test_file.tex"));
+        
         L2A::UTIL::RemoveDirectoryAI(test_directory, false);
-        test_directory.AddComponent(ai::UnicodeString("test2"));
-        test_directory.AddComponent(ai::UnicodeString("test3"));
+        ut.CompareInt(false, L2A::UTIL::IsDirectory(test_directory));
+        
         L2A::UTIL::CreateDirectoryL2A(test_directory);
         ut.CompareInt(true, L2A::UTIL::IsDirectory(test_directory));
 
-        // Create a file in the second folder.
+        // Create a file in the folder
+        ai::FilePath file_path = test_directory;
+        file_path.AddComponent(ai::UnicodeString("test_file.tex"));
         L2A::UTIL::WriteFileUTF8(file_path, ai::UnicodeString("Test content"));
+        ut.CompareInt(true, L2A::UTIL::IsFile(file_path));
 
-        // Delete the last directory.
+        // Create multiple files and check if the find files in folder function works
+        std::vector<ai::FilePath> files(4, test_directory);
+        files[0].AddComponent(ai::UnicodeString("test_file_01.tex"));
+        files[1].AddComponent(ai::UnicodeString("test_file_02.tex"));
+        files[3].AddComponent(ai::UnicodeString("test_file_04.texx"));
+        // Also create on in a sub directory -> that one should not be found
+        ai::FilePath sub_dir = test_directory;
+        sub_dir.AddComponent(ai::UnicodeString("tmp"));
+        L2A::UTIL::CreateDirectoryL2A(sub_dir);
+        files[2] = sub_dir;
+        files[2].AddComponent(ai::UnicodeString("test_file_03.tex"));
+        for (const auto& file : files)
+        {
+            L2A::UTIL::WriteFileUTF8(file, ai::UnicodeString("Test content"));
+        }
+        // Search for a regex match
+        const auto files_in_folder = L2A::UTIL::FindFilesInFolder(test_directory, ai::UnicodeString(".*_\\d{2}\\.[tT][eE][xX]$"));
+        ut.CompareInt(2, files_in_folder.size());
+        for (unsigned int i = 0; i < 2; i++) ut.CompareStr(files[i].GetFullPath(), files_in_folder[i].GetFullPath());
+    
+        // Delete directory
         L2A::UTIL::RemoveDirectoryAI(test_directory);
         ut.CompareInt(false, L2A::UTIL::IsDirectory(test_directory));
-
-        // Delete the first directory.
-        L2A::UTIL::RemoveDirectoryAI(test_directory_first);
-        ut.CompareInt(false, L2A::UTIL::IsDirectory(test_directory_first));
         ut.CompareInt(false, L2A::UTIL::IsFile(file_path));
     }
 }
