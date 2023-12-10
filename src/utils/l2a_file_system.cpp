@@ -161,17 +161,23 @@ void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString&
  */
 ai::UnicodeString L2A::UTIL::ReadFileUTF8(const ai::FilePath& path)
 {
-    // Check if the file exists.
+    // Check if the file exists
     if (!IsFile(path)) l2a_error("The file '" + path.GetFullPath() + "' does not exist!");
 
-    // Open the file stream.
-    std::wifstream wif(path.GetFullPath().as_Platform());
+#ifdef WIN_ENV
+    // Open the file stream
+    std::wifstream wif(UTIL::FilePathAiToStd(path));
     wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
     std::wstringstream wss;
     wss << wif.rdbuf();
-
-    // Convert file contents to ai::UnicodeString.
     return ai::UnicodeString(wss.str().c_str());
+#else
+    // Open the file stream
+    std::ifstream istrm(UTIL::FilePathAiToStd(path));
+    std::stringstream buffer;
+    buffer << istrm.rdbuf();
+    return ai::UnicodeString(buffer.str());
+#endif
 }
 
 /**

@@ -105,7 +105,8 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(
     }
     // Workaround "error: cannot take the address of an rvalue of type 'int'" on MacOS
     // see e.g. https://github.com/BestImageViewer/geeqie/commit/75c7df8b96592e10f7936dc1a28983be4089578c
-    const int exitcode = WEXITSTATUS(pclose(pipe));
+    int res = pclose(pipe);
+    const int exitcode = WEXITSTATUS(res);
     return CommandResult{exitcode, ai::UnicodeString(result)};
 }
 
