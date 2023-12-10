@@ -214,9 +214,11 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                     // TODO: Add command call here as well
                     sAIUser->MessageAlert("The debug files were created in \"" + debug_directory.GetFullPath() + "\"");
 
+#ifdef WIN_ENV
                     // Open explorer in the debug folder.
                     ShellExecute(nullptr, "open", debug_directory.GetFullPath().as_Platform().c_str(), nullptr, nullptr,
                         SW_SHOWDEFAULT);
+#endif
                 }
                 else
                     // The user wants to redo the item.
