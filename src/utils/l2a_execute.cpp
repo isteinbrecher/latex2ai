@@ -40,7 +40,8 @@
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
+L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
+    const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
 {
 #ifdef _WIN32
     if (quiet)
@@ -75,8 +76,7 @@ int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(
-    const ai::UnicodeString& command)
+L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::UnicodeString& command)
 {
     std::array<char, 8192> buffer{};
     std::string result;

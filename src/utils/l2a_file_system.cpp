@@ -392,15 +392,13 @@ ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
 {
     const auto path_std = FilePathAiToStd(path);
     const auto absolute_path = std::filesystem::absolute(path_std);
-    return FilePathStdToAi(absolute_path);}
+    return FilePathStdToAi(absolute_path);
+}
 
 /**
  *
  */
-void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path)
-{
-    std::filesystem::current_path(FilePathAiToStd(path));
-}
+void L2A::UTIL::SetWorkingDirectory(const ai::FilePath& path) { std::filesystem::current_path(FilePathAiToStd(path)); }
 
 /**
  *

@@ -205,7 +205,7 @@ ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
     {
         ai::FilePath exe_path = path_latex_;
         exe_path.AddComponent(command_latex_ + ".exe");
-        return "\"" + exe_path.GetFullPath() + "\"" ;
+        return "\"" + exe_path.GetFullPath() + "\"";
     }
     else
         return command_latex_;

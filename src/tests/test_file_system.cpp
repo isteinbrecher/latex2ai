@@ -70,10 +70,10 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
     {
         ai::FilePath test_directory = temp_directory;
         test_directory.AddComponent(ai::UnicodeString("test1"));
-        
+
         L2A::UTIL::RemoveDirectoryAI(test_directory, false);
         ut.CompareInt(false, L2A::UTIL::IsDirectory(test_directory));
-        
+
         L2A::UTIL::CreateDirectoryL2A(test_directory);
         ut.CompareInt(true, L2A::UTIL::IsDirectory(test_directory));
 
@@ -99,10 +99,11 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
             L2A::UTIL::WriteFileUTF8(file, ai::UnicodeString("Test content"));
         }
         // Search for a regex match
-        const auto files_in_folder = L2A::UTIL::FindFilesInFolder(test_directory, ai::UnicodeString(".*_\\d{2}\\.[tT][eE][xX]$"));
+        const auto files_in_folder =
+            L2A::UTIL::FindFilesInFolder(test_directory, ai::UnicodeString(".*_\\d{2}\\.[tT][eE][xX]$"));
         ut.CompareInt(2, files_in_folder.size());
         for (unsigned int i = 0; i < 2; i++) ut.CompareStr(files[i].GetFullPath(), files_in_folder[i].GetFullPath());
-    
+
         // Delete directory
         L2A::UTIL::RemoveDirectoryAI(test_directory);
         ut.CompareInt(false, L2A::UTIL::IsDirectory(test_directory));

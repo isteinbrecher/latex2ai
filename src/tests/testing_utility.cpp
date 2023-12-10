@@ -152,4 +152,3 @@ void L2A::TEST::UTIL::UnitTest::PrintTestSummary(const bool print_status)
         sAIUser->MessageAlert(summary_string);
     }
 }
-
