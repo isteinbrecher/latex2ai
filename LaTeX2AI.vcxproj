@@ -94,7 +94,7 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\resources\raw;.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <OutputFile>..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
@@ -111,7 +111,9 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"</Command>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"
+echo performing: python ..\..\tools\pipl\create_pipl.py -input "[{\"name\":\"MultiArrowTool\",\"entry_point\" : \"PluginMain\"}]"
+$(PYTHON_EXE) ..\..\tools\pipl\create_pipl.py -input "[{\"name\":\"LaTeX2AI\",\"entry_point\" : \"PluginMain\"}]"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,7 +155,7 @@
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\resources\raw;.\src;..\common\win;..\common\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <OutputFile>..\output\win\$(Platform)\$(Configuration)\$(ProjectName).aip</OutputFile>
@@ -170,7 +172,9 @@
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <PreBuildEvent>
-      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"</Command>
+      <Command>$(PYTHON_EXE) "$(ProjectDir)scripts\create_headers.py"
+echo performing: python ..\..\tools\pipl\create_pipl.py -input "[{\"name\":\"MultiArrowTool\",\"entry_point\" : \"PluginMain\"}]"
+$(PYTHON_EXE) ..\..\tools\pipl\create_pipl.py -input "[{\"name\":\"LaTeX2AI\",\"entry_point\" : \"PluginMain\"}]"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -295,7 +299,7 @@
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources\l2a.rc" />
+    <ResourceCompile Include="resources\Win\LaTeX2AI.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

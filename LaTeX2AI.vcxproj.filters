@@ -213,7 +213,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resources\l2a.rc">
+    <ResourceCompile Include="resources\Win\LaTeX2AI.rc">
       <Filter>resources</Filter>
     </ResourceCompile>
   </ItemGroup>
