@@ -1,15 +1,31 @@
-## Define the base style. We use Google's style here.
-BasedOnStyle: Google                # Use Google style as baseline configuration and specify deviations explicitly as given below
+# Define the base style
+BasedOnStyle: Google
 
-## Define our deviations from the base style. Let's limit ourselves to very few exceptions.
-AlignAfterOpenBracket: DontAlign    # Align function arguments after line break at custom indentation rather than at the opening (
-AlignOperands: false                # Do not align under operants.
-BreakBeforeBraces: Allman           # Always move the opening { to the next line
-ColumnLimit: 120                    # Break lines after 100 columns/characters
-MaxEmptyLinesToKeep: 3              # Max. number of emtpy lines
-NamespaceIndentation: All           # Add one level of indentation per namespace nesting
-SortIncludes: false                 # Do not sort includes as ordering matters in Baci
-SpacesInContainerLiterals: false    # Do not insert spaces after and before parenthesis, here []
-Standard: Cpp11                     # Use the Cpp11 code style
-TabWidth: 4                         # Make sure we use our desired tab width
-IndentWidth: 4                      # Default indentation
+# Modifications of base style
+AlignAfterOpenBracket: DontAlign
+BreakBeforeBraces: Allman
+ColumnLimit: 120
+MaxEmptyLinesToKeep: 3
+NamespaceIndentation: All
+SpacesInContainerLiterals: false
+Standard: c++17
+TabWidth: 4
+IndentWidth: 4
+
+# Sort imported headers
+IncludeBlocks: Regroup
+SortIncludes: CaseInsensitive
+IncludeCategories:
+  # Precompiled Illustrator header
+  - Regex: "IllustratorSDK\\.h"
+    Priority: -1
+
+  # Header corresponging to cpp file has priority 0
+
+  # LaTeX2AI headers
+  - Regex: "l2a_.*\\.(h|H)"
+    Priority: 10
+
+  # Standard library headers
+  - Regex: "<[a-z_]+>"
+    Priority: 100
