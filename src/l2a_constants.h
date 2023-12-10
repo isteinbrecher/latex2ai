@@ -40,20 +40,20 @@
 #define L2A_VERSION_STRING_ "0.0.10"
 
 //! Icon IDs.
-#define TOOL_ICON_CREATE_LIGHT_ID 16051       // icon for create mode in light mode
-#define TOOL_ICON_CREATE_DARK_ID 16052        // icon for create mode in dark mode
-#define TOOL_ICON_REDO_LIGHT_ID 16053         // icon for redo mode in light mode
-#define TOOL_ICON_REDO_DARK_ID 16054          // icon for redo mode in dark mode
-#define TOOL_ICON_OPTIONS_LIGHT_ID 16055      // icon for options in light mode
-#define TOOL_ICON_OPTIONS_DARK_ID 16056       // icon for options in dark mode
-#define TOOL_ICON_SAVE_AS_PDF_LIGHT_ID 16057  // icon for save as pdf in light mode
-#define TOOL_ICON_SAVE_AS_PDF_DARK_ID 16058   // icon for save as pdf in dark mode
-#define TOOL_ICON_TESTING_LIGHT_ID 16059      // icon for testing in light mode
-#define TOOL_ICON_TESTING_DARK_ID 16060       // icon for testing in dark mode
+#define TOOL_ICON_CREATE_DARK_ID 19000        // icon for create mode in dark mode
+#define TOOL_ICON_CREATE_LIGHT_ID 19001       // icon for create mode in light mode
+#define TOOL_ICON_REDO_DARK_ID 19002          // icon for redo mode in dark mode
+#define TOOL_ICON_REDO_LIGHT_ID 19003         // icon for redo mode in light mode
+#define TOOL_ICON_OPTIONS_DARK_ID 19004       // icon for options in dark mode
+#define TOOL_ICON_OPTIONS_LIGHT_ID 19005      // icon for options in light mode
+#define TOOL_ICON_SAVE_AS_PDF_DARK_ID 19006   // icon for save as pdf in dark mode
+#define TOOL_ICON_SAVE_AS_PDF_LIGHT_ID 19007  // icon for save as pdf in light mode
+#define TOOL_ICON_TESTING_DARK_ID 19008       // icon for testing in dark mode
+#define TOOL_ICON_TESTING_LIGHT_ID 19009      // icon for testing in light mode
 
-#define CURSOR_ICON_CREATE 16061  // cursor for create mode
-#define CURSOR_ICON_LOCKED 16062  // cursor for locked create mode
-#define CURSOR_ICON_EDIT 16063    // cursor for edit mode
+#define CURSOR_ICON_CREATE 19100  // cursor for create mode
+#define CURSOR_ICON_LOCKED 19101  // cursor for locked create mode
+#define CURSOR_ICON_EDIT 19102    // cursor for edit mode
 
 
 namespace L2A

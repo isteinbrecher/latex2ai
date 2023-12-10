@@ -1,0 +1,13 @@
+19000.svg LaTeX2AI_tool_create_dark@2x.svg
+19001.svg LaTeX2AI_tool_create_light@2x.svg
+19002.svg LaTeX2AI_tool_redo_dark@2x.svg
+19003.svg LaTeX2AI_tool_redo_light@2x.svg
+19004.svg LaTeX2AI_tool_options_dark@2x.svg
+19005.svg LaTeX2AI_tool_options_light@2x.svg
+19006.svg LaTeX2AI_tool_save_as_pdf_dark@2x.svg
+19007.svg LaTeX2AI_tool_save_as_pdf_light@2x.svg
+19008.svg LaTeX2AI_tool_testing_dark@2x.svg
+19009.svg LaTeX2AI_tool_testing_light@2x.svg
+19100.svg LaTeX2AI_cursor_create@2x.svg
+19101.svg LaTeX2AI_cursor_locked@2x.svg
+19102.svg LaTeX2AI_cursor_edit@2x.svg
