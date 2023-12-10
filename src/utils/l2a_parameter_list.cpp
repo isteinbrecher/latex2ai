@@ -72,11 +72,15 @@ void L2A::UTIL::ParameterList::SetFromXML(const tinyxml2::XMLElement* xml_elemen
     // Loop over options and set them.
     for (const tinyxml2::XMLAttribute* attr = xml_element->FirstAttribute(); attr != nullptr; attr = attr->Next())
     {
-        // If the option string contains line breaks, the forms applications returns them as \r\n line breaks instead
-        // of \n line breaks. This is replaced here.
-        ai::UnicodeString option_string(attr->Value());
-        L2A::UTIL::StringReplaceAll(option_string, ai::UnicodeString("\r\n"), ai::UnicodeString("\n"));
-        SetOption(ai::UnicodeString(attr->Name()), ai::UnicodeString(option_string), true);
+        auto name = ai::UnicodeString(attr->Name());
+        auto value = ai::UnicodeString(attr->Value());
+// TODO: Check if this still applies for all platforms
+// If the option string contains line breaks, the forms applications returns them as \r\n line breaks instead
+// of \n line breaks. This is replaced here.
+#ifdef WIN_ENV
+        L2A::UTIL::StringReplaceAll(value, ai::UnicodeString("\r\n"), ai::UnicodeString("\n"));
+#endif
+        SetOption(name, value, true);
     }
 
     // Set main option.
