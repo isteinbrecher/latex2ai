@@ -109,5 +109,7 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
 
     // Test the hash function.
     ut.CompareStr(L2A::UTIL::StringHash(ai::UnicodeString(L2A::TEST::UTIL::test_string_1_)),
-        ai::UnicodeString("4e496d7d9d7ae4a3"));
+        ai::UnicodeString("168fcba7bbad5ac1"));
+    ut.CompareStr(L2A::UTIL::StringHash(ai::UnicodeString(L2A::TEST::UTIL::test_string_5_)),
+        ai::UnicodeString("6b80f03d7ef29102"));
 }

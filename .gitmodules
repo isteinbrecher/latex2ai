@@ -10,3 +10,6 @@
 [submodule "tpl/base64"]
 	path = tpl/base64
 	url = https://github.com/isteinbrecher/base64.git
+[submodule "tpl/CRCpp"]
+	path = tpl/CRCpp
+	url = https://github.com/d-bahr/CRCpp.git
