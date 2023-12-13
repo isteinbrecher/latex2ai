@@ -294,7 +294,7 @@ void L2A::Item::SaveEncodedPDFFile(const ai::FilePath& pdf_path) const
 
     const ai::UnicodeString& pdf_contents = property_.GetPDFFileContents();
     if (!pdf_contents.empty())
-        L2A::UTIL::decode_file_base64(pdf_path, pdf_contents.as_UTF8());
+        L2A::UTIL::decode_file_base64(pdf_path, pdf_contents);
     else
         l2a_error("Could not save the encoded pdf file, got empty encoded data.");
 }

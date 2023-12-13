@@ -33,6 +33,7 @@
 #include "base64.h"
 #include "testing_utlity.h"
 #include "l2a_file_system.h"
+#include "l2a_string_functions.h"
 
 
 /**
@@ -46,7 +47,7 @@ void TestBase64Unit(L2A::TEST::UTIL::UnitTest& ut)
     std::string char_str(char_vec.data(), char_vec.size());
 
     std::vector<std::string> text = {"Man", "Ma", "M", "light work.", "light work", "light wor", "light wo", "light w",
-        ai::UnicodeString(L2A::TEST::UTIL::test_string_4_).as_UTF8(), char_str};
+        L2A::UTIL::StringAiToStd(ai::UnicodeString(L2A::TEST::UTIL::test_string_4_)), char_str};
     std::vector<std::string> result = {"TWFu", "TWE", "TQ", "bGlnaHQgd29yay4", "bGlnaHQgd29yaw", "bGlnaHQgd29y",
         "bGlnaHQgd28", "bGlnaHQgdw",
         "SGllciBpc3QgZWluIGFuZGVyZXIgbGFuZ2VyIFRleHQgbWl0IFVtbGF1dGVuIMOkw7bDhMOWw5zDn0AhCnVuZCBuZXVlIFplaWxlbgoKCnRoZS"
@@ -87,13 +88,12 @@ void TestBase64EnAndDecoding(L2A::TEST::UTIL::UnitTest& ut)
     std::string encoded_file = L2A::UTIL::encode_file_base64(temp_file);
 
     // Save the encoded string to file.
-    L2A::UTIL::decode_file_base64(temp_file_out, encoded_file);
+    L2A::UTIL::decode_file_base64(temp_file_out, L2A::UTIL::StringStdToAi(encoded_file));
 
     // Load the created file.
     ai::UnicodeString text_from_file = L2A::UTIL::ReadFileUTF8(temp_file_out);
 
     // Compare values.
-    std::string a = text_from_file.as_UTF8();
     ut.CompareStr(text_from_file, ai::UnicodeString(L2A::TEST::UTIL::test_string_4_));
 }
 

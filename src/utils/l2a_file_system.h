@@ -160,7 +160,7 @@ namespace L2A
         /*
          * \brief Write a base64 encoded string to a file.
          */
-        void decode_file_base64(const ai::FilePath& path, const std::string& encoded_string);
+        void decode_file_base64(const ai::FilePath& path, const ai::UnicodeString& encoded_string);
     }  // namespace UTIL
 }  // namespace L2A
 

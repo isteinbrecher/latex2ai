@@ -108,7 +108,7 @@ namespace L2A
         /**
          * \brief Get the header as a string, wehre all inputs are resoved.
          */
-        ai::UnicodeString GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
+        std::string GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
     }  // namespace LATEX
 }  // namespace L2A
 

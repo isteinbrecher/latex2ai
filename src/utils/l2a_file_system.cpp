@@ -61,7 +61,7 @@ ai::FilePath L2A::UTIL::FilePathStdToAi(const std::filesystem::path& path_std)
  */
 std::filesystem::path L2A::UTIL::FilePathAiToStd(const ai::FilePath& path_ai)
 {
-    return std::filesystem::path(path_ai.GetFullPath().as_Platform());
+    return std::filesystem::path(L2A::UTIL::StringAiToStd(path_ai.GetFullPath()));
 }
 
 
@@ -152,7 +152,7 @@ void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString&
 
     // Write text to file.
     std::ofstream f(FilePathAiToStd(path));
-    f << text.as_UTF8();
+    f << L2A::UTIL::StringAiToStd(text);
     f.close();
 }
 
@@ -164,20 +164,11 @@ ai::UnicodeString L2A::UTIL::ReadFileUTF8(const ai::FilePath& path)
     // Check if the file exists
     if (!IsFile(path)) l2a_error("The file '" + path.GetFullPath() + "' does not exist!");
 
-#ifdef WIN_ENV
-    // Open the file stream
-    std::wifstream wif(UTIL::FilePathAiToStd(path));
-    wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-    std::wstringstream wss;
-    wss << wif.rdbuf();
-    return ai::UnicodeString(wss.str().c_str());
-#else
     // Open the file stream
     std::ifstream istrm(UTIL::FilePathAiToStd(path));
     std::stringstream buffer;
     buffer << istrm.rdbuf();
-    return ai::UnicodeString(buffer.str());
-#endif
+    return L2A::UTIL::StringStdToAi(buffer.str());
 }
 
 /**
@@ -187,7 +178,7 @@ void L2A::UTIL::CreateDirectoryL2A(const ai::FilePath& directory)
 {
     std::error_code ec;
     std::filesystem::create_directory(FilePathAiToStd(directory), ec);
-    if (ec.value() != 0) l2a_error("Could not create the directory " + directory.GetFullPath().as_Platform());
+    if (ec.value() != 0) l2a_error("Could not create the directory " + directory.GetFullPath());
 }
 
 void L2A::UTIL::CopyFileL2A(const ai::FilePath& source, const ai::FilePath& target)
@@ -248,7 +239,7 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
     {
         // Check if non ASCII characters appear in the path.
         ai::UnicodeString unicode_path = path.GetFullPath();
-        ai::UnicodeString utf8_path(path.GetFullPath().as_UTF8());
+        ai::UnicodeString utf8_path(L2A::UTIL::StringStdToAi(L2A::UTIL::StringAiToStd(path.GetFullPath())));
         if (unicode_path != utf8_path)
             l2a_warning(
                 ai::UnicodeString("The document path contains non ASCII characters. LaTeX2AI is only working if there "
@@ -284,7 +275,7 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
             if (IsDirectory(program_folder))
             {
                 ai::FilePath gs_folder;
-                for (auto& p : std::filesystem::directory_iterator(program_folder.GetFullPath().as_Platform()))
+                for (auto& p : std::filesystem::directory_iterator(FilePathAiToStd(program_folder)))
                 {
                     // Check if the directory starts with "gs".
                     gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
@@ -329,7 +320,7 @@ ai::FilePath L2A::UTIL::GetFormsPath()
         {
             // Search for the executable in the folder.
             for (const auto& item :
-                std::filesystem::recursive_directory_iterator(plugin_directory.GetFullPath().as_Platform()))
+                std::filesystem::recursive_directory_iterator(FilePathAiToStd(plugin_directory)))
             {
                 ai::FilePath current_item(ai::UnicodeString(item.path().string()));
                 if (current_item.GetFileName() == "LaTeX2AIForms.exe") forms_paths.push_back(current_item);
@@ -368,7 +359,7 @@ ai::FilePath L2A::UTIL::GetPdfFileDirectory()
  */
 std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& regex)
 {
-    const std::regex regex_string(regex.as_Platform());
+    const std::regex regex_string(L2A::UTIL::StringAiToStd(regex));
     std::vector<ai::FilePath> file_vector;
     for (auto const& dir_entry : std::filesystem::directory_iterator{FilePathAiToStd(folder)})
     {
@@ -441,10 +432,10 @@ std::string L2A::UTIL::encode_file_base64(const ai::FilePath& path)
 /*
  *
  */
-void L2A::UTIL::decode_file_base64(const ai::FilePath& path, const std::string& encoded_string)
+void L2A::UTIL::decode_file_base64(const ai::FilePath& path, const ai::UnicodeString& encoded_string)
 {
-    auto char_vector = base64::decode(encoded_string);
-    std::ofstream output_stream(path.GetFullPath().as_UTF8(), std::ofstream::binary);
+    auto char_vector = base64::decode(L2A::UTIL::StringAiToStd(encoded_string));
+    std::ofstream output_stream(FilePathAiToStd(path), std::ofstream::binary);
     output_stream.write(char_vector.data(), char_vector.size());
     output_stream.close();
 }

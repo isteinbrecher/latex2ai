@@ -85,7 +85,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
 #define pclose _pclose
 #define WEXITSTATUS
 #endif
-    FILE* pipe = popen(command.as_Platform().c_str(), "r");
+    FILE* pipe = popen(L2A::UTIL::StringAiToStd(command).c_str(), "r");
     if (pipe == nullptr)
     {
         l2a_error("popen() failed!");
@@ -107,7 +107,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
     // see e.g. https://github.com/BestImageViewer/geeqie/commit/75c7df8b96592e10f7936dc1a28983be4089578c
     int res = pclose(pipe);
     const int exitcode = WEXITSTATUS(res);
-    return CommandResult{exitcode, ai::UnicodeString(result)};
+    return CommandResult{exitcode, L2A::UTIL::StringStdToAi(result)};
 }
 
 /**
@@ -124,7 +124,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
     // https://docs.microsoft.com/en-us/windows/win32/procthread/creating-a-child-process-with-redirected-input-and-output
 
     // Convert the string to platform text.
-    std::string cmdLine = command.as_Platform();
+    std::string cmdLine = L2A::UTIL::StringAiToStd(command);
     SECURITY_ATTRIBUTES saAttr;
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
@@ -167,7 +167,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
         LocalFree(lpMsgBuf);
 
         // Create error message.
-        l2a_error("Error, process '" + command.as_Platform() + "' could not be created!");
+        l2a_error("Error, process '" + command + "' could not be created!");
     }
     else
     {
