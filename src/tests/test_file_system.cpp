@@ -88,7 +88,7 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
         files[0].AddComponent(ai::UnicodeString("test_file_01.tex"));
         files[1].AddComponent(ai::UnicodeString("test_file_02.tex"));
         files[3].AddComponent(ai::UnicodeString("test_file_04.texx"));
-        // Also create on in a sub directory -> that one should not be found
+        // Also create one in a sub directory -> that one should not be found
         ai::FilePath sub_dir = test_directory;
         sub_dir.AddComponent(ai::UnicodeString("tmp"));
         L2A::UTIL::CreateDirectoryL2A(sub_dir);
