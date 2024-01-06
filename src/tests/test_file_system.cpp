@@ -32,6 +32,48 @@
 
 #include "testing_utlity.h"
 #include "l2a_file_system.h"
+#include "l2a_string_functions.h"
+
+
+/**
+ *
+ */
+void TestFileWriteRead(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp_directory)
+{
+    // Set name for the temp file to create
+    ai::FilePath temp_file = temp_directory;
+    temp_file.AddComponent(ai::UnicodeString("l2a_test_file_system.txt"));
+
+    // If the file exists, delete it
+    L2A::UTIL::RemoveFile(temp_file, false);
+    
+    // Add a file with a temp string to check that the file will be overwritten
+    L2A::UTIL::WriteFileUTF8(temp_file, ai::UnicodeString("wrong text"));
+
+    for (const auto& test_string_data: L2A::TEST::UTIL::test_strings_)
+    {
+        // Loop over the test strings, write them to file and read them to check if everything went ok
+        
+        // Create the file with a text
+        const ai::UnicodeString test_text = L2A::UTIL::StringStdToAi(test_string_data.string_);
+        L2A::UTIL::WriteFileUTF8(temp_file, test_text, true);
+
+        // Load the file and compare the results
+        const ai::UnicodeString read_text = L2A::UTIL::ReadFileUTF8(temp_file);
+        ut.CompareStr(read_text, test_text);
+        
+        // Compare the encoded file hash
+        ai::UnicodeString encoded_file_hash = L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::UTIL::encode_file_base64(temp_file)));
+#ifdef WIN_ENV
+        ut.CompareStr(encoded_file_hash, L2A::UTIL::StringStdToAi(test_string_data.encoded_file_hash_win_));
+#else
+        ut.CompareStr(encoded_file_hash, L2A::UTIL::StringStdToAi(test_string_data.encoded_file_hash_mac_));
+#endif
+    }
+
+    // Delete the temp file
+    L2A::UTIL::RemoveFile(temp_file);
+}
 
 /**
  *
@@ -40,30 +82,14 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
 {
     // Set test name.
     ut.SetTestName(ai::UnicodeString("TestFileSystem"));
-
+    
     // Get the name of the temp directory.
     const ai::FilePath temp_directory = L2A::UTIL::GetTemporaryDirectory();
 
-    // Set name for the temp file to create.
-    ai::FilePath temp_file = temp_directory;
-    temp_file.AddComponent(ai::UnicodeString("l2a_test_file_system.txt"));
+    // Perform the tests
+    TestFileWriteRead(ut, temp_directory);
 
-    // If the file exists, delete it.
-    L2A::UTIL::RemoveFile(temp_file, false);
-
-    // Create the file with a text.
-    const ai::UnicodeString test_text(L2A::TEST::UTIL::test_string_1_);
-    L2A::UTIL::WriteFileUTF8(temp_file, ai::UnicodeString("wrong text"));
-    L2A::UTIL::WriteFileUTF8(temp_file, test_text, true);
-
-    // Load the file and compare the results.
-    const ai::UnicodeString read_text = L2A::UTIL::ReadFileUTF8(temp_file);
-    ut.CompareStr(read_text, test_text);
-
-    // Delete the temp file.
-    L2A::UTIL::RemoveFile(temp_file);
-
-    // Get the application data directory.
+    // Get the application data directory to check if this function can be executed without an error
     L2A::UTIL::GetApplicationDataDirectory();
 
     // Create a directory in the temp directory.

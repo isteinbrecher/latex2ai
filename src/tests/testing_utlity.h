@@ -49,6 +49,22 @@ namespace L2A
             static const char* test_string_5_ =
                 "abcdefg123567890";
 
+        //! Container to store the data for the test string comparisons
+        struct TestStringData{
+            std::string string_;
+            std::string string_hash_;
+            std::string encoded_file_hash_win_;
+            std::string encoded_file_hash_mac_;
+        };
+        
+        //! Vector of the strings including their hashes. Sine the line endings are different, the strings with a new line have different hashes for Windows and MacOS
+        static const std::vector<TestStringData> test_strings_ = {
+            {test_string_1_, "168fcba7bbad5ac1", "e55339768e9b9d93", "aa1275166c0e08a6"},
+            {test_string_2_, "f51a4ec38c535aec", "99e5bbb4caec0750", "56133a1f4e042a14"},
+            {test_string_3_, "a6c5f57342b2591", "e24088e7de7e0764", "5f906d24d8b354b2"},
+            {test_string_4_, "62c1cd8642ed5be8", "6ff8d5730c8b63fa", "87ec20640dce3c6d"},
+            {test_string_5_, "6b80f03d7ef29102", "53df0414bbc17175", "53df0414bbc17175"}};
+    
             /**
              * \brief A class that handles testing.
              */

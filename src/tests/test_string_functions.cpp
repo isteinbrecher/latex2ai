@@ -39,18 +39,11 @@
  */
 void TestReferenceStringsAndStringConversion(L2A::TEST::UTIL::UnitTest& ut) {
     // Test that the hashes of the test strings are as expected
-
-
-    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_1_)),
-        ai::UnicodeString("168fcba7bbad5ac1"));
-    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_2_)),
-        ai::UnicodeString("f51a4ec38c535aec"));
-    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_3_)),
-        ai::UnicodeString("a6c5f57342b2591"));
-    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_4_)),
-        ai::UnicodeString("62c1cd8642ed5be8"));
-    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_5_)),
-        ai::UnicodeString("6b80f03d7ef29102"));
+    for (const auto& test_string_data: L2A::TEST::UTIL::test_strings_)
+    {
+        ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(test_string_data.string_)),
+            ai::UnicodeString(test_string_data.string_hash_));
+    }
 }
 
 /**
