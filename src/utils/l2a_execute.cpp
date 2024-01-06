@@ -205,7 +205,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
         }
 
         // Return exit code, and command output as unicode string.
-        return CommandResult{(int)exitCode, ai::UnicodeString(result_string)};
+        return CommandResult{(int)exitCode, L2A::UTIL::StringStdToAi(result_string)};
     }
 #endif
 }

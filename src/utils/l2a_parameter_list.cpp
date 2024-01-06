@@ -72,8 +72,8 @@ void L2A::UTIL::ParameterList::SetFromXML(const tinyxml2::XMLElement* xml_elemen
     // Loop over options and set them.
     for (const tinyxml2::XMLAttribute* attr = xml_element->FirstAttribute(); attr != nullptr; attr = attr->Next())
     {
-        auto name = ai::UnicodeString(attr->Name());
-        auto value = ai::UnicodeString(attr->Value());
+        auto name = L2A::UTIL::StringStdToAi(attr->Name());
+        auto value = L2A::UTIL::StringStdToAi(attr->Value());
 // TODO: Check if this still applies for all platforms
 // If the option string contains line breaks, the forms applications returns them as \r\n line breaks instead
 // of \n line breaks. This is replaced here.
@@ -84,8 +84,8 @@ void L2A::UTIL::ParameterList::SetFromXML(const tinyxml2::XMLElement* xml_elemen
     }
 
     // Set main option.
-    ai::UnicodeString xml_text(xml_element->GetText());
-    if (0 != xml_text.compare(ai::UnicodeString(""))) SetMainOption(xml_text);
+    const auto main_option = xml_element->GetText();
+    if (main_option != nullptr) SetMainOption(L2A::UTIL::StringStdToAi(main_option));
 }
 
 /**
@@ -255,7 +255,7 @@ ai::UnicodeString L2A::UTIL::ParameterList::ToXMLString(const ai::UnicodeString&
     // Return the string from the xml file.
     tinyxml2::XMLPrinter printer;
     xml_doc.Accept(&printer);
-    return ai::UnicodeString(printer.CStr());
+    return L2A::UTIL::StringStdToAi(printer.CStr());
 }
 
 /**

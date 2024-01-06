@@ -47,7 +47,7 @@ void TestBase64Unit(L2A::TEST::UTIL::UnitTest& ut)
     std::string char_str(char_vec.data(), char_vec.size());
 
     std::vector<std::string> text = {"Man", "Ma", "M", "light work.", "light work", "light wor", "light wo", "light w",
-        L2A::UTIL::StringAiToStd(ai::UnicodeString(L2A::TEST::UTIL::test_string_4_)), char_str};
+        L2A::TEST::UTIL::test_string_4_, char_str};
     std::vector<std::string> result = {"TWFu", "TWE", "TQ", "bGlnaHQgd29yay4", "bGlnaHQgd29yaw", "bGlnaHQgd29y",
         "bGlnaHQgd28", "bGlnaHQgdw",
         "SGllciBpc3QgZWluIGFuZGVyZXIgbGFuZ2VyIFRleHQgbWl0IFVtbGF1dGVuIMOkw7bDhMOWw5zDn0AhCnVuZCBuZXVlIFplaWxlbgoKCnRoZS"

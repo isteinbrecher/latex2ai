@@ -43,14 +43,14 @@
  *
  */
 ai::UnicodeString L2A::UTIL::StringStdToAi(const std::string& string_std){
-    return ai::UnicodeString(string_std);
+    return ai::UnicodeString::FromUTF8(string_std);
 }
 
 /**
  *
  */
 std::string L2A::UTIL::StringAiToStd(const ai::UnicodeString& string_ai){
-    return string_ai.as_Platform();
+    return string_ai.as_UTF8();
 }
 
 /**
