@@ -62,6 +62,7 @@ L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
  */
 int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
 {
+    // TODO : delete this function and the batch stuff
     if (L2A::UTIL::IsFile(file_path))
     {
         std::string command = "\"" + file_path.GetFullPath().as_Platform() + "\"";
