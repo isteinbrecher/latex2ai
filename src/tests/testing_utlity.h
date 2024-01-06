@@ -40,15 +40,15 @@ namespace L2A
         namespace UTIL
         {
             //! Strings that are used to compare during testing.
-        static const std::string test_string_1_ = "Umlaute \u00e4\u00f6\u00c4\u00d6\u00dc\u00df@!\nund neue Zeile";
-        static const std::string test_string_2_ =
-            "Hier ist ein langer Text mit Umlauten \u00e4\u00f6\u00c4\u00d6\u00dc\u00df@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n";
-        static const std::string test_string_3_ = "    \n    \n    \n    \nMainOptionText\n    \n    \n";
-        static const std::string test_string_4_ =
-            "Hier ist ein anderer langer Text mit Umlauten \u00e4\u00f6\u00c4\u00d6\u00dc\u00df@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n";
-        static const std::string test_string_5_ =
-            "abcdefg123567890";
-        
+            static const char* test_string_1_ = "Umlaute äöÄÖÜß@!\nund neue Zeile";
+            static const char* test_string_2_ =
+                "Hier ist ein langer Text mit Umlauten äöÄÖÜß@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n";
+            static const char* test_string_3_ = "    \n    \n    \n    \nMainOptionText\n    \n    \n";
+            static const char* test_string_4_ =
+                "Hier ist ein anderer langer Text mit Umlauten äöÄÖÜß@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n";
+            static const char* test_string_5_ =
+                "abcdefg123567890";
+
             /**
              * \brief A class that handles testing.
              */
