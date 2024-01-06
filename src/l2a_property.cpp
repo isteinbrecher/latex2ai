@@ -70,6 +70,7 @@ void L2A::Property::DefaultPropertyValues()
     // PDF file contents.
     pdf_file_encoded_ = ai::UnicodeString("");
     pdf_file_hash_ = ai::UnicodeString("");
+    pdf_file_hash_method_ = HashMethod::none;
 }
 
 /**
@@ -98,6 +99,31 @@ void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& propert
             property_parameter_list.GetSubList(ai::UnicodeString("pdf_file_contents"));
         pdf_file_encoded_ = pdf_sub_list->GetMainOption();
         pdf_file_hash_ = pdf_sub_list->GetStringOption(ai::UnicodeString("hash"));
+        
+        if (pdf_sub_list->OptionExists(ai::UnicodeString("hash_method")))
+        {
+            pdf_file_hash_method_ =L2A::UTIL::KeyToValue(HashMethodStrings(), HashMethodEnums(),
+                                                         pdf_sub_list->GetStringOption(ai::UnicodeString("hash_method")));
+        }
+        else
+        {
+            pdf_file_hash_method_ = HashMethod::none;
+        }
+        
+        if (pdf_file_hash_method_ != HashMethod::crc64)
+        {
+            // The current hash method is crc64 if this is not the one that the has was created with, recalculate the hash.
+            pdf_file_hash_ = L2A::UTIL::StringHash(pdf_file_encoded_);
+        }
+        else
+        {
+#ifdef _DEBUG
+            // Safety check that the pdf hash is correct
+            if (pdf_file_hash_ !=
+                L2A::UTIL::StringHash(pdf_file_encoded_))
+                l2a_error("Hash and pdf contents do not match. This should not happen!");
+#endif
+        }
     }
 }
 
@@ -142,6 +168,7 @@ L2A::UTIL::ParameterList L2A::Property::ToParameterList(const bool write_pdf_con
             property_parameter_list.SetSubList(ai::UnicodeString("pdf_file_contents"));
         pdf_sub_list->SetMainOption(pdf_file_encoded_);
         pdf_sub_list->SetOption(ai::UnicodeString("hash"), pdf_file_hash_, true);
+        pdf_sub_list->SetOption(ai::UnicodeString("hash_method"), L2A::UTIL::KeyToValue(HashMethodEnums(),HashMethodStrings(), pdf_file_hash_method_));
     }
     return property_parameter_list;
 }
@@ -241,4 +268,5 @@ void L2A::Property::SetPDFFile(const ai::FilePath& pdf_file)
 
     // Set the hash.
     pdf_file_hash_ = L2A::UTIL::StringHash(pdf_file_encoded_);
+    pdf_file_hash_method_ = HashMethod::crc64;
 }

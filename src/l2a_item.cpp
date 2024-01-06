@@ -741,12 +741,6 @@ void L2A::CheckItemDataStructure()
         L2A::Item l2a_item(item);
         if (!l2a_item.GetProperty().GetPDFFileHash().empty())
         {
-#ifdef _DEBUG
-            // The pdf file is stored in the item -> Check if the hash and the encoded data match.
-            if (l2a_item.GetProperty().GetPDFFileHash() !=
-                L2A::UTIL::StringHash(l2a_item.GetProperty().GetPDFFileContents()))
-                l2a_error("Hash and pdf contents do not match. This should not happen!");
-#endif
             working_items.push_back(l2a_item);
         }
         else if (L2A::UTIL::IsFile(old_path))
