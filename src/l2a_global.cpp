@@ -206,7 +206,11 @@ ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
     if (L2A::UTIL::IsDirectory(path_latex_))
     {
         ai::FilePath exe_path = path_latex_;
+#ifdef WIN_ENV
         exe_path.AddComponent(command_latex_ + ".exe");
+#else
+        exe_path.AddComponent(command_latex_);
+#endif
         return "\"" + exe_path.GetFullPath() + "\"";
     }
     else
