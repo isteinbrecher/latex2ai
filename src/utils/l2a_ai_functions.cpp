@@ -1019,3 +1019,19 @@ bool L2A::AI::YesNoAlert(const ai::UnicodeString& message)
     else
         return false;
 }
+
+/**
+ *
+ */
+ai::UnicodeString L2A::AI::GetInputFromUser(){
+    // Lambda that is called for each keystroke to check the input
+    auto any_string = [](AIValidationStage validationStage, const ai::UnicodeString &input, ai::UnicodeString &errorStf, void * userdata) -> AIBoolean {
+        return true;
+    };
+    
+    ai::UnicodeString return_string;
+    const auto prompt_string = ai::UnicodeString("LaTeX2AI Debug Dialog");
+    AIErr error = sAIUser->GetInputFromUser(prompt_string,nullptr, prompt_string, return_string, any_string, nullptr, -1);
+    l2a_check_ai_error(error);
+    return return_string;
+}
