@@ -27,12 +27,13 @@
  */
 
 #include "IllustratorSDK.h"
+
 #include "l2a_string_functions.h"
 
-#include <iomanip>
-
-#include "l2a_suites.h"
 #include "l2a_error.h"
+#include "l2a_suites.h"
+
+#include <iomanip>
 
 #define CRCPP_USE_CPP11
 #define CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
@@ -42,16 +43,15 @@
 /**
  *
  */
-ai::UnicodeString L2A::UTIL::StringStdToAi(const std::string& string_std){
+ai::UnicodeString L2A::UTIL::StringStdToAi(const std::string& string_std)
+{
     return ai::UnicodeString::FromUTF8(string_std);
 }
 
 /**
  *
  */
-std::string L2A::UTIL::StringAiToStd(const ai::UnicodeString& string_ai){
-    return string_ai.as_UTF8();
-}
+std::string L2A::UTIL::StringAiToStd(const ai::UnicodeString& string_ai) { return string_ai.as_UTF8(); }
 
 /**
  *

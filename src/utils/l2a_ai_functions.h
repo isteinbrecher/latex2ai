@@ -321,13 +321,13 @@ namespace L2A
          * \brief Ask the user a Yes or no question.
          */
         bool YesNoAlert(const ai::UnicodeString& message);
-    
-    /**
-     * \brief Get string input from the user.
-     *
-     * Should oly be used for debug purposes. With the current implementation, the user can not cancel the dialog
-     */
-    ai::UnicodeString GetInputFromUser();
+
+        /**
+         * \brief Get string input from the user.
+         *
+         * Should oly be used for debug purposes. With the current implementation, the user can not cancel the dialog
+         */
+        ai::UnicodeString GetInputFromUser();
 
     }  // namespace AI
 }  // namespace L2A

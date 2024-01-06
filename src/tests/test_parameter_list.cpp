@@ -28,9 +28,11 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "test_parameter_list.h"
 
 #include "testing_utlity.h"
+
 #include "l2a_parameter_list.h"
 #include "l2a_string_functions.h"
 
@@ -78,16 +80,16 @@ void L2A::TEST::TestParameterList(L2A::TEST::UTIL::UnitTest& ut)
     ut.CompareStr(transformed_list.GetStringOption(ai::UnicodeString("key2")), ai::UnicodeString("2"));
     ut.CompareInt(2, transformed_list.GetIntOption(ai::UnicodeString("key2")));
     ut.CompareStr(transformed_list.GetStringOption(ai::UnicodeString("key3")),
-                  L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_1_));
+        L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_1_));
     ut.CompareStr(transformed_list.GetStringOption(ai::UnicodeString("text")),
-                  L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_2_));
+        L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_2_));
     ut.CompareStr(
         transformed_list.GetSubList(ai::UnicodeString("sublist_key0"))->GetStringOption(ai::UnicodeString("subkey0")),
         ai::UnicodeString("0"));
     ut.CompareStr(transformed_list.GetSubList(ai::UnicodeString("sublist_key0"))->GetMainOption(),
-                  L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_3_));
+        L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_3_));
     ut.CompareStr(transformed_list.GetSubList(ai::UnicodeString("sublist_key1"))->GetMainOption(),
-                  L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_4_));
+        L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_4_));
     ut.CompareStr(
         transformed_list.GetSubList(ai::UnicodeString("sublist_key1"))->GetStringOption(ai::UnicodeString("key0")),
         ai::UnicodeString("newvalue"));

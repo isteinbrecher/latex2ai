@@ -28,18 +28,20 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "test_string_functions.h"
 
 #include "testing_utlity.h"
-#include "l2a_string_functions.h"
 
+#include "l2a_string_functions.h"
 
 /**
  *
  */
-void TestReferenceStringsAndStringConversion(L2A::TEST::UTIL::UnitTest& ut) {
+void TestReferenceStringsAndStringConversion(L2A::TEST::UTIL::UnitTest& ut)
+{
     // Test that the hashes of the test strings are as expected
-    for (const auto& test_string_data: L2A::TEST::UTIL::test_strings_)
+    for (const auto& test_string_data : L2A::TEST::UTIL::test_strings_)
     {
         ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(test_string_data.string_)),
             ai::UnicodeString(test_string_data.string_hash_));
@@ -146,7 +148,8 @@ void TestSplit(L2A::TEST::UTIL::UnitTest& ut)
 /**
  *
  */
-void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut) {
+void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
+{
     // Set test name
     ut.SetTestName(ai::UnicodeString("StringFunctions"));
 

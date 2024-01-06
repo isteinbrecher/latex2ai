@@ -28,16 +28,18 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_latex.h"
 
 #include "auto_generated/tex.h"
-#include "l2a_string_functions.h"
+
+#include "l2a_execute.h"
 #include "l2a_file_system.h"
-#include "l2a_parameter_list.h"
 #include "l2a_forms.h"
 #include "l2a_global.h"
 #include "l2a_names.h"
-#include "l2a_execute.h"
+#include "l2a_parameter_list.h"
+#include "l2a_string_functions.h"
 
 #include <regex>
 
@@ -197,7 +199,7 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                         AIBoolean form_result;
                         ai::UnicodeString form_string("");
                         form_string += "The debug folder \"" + debug_directory.GetFullPath() +
-                            "\" and its contents will be delete in this process. Do you want to continue?";
+                                       "\" and its contents will be delete in this process. Do you want to continue?";
                         form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
 
                         if (!form_result)
@@ -247,7 +249,8 @@ ai::FilePath L2A::LATEX::WriteLatexFiles(const ai::UnicodeString& latex_code, co
     batch_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_batch_name_));
 
     // Create the header in the temp directory.
-    ai::UnicodeString header_string = L2A::UTIL::StringStdToAi(L2A::LATEX::GetHeaderWithIncludedInputs(GetHeaderPath()));
+    ai::UnicodeString header_string =
+        L2A::UTIL::StringStdToAi(L2A::LATEX::GetHeaderWithIncludedInputs(GetHeaderPath()));
     L2A::UTIL::WriteFileUTF8(tex_header_file, header_string, true);
 
     // Creates the LaTeX file.

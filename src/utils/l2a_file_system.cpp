@@ -28,13 +28,15 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_file_system.h"
 
-#include "l2a_suites.h"
-#include "l2a_error.h"
-#include "l2a_string_functions.h"
-#include "l2a_names.h"
 #include "base64.h"
+
+#include "l2a_error.h"
+#include "l2a_names.h"
+#include "l2a_string_functions.h"
+#include "l2a_suites.h"
 
 #include <array>
 #include <regex>
@@ -144,7 +146,7 @@ void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString&
     // Check if the folder exists.
     if (!IsDirectory(path.GetParent()))
         l2a_error("The folder '" + path.GetParent().GetFullPath() + "' for the file '" + path.GetFullPath() +
-            "' does not exist!");
+                  "' does not exist!");
 
     // Check if the file already exists.
     if (IsFile(path) && !overwrite)
@@ -286,7 +288,8 @@ ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
                         // Check if an execuable can be found.
                         gs_folder.AddComponent(ai::UnicodeString("bin"));
                         gs_folder.AddComponent(ai::UnicodeString("gswin") +
-                            L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) + "c.exe");
+                                               L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) +
+                                               "c.exe");
                         if (IsFile(gs_folder))
                             return gs_folder.GetFullPath();
                         else
@@ -319,8 +322,7 @@ ai::FilePath L2A::UTIL::GetFormsPath()
         if (L2A::UTIL::IsDirectory(plugin_directory))
         {
             // Search for the executable in the folder.
-            for (const auto& item :
-                std::filesystem::recursive_directory_iterator(FilePathAiToStd(plugin_directory)))
+            for (const auto& item : std::filesystem::recursive_directory_iterator(FilePathAiToStd(plugin_directory)))
             {
                 ai::FilePath current_item(ai::UnicodeString(item.path().string()));
                 if (current_item.GetFileName() == "LaTeX2AIForms.exe") forms_paths.push_back(current_item);

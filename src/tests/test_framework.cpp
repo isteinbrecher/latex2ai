@@ -28,20 +28,22 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "test_framework.h"
 
-#include "l2a_suites.h"
 #include "testing_utlity.h"
-#include "l2a_item.h"
-#include "l2a_global.h"
+
 #include "l2a_ai_functions.h"
-#include "l2a_file_system.h"
-#include "l2a_names.h"
-#include "l2a_property.h"
-#include "l2a_error.h"
-#include "l2a_parameter_list.h"
-#include "l2a_math.h"
 #include "l2a_constants.h"
+#include "l2a_error.h"
+#include "l2a_file_system.h"
+#include "l2a_global.h"
+#include "l2a_item.h"
+#include "l2a_math.h"
+#include "l2a_names.h"
+#include "l2a_parameter_list.h"
+#include "l2a_property.h"
+#include "l2a_suites.h"
 
 
 /**
@@ -322,7 +324,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             {
                 L2A::Item l2a_item(placed_item);
                 ut.CompareInt(abs(l2a_item.GetAngle() - 3.14159265358979323846 * (196.9 - 360) / 180.0) <
-                        L2A::CONSTANTS::eps_angle_,
+                                  L2A::CONSTANTS::eps_angle_,
                     true);
             }
 

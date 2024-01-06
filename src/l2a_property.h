@@ -170,28 +170,22 @@ namespace L2A
         return {std::make_tuple(kConform, false), std::make_tuple(kAsIs, false), std::make_tuple(kAsIs, true)};
     }
 
-/**
- *\brief Method used to generate the pdf hash.
- */
-enum class HashMethod
-{
-    //! None
-    none,
-    //! CRC64 algorithm
-    crc64
-};
+    /**
+     *\brief Method used to generate the pdf hash.
+     */
+    enum class HashMethod
+    {
+        //! None
+        none,
+        //! CRC64 algorithm
+        crc64
+    };
 
-/**
- *\brief Define the HashMethod enum conversions.
- */
-inline std::array<HashMethod, 1> HashMethodEnums()
-{
-    return {HashMethod::crc64};
-}
-inline std::array<ai::UnicodeString, 1> HashMethodStrings()
-{
-    return {ai::UnicodeString("crc64")};
-}
+    /**
+     *\brief Define the HashMethod enum conversions.
+     */
+    inline std::array<HashMethod, 1> HashMethodEnums() { return {HashMethod::crc64}; }
+    inline std::array<ai::UnicodeString, 1> HashMethodStrings() { return {ai::UnicodeString("crc64")}; }
 
     /**
      * \brief Compare flags for property items.
@@ -337,7 +331,7 @@ inline std::array<ai::UnicodeString, 1> HashMethodStrings()
 
         //! Hash of encoded pdf file.
         ai::UnicodeString pdf_file_hash_;
-        
+
         //! Method used to get the file hash.
         HashMethod pdf_file_hash_method_;
     };

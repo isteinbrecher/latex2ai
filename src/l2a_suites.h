@@ -32,14 +32,14 @@
 
 
 #include "IllustratorSDK.h"
-#include "Suites.hpp"
-#include "AIStringFormatUtils.h"
 
-#include "AIDocumentList.h"
-#include "AITransformArt.h"
-#include "AIIsolationMode.h"
 #include "AIAnnotator.h"
 #include "AIAnnotatorDrawer.h"
+#include "AIDocumentList.h"
+#include "AIIsolationMode.h"
+#include "AIStringFormatUtils.h"
+#include "AITransformArt.h"
+#include "Suites.hpp"
 
 extern "C" AIToolSuite* sAITool;
 extern "C" AIUnicodeStringSuite* sAIUnicodeString;

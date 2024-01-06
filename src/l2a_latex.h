@@ -33,8 +33,8 @@
 
 #include "IllustratorSDK.h"
 
-#include "l2a_names.h"
 #include "l2a_error.h"
+#include "l2a_names.h"
 
 
 namespace L2A

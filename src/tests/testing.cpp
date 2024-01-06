@@ -28,16 +28,17 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "testing.h"
 
-#include "testing_utlity.h"
+#include "test_base64.h"
+#include "test_file_system.h"
+#include "test_forms.h"
+#include "test_framework.h"
 #include "test_parameter_list.h"
 #include "test_string_functions.h"
-#include "test_file_system.h"
-#include "test_framework.h"
 #include "test_utlity.h"
-#include "test_forms.h"
-#include "test_base64.h"
+#include "testing_utlity.h"
 
 
 /**

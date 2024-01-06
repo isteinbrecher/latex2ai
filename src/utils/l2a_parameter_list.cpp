@@ -28,12 +28,13 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_parameter_list.h"
 
-#include "l2a_string_functions.h"
-#include "l2a_error.h"
-
 #include "tinyxml2.h"
+
+#include "l2a_error.h"
+#include "l2a_string_functions.h"
 
 
 /**
@@ -311,8 +312,8 @@ void L2A::UTIL::ParameterList::ToXML(tinyxml2::XMLDocument* xml_doc, tinyxml2::X
     // Loop over parameters.
     for (auto const& parameters_it : options_map_)
     {
-        this_xml_element->SetAttribute(
-                                       L2A::UTIL::StringAiToStd(parameters_it.first).c_str(), L2A::UTIL::StringAiToStd(parameters_it.second).c_str());
+        this_xml_element->SetAttribute(L2A::UTIL::StringAiToStd(parameters_it.first).c_str(),
+            L2A::UTIL::StringAiToStd(parameters_it.second).c_str());
     }
 
     if (main_option_set_)

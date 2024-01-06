@@ -28,18 +28,19 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_global.h"
 
-#include "l2a_suites.h"
+#include "l2a_constants.h"
 #include "l2a_error.h"
+#include "l2a_execute.h"
 #include "l2a_file_system.h"
-#include "l2a_string_functions.h"
-#include "l2a_parameter_list.h"
 #include "l2a_forms.h"
 #include "l2a_latex.h"
-#include "l2a_constants.h"
+#include "l2a_parameter_list.h"
+#include "l2a_string_functions.h"
+#include "l2a_suites.h"
 #include "l2a_version.h"
-#include "l2a_execute.h"
 
 
 /**
@@ -330,7 +331,7 @@ bool L2A::GLOBAL::Global::SetLatexCommand(const ai::FilePath& latex_path)
 #else
     ai::FilePath path = ai::FilePath(ai::UnicodeString("/Library/TeX/texbin"));
 #endif
-    
+
     // Check until the command is correct or the user cancels the operation.
     while (!CheckLatexCommand(path))
     {

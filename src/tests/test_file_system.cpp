@@ -28,9 +28,11 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "test_file_system.h"
 
 #include "testing_utlity.h"
+
 #include "l2a_file_system.h"
 #include "l2a_string_functions.h"
 
@@ -46,14 +48,14 @@ void TestFileWriteRead(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp_d
 
     // If the file exists, delete it
     L2A::UTIL::RemoveFile(temp_file, false);
-    
+
     // Add a file with a temp string to check that the file will be overwritten
     L2A::UTIL::WriteFileUTF8(temp_file, ai::UnicodeString("wrong text"));
 
-    for (const auto& test_string_data: L2A::TEST::UTIL::test_strings_)
+    for (const auto& test_string_data : L2A::TEST::UTIL::test_strings_)
     {
         // Loop over the test strings, write them to file and read them to check if everything went ok
-        
+
         // Create the file with a text
         const ai::UnicodeString test_text = L2A::UTIL::StringStdToAi(test_string_data.string_);
         L2A::UTIL::WriteFileUTF8(temp_file, test_text, true);
@@ -61,9 +63,10 @@ void TestFileWriteRead(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp_d
         // Load the file and compare the results
         const ai::UnicodeString read_text = L2A::UTIL::ReadFileUTF8(temp_file);
         ut.CompareStr(read_text, test_text);
-        
+
         // Compare the encoded file hash
-        ai::UnicodeString encoded_file_hash = L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::UTIL::encode_file_base64(temp_file)));
+        ai::UnicodeString encoded_file_hash =
+            L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::UTIL::encode_file_base64(temp_file)));
 #ifdef WIN_ENV
         ut.CompareStr(encoded_file_hash, L2A::UTIL::StringStdToAi(test_string_data.encoded_file_hash_win_));
 #else
@@ -82,7 +85,7 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
 {
     // Set test name.
     ut.SetTestName(ai::UnicodeString("TestFileSystem"));
-    
+
     // Get the name of the temp directory.
     const ai::FilePath temp_directory = L2A::UTIL::GetTemporaryDirectory();
 

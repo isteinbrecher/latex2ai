@@ -28,19 +28,19 @@
 
 
 #include "IllustratorSDK.h"
-#include "SDKErrors.h"
+
+#include "l2a_plugin.h"
 
 #include "AIMenuCommandNotifiers.h"
+#include "SDKErrors.h"
+#include "testing.h"
 
+#include "l2a_ai_functions.h"
+#include "l2a_annotator.h"
 #include "l2a_constants.h"
-#include "l2a_plugin.h"
 #include "l2a_error.h"
 #include "l2a_global.h"
 #include "l2a_item.h"
-#include "l2a_ai_functions.h"
-#include "l2a_annotator.h"
-
-#include "testing.h"
 
 
 /**
@@ -94,7 +94,7 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             }
         }
         else if (message->notifier == fNotifyDocumentOpened || message->notifier == fNotifyDocumentSave ||
-            message->notifier == fNotifyDocumentSaveAs)
+                 message->notifier == fNotifyDocumentSaveAs)
         {
             L2A::AI::UndoActivate();
             L2A::CheckItemDataStructure();
