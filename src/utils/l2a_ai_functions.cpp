@@ -28,21 +28,22 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_ai_functions.h"
 
+#include "AIDocumentAction.h"
+#include "AIObjectAction.h"
+#include "AIPDFFormatAction.h"
+
+#include "l2a_error.h"
+#include "l2a_file_system.h"
 #include "l2a_global.h"
 #include "l2a_item.h"
-#include "l2a_property.h"
-#include "l2a_error.h"
-#include "l2a_suites.h"
 #include "l2a_names.h"
+#include "l2a_property.h"
 #include "l2a_string_functions.h"
-#include "l2a_file_system.h"
+#include "l2a_suites.h"
 #include "l2a_utils.h"
-
-#include "AIDocumentAction.h"
-#include "AIPDFFormatAction.h"
-#include "AIObjectAction.h"
 
 
 /**
@@ -443,7 +444,7 @@ bool L2A::AI::GetSingleIsolationItem(AIArtHandle& item)
         }
         else if (l2a_placed_items.size() > 1)
             l2a_error("Found " + L2A::UTIL::IntegerToString((unsigned int)l2a_placed_items.size()) +
-                " items, expected 0 or 1. This should not happen.");
+                      " items, expected 0 or 1. This should not happen.");
     }
 
     // Default return value.
@@ -1018,4 +1019,21 @@ bool L2A::AI::YesNoAlert(const ai::UnicodeString& message)
         return true;
     else
         return false;
+}
+
+/**
+ *
+ */
+ai::UnicodeString L2A::AI::GetInputFromUser()
+{
+    // Lambda that is called for each keystroke to check the input
+    auto any_string = [](AIValidationStage validationStage, const ai::UnicodeString& input, ai::UnicodeString& errorStf,
+                          void* userdata) -> AIBoolean { return true; };
+
+    ai::UnicodeString return_string;
+    const auto prompt_string = ai::UnicodeString("LaTeX2AI Debug Dialog");
+    AIErr error =
+        sAIUser->GetInputFromUser(prompt_string, nullptr, prompt_string, return_string, any_string, nullptr, -1);
+    l2a_check_ai_error(error);
+    return return_string;
 }

@@ -27,13 +27,31 @@
  */
 
 #include "IllustratorSDK.h"
+
 #include "l2a_string_functions.h"
+
+#include "l2a_error.h"
+#include "l2a_suites.h"
 
 #include <iomanip>
 
-#include "l2a_suites.h"
-#include "l2a_error.h"
+#define CRCPP_USE_CPP11
+#define CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
+#include "CRC.h"
 
+
+/**
+ *
+ */
+ai::UnicodeString L2A::UTIL::StringStdToAi(const std::string& string_std)
+{
+    return ai::UnicodeString::FromUTF8(string_std);
+}
+
+/**
+ *
+ */
+std::string L2A::UTIL::StringAiToStd(const ai::UnicodeString& string_ai) { return string_ai.as_UTF8(); }
 
 /**
  *
@@ -125,7 +143,8 @@ void L2A::UTIL::StringReplaceAll(
 /**
  *
  */
-std::vector<ai::UnicodeString> L2A::UTIL::SplitString(const ai::UnicodeString& string, const ai::UnicodeString& split_string)
+std::vector<ai::UnicodeString> L2A::UTIL::SplitString(
+    const ai::UnicodeString& string, const ai::UnicodeString& split_string)
 {
     if (split_string.empty()) l2a_error("Split string can not be empty");
 
@@ -146,9 +165,9 @@ std::vector<ai::UnicodeString> L2A::UTIL::SplitString(const ai::UnicodeString& s
  */
 ai::UnicodeString L2A::UTIL::StringHash(const ai::UnicodeString& string)
 {
-    std::size_t hash_int = std::hash<std::string>{}(string.as_UTF8());
-    std::stringstream stream;
-    stream << std::hex << hash_int;
-    std::string hash(stream.str());
-    return ai::UnicodeString(hash);
+    auto string_std = StringAiToStd(string);
+    std::uint64_t crc = CRC::Calculate(string_std.c_str(), string_std.size(), CRC::CRC_64());
+    std::stringstream buffer;
+    buffer << std::hex << crc;
+    return StringStdToAi(buffer.str());
 }

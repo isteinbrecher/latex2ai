@@ -28,18 +28,19 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_global.h"
 
-#include "l2a_suites.h"
+#include "l2a_constants.h"
 #include "l2a_error.h"
+#include "l2a_execute.h"
 #include "l2a_file_system.h"
-#include "l2a_string_functions.h"
-#include "l2a_parameter_list.h"
 #include "l2a_forms.h"
 #include "l2a_latex.h"
-#include "l2a_constants.h"
+#include "l2a_parameter_list.h"
+#include "l2a_string_functions.h"
+#include "l2a_suites.h"
 #include "l2a_version.h"
-#include "l2a_execute.h"
 
 
 /**
@@ -205,7 +206,7 @@ ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
     {
         ai::FilePath exe_path = path_latex_;
         exe_path.AddComponent(command_latex_ + ".exe");
-        return "\"" + exe_path.GetFullPath() + "\"" ;
+        return "\"" + exe_path.GetFullPath() + "\"";
     }
     else
         return command_latex_;
@@ -220,6 +221,7 @@ bool L2A::GLOBAL::Global::SetFormsPath(const ai::FilePath& forms_path)
     // TODO: maybe think of a better way to do this.
     this->path_form_exe_ = forms_path;
 
+#ifdef WIN_ENV
     // Check until the path is correct or the user cancels the operation.
     while (!CheckFormsPath())
     {
@@ -238,7 +240,7 @@ bool L2A::GLOBAL::Global::SetFormsPath(const ai::FilePath& forms_path)
         if (err == kCanceledErr) return false;
         l2a_check_ai_error(err);
     }
-
+#endif
     return true;
 }
 
@@ -324,7 +326,11 @@ bool L2A::GLOBAL::Global::CheckGhostscriptCommand(const ai::UnicodeString& gs_co
  */
 bool L2A::GLOBAL::Global::SetLatexCommand(const ai::FilePath& latex_path)
 {
+#ifdef WIN_ENV
     ai::FilePath path = latex_path;
+#else
+    ai::FilePath path = ai::FilePath(ai::UnicodeString("/Library/TeX/texbin"));
+#endif
 
     // Check until the command is correct or the user cancels the operation.
     while (!CheckLatexCommand(path))
@@ -357,7 +363,11 @@ bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) cons
     if (L2A::UTIL::IsDirectory(path_latex))
     {
         ai::FilePath exe_path = path_latex;
+#ifdef WIN_ENV
         exe_path.AddComponent(ai::UnicodeString("pdflatex.exe"));
+#else
+        exe_path.AddComponent(ai::UnicodeString("pdflatex"));
+#endif
         command_latex = "\"" + exe_path.GetFullPath() + "\"";
     }
     else if (path_latex.IsEmpty())

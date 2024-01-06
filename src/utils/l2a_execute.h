@@ -78,8 +78,8 @@ namespace L2A
              */
             CommandResult ExecuteCommandLineWindowsNoConsole(
                 const ai::UnicodeString& command, const unsigned long max_time_ms);
-        }
-    }  // namespace UTIL
+        }  // namespace INTERNAL
+    }      // namespace UTIL
 }  // namespace L2A
 
 #endif

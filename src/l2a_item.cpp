@@ -28,20 +28,21 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_item.h"
 
-#include "l2a_suites.h"
-#include "l2a_error.h"
-#include "l2a_latex.h"
 #include "l2a_ai_functions.h"
-#include "l2a_forms.h"
-#include "l2a_parameter_list.h"
-#include "l2a_file_system.h"
-#include "l2a_string_functions.h"
-#include "l2a_math.h"
-#include "l2a_utils.h"
-#include "l2a_names.h"
 #include "l2a_constants.h"
+#include "l2a_error.h"
+#include "l2a_file_system.h"
+#include "l2a_forms.h"
+#include "l2a_latex.h"
+#include "l2a_math.h"
+#include "l2a_names.h"
+#include "l2a_parameter_list.h"
+#include "l2a_string_functions.h"
+#include "l2a_suites.h"
+#include "l2a_utils.h"
 
 
 /**
@@ -294,7 +295,7 @@ void L2A::Item::SaveEncodedPDFFile(const ai::FilePath& pdf_path) const
 
     const ai::UnicodeString& pdf_contents = property_.GetPDFFileContents();
     if (!pdf_contents.empty())
-        L2A::UTIL::decode_file_base64(pdf_path, pdf_contents.as_UTF8());
+        L2A::UTIL::decode_file_base64(pdf_path, pdf_contents);
     else
         l2a_error("Could not save the encoded pdf file, got empty encoded data.");
 }
@@ -741,12 +742,6 @@ void L2A::CheckItemDataStructure()
         L2A::Item l2a_item(item);
         if (!l2a_item.GetProperty().GetPDFFileHash().empty())
         {
-#ifdef _DEBUG
-            // The pdf file is stored in the item -> Check if the hash and the encoded data match.
-            if (l2a_item.GetProperty().GetPDFFileHash() !=
-                L2A::UTIL::StringHash(l2a_item.GetProperty().GetPDFFileContents()))
-                l2a_error("Hash and pdf contents do not match. This should not happen!");
-#endif
             working_items.push_back(l2a_item);
         }
         else if (L2A::UTIL::IsFile(old_path))

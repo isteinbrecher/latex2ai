@@ -322,6 +322,13 @@ namespace L2A
          */
         bool YesNoAlert(const ai::UnicodeString& message);
 
+        /**
+         * \brief Get string input from the user.
+         *
+         * Should oly be used for debug purposes. With the current implementation, the user can not cancel the dialog
+         */
+        ai::UnicodeString GetInputFromUser();
+
     }  // namespace AI
 }  // namespace L2A
 

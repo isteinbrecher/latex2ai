@@ -28,12 +28,13 @@
 
 
 #include "IllustratorSDK.h"
-#include "test_utlity.h"
 
+#include "test_utlity.h"
 #include "testing_utlity.h"
+
+#include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_version.h"
-#include "l2a_constants.h"
 
 
 /**

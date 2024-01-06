@@ -33,8 +33,8 @@
 
 #include "IllustratorSDK.h"
 
-#include "l2a_names.h"
 #include "l2a_error.h"
+#include "l2a_names.h"
 
 
 namespace L2A
@@ -108,7 +108,7 @@ namespace L2A
         /**
          * \brief Get the header as a string, wehre all inputs are resoved.
          */
-        ai::UnicodeString GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
+        std::string GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
     }  // namespace LATEX
 }  // namespace L2A
 

@@ -28,19 +28,19 @@
 
 
 #include "IllustratorSDK.h"
-#include "SDKErrors.h"
+
+#include "l2a_plugin.h"
 
 #include "AIMenuCommandNotifiers.h"
+#include "SDKErrors.h"
+#include "testing.h"
 
+#include "l2a_ai_functions.h"
+#include "l2a_annotator.h"
 #include "l2a_constants.h"
-#include "l2a_plugin.h"
 #include "l2a_error.h"
 #include "l2a_global.h"
 #include "l2a_item.h"
-#include "l2a_ai_functions.h"
-#include "l2a_annotator.h"
-
-#include "testing.h"
 
 
 /**
@@ -94,7 +94,7 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             }
         }
         else if (message->notifier == fNotifyDocumentOpened || message->notifier == fNotifyDocumentSave ||
-            message->notifier == fNotifyDocumentSaveAs)
+                 message->notifier == fNotifyDocumentSaveAs)
         {
             L2A::AI::UndoActivate();
             L2A::CheckItemDataStructure();
@@ -306,9 +306,12 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
 
     // Define the name and icon for the tools.
     char toolGroupName[256];
-    std::vector<char*> toolTitleStr = {"LaTeX2AI create edit mode", "LaTeX2AI redo items", "LaTeX2AI options",
-        "LaTeX2AI save to PDF", "Perform LaTeX2AI Tests"};
-    std::vector<char*> toolTipStr = {
+    std::vector<std::string> tool_title = {"LaTeX2AI create edit mode",  //
+        "LaTeX2AI redo items",                                           //
+        "LaTeX2AI options",                                              //
+        "LaTeX2AI save to PDF",                                          //
+        "Perform LaTeX2AI Tests"};
+    std::vector<std::string> tool_tip = {
         "LaTeX2AI create edit mode: Create a new LaTeX2AI item, or edit and existing item by clicking on it.",  //
         "LaTeX2AI redo items: Redo multiple items in this document.",                                           //
         "LaTeX2AI options: Set local and global options for LaTeX2AI",                                          //
@@ -326,20 +329,16 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
     for (short i = 0; i < n_tools; i++)
     {
         // Define the name and icon for the tool.
-#if kPluginInterfaceVersion >= 0x23000001
-        data.title = ai::UnicodeString(toolTitleStr[i]);
-        data.tooltip = ai::UnicodeString(toolTipStr[i]);
-#else
-        data.title = toolTitleStr[i];
-        data.tooltip = toolTipStr[i];
-#endif
+        data.title = ai::UnicodeString(tool_title[i]);
+        data.tooltip = ai::UnicodeString(tool_tip[i]);
         data.normalIconResID = light_icon_id[i];
         data.darkIconResID = dark_icon_id[i];
+        data.iconType = ai::IconType::kSVG;
 
         if (i == 0)
         {
             // The first tool creates a new tool palette.
-            strcpy(toolGroupName, toolTitleStr[i]);
+            strcpy(toolGroupName, tool_title[i].c_str());
             // New group on tool palette.
             data.sameGroupAs = kNoTool;
         }
@@ -353,11 +352,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-#if kPluginInterfaceVersion >= 0x23000001
-        error = sAITool->AddTool(message->d.self, toolTitleStr[i], data, options, &fToolHandle[i]);
-#else
-        error = sAITool->AddTool(message->d.self, toolTitleStr[i], &data, options, &fToolHandle[i]);
-#endif
+        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, options, &fToolHandle[i]);
         l2a_check_ai_error(error);
     }
 
@@ -522,7 +517,7 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
             else
                 cursor_id = CURSOR_ICON_CREATE;
         }
-        error = sAIUser->SetCursor(cursor_id, fResourceManagerHandle);
+        error = sAIUser->SetSVGCursor(cursor_id, fResourceManagerHandle);
         l2a_check_ai_error(error);
     }
 

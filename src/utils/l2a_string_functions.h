@@ -40,6 +40,16 @@ namespace L2A
     namespace UTIL
     {
         /**
+         * \brief Convert a std::path to an ai::FilePath
+         */
+        ai::UnicodeString StringStdToAi(const std::string& string_std);
+
+        /**
+         * \brief Convert an ai::FilePath to a std::path
+         */
+        std::string StringAiToStd(const ai::UnicodeString& string_ai);
+
+        /**
          * \brief Convert an integer to an ai::UnicodeString.
          * @param number Number to be converted to a string.
          * @param pad_len Padded length of the string. If this is 0, then the string will not be padded.
@@ -80,7 +90,8 @@ namespace L2A
         /**
          * \brief Split string at occurences of split_string.
          */
-        std::vector<ai::UnicodeString> SplitString(const ai::UnicodeString& string, const ai::UnicodeString& split_string);
+        std::vector<ai::UnicodeString> SplitString(
+            const ai::UnicodeString& string, const ai::UnicodeString& split_string);
 
         /**
          * \brief Calculate a hash from a string.

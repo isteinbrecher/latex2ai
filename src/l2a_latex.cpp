@@ -28,16 +28,18 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_latex.h"
 
 #include "auto_generated/tex.h"
-#include "l2a_string_functions.h"
+
+#include "l2a_execute.h"
 #include "l2a_file_system.h"
-#include "l2a_parameter_list.h"
 #include "l2a_forms.h"
 #include "l2a_global.h"
 #include "l2a_names.h"
-#include "l2a_execute.h"
+#include "l2a_parameter_list.h"
+#include "l2a_string_functions.h"
 
 #include <regex>
 
@@ -197,7 +199,7 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                         AIBoolean form_result;
                         ai::UnicodeString form_string("");
                         form_string += "The debug folder \"" + debug_directory.GetFullPath() +
-                            "\" and its contents will be delete in this process. Do you want to continue?";
+                                       "\" and its contents will be delete in this process. Do you want to continue?";
                         form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
 
                         if (!form_result)
@@ -214,9 +216,11 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                     // TODO: Add command call here as well
                     sAIUser->MessageAlert("The debug files were created in \"" + debug_directory.GetFullPath() + "\"");
 
+#ifdef WIN_ENV
                     // Open explorer in the debug folder.
                     ShellExecute(nullptr, "open", debug_directory.GetFullPath().as_Platform().c_str(), nullptr, nullptr,
                         SW_SHOWDEFAULT);
+#endif
                 }
                 else
                     // The user wants to redo the item.
@@ -245,7 +249,8 @@ ai::FilePath L2A::LATEX::WriteLatexFiles(const ai::UnicodeString& latex_code, co
     batch_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_batch_name_));
 
     // Create the header in the temp directory.
-    ai::UnicodeString header_string = L2A::LATEX::GetHeaderWithIncludedInputs(GetHeaderPath());
+    ai::UnicodeString header_string =
+        L2A::UTIL::StringStdToAi(L2A::LATEX::GetHeaderWithIncludedInputs(GetHeaderPath()));
     L2A::UTIL::WriteFileUTF8(tex_header_file, header_string, true);
 
     // Creates the LaTeX file.
@@ -283,13 +288,13 @@ ai::FilePath L2A::LATEX::GetHeaderPath(const bool create_default_if_not_exist)
 /**
  *
  */
-ai::UnicodeString L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& header_path)
+std::string L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& header_path)
 {
     // Get the full path here, so relative directories will be resolved.
     auto header_path_full = L2A::UTIL::GetFullFilePath(header_path);
     auto header_dir = header_path_full.GetParent();
     auto header_text = L2A::UTIL::ReadFileUTF8(header_path_full);
-    std::string header_string = header_text.as_UTF8();
+    std::string header_string = L2A::UTIL::StringAiToStd(header_text);
 
     // Regex string to find inputs in the header.
     std::regex re_input("\\\\(input) *\\{.*\\}");
@@ -314,12 +319,12 @@ ai::UnicodeString L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& he
         auto input_header_path = header_dir;
         input_header_path.AddComponent(ai::UnicodeString(input_path_string));
         if (L2A::UTIL::IsFile(input_header_path))
-            return_header += GetHeaderWithIncludedInputs(input_header_path).as_UTF8();
+            return_header += GetHeaderWithIncludedInputs(input_header_path);
         else
             return_header += input_path_string;
 
         last_pos = match.position() + match.length();
     }
     return_header += header_string.substr(last_pos, header_string.length());
-    return ai::UnicodeString(return_header);
+    return return_header;
 }

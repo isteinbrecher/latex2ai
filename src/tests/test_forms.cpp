@@ -28,11 +28,13 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "test_forms.h"
 
 #include "testing_utlity.h"
-#include "l2a_parameter_list.h"
+
 #include "l2a_forms.h"
+#include "l2a_parameter_list.h"
 
 
 /**

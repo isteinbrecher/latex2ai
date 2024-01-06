@@ -7,10 +7,12 @@
 
 # Build files
 /forms/obj
+/build
 
 # Automatically generated files
 auto_generated/
 scripts/executables/
+plugin.pipl
 
 # Python folders
 */__pycache__/*

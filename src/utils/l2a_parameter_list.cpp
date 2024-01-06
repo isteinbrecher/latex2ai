@@ -28,12 +28,13 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_parameter_list.h"
 
-#include "l2a_string_functions.h"
-#include "l2a_error.h"
-
 #include "tinyxml2.h"
+
+#include "l2a_error.h"
+#include "l2a_string_functions.h"
 
 
 /**
@@ -43,7 +44,7 @@ L2A::UTIL::ParameterList::ParameterList(const ai::UnicodeString& string) : UTIL:
 {
     // Parse the string into an xml document.
     tinyxml2::XMLDocument xml_doc;
-    tinyxml2::XMLError xml_error = xml_doc.Parse(string.as_Platform().c_str());
+    tinyxml2::XMLError xml_error = xml_doc.Parse(L2A::UTIL::StringAiToStd(string).c_str());
     if (tinyxml2::XML_SUCCESS != xml_error) l2a_error("XML could not be parsed.\nThe string was:\n\n" + string);
 
     // Get the root element of the xml. This is this item.
@@ -72,16 +73,20 @@ void L2A::UTIL::ParameterList::SetFromXML(const tinyxml2::XMLElement* xml_elemen
     // Loop over options and set them.
     for (const tinyxml2::XMLAttribute* attr = xml_element->FirstAttribute(); attr != nullptr; attr = attr->Next())
     {
-        // If the option string contains line breaks, the forms applications returns them as \r\n line breaks instead
-        // of \n line breaks. This is replaced here.
-        ai::UnicodeString option_string(attr->Value());
-        L2A::UTIL::StringReplaceAll(option_string, ai::UnicodeString("\r\n"), ai::UnicodeString("\n"));
-        SetOption(ai::UnicodeString(attr->Name()), ai::UnicodeString(option_string), true);
+        auto name = L2A::UTIL::StringStdToAi(attr->Name());
+        auto value = L2A::UTIL::StringStdToAi(attr->Value());
+// TODO: Check if this still applies for all platforms
+// If the option string contains line breaks, the forms applications returns them as \r\n line breaks instead
+// of \n line breaks. This is replaced here.
+#ifdef WIN_ENV
+        L2A::UTIL::StringReplaceAll(value, ai::UnicodeString("\r\n"), ai::UnicodeString("\n"));
+#endif
+        SetOption(name, value, true);
     }
 
     // Set main option.
-    ai::UnicodeString xml_text(xml_element->GetText());
-    if (0 != xml_text.compare(ai::UnicodeString(""))) SetMainOption(xml_text);
+    const auto main_option = xml_element->GetText();
+    if (main_option != nullptr) SetMainOption(L2A::UTIL::StringStdToAi(main_option));
 }
 
 /**
@@ -242,7 +247,7 @@ ai::UnicodeString L2A::UTIL::ParameterList::ToXMLString(const ai::UnicodeString&
 {
     // We need to populate an xml object with all data in this parameter list.
     tinyxml2::XMLDocument xml_doc;
-    tinyxml2::XMLElement* root_element = xml_doc.NewElement(root_name.as_Platform().c_str());
+    tinyxml2::XMLElement* root_element = xml_doc.NewElement(L2A::UTIL::StringAiToStd(root_name).c_str());
     xml_doc.InsertFirstChild(root_element);
 
     // Fill in the contents of the parameter lists.
@@ -251,7 +256,7 @@ ai::UnicodeString L2A::UTIL::ParameterList::ToXMLString(const ai::UnicodeString&
     // Return the string from the xml file.
     tinyxml2::XMLPrinter printer;
     xml_doc.Accept(&printer);
-    return ai::UnicodeString(printer.CStr());
+    return L2A::UTIL::StringStdToAi(printer.CStr());
 }
 
 /**
@@ -299,7 +304,7 @@ void L2A::UTIL::ParameterList::ToXML(tinyxml2::XMLDocument* xml_doc, tinyxml2::X
     // Loop overchild elements and create them.
     for (auto const& sub_list_it : sub_lists_)
     {
-        tinyxml2::XMLElement* xml_sub_list = xml_doc->NewElement(sub_list_it.first.as_Platform().c_str());
+        tinyxml2::XMLElement* xml_sub_list = xml_doc->NewElement(L2A::UTIL::StringAiToStd(sub_list_it.first).c_str());
         sub_list_it.second->ToXML(xml_doc, xml_sub_list);
         this_xml_element->InsertEndChild(xml_sub_list);
     }
@@ -307,14 +312,14 @@ void L2A::UTIL::ParameterList::ToXML(tinyxml2::XMLDocument* xml_doc, tinyxml2::X
     // Loop over parameters.
     for (auto const& parameters_it : options_map_)
     {
-        this_xml_element->SetAttribute(
-            parameters_it.first.as_Platform().c_str(), parameters_it.second.as_Platform().c_str());
+        this_xml_element->SetAttribute(L2A::UTIL::StringAiToStd(parameters_it.first).c_str(),
+            L2A::UTIL::StringAiToStd(parameters_it.second).c_str());
     }
 
     if (main_option_set_)
     {
         // Set main option.
-        this_xml_element->SetText(main_option_.as_Platform().c_str());
+        this_xml_element->SetText(L2A::UTIL::StringAiToStd(main_option_).c_str());
     }
 }
 
@@ -325,7 +330,7 @@ bool L2A::UTIL::IsValidXML(const ai::UnicodeString& string)
 {
     // Parse the string into an xml document.
     tinyxml2::XMLDocument xml_doc;
-    tinyxml2::XMLError xml_error = xml_doc.Parse(string.as_Platform().c_str());
+    tinyxml2::XMLError xml_error = xml_doc.Parse(L2A::UTIL::StringAiToStd(string).c_str());
     if (tinyxml2::XML_SUCCESS != xml_error)
         return false;
     else

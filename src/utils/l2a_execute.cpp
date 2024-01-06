@@ -28,10 +28,11 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_execute.h"
 
-#include "l2a_file_system.h"
 #include "l2a_error.h"
+#include "l2a_file_system.h"
 #include "l2a_string_functions.h"
 
 #include <array>
@@ -40,7 +41,8 @@
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
+L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
+    const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
 {
 #ifdef _WIN32
     if (quiet)
@@ -61,6 +63,7 @@ L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& 
  */
 int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
 {
+    // TODO : delete this function and the batch stuff
     if (L2A::UTIL::IsFile(file_path))
     {
         std::string command = "\"" + file_path.GetFullPath().as_Platform() + "\"";
@@ -75,8 +78,7 @@ int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(
-    const ai::UnicodeString& command)
+L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::UnicodeString& command)
 {
     std::array<char, 8192> buffer{};
     std::string result;
@@ -85,7 +87,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(
 #define pclose _pclose
 #define WEXITSTATUS
 #endif
-    FILE* pipe = popen(command.as_Platform().c_str(), "r");
+    FILE* pipe = popen(L2A::UTIL::StringAiToStd(command).c_str(), "r");
     if (pipe == nullptr)
     {
         l2a_error("popen() failed!");
@@ -105,8 +107,9 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(
     }
     // Workaround "error: cannot take the address of an rvalue of type 'int'" on MacOS
     // see e.g. https://github.com/BestImageViewer/geeqie/commit/75c7df8b96592e10f7936dc1a28983be4089578c
-    const int exitcode = WEXITSTATUS(pclose(pipe));
-    return CommandResult{exitcode, ai::UnicodeString(result)};
+    int res = pclose(pipe);
+    const int exitcode = WEXITSTATUS(res);
+    return CommandResult{exitcode, L2A::UTIL::StringStdToAi(result)};
 }
 
 /**
@@ -123,7 +126,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
     // https://docs.microsoft.com/en-us/windows/win32/procthread/creating-a-child-process-with-redirected-input-and-output
 
     // Convert the string to platform text.
-    std::string cmdLine = command.as_Platform();
+    std::string cmdLine = L2A::UTIL::StringAiToStd(command);
     SECURITY_ATTRIBUTES saAttr;
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
@@ -166,7 +169,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
         LocalFree(lpMsgBuf);
 
         // Create error message.
-        l2a_error("Error, process '" + command.as_Platform() + "' could not be created!");
+        l2a_error("Error, process '" + command + "' could not be created!");
     }
     else
     {
@@ -204,7 +207,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
         }
 
         // Return exit code, and command output as unicode string.
-        return CommandResult{(int)exitCode, ai::UnicodeString(result_string)};
+        return CommandResult{(int)exitCode, L2A::UTIL::StringStdToAi(result_string)};
     }
 #endif
 }

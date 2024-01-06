@@ -28,10 +28,11 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "testing_utlity.h"
 
-#include "l2a_string_functions.h"
 #include "l2a_constants.h"
+#include "l2a_string_functions.h"
 
 
 /**
@@ -50,7 +51,8 @@ void L2A::TEST::UTIL::UnitTest::CompareInt(const int& val1, const int& val2)
     else
     {
         ai::UnicodeString error_string = "Integer compare test for: " + test_name_ + " failed!\nExpected \"" +
-            L2A::UTIL::IntegerToString(val1) + "\" got \"" + L2A::UTIL::IntegerToString(val2) + "\"";
+                                         L2A::UTIL::IntegerToString(val1) + "\" got \"" +
+                                         L2A::UTIL::IntegerToString(val2) + "\"";
         sAIUser->MessageAlert(error_string);
     }
 }
@@ -152,4 +154,3 @@ void L2A::TEST::UTIL::UnitTest::PrintTestSummary(const bool print_status)
         sAIUser->MessageAlert(summary_string);
     }
 }
-

@@ -28,6 +28,7 @@
 
 
 #include "IllustratorSDK.h"
+
 #include "l2a_error.h"
 
 #include "l2a_string_functions.h"
