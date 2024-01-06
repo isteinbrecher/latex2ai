@@ -33,29 +33,53 @@
 #include "testing_utlity.h"
 #include "l2a_string_functions.h"
 
+
 /**
  *
  */
-void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
-{
-    // Set test name.
-    ut.SetTestName(ai::UnicodeString("StringFunctions"));
+void TestReferenceStringsAndStringConversion(L2A::TEST::UTIL::UnitTest& ut) {
+    // Test that the hashes of the test strings are as expected
 
-    // Convert integer to string.
+
+    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_1_)),
+        ai::UnicodeString("168fcba7bbad5ac1"));
+    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_2_)),
+        ai::UnicodeString("f51a4ec38c535aec"));
+    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_3_)),
+        ai::UnicodeString("a6c5f57342b2591"));
+    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_4_)),
+        ai::UnicodeString("62c1cd8642ed5be8"));
+    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_5_)),
+        ai::UnicodeString("6b80f03d7ef29102"));
+}
+
+/**
+ *
+ */
+void TestConvertIntegerToString(L2A::TEST::UTIL::UnitTest& ut)
+{
+    // Convert integer to string
     ai::UnicodeString int_to_string = L2A::UTIL::IntegerToString(1234567890);
     ut.CompareStr(int_to_string, ai::UnicodeString("1234567890"));
 
-    // Convert integer to string padded.
+    // Convert integer to string padded
     int_to_string = L2A::UTIL::IntegerToString(1234567890, 15);
     ut.CompareStr(int_to_string, ai::UnicodeString("000001234567890"));
 
-    // Convert string to integer.
+    // Convert string to integer
     int string_to_int = L2A::UTIL::StringToInteger(ai::UnicodeString("1234567890"));
     ut.CompareInt(string_to_int, 1234567890);
     string_to_int = L2A::UTIL::StringToInteger(ai::UnicodeString("000001234567890"));
     ut.CompareInt(string_to_int, 1234567890);
+}
 
-    // Test the overloaded operators.
+
+/**
+ *
+ */
+void TestOperatorOverloads(L2A::TEST::UTIL::UnitTest& ut)
+{
+    // Test the overloaded operators
     ai::UnicodeString old_operator("value1");
     old_operator += ai::UnicodeString("value2");
     old_operator += ai::UnicodeString("value3");
@@ -69,8 +93,14 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
     new_operator = new_operator + "value5" + ai::UnicodeString("value6");
 
     ut.CompareStr(old_operator, new_operator);
+}
 
-    // Test the starts with functions.
+/**
+ *
+ */
+void TestStartsWith(L2A::TEST::UTIL::UnitTest& ut)
+{
+    // Test the starts with functions
     ai::UnicodeString long_name("starTName");
     ai::UnicodeString start_name("starT");
     ai::UnicodeString start_name_case("start");
@@ -80,8 +110,14 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
     ut.CompareInt(0, L2A::UTIL::StartsWith(long_name, start_name_case));
     ut.CompareInt(1, L2A::UTIL::StartsWith(long_name, start_name_case, true));
     ut.CompareInt(0, L2A::UTIL::StartsWith(long_name, start_name_wrong));
+}
 
-    // Test the replace functions.
+/**
+ *
+ */
+void TestReplace(L2A::TEST::UTIL::UnitTest& ut)
+{
+    // Test the replace functions
     ai::UnicodeString full_string("hello $name with $other $other $name and line breaks \n\n\r\n\r\n\n just like that");
     L2A::UTIL::StringReplaceAll(full_string, ai::UnicodeString("$name"), ai::UnicodeString("Full Name"));
     L2A::UTIL::StringReplaceAll(full_string, ai::UnicodeString("$other"), ai::UnicodeString("s$other and more"));
@@ -89,8 +125,14 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
     ut.CompareStr(full_string,
         ai::UnicodeString("hello Full Name with s$other and more s$other and more Full Name and line breaks \n\n\n\n\n "
                           "just like that"));
+}
 
-    // Test the split function.
+/**
+ *
+ */
+void TestSplit(L2A::TEST::UTIL::UnitTest& ut)
+{
+    // Test the split function
     ai::UnicodeString split_string("text1%text22%text333");
     std::vector<ai::UnicodeString> split_ref = {
         ai::UnicodeString("text1"), ai::UnicodeString("text22"), ai::UnicodeString("text333")};
@@ -106,10 +148,19 @@ void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut)
         ai::UnicodeString("text333"), ai::UnicodeString("")};
     split = L2A::UTIL::SplitString(split_string, ai::UnicodeString("%"));
     ut.CompareStringVector(split, split_ref);
+}
 
-    // Test the hash function.
-    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_1_)),
-        ai::UnicodeString("168fcba7bbad5ac1"));
-    ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::TEST::UTIL::test_string_5_)),
-        ai::UnicodeString("6b80f03d7ef29102"));
+/**
+ *
+ */
+void L2A::TEST::TestStringFunctions(L2A::TEST::UTIL::UnitTest& ut) {
+    // Set test name
+    ut.SetTestName(ai::UnicodeString("StringFunctions"));
+
+    TestReferenceStringsAndStringConversion(ut);
+    TestConvertIntegerToString(ut);
+    TestOperatorOverloads(ut);
+    TestStartsWith(ut);
+    TestReplace(ut);
+    TestSplit(ut);
 }
