@@ -149,7 +149,11 @@ bool L2A::LATEX::CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& 
     // Compile the latex file
     L2A::UTIL::SetWorkingDirectory(tex_file.GetParent());
     const ai::UnicodeString latex_command = GetLatexCompileCommand(tex_file);
-    L2A::UTIL::ExecuteCommandLine(latex_command, false);
+    const auto command_result = L2A::UTIL::ExecuteCommandLine(latex_command, false);
+
+    // Sometimes we get 0 exit status but still no pdf file. TODO: Find the reason for that. Intermediate fix: loop as long as this condition is not fulfilled any more
+    if (command_result.exit_status_ == 0 and !L2A::UTIL::IsFile(pdf_file))
+        l2a_error("Got 0 exit status, but no pdf file was created");
 
     // Check if the pdf file was created.
     if (L2A::UTIL::IsFile(pdf_file))
