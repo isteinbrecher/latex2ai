@@ -67,7 +67,7 @@ namespace L2A
             /**
              * \brief Create from XML string.
              */
-            ParameterList(const ai::UnicodeString& string);
+            ParameterList(const ai::UnicodeString& xml_string);
 
             /**
              * \brief Constructor from XML object.

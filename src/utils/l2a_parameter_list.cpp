@@ -40,12 +40,12 @@
 /**
  *
  */
-L2A::UTIL::ParameterList::ParameterList(const ai::UnicodeString& string) : UTIL::ParameterList()
+L2A::UTIL::ParameterList::ParameterList(const ai::UnicodeString& xml_string) : UTIL::ParameterList()
 {
     // Parse the string into an xml document.
     tinyxml2::XMLDocument xml_doc;
-    tinyxml2::XMLError xml_error = xml_doc.Parse(L2A::UTIL::StringAiToStd(string).c_str());
-    if (tinyxml2::XML_SUCCESS != xml_error) l2a_error("XML could not be parsed.\nThe string was:\n\n" + string);
+    tinyxml2::XMLError xml_error = xml_doc.Parse(L2A::UTIL::StringAiToStd(xml_string).c_str());
+    if (tinyxml2::XML_SUCCESS != xml_error) l2a_error("XML could not be parsed.\nThe string was:\n\n" + xml_string);
 
     // Get the root element of the xml. This is this item.
     const tinyxml2::XMLElement* xml_root = xml_doc.RootElement();
