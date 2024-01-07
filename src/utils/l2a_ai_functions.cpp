@@ -474,6 +474,16 @@ void L2A::AI::UndoSetActive(bool active)
 /**
  *
  */
+void L2A::AI::SetUndoText(const ai::UnicodeString& undo_text, const ai::UnicodeString& redo_text)
+{
+    AIErr error;
+    error = sAIUndo->SetUndoTextUS(undo_text, redo_text);
+    l2a_check_ai_error(error);
+}
+
+/**
+ *
+ */
 unsigned int L2A::AI::GetDocumentCount()
 {
     ai::int32 n;

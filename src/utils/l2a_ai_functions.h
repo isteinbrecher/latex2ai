@@ -211,6 +211,11 @@ namespace L2A
         void UndoSetActive(bool silent);
 
         /**
+         * \brief Set undo text
+         */
+        void SetUndoText(const ai::UnicodeString& undo_text, const ai::UnicodeString& redo_text);
+
+        /**
          * \brief Get the number of active documents.
          */
         unsigned int GetDocumentCount();
