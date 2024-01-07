@@ -112,6 +112,6 @@ namespace L2A
 /**
  * \brief Throw a warning.
  */
-#define l2a_warning(warning) throw L2A::ERR::Warning(warning);
+#define l2a_warning(warning) throw L2A::ERR::Warning(ai::UnicodeString(warning));
 
 #endif  // L2A_ERROR_H_

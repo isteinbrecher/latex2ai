@@ -234,8 +234,8 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
     // Check if the path is a file.
     if (!IsFile(path) && fail_if_not_saved)
     {
-        l2a_warning(ai::UnicodeString(
-            "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved."));
+        l2a_warning(
+            "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved.");
     }
     else
     {
@@ -244,8 +244,8 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
         ai::UnicodeString utf8_path(L2A::UTIL::StringStdToAi(L2A::UTIL::StringAiToStd(path.GetFullPath())));
         if (unicode_path != utf8_path)
             l2a_warning(
-                ai::UnicodeString("The document path contains non ASCII characters. LaTeX2AI is only working if there "
-                                  "are non ASCII characters in the document name / path."));
+                "The document path contains non ASCII characters. LaTeX2AI is only working if there "
+                "are non ASCII characters in the document name / path.");
     }
 
     return path;
