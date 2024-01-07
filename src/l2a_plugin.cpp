@@ -31,12 +31,12 @@
 
 #include "l2a_plugin.h"
 
+#include "AICSXS.h"
 #include "AIMenuCommandNotifiers.h"
 #include "SDKErrors.h"
 #include "testing.h"
 
 #include "l2a_ai_functions.h"
-#include "l2a_annotator.h"
 #include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_global.h"
@@ -59,7 +59,8 @@ L2APlugin::L2APlugin(SPPluginRef pluginRef)
       fNotifyDocumentSave(nullptr),
       fNotifyDocumentSaveAs(nullptr),
       fNotifyDocumentOpened(nullptr),
-      fResourceManagerHandle(nullptr)
+      fResourceManagerHandle(nullptr),
+      ui_manager_(nullptr)
 {
     // Set the name that of this plugin in Illustrator.
     strncpy(fPluginName, L2A_PLUGIN_NAME, kMaxStringLength);
@@ -96,9 +97,8 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             AIArtHandle placed_item;
             if (L2A::AI::GetSingleIsolationItem(placed_item))
             {
-                // Create Item and change it's contents.
-                L2A::Item change_item(placed_item);
-                change_item.Change();
+                // Change the item
+                ui_manager_->GetItemForm().EditItem(placed_item);
             }
         }
         else if (message->notifier == fNotifyDocumentOpened || message->notifier == fNotifyDocumentSave ||
@@ -107,10 +107,16 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             L2A::AI::UndoActivate();
             L2A::CheckItemDataStructure();
         }
+        else if (message->notifier == fCSXSPlugPlugSetupCompleteNotifier)
+        {
+            ui_manager_->RegisterCSXSEventListeners();
+        }
     }
     catch (L2A::ERR::Exception&)
     {
         sAIUser->MessageAlert(ai::UnicodeString("L2APlugin::Notify Error caught."));
+        // TODO: check this error message here
+        error = 1;
     }
 
     // Check which tool is selected.
@@ -204,6 +210,12 @@ ASErr L2APlugin::StartupPlugin(SPInterfaceMessage* message)
             L2A::TEST::TestingMain(print_status);
 #endif
         }
+
+        // Lock the plug-in as we register callbacks in PlugPlug Setup
+        // TODO check if this is needed
+        ui_manager_ = std::make_unique<L2A::UI::Manager>();
+        error = Plugin::LockPlugin(true);
+        aisdk::check_ai_error(error);
     }
     catch (ai::Error& ex)
     {
@@ -226,8 +238,13 @@ ASErr L2APlugin::ShutdownPlugin(SPInterfaceMessage* message)
         // If it was created, delete the global object.
         if (L2A::GLOBAL::_l2a_global != nullptr) delete L2A::GLOBAL::_l2a_global;
 
-        // Dereference the annotator -> the object will be delete here, otherwise we would have a memory leak later.
+        // Remove the UI event listeners
+        ui_manager_->RemoveEventListeners();
+
+        // Dereference the annotator and the ui manager -> the objects will be delete here, otherwise we would have a
+        // memory leak later
         annotator_ = nullptr;
+        ui_manager_ = nullptr;
 
         // We need to call the base shutdown method to avoid memory leaks when closing the plugin.
         error = Plugin::ShutdownPlugin(message);
@@ -253,35 +270,25 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
     if (message->tool == this->fToolHandle[0])
     {
         // Selected tool is item create.
-
         try
         {
             if (annotator_->IsArtHit())
             {
-                ai::UnicodeString undo_string("Undo Change LaTeX2AI item");
-                ai::UnicodeString redo_string("Redo Change LaTeX2AI item");
-                sAIUndo->SetUndoTextUS(undo_string, redo_string);
-
-                // Get the existing item and change it.
-                L2A::Item hit_item(annotator_->GetArtHit());
-                hit_item.Change();
+                ui_manager_->GetItemForm().EditItem(annotator_->GetArtHit());
             }
             else
             {
                 // Check if the current insertion point is locked.
                 if (!L2A::AI::GetLockedInsertionPoint())
                 {
-                    ai::UnicodeString undo_string("Undo Create LaTeX2AI item");
-                    ai::UnicodeString redo_string("Redo Create LaTeX2AI item");
-                    sAIUndo->SetUndoTextUS(undo_string, redo_string);
-
-                    // Create am item at the clicked position.
-                    L2A::Item(message->cursor);
+                    ui_manager_->GetItemForm().CreateNewItem(message->cursor);
                 }
                 else
+                {
                     sAIUser->MessageAlert(
                         ai::UnicodeString("You tried to create a LaTeX2AI item inside a locked or hidden layer / "
                                           "group. This is not possible."));
+                }
             }
         }
         catch (L2A::ERR::Exception&)
@@ -391,7 +398,7 @@ ASErr L2APlugin::AddAnnotator(SPInterfaceMessage* message)
 /*
  *
  */
-ASErr L2APlugin::AddNotifier(SPInterfaceMessage* /*message*/)
+ASErr L2APlugin::AddNotifier(SPInterfaceMessage* message)
 {
     ASErr result = kNoErr;
     try
@@ -402,12 +409,14 @@ ASErr L2APlugin::AddNotifier(SPInterfaceMessage* /*message*/)
         result =
             sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAISaveCommandPreNotifierStr, &fNotifyDocumentSave);
         aisdk::check_ai_error(result);
-        aisdk::check_ai_error(result);
         result = sAINotifier->AddNotifier(
             fPluginRef, L2A_PLUGIN_NAME, kAISaveAsCommandPostNotifierStr, &fNotifyDocumentSaveAs);
         aisdk::check_ai_error(result);
         result =
             sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAIDocumentOpenedNotifier, &fNotifyDocumentOpened);
+        aisdk::check_ai_error(result);
+        result = sAINotifier->AddNotifier(message->d.self, L2A_PLUGIN_NAME, kAICSXSPlugPlugSetupCompleteNotifier,
+            &fCSXSPlugPlugSetupCompleteNotifier);
         aisdk::check_ai_error(result);
     }
     catch (ai::Error& ex)

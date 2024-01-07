@@ -19,7 +19,15 @@
 		A1A458C925E4DC890077068A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A458C825E4DC890077068A /* Cocoa.framework */; };
 		C605E7F72B226FF900E74B92 /* l2a_execute.h in Headers */ = {isa = PBXBuildFile; fileRef = C605E7F52B226FF900E74B92 /* l2a_execute.h */; };
 		C605E7F82B226FF900E74B92 /* l2a_execute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C605E7F62B226FF900E74B92 /* l2a_execute.cpp */; };
+		C61B699B2B4AAE0C00AF2924 /* SDKPlugPlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */; };
+		C61B699E2B4AB17400AF2924 /* l2a_ui_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */; };
+		C61B699F2B4AB17400AF2924 /* l2a_ui_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */; };
+		C61B69A22B4AB83200AF2924 /* l2a_ui_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B69A02B4AB83200AF2924 /* l2a_ui_base.cpp */; };
+		C61B69A32B4AB83200AF2924 /* l2a_ui_base.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */; };
+		C61B69AE2B4AD6BB00AF2924 /* l2a_ui_item.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */; };
+		C61B69AF2B4AD6BB00AF2924 /* l2a_ui_item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */; };
 		C62F72262B25B34A00947D31 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62F72252B25B34A00947D31 /* tinyxml2.cpp */; };
+		C64D02C72B4A067300079AFE /* HtmlUIController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64D02C62B4A067300079AFE /* HtmlUIController.cpp */; };
 		C67D8B152B03814D001F89FA /* l2a_math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B142B03814D001F89FA /* l2a_math.cpp */; };
 		C67D8B182B03817A001F89FA /* l2a_string_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B162B03817A001F89FA /* l2a_string_functions.cpp */; };
 		C67D8B192B03817A001F89FA /* l2a_error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B172B03817A001F89FA /* l2a_error.cpp */; };
@@ -96,7 +104,15 @@
 		A1A458C825E4DC890077068A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C605E7F52B226FF900E74B92 /* l2a_execute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_execute.h; path = src/utils/l2a_execute.h; sourceTree = "<group>"; };
 		C605E7F62B226FF900E74B92 /* l2a_execute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_execute.cpp; path = src/utils/l2a_execute.cpp; sourceTree = "<group>"; };
+		C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugPlug.cpp; path = ../common/source/SDKPlugPlug.cpp; sourceTree = "<group>"; };
+		C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_manager.h; path = src/l2a_ui_manager.h; sourceTree = "<group>"; };
+		C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_manager.cpp; path = src/l2a_ui_manager.cpp; sourceTree = "<group>"; };
+		C61B69A02B4AB83200AF2924 /* l2a_ui_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_base.cpp; path = src/l2a_ui_base.cpp; sourceTree = "<group>"; };
+		C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_base.h; path = src/l2a_ui_base.h; sourceTree = "<group>"; };
+		C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_item.h; path = src/l2a_ui_item.h; sourceTree = "<group>"; };
+		C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_item.cpp; path = src/l2a_ui_item.cpp; sourceTree = "<group>"; };
 		C62F72252B25B34A00947D31 /* tinyxml2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml2.cpp; path = tpl/tinyxml2/tinyxml2.cpp; sourceTree = "<group>"; };
+		C64D02C62B4A067300079AFE /* HtmlUIController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HtmlUIController.cpp; path = ../common/source/HtmlUIController.cpp; sourceTree = "<group>"; };
 		C67D8B142B03814D001F89FA /* l2a_math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_math.cpp; path = src/utils/l2a_math.cpp; sourceTree = "<group>"; };
 		C67D8B162B03817A001F89FA /* l2a_string_functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_string_functions.cpp; path = src/utils/l2a_string_functions.cpp; sourceTree = "<group>"; };
 		C67D8B172B03817A001F89FA /* l2a_error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_error.cpp; path = src/utils/l2a_error.cpp; sourceTree = "<group>"; };
@@ -188,6 +204,12 @@
 		508817F509F0CAB50071BF1A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */,
+				C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */,
+				C61B69A02B4AB83200AF2924 /* l2a_ui_base.cpp */,
+				C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */,
+				C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */,
+				C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */,
 				C67D8B242B0386A6001F89FA /* base64.cpp */,
 				C67D8B252B0386A6001F89FA /* base64.h */,
 				C67D8B3A2B0389FC001F89FA /* l2a_ai_functions.cpp */,
@@ -281,6 +303,8 @@
 		F9C02BCE0BA6E8E90039151A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */,
+				C64D02C62B4A067300079AFE /* HtmlUIController.cpp */,
 				C6F3D1F12B03A005004EF248 /* IAIFilePath.cpp */,
 				E8FDCA9810209FEA00D09060 /* IAIStringFormatUtils.cpp */,
 				2AF5F7A30CF5F3110091D961 /* AppContext.cpp */,
@@ -302,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C67D8B522B038B86001F89FA /* l2a_latex.h in Headers */,
+				C61B69AE2B4AD6BB00AF2924 /* l2a_ui_item.h in Headers */,
 				C6F3D1EF2B039EF3004EF248 /* l2a_plugin.h in Headers */,
 				C67D8B1E2B0384D5001F89FA /* l2a_string_functions.h in Headers */,
 				C67D8B502B038B86001F89FA /* l2a_names.h in Headers */,
@@ -319,11 +344,13 @@
 				C6F3D2152B03A022004EF248 /* testing_utlity.h in Headers */,
 				C67D8B1D2B0384D5001F89FA /* l2a_math.h in Headers */,
 				C6F3D2092B03A022004EF248 /* test_utlity.h in Headers */,
+				C61B699E2B4AB17400AF2924 /* l2a_ui_manager.h in Headers */,
 				C6F3D2112B03A022004EF248 /* test_forms.h in Headers */,
 				C67D8B3D2B0389FC001F89FA /* l2a_ai_functions.h in Headers */,
 				C6F3D2082B03A022004EF248 /* testing.h in Headers */,
 				C6F3D20B2B03A022004EF248 /* test_framework.h in Headers */,
 				C67D8B1F2B0384D5001F89FA /* l2a_error.h in Headers */,
+				C61B69A32B4AB83200AF2924 /* l2a_ui_base.h in Headers */,
 				C67D8B572B038B86001F89FA /* l2a_constants.h in Headers */,
 				C67D8B302B038842001F89FA /* l2a_version.h in Headers */,
 				C67D8B552B038B86001F89FA /* l2a_item.h in Headers */,
@@ -443,24 +470,29 @@
 				C6F3D20A2B03A022004EF248 /* test_framework.cpp in Sources */,
 				C67D8B192B03817A001F89FA /* l2a_error.cpp in Sources */,
 				C6F3D2102B03A022004EF248 /* testing.cpp in Sources */,
+				C64D02C72B4A067300079AFE /* HtmlUIController.cpp in Sources */,
 				C6F3D2132B03A022004EF248 /* test_parameter_list.cpp in Sources */,
 				C6F3D2142B03A022004EF248 /* test_string_functions.cpp in Sources */,
 				C67D8B3C2B0389FC001F89FA /* l2a_ai_functions.cpp in Sources */,
 				C6F3D2162B03A022004EF248 /* test_utility.cpp in Sources */,
 				C67D8B2D2B038842001F89FA /* l2a_parameter_list.cpp in Sources */,
 				C67D8B4F2B038B86001F89FA /* l2a_latex.cpp in Sources */,
+				C61B699B2B4AAE0C00AF2924 /* SDKPlugPlug.cpp in Sources */,
 				C605E7F82B226FF900E74B92 /* l2a_execute.cpp in Sources */,
 				C6F3D2052B03A022004EF248 /* test_base64.cpp in Sources */,
 				C6F3D2072B03A022004EF248 /* test_file_system.cpp in Sources */,
 				C6F3D1F02B039EF3004EF248 /* l2a_plugin.cpp in Sources */,
 				C67D8B2E2B038842001F89FA /* l2a_version.cpp in Sources */,
+				C61B699F2B4AB17400AF2924 /* l2a_ui_manager.cpp in Sources */,
 				C6F3D1F22B03A005004EF248 /* IAIFilePath.cpp in Sources */,
+				C61B69A22B4AB83200AF2924 /* l2a_ui_base.cpp in Sources */,
 				C67D8B3F2B038B41001F89FA /* l2a_property.cpp in Sources */,
 				2AF5F7A20CF5F3030091D961 /* IAIUnicodeString.cpp in Sources */,
 				C67D8B232B038670001F89FA /* l2a_file_system.cpp in Sources */,
 				2AF5F7A90CF5F3110091D961 /* AppContext.cpp in Sources */,
 				C67D8B152B03814D001F89FA /* l2a_math.cpp in Sources */,
 				2AF5F7AA0CF5F3110091D961 /* IllustratorSDK.cpp in Sources */,
+				C61B69AF2B4AD6BB00AF2924 /* l2a_ui_item.cpp in Sources */,
 				2AF5F7AB0CF5F3110091D961 /* Main.cpp in Sources */,
 				C68EDECA2B037ECB003BB3CD /* l2a_suites.cpp in Sources */,
 				C62F72262B25B34A00947D31 /* tinyxml2.cpp in Sources */,

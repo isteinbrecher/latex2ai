@@ -48,56 +48,24 @@
 /**
  *
  */
-L2A::Item::Item(const AIRealPoint& position)
+L2A::Item::Item(const AIRealPoint& position, L2A::Property& property)
 {
-    // Set new empty property for this item.
-    property_ = L2A::Property();
-    property_.SetFromLastInput();
-
-    // Loop until either the pdf was created sucessfully, or the user aborted the creation process.
-    ai::FilePath pdf_file;
-    while (true)
-    {
-        // Get user input for the item. If the form is canceled the creation of this object is also canceled.
-        ItemFormReturnValues return_value = OpenUserForm(property_);
-        if (return_value == ItemFormReturnValues::cancel)
-            return;
-        else if (return_value == ItemFormReturnValues::ok)
-        {
-            // Do nothing in this case.
-        }
-        else
-            l2a_error("Unexpected return value");
-
-        // Create the pdf file.
-        L2A::LATEX::LatexCreationResult result =
-            L2A::LATEX::CreateLatexWithDebug(property_.GetLaTeXCode(), pdf_file, ai::UnicodeString("create"));
-        if (result == L2A::LATEX::LatexCreationResult::fail_quit)
-            return;
-        else if (result == L2A::LATEX::LatexCreationResult::item_created)
-            break;
-        // In the case of an error and redo, do nothing here, as we are already in the while loop.
-    }
-
-    // Convert pdf with postscript.
-    pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
-
-    // Store the pdf data in the property.
-    this->property_.SetPDFFile(pdf_file);
+    // Set the property for this item
+    property_ = std::move(property);
 
     // Create and link to the pdf file. We do not check here if the file already exists, because the hash of a newly
     // created item will always be different, even if the LaTeX code is exactly the same.
-    pdf_file = GetPDFPath();
-    this->SaveEncodedPDFFile(pdf_file);
+    auto pdf_file = GetPDFPath();
+    SaveEncodedPDFFile(pdf_file);
 
-    // Create the placed item.
+    // Create the placed item
     placed_item_ = L2A::AI::CreatePlacedItem(pdf_file);
     L2A::AI::SetPlacement(placed_item_, property_);
 
-    // Set the name and tag for the item.
+    // Set the name and tag for the item
     SetNoteAndName();
 
-    // Move the file to the cursor position.
+    // Move the file to the cursor position
     MoveItem(position);
 
     // Everything was successfull, we write the input from this item to the application directory, so we can use it with
@@ -140,88 +108,6 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
                 "settings are applied. This can happen if the placement values are changed manually via Illustrator."));
             L2A::AI::SetPlacement(placed_item_, property_);
         }
-    }
-}
-
-/**
- *
- */
-void L2A::Item::Change()
-{
-    // Create a copy of the current input parameters.
-    L2A::Property new_input = property_;
-
-    // Do this until the creation process is canceled or the process was successfull.
-    ai::FilePath pdf_file;
-    L2A::PropertyCompare diff;
-    while (true)
-    {
-        // Get input from user.
-        ItemFormReturnValues return_value = OpenUserForm(new_input);
-        if (return_value == ItemFormReturnValues::ok)
-            // Compare the current input and the new one.
-            diff = property_.Compare(new_input);
-        else if (return_value == ItemFormReturnValues::cancel)
-            return;
-        else if (return_value == ItemFormReturnValues::redo_boundary)
-        {
-            RedoBoundary();
-            return;
-        }
-        else if (return_value == ItemFormReturnValues::redo_latex)
-        {
-            diff.changed_latex = true;
-            // We have to set the new input here, since it will be set as the property of this label at the end of this
-            // function.
-            new_input = property_;
-        }
-
-        if (diff.changed_latex)
-        {
-            // Redo the latex item.
-            L2A::LATEX::LatexCreationResult result =
-                L2A::LATEX::CreateLatexWithDebug(new_input.GetLaTeXCode(), pdf_file, ai::UnicodeString("edit"));
-            if (result == L2A::LATEX::LatexCreationResult::fail_quit)
-                return;
-            else if (result == L2A::LATEX::LatexCreationResult::item_created)
-                break;
-            // In the case of an error and redo, do nothing here, as we are already in the while loop.
-        }
-        else
-            // Nothing in the LaTeX changes, continue with this function.
-            break;
-    }
-
-    if (diff.changed_latex)
-    {
-        // Convert pdf with postscript.
-        pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
-
-        // Store the pdf file in the placed item.
-        new_input.SetPDFFile(pdf_file);
-        property_ = new_input;
-        pdf_file = GetPDFPath();
-        SaveEncodedPDFFile(pdf_file);
-
-        // Relink the placed item with the pdf file.
-        L2A::AI::RelinkPlacedItem(placed_item_, pdf_file);
-
-        // Redo the boundary.
-        RedoBoundary();
-    }
-
-    if (diff.changed_align || diff.changed_placement)
-    {
-        // Placement changed.
-        property_ = new_input;
-        L2A::AI::SetPlacement(placed_item_, property_);
-    }
-
-    // If something changed add the information to the placed item note.
-    if (diff.Changed())
-    {
-        property_ = new_input;
-        SetNoteAndName();
     }
 }
 
@@ -499,50 +385,6 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
         error = sAIAnnotatorDrawer->DrawLine(message->drawer, baseline_points_view[0], baseline_points_view[1]);
         l2a_check_ai_error(error);
     }
-}
-
-/**
- *
- */
-L2A::ItemFormReturnValues L2A::Item::OpenUserForm(L2A::Property& input_property) const
-{
-    L2A::UTIL::ParameterList form_input_parameter_list;
-    ai::UnicodeString key_latex("latex_exists");
-    ai::UnicodeString key_boundary_box("boundary_box_state");
-    if (!sAIArt->ValidArt(placed_item_, true))
-    {
-        form_input_parameter_list.SetOption(key_latex, false);
-        form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("none"));
-    }
-    else
-    {
-        form_input_parameter_list.SetOption(key_latex, true);
-        if (IsDiamond())
-            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("diamond"));
-        else if (IsStreched())
-            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("streched"));
-        else
-            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("ok"));
-    }
-    form_input_parameter_list.SetSubList(ai::UnicodeString("property_list"), input_property.ToParameterList());
-
-    std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list;
-    ai::UnicodeString return_string =
-        L2A::Form(ai::UnicodeString("l2a_item"), form_input_parameter_list, form_return_parameter_list).return_string;
-
-    if (return_string == ai::UnicodeString("ok"))
-    {
-        input_property.SetFromParameterList(*form_return_parameter_list);
-        return ItemFormReturnValues::ok;
-    }
-    else if (return_string == ai::UnicodeString("redo_boundary_box"))
-        return ItemFormReturnValues::redo_boundary;
-    else if (return_string == ai::UnicodeString("redo_latex"))
-        return ItemFormReturnValues::redo_latex;
-    else if (return_string == ai::UnicodeString("cancel"))
-        return ItemFormReturnValues::cancel;
-    else
-        l2a_error("Unexpected result. Got return string: \"" + return_string + "\"");
 }
 
 /**

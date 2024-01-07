@@ -83,21 +83,17 @@ namespace L2A
 
        public:
         /**
-         * \brief Create a new L2AItem from a position, the user clicked in the document.
+         * \brief Create a new L2AItem from a position the user clicked in the document and a given property object.
          * @param position AIRealPoint of the cursor in the document.
+         * @param property Property of the item, has to include the saved pdf file.
          */
-        Item(const AIRealPoint& position);
+        Item(const AIRealPoint& position, L2A::Property& property);
 
         /**
          * \brief Create the object from an existing placed item
          * @param placed_item AIArtHandle of a placed item in the document.
          */
         Item(const AIArtHandle& placed_item_handle);
-
-        /**
-         * \brief Change the l2a item.
-         */
-        void Change();
 
         /**
          * \brief Get a non-const reference to the property of this item.
@@ -158,11 +154,6 @@ namespace L2A
          * \brief Draw the boundary of the placed item in the document.
          */
         void Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment, AIRealPoint>& item_boundaries) const;
-
-        /**
-         * \brief Open a form to edit the values related to this item.
-         */
-        ItemFormReturnValues OpenUserForm(L2A::Property& input_property) const;
 
         /**
          * \brief Check if the item is of diamond shape.

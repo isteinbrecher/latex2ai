@@ -31,6 +31,8 @@
 #define L2A_GLOBAL_H_
 
 
+#include "AppContext.hpp"
+
 #include "l2a_forms.h"
 
 
@@ -225,6 +227,11 @@ namespace L2A
      * \brief Return the plugin pointer mutable.
      */
     L2APlugin* GlobalPluginPointerMutable();
+
+    /**
+     * \brief Return the plugin pointer mutable.
+     */
+    AppContext GlobalPluginAppContext();
 
 }  // namespace L2A
 

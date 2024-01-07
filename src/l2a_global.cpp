@@ -38,10 +38,10 @@
 #include "l2a_forms.h"
 #include "l2a_latex.h"
 #include "l2a_parameter_list.h"
+#include "l2a_plugin.h"
 #include "l2a_string_functions.h"
 #include "l2a_suites.h"
 #include "l2a_version.h"
-
 
 /**
  * Set the global variables to a null pointer
@@ -554,3 +554,8 @@ L2APlugin* L2A::GlobalPluginPointerMutable()
     if (L2A::GLOBAL::_l2a_plugin == nullptr) l2a_error("The global plugin pointer object is not defined!");
     return L2A::GLOBAL::_l2a_plugin;
 }
+
+/**
+ *
+ */
+AppContext L2A::GlobalPluginAppContext() { return AppContext(L2A::GlobalPluginPointerMutable()->GetPluginRef()); }
