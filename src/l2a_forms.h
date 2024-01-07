@@ -61,11 +61,6 @@ namespace L2A
      */
     FormReturnValue Form(const ai::UnicodeString& form_type, const L2A::UTIL::ParameterList& input_parameter_list,
         std::shared_ptr<L2A::UTIL::ParameterList>& return_parameter_list);
-
-    /**
-     * \brief Basically this is a wrapper for the sAIUser->MessageAlert function, but can be overwritten during testing.
-     */
-    void MessageAlert(const ai::UnicodeString& message_string);
 }  // namespace L2A
 
 #endif

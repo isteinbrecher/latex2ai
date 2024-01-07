@@ -117,11 +117,3 @@ L2A::FormReturnValue L2A::Form(const ai::UnicodeString& form_type, const L2A::UT
     else
         l2a_error("No file written in form application!");
 }
-
-/**
- *
- */
-void L2A::MessageAlert(const ai::UnicodeString& message_string)
-{
-    if (!L2A::Global().is_testing_) sAIUser->MessageAlert(message_string);
-}

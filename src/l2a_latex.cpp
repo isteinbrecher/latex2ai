@@ -33,6 +33,7 @@
 
 #include "auto_generated/tex.h"
 
+#include "l2a_ai_functions.h"
 #include "l2a_execute.h"
 #include "l2a_file_system.h"
 #include "l2a_forms.h"
@@ -151,7 +152,8 @@ bool L2A::LATEX::CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& 
     const ai::UnicodeString latex_command = GetLatexCompileCommand(tex_file);
     const auto command_result = L2A::UTIL::ExecuteCommandLine(latex_command, false);
 
-    // Sometimes we get 0 exit status but still no pdf file. TODO: Find the reason for that. Intermediate fix: loop as long as this condition is not fulfilled any more
+    // Sometimes we get 0 exit status but still no pdf file. TODO: Find the reason for that. Intermediate fix: loop as
+    // long as this condition is not fulfilled any more
     if (command_result.exit_status_ == 0 and !L2A::UTIL::IsFile(pdf_file))
         l2a_error("Got 0 exit status, but no pdf file was created");
 
@@ -283,7 +285,7 @@ ai::FilePath L2A::LATEX::GetHeaderPath(const bool create_default_if_not_exist)
     {
         // Write the default header to file and notify the user that header was created.
         L2A::UTIL::WriteFileUTF8(path, GetDefaultHeader());
-        L2A::MessageAlert(ai::UnicodeString("Default header file was created, with 11pt font size."));
+        L2A::AI::MessageAlert(ai::UnicodeString("Default header file was created, with 11pt font size."));
     }
 
     return path;

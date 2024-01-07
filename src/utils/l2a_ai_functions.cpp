@@ -1037,3 +1037,11 @@ ai::UnicodeString L2A::AI::GetInputFromUser()
     l2a_check_ai_error(error);
     return return_string;
 }
+
+/**
+ *
+ */
+void L2A::AI::MessageAlert(const ai::UnicodeString& message_string)
+{
+    if (!L2A::Global().is_testing_) sAIUser->MessageAlert(message_string);
+}
