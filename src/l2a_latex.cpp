@@ -167,14 +167,14 @@ bool L2A::LATEX::CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& 
 /**
  *
  */
-L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
+L2A::LATEX::LatexCreationDebugResult L2A::LATEX::CreateLatexWithDebug(
     const ai::UnicodeString& latex_code, ai::FilePath& pdf_file, const ai::UnicodeString& creation_type)
 {
     // Try to create the Latex document.
     if (L2A::LATEX::CreateLatex(latex_code, pdf_file))
     {
         // Creation was successfull.
-        return L2A::LATEX::LatexCreationResult::item_created;
+        return L2A::LATEX::LatexCreationDebugResult::item_created;
     }
     else
     {
@@ -230,11 +230,11 @@ L2A::LATEX::LatexCreationResult L2A::LATEX::CreateLatexWithDebug(
                 }
                 else
                     // The user wants to redo the item.
-                    return L2A::LATEX::LatexCreationResult::fail_redo;
+                    return L2A::LATEX::LatexCreationDebugResult::fail_redo;
             }
             else
                 // The form was canceled, stop the creation process.
-                return L2A::LATEX::LatexCreationResult::fail_quit;
+                return L2A::LATEX::LatexCreationDebugResult::fail_quit;
         }
     }
 }

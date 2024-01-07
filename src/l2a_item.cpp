@@ -541,9 +541,10 @@ void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
 
     // Create a latex document with the code from all items to redo.
     ai::FilePath pdf_path;
-    L2A::LATEX::LatexCreationResult result =
+    L2A::LATEX::LatexCreationDebugResult result =
         L2A::LATEX::CreateLatexWithDebug(global_latex_code, pdf_path, ai::UnicodeString("redo_all"));
-    if (result == L2A::LATEX::LatexCreationResult::fail_quit || result == L2A::LATEX::LatexCreationResult::fail_redo)
+    if (result == L2A::LATEX::LatexCreationDebugResult::fail_quit ||
+        result == L2A::LATEX::LatexCreationDebugResult::fail_redo)
         return;
 
     // Split up the created items into the individual pdf files.

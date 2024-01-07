@@ -44,7 +44,7 @@ namespace L2A
         /**
          * \brief Enum for the result of an Latex creation.
          */
-        enum class LatexCreationResult
+        enum class LatexCreationDebugResult
         {
             //! Everyting worked fine.
             item_created,
@@ -85,7 +85,7 @@ namespace L2A
          * @param (in) Creation type for the debug form.
          * @return Result of the Latex creation.
          */
-        L2A::LATEX::LatexCreationResult CreateLatexWithDebug(
+        LatexCreationDebugResult CreateLatexWithDebug(
             const ai::UnicodeString& latex_code, ai::FilePath& pdf_file, const ai::UnicodeString& creation_type);
 
         /**
