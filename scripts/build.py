@@ -102,6 +102,7 @@ def build_solution(repository_dir, build_type, git_info, illustrator_version):
             os.path.join(repository_dir, "..\output", "win", "x64", build_type)
         )
         os.chdir(executable_dir)
+        # TODO: Add the UI to an individual zip file here
         executables = ["LaTeX2AI.aip", "LaTeX2AIForms.exe"]
         zip_name = (
             "LaTeX2AI_"

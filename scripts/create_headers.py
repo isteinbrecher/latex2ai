@@ -122,39 +122,6 @@ def create_cpp_headers():
     create_cpp_tex_headers(dir_path, license_c)
 
 
-def create_cs_headers():
-    """
-    Create the headers for the c# files.
-    """
-
-    # Create the header.
-    license_text = get_license_text()
-    license_c = license_to_source(license_text, "c")
-    version_lines = [
-        "\n",
-        "// Automatic generated header with version information.",
-        "// This header will be overwritten at each build!",
-        "namespace L2A",
-        "{",
-        "    class Constants",
-        "    {",
-        '        public const string l2a_version_git_sha_head_ = "{}";'.format(
-            get_git_sha()
-        ),
-        "    }",
-        "}",
-        "",
-    ]
-
-    # If it does not exist, create the directory for the header.
-    dir_path = os.path.join(get_repository_dir(), "forms/src/auto_generated")
-    os.makedirs(dir_path, exist_ok=True)
-
-    # The script is caled form the base repository directory.
-    with open(os.path.join(dir_path, "version.cs"), "w") as version_header:
-        version_header.write(license_c + "\n".join(version_lines))
-
-
 def create_js_headers():
     """
     Create the headers for the java script files.
@@ -193,5 +160,4 @@ if __name__ == "__main__":
     os.chdir(os.path.dirname(__file__))
 
     create_cpp_headers()
-    create_cs_headers()
     create_js_headers()

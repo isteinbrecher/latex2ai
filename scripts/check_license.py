@@ -65,13 +65,12 @@ def get_all_source_files():
     out, _err = process.communicate()
     files = out.decode("UTF-8").strip().split("\n")
 
-    source_line_endings = [".py", ".cs", ".cpp", ".h", ".rc", ".bat", ".sh", ".tex"]
+    source_line_endings = [".py", ".cs", ".cpp", ".h", ".bat", ".sh", ".tex"]
     source_ending_types = {
         ".py": "py",
         ".cs": "c",
         ".cpp": "c",
         ".h": "c",
-        ".rc": "c",
         ".bat": "bat",
         ".sh": "sh",
         ".tex": "tex",
@@ -131,12 +130,7 @@ def check_license():
     license_text = get_license_text()
     source_files = get_all_source_files()
 
-    skip_list = [
-        "l2a/resources/resource.h",
-        "l2a/resources/l2a.rc",
-        "forms/Properties/Resources.Designer.cs",
-        "forms/Properties/Settings.Designer.cs",
-    ]
+    skip_list = ["resources/Win/Resource.h"]
 
     for key in source_files:
         header = license_to_source(license_text, key)
@@ -145,7 +139,7 @@ def check_license():
                 if file.endswith(skip):
                     break
             else:
-                with open(file, encoding="ISO-8859-1") as source_file:
+                with open(file) as source_file:
                     source_text = source_file.read()
                     if not source_text.startswith(header):
                         print("Wrong header in: {}".format(file))
