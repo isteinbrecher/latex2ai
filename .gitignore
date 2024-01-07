@@ -5,6 +5,10 @@
 .vs/*
 */.vs/*
 
+# XCode files
+*xcuserdata*
+*xcworkspacedata*
+
 # Build files
 /forms/obj
 /build
