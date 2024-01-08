@@ -39,14 +39,34 @@
 
 namespace L2A
 {
+    // Forward declarations
+    class Property;
+
     namespace LATEX
     {
         /**
          * \brief Enum for the result of an Latex creation.
          */
+        enum class LatexCreationResult
+        {
+            //! Everything worked fine
+            ok,
+            //! The latex command succeeded, but no file was created
+            error_tex_code,
+            //! The creation of the latex document failed
+            error_tex,
+            //! The split with ghostscript failed
+            error_gs,
+            //! Other error
+            error_other
+        };
+
+        /**
+         * \brief Enum for the result of an Latex creation.
+         */
         enum class LatexCreationDebugResult
         {
-            //! Everyting worked fine.
+            //! Everything worked fine.
             item_created,
             //! The creation failed and the user wants to edit the item.
             fail_redo,
@@ -70,15 +90,32 @@ namespace L2A
         std::vector<ai::FilePath> SplitPdfPages(const ai::FilePath& pdf_file, const unsigned int& n_pages);
 
         /**
+         * \brief Create a latex document for a latex code string
+         * @param (in/out) property Property containing the item property that should be converted. If everything is
+         * successful the pdf contents are stored in the property.
+         * @return Result of the latex creation function
+         */
+        std::pair<LatexCreationResult, ai::FilePath> CreateLatexItem(const L2A::Property& property);
+
+        /**
+         * \brief Create a latex document for a latex code string
+         * @param (in/out) properties Vector containing all item properties that should be converted. If everything
+         * is successful the pdf contents are stored in the properties.
+         * @return Result of the latex creation function
+         */
+        std::pair<LatexCreationResult, std::vector<ai::FilePath>> CreateLatexItems(
+            const std::vector<L2A::Property>& properties);
+
+        /**
          * \brief Create a latex document for a latex code string.
          * @param (in) Latex_code String with the full latex code to be compiled.
          * @param (out) Path of the created pdf file.
-         * @return True if creation was successfull.
+         * @return True if creation was successful.
          */
-        bool CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file);
+        bool CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file);
 
         /**
-         * \brief Create a latex document for a latex code string, if the creation failes, a form with debug options
+         * \brief Create a latex document for a latex code string, if the creation fails, a form with debug options
          * will be opened.
          * @param (in) Latex_code String with the full latex code to be compiled.
          * @param (out) Path of the created pdf file.
@@ -106,7 +143,7 @@ namespace L2A
         ai::FilePath GetHeaderPath(const bool create_default_if_not_exist = true);
 
         /**
-         * \brief Get the header as a string, wehre all inputs are resoved.
+         * \brief Get the header as a string, where all inputs are resolved.
          */
         std::string GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
     }  // namespace LATEX

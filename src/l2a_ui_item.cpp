@@ -116,7 +116,7 @@ void L2A::UI::Item::CompileNewItem(const L2A::UTIL::ParameterList& item_data_fro
 
     property_.SetFromParameterList(item_data_from_form);
     ai::FilePath pdf_file;
-    if (L2A::LATEX::CreateLatex(property_.GetLaTeXCode(), pdf_file))
+    if (L2A::LATEX::CreateLatexDocument(property_.GetLaTeXCode(), pdf_file))
     {
         // PDF could be created, now call GhostScript to split the pages. We only have a single page, but still need
         // to do this here, because otherwise the items will have a slightly different frame margin after Redo-All
@@ -184,7 +184,7 @@ void L2A::UI::Item::EditItem(const ai::UnicodeString& return_value, const L2A::U
     if (diff.changed_latex)
     {
         ai::FilePath pdf_file;
-        if (L2A::LATEX::CreateLatex(property_.GetLaTeXCode(), pdf_file))
+        if (L2A::LATEX::CreateLatexDocument(property_.GetLaTeXCode(), pdf_file))
         {
             // PDF could be created, now call GhostScript to split the pages. We only have a single page, but still need
             // to do this here, because otherwise the items will have a slightly different frame margin after Redo-All

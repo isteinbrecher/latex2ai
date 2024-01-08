@@ -40,6 +40,7 @@
 #include "l2a_global.h"
 #include "l2a_names.h"
 #include "l2a_parameter_list.h"
+#include "l2a_property.h"
 #include "l2a_string_functions.h"
 
 #include <regex>
@@ -137,7 +138,72 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
 /**
  *
  */
-bool L2A::LATEX::CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
+std::pair<L2A::LATEX::LatexCreationResult, ai::FilePath> L2A::LATEX::CreateLatexItem(const L2A::Property& property)
+{
+    std::vector<L2A::Property> properties = {property};
+    auto [latex_result, file_paths] = L2A::LATEX::CreateLatexItems(properties);
+    if (latex_result == LatexCreationResult::ok)
+        return {latex_result, file_paths[0]};
+    else
+        return {latex_result, ai::FilePath(ai::UnicodeString(""))};
+}
+
+/**
+ *
+ */
+std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX::CreateLatexItems(
+    const std::vector<L2A::Property>& properties)
+{
+    std::vector<ai::FilePath> pdf_files;
+
+    try
+    {
+        // Loop over all properties and get the combined the latex code as string
+        ai::UnicodeString combined_latex_code("\n\n");
+        for (const auto& property : properties)
+        {
+            combined_latex_code += property.GetLaTeXCode();
+            combined_latex_code += "\n\n";
+        }
+
+        // Create the latex document
+        ai::FilePath pdf_file;
+        try
+        {
+            if (not CreateLatexDocument(combined_latex_code, pdf_file))
+            {
+                return {LatexCreationResult::error_tex_code, {}};
+            }
+        }
+        catch (L2A::ERR::Exception& ex)
+        {
+            return {LatexCreationResult::error_tex, {}};
+        }
+
+        // Split up the created pdf file into the items, i.e., each page represents a single item. We split the document
+        // into the individual pages with ghost script.
+        try
+        {
+            pdf_files = L2A::LATEX::SplitPdfPages(pdf_file, (unsigned int)properties.size());
+        }
+        catch (L2A::ERR::Exception& ex)
+        {
+            return {LatexCreationResult::error_gs, {}};
+        }
+    }
+    catch (...)
+    {
+        return {LatexCreationResult::error_other, {}};
+    }
+
+    // Everything worked fine
+    return {LatexCreationResult::ok, pdf_files};
+}
+
+/**
+ *
+ */
+bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
 {
     // Create the latex and batch files.
     const ai::FilePath tex_file = WriteLatexFiles(latex_code, Global().path_temp_);
@@ -170,10 +236,11 @@ bool L2A::LATEX::CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& 
 L2A::LATEX::LatexCreationDebugResult L2A::LATEX::CreateLatexWithDebug(
     const ai::UnicodeString& latex_code, ai::FilePath& pdf_file, const ai::UnicodeString& creation_type)
 {
+    // TODO: can this be deleted?
     // Try to create the Latex document.
-    if (L2A::LATEX::CreateLatex(latex_code, pdf_file))
+    if (L2A::LATEX::CreateLatexDocument(latex_code, pdf_file))
     {
-        // Creation was successfull.
+        // Creation was successful
         return L2A::LATEX::LatexCreationDebugResult::item_created;
     }
     else
