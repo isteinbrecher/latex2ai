@@ -136,38 +136,34 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
         diff.changed_latex = true;
         // We have to set the property here since the redo latex button will redo the existing item, not the text that
         // might be changed in the UI. We raise a warning for that case in the UI.
+        // TODO: maybe return the correct data directly?
         // TODO: copy here without copying the pdf contents
         new_property = GetProperty();
     }
     else
     {
-        // TODO add error here
+        l2a_error("Got unexpected form_return_value: " + form_return_value);
     }
 
     if (diff.changed_latex)
     {
-        ai::FilePath pdf_file;
-        // TODO: Use the new create function here
-        if (L2A::LATEX::CreateLatexDocument(new_property.GetLaTeXCode(), pdf_file))
+        auto [latex_creation_result, pdf_file] = L2A::LATEX::CreateLatexItem(new_property);
+        if (latex_creation_result == L2A::LATEX::LatexCreationResult::ok)
         {
-            // PDF could be created, now call GhostScript to split the pages. We only have a single page, but still need
-            // to do this here, because otherwise the items will have a slightly different frame margin after Redo-All
-            // is called.
-            pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
-
-            // Store the pdf file in the placed item.
+            // TODO: this works, but it is very strange what we copy around here, this should be improved
+            // PDF could be created, now store the pdf file in the placed item
             new_property.SetPDFFile(pdf_file);
             GetPropertyMutable() = new_property;
             pdf_file = GetPDFPath();
             SaveEncodedPDFFile(pdf_file);
 
-            // Relink the placed item with the pdf file.
+            // Relink the placed item with the new pdf file
             L2A::AI::RelinkPlacedItem(GetPlacedItemMutable(), pdf_file);
 
-            // Redo the boundary.
+            // Redo the boundary
             RedoBoundary();
         }
-        else
+        else if (latex_creation_result == L2A::LATEX::LatexCreationResult::error_tex_code)
         {
             // The pdf could not be created, ask the user how to proceed
             ai::UnicodeString form_string("The pdf file could not be created, do you want to re-edit the item?");
@@ -184,7 +180,7 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
         }
     }
 
-    // If something changed add the information to the placed item note.
+    // If something changed add the information to the placed item note
     if (diff.Changed())
     {
         GetPropertyMutable() = new_property;
