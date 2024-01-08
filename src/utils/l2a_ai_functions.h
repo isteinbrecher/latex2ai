@@ -60,7 +60,7 @@ namespace L2A
         /**
          * \brief Create a new placed item.
          */
-        AIArtHandle CreatePlacedItem(ai::FilePath pdf_path);
+        AIArtHandle CreatePlacedItem(const ai::FilePath& pdf_path);
 
         /**
          * \brief Get the ai enum for the placement of a property.

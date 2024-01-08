@@ -85,11 +85,12 @@ namespace L2A
 
        public:
         /**
-         * \brief Create a new L2AItem from a position the user clicked in the document and a given property object.
-         * @param position AIRealPoint of the cursor in the document.
-         * @param property Property of the item, has to include the saved pdf file.
+         * \brief Create a new L2AItem from a position the user clicked in the document and a given property object
+         * @param position AIRealPoint of the cursor in the document
+         * @param property Property of the item, has to include the saved pdf file
+         * @param created_pdf_file Path to the (existing) pdf file
          */
-        Item(const AIRealPoint& position, L2A::Property& property);
+        Item(const AIRealPoint& position, const L2A::Property& property, const ai::FilePath& created_pdf_file);
 
         /**
          * \brief Create the object from an existing placed item

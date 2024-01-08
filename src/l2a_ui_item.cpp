@@ -115,22 +115,16 @@ void L2A::UI::Item::CompileNewItem(const L2A::UTIL::ParameterList& item_data_fro
         ai::UnicodeString("Undo Create LaTeX2AI Item"), ai::UnicodeString("Undo Create LaTeX2AI Item"));
 
     property_.SetFromParameterList(item_data_from_form);
-    ai::FilePath pdf_file;
-    if (L2A::LATEX::CreateLatexDocument(property_.GetLaTeXCode(), pdf_file))
+    auto [latex_create_result, pdf_file] = L2A::LATEX::CreateLatexItem(property_);
+    if (latex_create_result == L2A::LATEX::LatexCreationResult::ok)
     {
-        // PDF could be created, now call GhostScript to split the pages. We only have a single page, but still need
-        // to do this here, because otherwise the items will have a slightly different frame margin after Redo-All
-        // is called.
-        pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
-
-        // Add the PDF hash to the property
-        property_.SetPDFFile(pdf_file);
-        L2A::Item(new_item_insertion_point_, property_);
+        // Create the new item
+        L2A::Item(new_item_insertion_point_, property_, pdf_file);
 
         // Everything worked fine, we can close the form now
         CloseForm();
     }
-    else
+    else if (latex_create_result == L2A::LATEX::LatexCreationResult::error_tex_code)
     {
         // The pdf could not be created, ask the user how to proceed
         ai::UnicodeString form_string("The pdf file could not be created, do you want to re-edit the item?");
@@ -141,9 +135,14 @@ void L2A::UI::Item::CompileNewItem(const L2A::UTIL::ParameterList& item_data_fro
         }
         else
         {
-            // The user does not wan to re-edit the item, we can close the form now
+            // The user does not want to re-edit the item, we can close the form now
             CloseForm();
         }
+    }
+    else
+    {
+        // Ensure the form is closed on unexpected errors as well
+        CloseForm();
     }
 }
 

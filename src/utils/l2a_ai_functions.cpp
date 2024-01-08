@@ -49,7 +49,7 @@
 /**
  *
  */
-AIArtHandle L2A::AI::CreatePlacedItem(ai::FilePath pdf_path)
+AIArtHandle L2A::AI::CreatePlacedItem(const ai::FilePath& pdf_path)
 {
     ASErr error = kNoErr;
 
