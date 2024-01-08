@@ -51,17 +51,17 @@
 L2A::Item::Item(const AIRealPoint& position, const L2A::Property& property, const ai::FilePath& created_pdf_file)
 {
     // TODO: Mabe move this to a factory function that can give better error return values
-    
+
     // Set the property 1for this item
     property_ = property;
-    
+
     // Store the pdf data in the property
     property_.SetPDFFile(created_pdf_file);
 
     // Save the pdf in the pdf folder
     const auto pdf_file = GetPDFPath();
     SaveEncodedPDFFile(pdf_file);
-    
+
     // Create the placed item
     placed_item_ = L2A::AI::CreatePlacedItem(pdf_file);
     L2A::AI::SetPlacement(placed_item_, property_);
