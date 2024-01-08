@@ -46,6 +46,22 @@
 #include "l2a_property.h"
 #include "l2a_suites.h"
 
+/**
+ *
+ */
+void CompareItemPosition(
+    L2A::TEST::UTIL::UnitTest& ut, const L2A::Item& item, const std::array<AIRealPoint, 9>& reference_positions)
+{
+    const std::vector<PlaceAlignment> alignment_vector = {
+        kTopLeft, kMidLeft, kBotLeft, kTopMid, kMidMid, kBotMid, kTopRight, kMidRight, kBotRight};
+
+    std::vector<AIRealPoint> points = item.GetPosition(alignment_vector);
+    for (unsigned int i_point = 0; i_point < 9; i_point++)
+    {
+        ut.CompareFloat(L2A::UTIL::MATH::GetDistance(points[i_point], reference_positions[i_point]), 0.0,
+            (AIReal)2.0 * L2A::CONSTANTS::eps_pos_);
+    }
+}
 
 /**
  *
@@ -94,12 +110,8 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
 
         // Geometry variables for the item placement on the page.
         AIRealPoint point;
-        AIRealPoint start;
-        start.h = 150;
-        start.v = -300;
-        AIRealPoint offset;
-        offset.h = 200.0;
-        offset.v = -150.0;
+        const AIRealPoint start{150, -300};
+        const AIRealPoint offset{200.0, -150.0};
 
         // Draw the grid.
         {
@@ -174,17 +186,79 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             L2A::AI::DrawPath(segments, path_style, true);
         }
 
-        // Add a standard LaTeX2AI item and one with baseline positioning.
+        // Reference values for the pdf dimensions
+        AIRealRect reference_standard;
+        reference_standard.left = (ASReal)7893.00000;
+        reference_standard.top = (ASReal)7770.00000;
+        reference_standard.right = (ASReal)7969.06982;
+        reference_standard.bottom = (ASReal)7753.00977;
+        AIRealRect reference_baseline;
+        reference_baseline.left = (ASReal)7893.00000;
+        reference_baseline.top = (ASReal)7770.00000;
+        reference_baseline.right = (ASReal)7969.08008;
+        reference_baseline.bottom = (ASReal)7743.66992;
+
+        // Positions for the initially created items
+        std::array<AIRealPoint, 9> reference_standard_position;
+        reference_standard_position[0].h = (ASReal)111.9649963378906;
+        reference_standard_position[0].v = (ASReal)-291.5050048828125;
+        reference_standard_position[1].h = (ASReal)111.9649963378906;
+        reference_standard_position[1].v = (ASReal)-300.0;
+        reference_standard_position[2].h = (ASReal)111.9649963378906;
+        reference_standard_position[2].v = (ASReal)-308.4949951171875;
+        reference_standard_position[3].h = (ASReal)150.0;
+        reference_standard_position[3].v = (ASReal)-291.5050048828125;
+        reference_standard_position[4].h = (ASReal)150.0;
+        reference_standard_position[4].v = (ASReal)-300.0;
+        reference_standard_position[5].h = (ASReal)150.0;
+        reference_standard_position[5].v = (ASReal)-308.4949951171875;
+        reference_standard_position[6].h = (ASReal)188.0350036621094;
+        reference_standard_position[6].v = (ASReal)-291.5050048828125;
+        reference_standard_position[7].h = (ASReal)188.0350036621094;
+        reference_standard_position[7].v = (ASReal)-300.0;
+        reference_standard_position[8].h = (ASReal)188.03500366210938;
+        reference_standard_position[8].v = (ASReal)-308.4949951171875;
+        std::array<AIRealPoint, 9> reference_baseline_position;
+        reference_baseline_position[0].h = (ASReal)111.9599609375;
+        reference_baseline_position[0].v = (ASReal)-286.8350219726562;
+        reference_baseline_position[1].h = (ASReal)111.9599609375;
+        reference_baseline_position[1].v = (ASReal)-300.0000305175781;
+        reference_baseline_position[2].h = (ASReal)111.9599609375;
+        reference_baseline_position[2].v = (ASReal)-313.1650390625;
+        reference_baseline_position[3].h = (ASReal)149.9999694824219;
+        reference_baseline_position[3].v = (ASReal)-286.8350219726562;
+        reference_baseline_position[4].h = (ASReal)149.9999694824219;
+        reference_baseline_position[4].v = (ASReal)-300.0000305175781;
+        reference_baseline_position[5].h = (ASReal)149.9999694824219;
+        reference_baseline_position[5].v = (ASReal)-313.1650390625;
+        reference_baseline_position[6].h = (ASReal)188.0399627685547;
+        reference_baseline_position[6].v = (ASReal)-286.8350219726562;
+        reference_baseline_position[7].h = (ASReal)188.0399627685547;
+        reference_baseline_position[7].v = (ASReal)-300.0000305175781;
+        reference_baseline_position[8].h = (ASReal)188.0399627685547;
+        reference_baseline_position[8].v = (ASReal)-313.1650390625;
+
+        // Add a standard LaTeX2AI item and one with baseline positioning. Also check the position and box values
+        // The baseline item is first created as a normal item and then changed to baseline to check that the change
+        // method can handle this correctly
         L2A::Property item_property;
         item_property.latex_code_ = ai::UnicodeString("Test item $\\int_a^b \\mathrm dx$");
         item_property.text_align_horizontal_ = L2A::TextAlignHorizontal::centre;
         item_property.text_align_vertical_ = L2A::TextAlignVertical::centre;
         auto [latex_creation_result, pdf_path] = L2A::LATEX::CreateLatexItem(item_property);
         L2A::Item item_standard(start, item_property, pdf_path);
+        ut.CompareRect(reference_standard, L2A::AI::GetPlacedBoundingBox(item_standard.GetPlacedItem()));
+        CompareItemPosition(ut, item_standard, reference_standard_position);
 
-        item_property.text_align_vertical_ = L2A::TextAlignVertical::baseline;
+        // First create the baseline item with the non baseline option, then change it to a baseline option
         std::tie(latex_creation_result, pdf_path) = L2A::LATEX::CreateLatexItem(item_property);
         L2A::Item item_baseline(start, item_property, pdf_path);
+        ut.CompareRect(reference_standard, L2A::AI::GetPlacedBoundingBox(item_baseline.GetPlacedItem()));
+        CompareItemPosition(ut, item_baseline, reference_standard_position);
+        item_property.text_align_vertical_ = L2A::TextAlignVertical::baseline;
+        item_baseline.Change(ai::UnicodeString("ok"), item_property);
+        ut.CompareRect(reference_baseline, L2A::AI::GetPlacedBoundingBox(item_baseline.GetPlacedItem()));
+        CompareItemPosition(ut, item_baseline, reference_baseline_position);
 
         // Copy the items and change the positioning.
         std::vector<L2A::TextAlignHorizontal> horizontal_alignment = {
@@ -262,17 +336,11 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             AIRealRect reference_box;
             if (l2a_item.GetProperty().IsBaseline())
             {
-                reference_box.left = (ASReal)7893.00000;
-                reference_box.top = (ASReal)7770.00000;
-                reference_box.right = (ASReal)7969.08008;
-                reference_box.bottom = (ASReal)7743.66992;
+                reference_box = reference_baseline;
             }
             else
             {
-                reference_box.left = (ASReal)7893.00000;
-                reference_box.top = (ASReal)7770.00000;
-                reference_box.right = (ASReal)7969.06982;
-                reference_box.bottom = (ASReal)7753.00977;
+                reference_box = reference_standard;
             }
             AIRealRect image_box = L2A::AI::GetPlacedBoundingBox(l2a_item.GetPlacedItem());
             ut.CompareRect(image_box, reference_box);
@@ -350,7 +418,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             // Check the boundary box of all items.
 
             // Reference solutions.
-            std::vector<std::vector<AIRealPoint>> reference_solution(12, std::vector<AIRealPoint>(9));
+            std::array<std::array<AIRealPoint, 9>, 12> reference_solution;
             reference_solution[0][0].h = (ASReal)485.682953;
             reference_solution[0][0].v = (ASReal)-387.333405;
             reference_solution[0][1].h = (ASReal)480.223419;
@@ -568,23 +636,16 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             reference_solution[11][8].h = (ASReal)152.801270;
             reference_solution[11][8].v = (ASReal)-343.970245;
 
-            // All placement options.
-            std::vector<PlaceAlignment> alignment_vector = {
-                kTopLeft, kMidLeft, kBotLeft, kTopMid, kMidMid, kBotMid, kTopRight, kMidRight, kBotRight};
-
-            // Get all placed items.
+            // Get all placed items
             std::vector<AIArtHandle> art_items;
             L2A::AI::GetDocumentItems(art_items, L2A::AI::SelectionState::all);
             for (unsigned int i_item = 0; i_item < art_items.size(); i_item++)
             {
-                // Get the item.
+                // Get the item
                 L2A::Item l2a_item(art_items[i_item]);
 
-                // Check if the position fits to one of the reference solutions.
-                std::vector<AIRealPoint> points = l2a_item.GetPosition(alignment_vector);
-                for (unsigned int i_point = 0; i_point < 9; i_point++)
-                    ut.CompareFloat(L2A::UTIL::MATH::GetDistance(points[i_point], reference_solution[i_item][i_point]),
-                        0.0, (AIReal)2.0 * L2A::CONSTANTS::eps_pos_);
+                // Check if the positions fit to the reference solutions
+                CompareItemPosition(ut, l2a_item, reference_solution[i_item]);
             }
         }
     }
