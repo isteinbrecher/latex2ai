@@ -24,7 +24,7 @@
 
 
 /**
- * \brief Base class for a UI form
+ * \brief Form for creating / editing an item
  */
 
 #include "IllustratorSDK.h"
