@@ -39,6 +39,7 @@
 #include "l2a_file_system.h"
 #include "l2a_global.h"
 #include "l2a_item.h"
+#include "l2a_latex.h"
 #include "l2a_math.h"
 #include "l2a_names.h"
 #include "l2a_parameter_list.h"
@@ -176,20 +177,14 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
         // Add a standard LaTeX2AI item and one with baseline positioning.
         L2A::Property item_property;
         item_property.latex_code_ = ai::UnicodeString("Test item $\\int_a^b \\mathrm dx$");
-
-        L2A::GlobalMutable().testing_form_return_value_.canceled = false;
-        L2A::GlobalMutable().testing_form_return_value_.return_string = ai::UnicodeString("ok");
-
         item_property.text_align_horizontal_ = L2A::TextAlignHorizontal::centre;
         item_property.text_align_vertical_ = L2A::TextAlignVertical::centre;
-        L2A::GlobalMutable().testing_form_return_parameter_list_ =
-            std::make_shared<L2A::UTIL::ParameterList>(item_property.ToParameterList());
-        L2A::Item item_standard(start);
+        auto [latex_creation_result, pdf_path] = L2A::LATEX::CreateLatexItem(item_property);
+        L2A::Item item_standard(start, item_property, pdf_path);
 
         item_property.text_align_vertical_ = L2A::TextAlignVertical::baseline;
-        L2A::GlobalMutable().testing_form_return_parameter_list_ =
-            std::make_shared<L2A::UTIL::ParameterList>(item_property.ToParameterList());
-        L2A::Item item_baseline(start);
+        std::tie(latex_creation_result, pdf_path) = L2A::LATEX::CreateLatexItem(item_property);
+        L2A::Item item_baseline(start, item_property, pdf_path);
 
         // Copy the items and change the positioning.
         std::vector<L2A::TextAlignHorizontal> horizontal_alignment = {
@@ -230,7 +225,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
                     std::make_shared<L2A::UTIL::ParameterList>(item_property_change.ToParameterList());
 
                 // Change the item.
-                l2a_item.Change();
+                l2a_item.Change(ai::UnicodeString("ok"), item_property_change);
 
                 // Move the item to the new position.
                 point.h = start.h + offset.h * i_horizontal;

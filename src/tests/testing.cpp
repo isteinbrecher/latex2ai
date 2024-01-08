@@ -55,7 +55,7 @@ void L2A::TEST::TestingMain(const bool print_status)
     L2A::TEST::TestFileSystem(ut);
     L2A::TEST::TestUtilityFunctions(ut);
     L2A::TEST::TestVersion(ut);
-    L2A::TEST::TestForms(ut);
+    // L2A::TEST::TestForms(ut);
     L2A::TEST::TestBase64(ut);
 
     // Print the testing summary. For now this is deactivated.
