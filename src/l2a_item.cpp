@@ -114,6 +114,95 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
 /**
  *
  */
+L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_value, L2A::Property& new_property)
+{
+    L2A::AI::SetUndoText(
+        ai::UnicodeString("Undo Change LaTeX2AI Item"), ai::UnicodeString("Redo Change LaTeX2AI Item"));
+
+    L2A::PropertyCompare diff;
+
+    if (form_return_value == "ok")
+    {
+        // Compare the current input and the new one
+        diff = GetProperty().Compare(new_property);
+    }
+    else if (form_return_value == "redo_boundary")
+    {
+        RedoBoundary();
+        return ItemChangeResult::ok;
+    }
+    else if (form_return_value == "redo_latex")
+    {
+        diff.changed_latex = true;
+        // We have to set the property here since the redo latex button will redo the existing item, not the text that
+        // might be changed in the UI. We raise a warning for that case in the UI.
+        // TODO: copy here without copying the pdf contents
+        new_property = GetProperty();
+    }
+    else
+    {
+        // TODO add error here
+    }
+
+    if (diff.changed_latex)
+    {
+        ai::FilePath pdf_file;
+        // TODO: Use the new create function here
+        if (L2A::LATEX::CreateLatexDocument(new_property.GetLaTeXCode(), pdf_file))
+        {
+            // PDF could be created, now call GhostScript to split the pages. We only have a single page, but still need
+            // to do this here, because otherwise the items will have a slightly different frame margin after Redo-All
+            // is called.
+            pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
+
+            // Store the pdf file in the placed item.
+            new_property.SetPDFFile(pdf_file);
+            GetPropertyMutable() = new_property;
+            pdf_file = GetPDFPath();
+            SaveEncodedPDFFile(pdf_file);
+
+            // Relink the placed item with the pdf file.
+            L2A::AI::RelinkPlacedItem(GetPlacedItemMutable(), pdf_file);
+
+            // Redo the boundary.
+            RedoBoundary();
+        }
+        else
+        {
+            // The pdf could not be created, ask the user how to proceed
+            ai::UnicodeString form_string("The pdf file could not be created, do you want to re-edit the item?");
+            AIBoolean form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
+            if (form_result)
+            {
+                return ItemChangeResult::get_new_user_input;
+            }
+            else
+            {
+                // The user does not want to re-edit the item
+                return ItemChangeResult::cancel;
+            }
+        }
+    }
+
+    // If something changed add the information to the placed item note.
+    if (diff.Changed())
+    {
+        GetPropertyMutable() = new_property;
+        SetNoteAndName();
+
+        if (diff.changed_align || diff.changed_placement)
+        {
+            L2A::AI::SetPlacement(GetPlacedItemMutable(), GetProperty());
+        }
+    }
+
+    // Everything worked fine
+    return ItemChangeResult::ok;
+}
+
+/**
+ *
+ */
 void L2A::Item::RedoBoundary()
 {
     // If object is not streched and not diamond -> do nothing.

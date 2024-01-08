@@ -61,18 +61,20 @@ namespace L2A
 namespace L2A
 {
     /**
-     * \brief Enum to manage the return values of the form for the Item.
+     * \brief Enum to manage the return values of the change function of the item
      */
-    enum class ItemFormReturnValues
+    enum class ItemChangeResult
     {
+        //! Everything worked, the item was changed
         ok,
-        cancel,
-        redo_boundary,
-        redo_latex
+        //! The user has to be asked for the input again
+        get_new_user_input,
+        //! Not changed, and no new input wanted
+        cancel
     };
 
     /**
-     * \brief Class that represents one LaTeX2AI item in AI. It has mehtods for creating and replacing the LaTeX
+     * \brief Class that represents one LaTeX2AI item in AI. It has methods for creating and replacing the LaTeX
      *        document in AI.
      */
     class Item
@@ -94,6 +96,12 @@ namespace L2A
          * @param placed_item AIArtHandle of a placed item in the document.
          */
         Item(const AIArtHandle& placed_item_handle);
+
+        /**
+         * \brief Change the l2a item
+         * @return Return the result of the item change operation
+         */
+        ItemChangeResult Change(const ai::UnicodeString& form_return_value, L2A::Property& new_property);
 
         /**
          * \brief Get a non-const reference to the property of this item.

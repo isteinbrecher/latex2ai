@@ -155,87 +155,18 @@ void L2A::UI::Item::EditItem(const ai::UnicodeString& return_value, const L2A::U
     L2A::AI::SetUndoText(
         ai::UnicodeString("Undo Change LaTeX2AI Item"), ai::UnicodeString("Redo Change LaTeX2AI Item"));
 
-    L2A::PropertyCompare diff;
     property_.SetFromParameterList(item_data_from_form);
-
-    if (return_value == "ok")
+    auto change_item_result = change_item_->Change(return_value, property_);
+    if (change_item_result == L2A::ItemChangeResult::ok or change_item_result == L2A::ItemChangeResult::cancel)
     {
-        // Compare the current input and the new one
-        diff = change_item_->GetProperty().Compare(property_);
-    }
-    else if (return_value == "redo_boundary")
-    {
-        change_item_->RedoBoundary();
         CloseForm();
         return;
     }
-    else if (return_value == "redo_latex")
+    else if (change_item_result == L2A::ItemChangeResult::get_new_user_input)
     {
-        diff.changed_latex = true;
-        // We have to set the property here since the redo latex button will redo the existing item, not the text that
-        // might be changed in the UI. We raise a warnign for that case in the UI.
-        property_ = change_item_->GetProperty();
+        SendData();
+        return;
     }
-    else
-    {
-        // TODO add error here
-    }
-
-    if (diff.changed_latex)
-    {
-        ai::FilePath pdf_file;
-        if (L2A::LATEX::CreateLatexDocument(property_.GetLaTeXCode(), pdf_file))
-        {
-            // PDF could be created, now call GhostScript to split the pages. We only have a single page, but still need
-            // to do this here, because otherwise the items will have a slightly different frame margin after Redo-All
-            // is called.
-            pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
-
-            // Store the pdf file in the placed item.
-            property_.SetPDFFile(pdf_file);
-            change_item_->GetPropertyMutable() = property_;
-            pdf_file = change_item_->GetPDFPath();
-            change_item_->SaveEncodedPDFFile(pdf_file);
-
-            // Relink the placed item with the pdf file.
-            L2A::AI::RelinkPlacedItem(change_item_->GetPlacedItemMutable(), pdf_file);
-
-            // Redo the boundary.
-            change_item_->RedoBoundary();
-        }
-        else
-        {
-            // The pdf could not be created, ask the user how to proceed
-            ai::UnicodeString form_string("The pdf file could not be created, do you want to re-edit the item?");
-            AIBoolean form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
-            if (form_result)
-            {
-                SendData();
-                return;
-            }
-            else
-            {
-                // The user does not want to re-edit the item, we can close the form now
-                CloseForm();
-                return;
-            }
-        }
-    }
-
-    // If something changed add the information to the placed item note.
-    if (diff.Changed())
-    {
-        change_item_->GetPropertyMutable() = property_;
-        change_item_->SetNoteAndName();
-
-        if (diff.changed_align || diff.changed_placement)
-        {
-            L2A::AI::SetPlacement(change_item_->GetPlacedItemMutable(), change_item_->GetProperty());
-        }
-    }
-
-    // Everything worked fine, we can close the form now
-    CloseForm();
 }
 
 /**
