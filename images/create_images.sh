@@ -32,8 +32,3 @@ gs -dFirstPage=1 -dLastPage=1 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo
 gs -dFirstPage=2 -dLastPage=2 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo_color.png logo_icon.pdf
 gs -dFirstPage=3 -dLastPage=3 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo_square.png logo_icon.pdf
 gs -dFirstPage=4 -dLastPage=4 -sDEVICE=pngalpha -dTextAlphaBits=4 -r1250 -o icon_256.png logo_icon.pdf
-
-# Create the icon file
-convert icon_256.png -define icon:auto-resize=256,64,48,32,16 icon_forms.ico
-rm icon_256.png
-mv icon_forms.ico ../forms/
