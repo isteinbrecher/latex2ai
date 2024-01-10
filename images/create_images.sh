@@ -32,3 +32,9 @@ gs -dFirstPage=1 -dLastPage=1 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo
 gs -dFirstPage=2 -dLastPage=2 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo_color.png logo_icon.pdf
 gs -dFirstPage=3 -dLastPage=3 -sDEVICE=pngalpha -dTextAlphaBits=4 -r2442 -o logo_square.png logo_icon.pdf
 gs -dFirstPage=4 -dLastPage=4 -sDEVICE=pngalpha -dTextAlphaBits=4 -r1250 -o icon_256.png logo_icon.pdf
+
+# Create the image placement
+pdflatex item_placement.tex
+
+# Convert the pdf into png
+gs -sDEVICE=pngalpha -dTextAlphaBits=4 -r650 -o ../ui/html/item_placement.png item_placement.pdf
