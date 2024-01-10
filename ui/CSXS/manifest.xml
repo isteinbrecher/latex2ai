@@ -31,15 +31,15 @@
           <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
           <Geometry>
             <Size>
-             	<Height>400</Height>
+             	<Height>285</Height>
               	<Width>700</Width>
             </Size>
             <MinSize>
-                <Height>400</Height>
+                <Height>285</Height>
                 <Width>700</Width>
             </MinSize>
             <MaxSize>
-                <Height>400</Height>
+                <Height>285</Height>
                 <Width>700</Width>
             </MaxSize>
           </Geometry>

@@ -1,7 +1,9 @@
 body {
 	font-size: 13px;
+	font-family: sans-serif;
 }
 
+/* 
 form {
 	display: table;
 }
@@ -16,10 +18,11 @@ form {
 	vertical-align: top;
 }
 
-#dashForm, #waveForm {
+#dashForm,
+#waveForm {
 	display: none;
 }
 
 textarea {
 	resize: none;
-  }
+} */
