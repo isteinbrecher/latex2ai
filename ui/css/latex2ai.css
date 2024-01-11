@@ -1,28 +1,5 @@
 body {
-	font-size: 13px;
-	font-family: sans-serif;
+    font-size: 13px;
+    font-family: sans-serif;
+    user-select: none;
 }
-
-/* 
-form {
-	display: table;
-}
-
-.row {
-	display: table-row;
-}
-
-.col {
-	display: table-cell;
-	padding: 3px;
-	vertical-align: top;
-}
-
-#dashForm,
-#waveForm {
-	display: none;
-}
-
-textarea {
-	resize: none;
-} */
