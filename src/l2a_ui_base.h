@@ -59,7 +59,8 @@ namespace L2A::UI
         /**
          * @brief Constructor
          */
-        FormBase(const char* form_extension_id) : HtmlUIController(form_extension_id){};
+        FormBase(const char* form_extension_id)
+            : HtmlUIController(form_extension_id), form_extension_id_(form_extension_id){};
 
         /**
          * @brief Set the event listener data
@@ -69,22 +70,26 @@ namespace L2A::UI
         /**
          * \brief Registers the events this plug-in will listen for with PlugPlug
          */
-        csxs::event::EventErrorCode RegisterCSXSEventListeners();
+        csxs::event::EventErrorCode RegisterCSXSEventListeners() override;
 
         /**
          * \brief Removes the previously added event listeners from PlugPlug
          */
-        csxs::event::EventErrorCode RemoveEventListeners();
+        csxs::event::EventErrorCode RemoveEventListeners() override;
 
         /**
          * \brief Overload this abstract method
          */
-        virtual ASErr SendData() { return 0; };
+        ASErr SendData() override { return 0; };
 
         /**
          * \brief Overload this abstract method
          */
-        virtual void ParseData(const char* eventData){};
+        void ParseData(const char* eventData) override{};
+
+       protected:
+        //! Name of the current form
+        std::string form_extension_id_;
 
        private:
         //! Vector with all event listeners

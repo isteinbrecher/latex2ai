@@ -68,11 +68,11 @@ namespace L2A::UI
         void RemoveEventListeners();
 
         /**
-         * @brief Return pointer to the item form form
+         * @brief Return pointer to the item form
          */
         Item& GetItemForm()
         {
-            Item* form = dynamic_cast<Item*>(forms_[FormsEnum::item_].get());
+            Item* form = dynamic_cast<Item*>(forms_[FormsEnum::item].get());
             return *(form);
         }
 

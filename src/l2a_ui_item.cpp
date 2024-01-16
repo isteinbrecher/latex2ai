@@ -38,12 +38,13 @@
 #include "l2a_string_functions.h"
 
 
-
-// Define names for this form
-const char* FORM_NAME = "com.adobe.illustrator.latex2aiui.dialog_item";
-const char* EVENT_TYPE_ITEM_READY = "com.adobe.csxs.events.latex2ai.item.ready";
-const char* EVENT_TYPE_ITEM_COMPILE = "com.adobe.csxs.events.latex2ai.item.compile";
-const char* EVENT_TYPE_ITEM_CLOSE = "com.adobe.csxs.events.latex2ai.item.close";
+/**
+ * \brief Set the names for item forms
+ */
+const char* L2A::UI::Item::FORM_NAME = "com.adobe.illustrator.latex2aiui.dialog_item";
+const char* L2A::UI::Item::EVENT_TYPE_ITEM_READY = "com.adobe.csxs.events.latex2ai.item.ready";
+const char* L2A::UI::Item::EVENT_TYPE_ITEM_COMPILE = "com.adobe.csxs.events.latex2ai.item.compile";
+const char* L2A::UI::Item::EVENT_TYPE_ITEM_CLOSE = "com.adobe.csxs.events.latex2ai.item.close";
 
 
 /**
@@ -290,9 +291,9 @@ void L2A::UI::Item::CloseForm()
 std::unique_ptr<L2A::UI::Item> L2A::UI::ItemFactory()
 {
     auto return_ptr = std::make_unique<Item>();
-    std::vector<EventListenerData> event_listener_data = {//
-        {EVENT_TYPE_ITEM_READY, Item::ItemReady, true},   //
-        {EVENT_TYPE_ITEM_COMPILE, Item::CompileItemCallback, true}};
+    std::vector<EventListenerData> event_listener_data = {              //
+        {L2A::UI::Item::EVENT_TYPE_ITEM_READY, Item::ItemReady, true},  //
+        {L2A::UI::Item::EVENT_TYPE_ITEM_COMPILE, Item::CompileItemCallback, true}};
     return_ptr->SetEventListeners(event_listener_data);
     return return_ptr;
 }

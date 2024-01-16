@@ -41,6 +41,13 @@ namespace L2A::UI
     class Item : public FormBase
     {
        public:
+        // Define names for this form
+        static const char* FORM_NAME;
+        static const char* EVENT_TYPE_ITEM_READY;
+        static const char* EVENT_TYPE_ITEM_COMPILE;
+        static const char* EVENT_TYPE_ITEM_CLOSE;
+
+       public:
         /**
          * @brief Constructor
          */
