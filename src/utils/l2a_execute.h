@@ -55,11 +55,6 @@ namespace L2A
         CommandResult ExecuteCommandLine(
             const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms = 10000);
 
-        /**
-         * \brief Execute a file on disc.
-         */
-        int ExecuteFile(const ai::FilePath& file_path);
-
         namespace INTERNAL
         {
             /**

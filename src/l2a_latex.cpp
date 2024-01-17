@@ -205,7 +205,7 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
  */
 bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
 {
-    // Create the latex and batch files.
+    // Create the latex files
     const ai::FilePath tex_file = WriteLatexFiles(latex_code, Global().path_temp_);
 
     // Remove a mabe existing pdf file.
@@ -315,11 +315,10 @@ ai::FilePath L2A::LATEX::WriteLatexFiles(const ai::UnicodeString& latex_code, co
     L2A::UTIL::CreateDirectoryL2A(tex_folder);
 
     // Define the path varaibles for this function.
-    ai::FilePath tex_header_file, tex_file, batch_file;
-    tex_header_file = tex_file = batch_file = tex_folder;
+    ai::FilePath tex_header_file, tex_file;
+    tex_header_file = tex_file = tex_folder;
     tex_header_file.AddComponent(ai::UnicodeString(L2A::NAMES::tex_header_name_));
     tex_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_tex_name_));
-    batch_file.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_batch_name_));
 
     // Create the header in the temp directory.
     ai::UnicodeString header_string =

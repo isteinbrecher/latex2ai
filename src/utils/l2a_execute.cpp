@@ -61,23 +61,6 @@ L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
 /**
  *
  */
-int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
-{
-    // TODO : delete this function and the batch stuff
-    if (L2A::UTIL::IsFile(file_path))
-    {
-        std::string command = "\"" + file_path.GetFullPath().as_Platform() + "\"";
-
-        return system(command.c_str());
-    }
-    else
-        l2a_error("The file " + file_path.GetFullPath() + " does not exist!");
-}
-
-
-/**
- *
- */
 L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::UnicodeString& command)
 {
     std::array<char, 8192> buffer{};

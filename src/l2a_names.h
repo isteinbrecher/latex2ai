@@ -55,12 +55,6 @@ namespace L2A
             "LaTeX2AI_item"
             ".tex";
 
-        //! Name for the batch file when creating a latex item.
-        static const char* create_pdf_batch_name_ = "LaTeX2AI_item_batch.bat";
-
-        //! Name for the batch file that splits up the pdf pages.
-        static const char* create_pdf_split_batch_name_ = "LaTeX2AI_extract_pages.bat";
-
         /**
          * \brief Get the name of a pdf for an item of the current document.
          */

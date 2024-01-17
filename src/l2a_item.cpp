@@ -591,27 +591,24 @@ void L2A::RedoItems(std::vector<AIArtHandle>& redo_items, const RedoItemsOption&
  */
 void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
 {
-    // Loop over every element and get the latex code as string.
-    ai::UnicodeString global_latex_code("\n\n");
+    // Loop over every element and get the property
+    std::vector<L2A::Property> properties;
     for (const auto& item : l2a_items)
     {
-        global_latex_code += "% Name of the item in Illustrator: \"" + item.GetAIName() + "\"\n";
-        global_latex_code += item.GetProperty().GetLaTeXCode();
-        global_latex_code += "\n\n";
+        // TODO: dont copy the pdf contents here
+        properties.push_back(item.GetProperty());
     }
 
-    // Create a latex document with the code from all items to redo.
-    ai::FilePath pdf_path;
-    L2A::LATEX::LatexCreationDebugResult result =
-        L2A::LATEX::CreateLatexWithDebug(global_latex_code, pdf_path, ai::UnicodeString("redo_all"));
-    if (result == L2A::LATEX::LatexCreationDebugResult::fail_quit ||
-        result == L2A::LATEX::LatexCreationDebugResult::fail_redo)
+    // Create the pdf file for each item
+    auto [latex_creation_result, pdf_files] = L2A::LATEX::CreateLatexItems(properties);
+    if (latex_creation_result != L2A::LATEX::LatexCreationResult::ok)
+    {
         return;
+    }
 
-    // Split up the created items into the individual pdf files.
-    std::vector<ai::FilePath> pdf_files = L2A::LATEX::SplitPdfPages(pdf_path, (unsigned int)l2a_items.size());
-
-    // Create the PDFs for the items and store them in the placed items.
+    // Create the PDFs for the items and store them in the placed items. We dont reset the boundary box here. This is
+    // done in the redo function, we leave it out here, since one might want to use this funciton without resetting the
+    // bounding box.
     for (unsigned int i = 0; i < l2a_items.size(); i++)
     {
         // Get the PDF path.
