@@ -547,41 +547,14 @@ bool L2A::Item::IsStreched() const
 /**
  *
  */
-void L2A::RedoItems()
+void L2A::RedoItems(std::vector<AIArtHandle>& redo_items, const RedoItemsOption& redo_option)
 {
-    // First get all and all selected l2a items.
-    std::vector<AIArtHandle> all_items;
-    std::vector<AIArtHandle> selected_items;
-    L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
-    L2A::AI::GetDocumentItems(selected_items, L2A::AI::SelectionState::selected);
+    L2A::AI::SetUndoText(ai::UnicodeString("Undo Redo LaTeX2AI Items"), ai::UnicodeString("Redo LaTeX2AI Items"));
 
-    // Add number of items to parameter list for form.
-    L2A::UTIL::ParameterList redo_all_parameter_list;
-    const unsigned int n_all_items = (unsigned int)all_items.size();
-    const unsigned int n_selected_items = (unsigned int)selected_items.size();
-    redo_all_parameter_list.SetOption(ai::UnicodeString("n_all_items"), n_all_items);
-    redo_all_parameter_list.SetOption(ai::UnicodeString("n_selected_items"), n_selected_items);
+    // Check if something needs to be done
+    if (redo_items.size() == 0) return;
 
-    // Get the user input for the redo all function.
-    std::shared_ptr<L2A::UTIL::ParameterList> new_parameter_list;
-    if (L2A::Form(ai::UnicodeString("l2a_redo"), redo_all_parameter_list, new_parameter_list).canceled) return;
-
-    // Get the result from the form.
-    const bool redo_latex = new_parameter_list->GetIntOption(ai::UnicodeString("redo_latex"));
-    const bool redo_boundary = new_parameter_list->GetIntOption(ai::UnicodeString("redo_boundary"));
-    if (redo_latex && !redo_boundary) l2a_error("Got unexpected combination of options.");
-    std::vector<AIArtHandle> redo_items;
-    const bool is_all_items =
-        new_parameter_list->GetStringOption(ai::UnicodeString("item_type")) == ai::UnicodeString("all");
-    if (is_all_items)
-        redo_items = all_items;
-    else
-        redo_items = selected_items;
-
-    // Check if something needs to be done.
-    if (!redo_latex && !redo_boundary || redo_items.size() == 0) return;
-
-    // Create an Item for all placed items that need to be redone.
+    // Create an Item for all placed items that need to be redone
     unsigned int locked_counter = 0;
     std::vector<L2A::Item> l2a_items;
     for (const auto& placed_item : redo_items)
@@ -604,14 +577,13 @@ void L2A::RedoItems()
         sAIUser->MessageAlert(message_text);
     }
 
-    if (redo_latex)
+    if (redo_option == RedoItemsOption::latex)
     {
         RedoLaTeXItems(l2a_items);
     }
 
-    // Redo the boundaries of all items.
-    if (redo_boundary)
-        for (auto& item : l2a_items) item.RedoBoundary();
+    // Redo the boundaries of all items (this has to be done for both cases of redo_option
+    for (auto& item : l2a_items) item.RedoBoundary();
 }
 
 /**

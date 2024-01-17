@@ -41,38 +41,40 @@
 /**
  * \brief Set the names for item forms
  */
-const char* L2A::UI::Item::FORM_NAME = "com.adobe.illustrator.latex2aiui.dialog_item";
-const char* L2A::UI::Item::EVENT_TYPE_ITEM_READY = "com.adobe.csxs.events.latex2ai.item.ready";
-const char* L2A::UI::Item::EVENT_TYPE_ITEM_COMPILE = "com.adobe.csxs.events.latex2ai.item.compile";
-const char* L2A::UI::Item::EVENT_TYPE_ITEM_CLOSE = "com.adobe.csxs.events.latex2ai.item.close";
+const std::string L2A::UI::Item::FORM_NAME = "LaTeX2AI create/edit item";
+const std::string L2A::UI::Item::FORM_ID = "com.adobe.illustrator.latex2aiui.dialog_item";
+const std::string L2A::UI::Item::EVENT_TYPE_BASE = "com.adobe.csxs.events.latex2ai.item";
+const std::string L2A::UI::Item::EVENT_TYPE_ITEM_READY = "com.adobe.csxs.events.latex2ai.item.ready";
+const std::string L2A::UI::Item::EVENT_TYPE_ITEM_OK = "com.adobe.csxs.events.latex2ai.item.ok";
+const std::string L2A::UI::Item::EVENT_TYPE_ITEM_UPDATE = "com.adobe.csxs.events.latex2ai.item.update";
 
 
 /**
  *
  */
-L2A::UI::Item::Item() : FormBase(FORM_NAME) {}
-
-/**
- *
- */
-AIErr L2A::UI::Item::LoadForm()
+L2A::UI::Item::Item() : FormBase(FORM_NAME, FORM_ID.c_str(), EVENT_TYPE_BASE)
 {
-    PlugPlugErrorCode result = LoadExtension();
-    if (result != PlugPlugErrorCode_success)
-    {
-        l2a_error("LaTeX2AI create/edit item UI could not be loaded");
-        return kCantHappenErr;
-    }
-    else
-    {
-        return kNoErr;
-    }
+    // If we don't do this this way, we get a compiler error
+    std::vector<EventListenerData> event_listener_data = {
+        {EVENT_TYPE_ITEM_READY, CallbackHandler<Item, &Item::CallbackFormReady>()},  //
+        {EVENT_TYPE_ITEM_OK, CallbackHandler<Item, &Item::CallbackOk>()}             //
+    };
+    event_listener_data_ = std::move(event_listener_data);
 }
 
 /**
  *
  */
-void L2A::UI::Item::CreateNewItem(const AIRealPoint& position)
+void L2A::UI::Item::ResetFormData()
+{
+    action_type_ = ActionType::none;
+    change_item_ = nullptr;
+}
+
+/**
+ *
+ */
+void L2A::UI::Item::OpenCreateItemForm(const AIRealPoint& position)
 {
     // TODO:Check if document is saved
 
@@ -88,7 +90,7 @@ void L2A::UI::Item::CreateNewItem(const AIRealPoint& position)
 /**
  *
  */
-void L2A::UI::Item::EditItem(const AIArtHandle& art_handle)
+void L2A::UI::Item::OpenEditItemForm(const AIArtHandle& art_handle)
 {
     // TODO:Check if document is saved
 
@@ -96,21 +98,44 @@ void L2A::UI::Item::EditItem(const AIArtHandle& art_handle)
     change_item_ = std::make_unique<L2A::Item>(art_handle);
     property_ = change_item_->GetProperty();
 
-    // Load the item UI
-    PlugPlugErrorCode result = LoadExtension();
-    if (result != PlugPlugErrorCode_success)
-    {
-        l2a_error("LaTeX2AI create/edit item UI could not be loaded");
-        return kCantHappenErr;
-    }
-
-    return kNoErr;
+    LoadForm();
 }
 
 /**
  *
  */
-void L2A::UI::Item::CompileNewItem(const L2A::UTIL::ParameterList& item_data_from_form)
+void L2A::UI::Item::CallbackFormReady(const csxs::event::Event* const eventParam) { SendData(); }
+
+/**
+ *
+ */
+void L2A::UI::Item::CallbackOk(const csxs::event::Event* const eventParam)
+{
+    // We need to activate the app context here, because otherwise functions like the GetDocumentName will not work
+    auto app_context = L2A::GlobalPluginAppContext();
+
+    // Convert the return data to a parameter list
+    L2A::UTIL::ParameterList form_return_data(L2A::UTIL::StringStdToAi(eventParam->data));
+
+    if (action_type_ == ActionType::create_item)
+    {
+        CreateNewItem(*form_return_data.GetSubList(ai::UnicodeString("l2a_item")));
+    }
+    else if (action_type_ == ActionType::edit_item)
+    {
+        EditItem(form_return_data.GetStringOption(ai::UnicodeString("return_value")),
+            *form_return_data.GetSubList(ai::UnicodeString("l2a_item")));
+    }
+    else
+    {
+        l2a_error("Got unexpected ActionType");
+    }
+}
+
+/**
+ *
+ */
+void L2A::UI::Item::CreateNewItem(const L2A::UTIL::ParameterList& item_data_from_form)
 {
     L2A::AI::SetUndoText(
         ai::UnicodeString("Undo Create LaTeX2AI Item"), ai::UnicodeString("Undo Create LaTeX2AI Item"));
@@ -172,52 +197,6 @@ void L2A::UI::Item::EditItem(const ai::UnicodeString& return_value, const L2A::U
 /**
  *
  */
-void L2A::UI::Item::ItemReady(const csxs::event::Event* const eventParam, void* const context)
-{
-    auto item_form = (L2A::UI::Item*)context;
-    item_form->SendData();
-}
-
-/**
- *
- */
-void L2A::UI::Item::CompileItemCallback(const csxs::event::Event* const eventParam, void* const context)
-{
-    // Get the ui controller from the function arguments
-    auto item_form = (L2A::UI::Item*)context;
-
-    try
-    {
-        // We need to activate the app context here, because otherwise functions like the GetDocumentName will not work
-        auto app_context = L2A::GlobalPluginAppContext();
-
-        // Convert the return data to a parameter list
-        L2A::UTIL::ParameterList form_return_data(L2A::UTIL::StringStdToAi(eventParam->data));
-
-        if (item_form->action_type_ == ActionType::create_item)
-        {
-            item_form->CompileNewItem(*form_return_data.GetSubList(ai::UnicodeString("l2a_item")));
-        }
-        else if (item_form->action_type_ == ActionType::edit_item)
-        {
-            item_form->EditItem(form_return_data.GetStringOption(ai::UnicodeString("return_value")),
-                *form_return_data.GetSubList(ai::UnicodeString("l2a_item")));
-        }
-        else
-        {
-            l2a_error("Got unexpected ActionType");
-        }
-    }
-    catch (L2A::ERR::Exception&)
-    {
-        sAIUser->MessageAlert(ai::UnicodeString("Error in L2A::UI::ItemUI::CompileItemCallback"));
-        item_form->CloseForm();
-    }
-}
-
-/**
- *
- */
 ASErr L2A::UI::Item::SendData()
 {
     ASErr error = kNoErr;
@@ -256,8 +235,8 @@ ASErr L2A::UI::Item::SendData()
     // Get the string containing all data for the form and sent it
     std::string xml_string =
         L2A::UTIL::StringAiToStd(form_parameter_list.ToXMLString(ai::UnicodeString("full_item_data")));
-    csxs::event::Event event = {"com.adobe.csxs.events.latex2ai.item.update", csxs::event::kEventScope_Application,
-        "LaTeX2AI", NULL, xml_string.c_str()};
+    csxs::event::Event event = {
+        EVENT_TYPE_ITEM_UPDATE.c_str(), csxs::event::kEventScope_Application, "LaTeX2AI", NULL, xml_string.c_str()};
     csxs::event::EventErrorCode result = htmlPPLib.DispatchEvent(&event);
     if (result != csxs::event::kEventErrorCode_Success)
     {
@@ -266,34 +245,4 @@ ASErr L2A::UI::Item::SendData()
     }
 
     return error;
-}
-
-/**
- *
- */
-void L2A::UI::Item::CloseForm()
-{
-    // Reset the state of the ui controller
-    action_type_ = ActionType::none;
-
-    // Send callback to close the form
-    csxs::event::Event event = {EVENT_TYPE_ITEM_CLOSE, csxs::event::kEventScope_Application, "LaTeX2AI", NULL, ""};
-    csxs::event::EventErrorCode result = htmlPPLib.DispatchEvent(&event);
-    if (result != csxs::event::kEventErrorCode_Success)
-    {
-        l2a_error("Form could not be closed!");
-    }
-}
-
-/**
- *
- */
-std::unique_ptr<L2A::UI::Item> L2A::UI::ItemFactory()
-{
-    auto return_ptr = std::make_unique<Item>();
-    std::vector<EventListenerData> event_listener_data = {              //
-        {L2A::UI::Item::EVENT_TYPE_ITEM_READY, Item::ItemReady, true},  //
-        {L2A::UI::Item::EVENT_TYPE_ITEM_COMPILE, Item::CompileItemCallback, true}};
-    return_ptr->SetEventListeners(event_listener_data);
-    return return_ptr;
 }

@@ -319,12 +319,8 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
 
         // Now the document as we expect it is created.
         // Redo all latex items.
-        std::shared_ptr<L2A::UTIL::ParameterList> form_return_list = std::make_shared<L2A::UTIL::ParameterList>();
-        form_return_list->SetOption(ai::UnicodeString("redo_latex"), 1);
-        form_return_list->SetOption(ai::UnicodeString("redo_boundary"), 1);
-        form_return_list->SetOption(ai::UnicodeString("item_type"), ai::UnicodeString("all"));
-        L2A::GlobalMutable().testing_form_return_parameter_list_ = form_return_list;
-        L2A::RedoItems();
+        L2A::AI::GetDocumentItems(placed_items, L2A::AI::SelectionState::all);
+        L2A::RedoItems(placed_items, L2A::RedoItemsOption::latex);
 
         // Check the dimensions of the placed items, i.e. this is the most basic check we have for the LaTeX document.
         std::vector<L2A::Item> l2a_items;
@@ -354,12 +350,8 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             L2A::AI::Scale((AIReal)0.8, (AIReal)1.2);
 
             // Redo all latex items (boundary box).
-            form_return_list = std::make_shared<L2A::UTIL::ParameterList>();
-            form_return_list->SetOption(ai::UnicodeString("redo_latex"), 0);
-            form_return_list->SetOption(ai::UnicodeString("redo_boundary"), 1);
-            form_return_list->SetOption(ai::UnicodeString("item_type"), ai::UnicodeString("all"));
-            L2A::GlobalMutable().testing_form_return_parameter_list_ = form_return_list;
-            L2A::RedoItems();
+            L2A::AI::GetDocumentItems(placed_items, L2A::AI::SelectionState::all);
+            L2A::RedoItems(placed_items, L2A::RedoItemsOption::bounding_box);
 
             // Check the items.
             PRIVATE::CheckItems(ut);
@@ -374,12 +366,8 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             L2A::AI::Rotate((AIReal)196.9);
 
             // Redo all latex items (boundary box).
-            form_return_list = std::make_shared<L2A::UTIL::ParameterList>();
-            form_return_list->SetOption(ai::UnicodeString("redo_latex"), 0);
-            form_return_list->SetOption(ai::UnicodeString("redo_boundary"), 1);
-            form_return_list->SetOption(ai::UnicodeString("item_type"), ai::UnicodeString("all"));
-            L2A::GlobalMutable().testing_form_return_parameter_list_ = form_return_list;
-            L2A::RedoItems();
+            L2A::AI::GetDocumentItems(placed_items, L2A::AI::SelectionState::all);
+            L2A::RedoItems(placed_items, L2A::RedoItemsOption::bounding_box);
 
             // Check the rotation of the items.
             L2A::AI::GetDocumentItems(placed_items, L2A::AI::SelectionState::all);
@@ -403,12 +391,8 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
             L2A::AI::Scale((AIReal)0.8, (AIReal)1.2);
 
             // Redo all latex items (boundary box).
-            form_return_list = std::make_shared<L2A::UTIL::ParameterList>();
-            form_return_list->SetOption(ai::UnicodeString("redo_latex"), 0);
-            form_return_list->SetOption(ai::UnicodeString("redo_boundary"), 1);
-            form_return_list->SetOption(ai::UnicodeString("item_type"), ai::UnicodeString("all"));
-            L2A::GlobalMutable().testing_form_return_parameter_list_ = form_return_list;
-            L2A::RedoItems();
+            L2A::AI::GetDocumentItems(placed_items, L2A::AI::SelectionState::all);
+            L2A::RedoItems(placed_items, L2A::RedoItemsOption::bounding_box);
 
             // Check the items.
             PRIVATE::CheckItems(ut);

@@ -98,7 +98,7 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             if (L2A::AI::GetSingleIsolationItem(placed_item))
             {
                 // Change the item
-                ui_manager_->GetItemForm().EditItem(placed_item);
+                ui_manager_->GetItemForm().OpenEditItemForm(placed_item);
             }
         }
         else if (message->notifier == fNotifyDocumentOpened || message->notifier == fNotifyDocumentSave ||
@@ -274,14 +274,14 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
         {
             if (annotator_->IsArtHit())
             {
-                ui_manager_->GetItemForm().EditItem(annotator_->GetArtHit());
+                ui_manager_->GetItemForm().OpenEditItemForm(annotator_->GetArtHit());
             }
             else
             {
                 // Check if the current insertion point is locked.
                 if (!L2A::AI::GetLockedInsertionPoint())
                 {
-                    ui_manager_->GetItemForm().CreateNewItem(message->cursor);
+                    ui_manager_->GetItemForm().OpenCreateItemForm(message->cursor);
                 }
                 else
                 {
@@ -445,18 +445,7 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
     }
     else if (message->tool == this->fToolHandle[1] && L2A::AI::GetDocumentCount() > 0)
     {
-        // Activate undo.
-        ai::UnicodeString undo_string("Undo Update LaTeX2AI item");
-        ai::UnicodeString redo_string("Redo Update LaTeX2AI item");
-        sAIUndo->SetUndoTextUS(undo_string, redo_string);
-        L2A::AI::UndoActivate();
-
-        // Redo tool is selected.
-        L2A::RedoItems();
-
-        // Deselect all so a call to the plugin will be given, where the tools can be deselected.
-        error = sAIMatchingArt->DeselectAll();
-        l2a_check_ai_error(error);
+        ui_manager_->GetRedoForm().OpenRedoForm();
     }
     else if (message->tool == this->fToolHandle[2])
     {

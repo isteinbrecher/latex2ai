@@ -26,6 +26,8 @@
 		C61B69A32B4AB83200AF2924 /* l2a_ui_base.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */; };
 		C61B69AE2B4AD6BB00AF2924 /* l2a_ui_item.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */; };
 		C61B69AF2B4AD6BB00AF2924 /* l2a_ui_item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */; };
+		C62AA9DB2B4C3BF300E27B7B /* l2a_ui_redo.h in Headers */ = {isa = PBXBuildFile; fileRef = C62AA9D92B4C3BF300E27B7B /* l2a_ui_redo.h */; };
+		C62AA9DC2B4C3BF300E27B7B /* l2a_ui_redo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62AA9DA2B4C3BF300E27B7B /* l2a_ui_redo.cpp */; };
 		C62F72262B25B34A00947D31 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62F72252B25B34A00947D31 /* tinyxml2.cpp */; };
 		C64D02C72B4A067300079AFE /* HtmlUIController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64D02C62B4A067300079AFE /* HtmlUIController.cpp */; };
 		C67D8B152B03814D001F89FA /* l2a_math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B142B03814D001F89FA /* l2a_math.cpp */; };
@@ -111,6 +113,8 @@
 		C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_base.h; path = src/l2a_ui_base.h; sourceTree = "<group>"; };
 		C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_item.h; path = src/l2a_ui_item.h; sourceTree = "<group>"; };
 		C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_item.cpp; path = src/l2a_ui_item.cpp; sourceTree = "<group>"; };
+		C62AA9D92B4C3BF300E27B7B /* l2a_ui_redo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_redo.h; path = src/l2a_ui_redo.h; sourceTree = "<group>"; };
+		C62AA9DA2B4C3BF300E27B7B /* l2a_ui_redo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_redo.cpp; path = src/l2a_ui_redo.cpp; sourceTree = "<group>"; };
 		C62F72252B25B34A00947D31 /* tinyxml2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml2.cpp; path = tpl/tinyxml2/tinyxml2.cpp; sourceTree = "<group>"; };
 		C64D02C62B4A067300079AFE /* HtmlUIController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HtmlUIController.cpp; path = ../common/source/HtmlUIController.cpp; sourceTree = "<group>"; };
 		C67D8B142B03814D001F89FA /* l2a_math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_math.cpp; path = src/utils/l2a_math.cpp; sourceTree = "<group>"; };
@@ -204,6 +208,8 @@
 		508817F509F0CAB50071BF1A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C62AA9DA2B4C3BF300E27B7B /* l2a_ui_redo.cpp */,
+				C62AA9D92B4C3BF300E27B7B /* l2a_ui_redo.h */,
 				C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */,
 				C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */,
 				C61B69A02B4AB83200AF2924 /* l2a_ui_base.cpp */,
@@ -332,6 +338,7 @@
 				C67D8B502B038B86001F89FA /* l2a_names.h in Headers */,
 				C6F3D20E2B03A022004EF248 /* test_parameter_list.h in Headers */,
 				C67D8B4E2B038B86001F89FA /* l2a_global.h in Headers */,
+				C62AA9DB2B4C3BF300E27B7B /* l2a_ui_redo.h in Headers */,
 				C605E7F72B226FF900E74B92 /* l2a_execute.h in Headers */,
 				C67D8B222B038670001F89FA /* l2a_file_system.h in Headers */,
 				C67D8B532B038B86001F89FA /* l2a_annotator.h in Headers */,
@@ -500,6 +507,7 @@
 				C6F3D1EC2B039EDD004EF248 /* l2a_annotator.cpp in Sources */,
 				C67D8B182B03817A001F89FA /* l2a_string_functions.cpp in Sources */,
 				2AF5F7AC0CF5F3110091D961 /* Plugin.cpp in Sources */,
+				C62AA9DC2B4C3BF300E27B7B /* l2a_ui_redo.cpp in Sources */,
 				C6F3D20D2B03A022004EF248 /* test_forms.cpp in Sources */,
 				C67D8B562B038B86001F89FA /* l2a_global.cpp in Sources */,
 				2AF5F7AD0CF5F3110091D961 /* SDKAboutPluginsHelper.cpp in Sources */,

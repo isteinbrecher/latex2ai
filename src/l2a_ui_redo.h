@@ -23,11 +23,11 @@
 // -----------------------------------------------------------------------------
 
 /**
- * \brief Form for creating / editing an item
+ * \brief Form for redoing all items
  */
 
-#ifndef L2A_UI_ITEM_H_
-#define L2A_UI_ITEM_H_
+#ifndef L2A_UI_REDO_H_
+#define L2A_UI_REDO_H_
 
 #include "l2a_item.h"
 #include "l2a_property.h"
@@ -36,24 +36,24 @@
 namespace L2A::UI
 {
     /**
-     * @brief Form for creating / editing an item
+     * @brief Form for redoing all items
      */
-    class Item : public FormBase
+    class Redo : public FormBase
     {
        public:
         // Define names for this form
         static const std::string FORM_NAME;
         static const std::string FORM_ID;
         static const std::string EVENT_TYPE_BASE;
-        static const std::string EVENT_TYPE_ITEM_READY;
-        static const std::string EVENT_TYPE_ITEM_OK;
-        static const std::string EVENT_TYPE_ITEM_UPDATE;
+        static const std::string EVENT_TYPE_REDO_READY;
+        static const std::string EVENT_TYPE_REDO_OK;
+        static const std::string EVENT_TYPE_REDO_UPDATE;
 
        public:
         /**
          * @brief Constructor
          */
-        Item();
+        Redo();
 
         /**
          * @brief Reset internal data of the form that is not relevant after it is closed
@@ -61,16 +61,9 @@ namespace L2A::UI
         void ResetFormData() override;
 
         /**
-         * @brief Create a new item at the given cursor position
-         * TODO: Check return type of this method and error handling
+         * @brief Open the form to edit all items in a document
          */
-        void OpenCreateItemForm(const AIRealPoint& position);
-
-        /**
-         * @brief Edit an existing item
-         * TODO: Check return type of this method and error handling
-         */
-        void OpenEditItemForm(const AIArtHandle& art_handle);
+        void OpenRedoForm();
 
         /**
          * @brief This function is called once the ui is loaded. We send the data to the ui here
@@ -83,48 +76,16 @@ namespace L2A::UI
         void CallbackOk(const csxs::event::Event* const eventParam);
 
         /**
-         * @brief Compile the data from the form to a new L2A item
-         */
-        void CreateNewItem(const L2A::UTIL::ParameterList& item_data_from_form);
-
-        /**
-         * @brief Edit an existing L2A item
-         */
-        void EditItem(const ai::UnicodeString& return_value, const L2A::UTIL::ParameterList& item_data_from_form);
-
-        /**
          * \brief Send data to the form
          */
         ASErr SendData() override;
 
        private:
-        /**
-         * @brief Define what the current action of the form is
-         */
-        enum class ActionType
-        {
-            none,
-            create_item,
-            edit_item
-        };
+        //! Vector with all LaTeX2AI items
+        std::vector<AIArtHandle> all_items_;
 
-        //! Current action type of the UI
-        ActionType action_type_ = ActionType::none;
-
-        //! Property of the last item change
-        L2A::Property property_;
-
-        //! Pointer to the item that is currently being edited
-        std::unique_ptr<L2A::Item> change_item_;
-
-        //! Position in the document where a new item shall be inserted
-        AIRealPoint new_item_insertion_point_;
+        //! Vector with all selected LaTeX2AI items
+        std::vector<AIArtHandle> selected_items_;
     };
-
-    /**
-     * @brief Create the form with the event listeners
-     */
-    std::unique_ptr<Item> ItemFactory();
-
 }  // namespace L2A::UI
 #endif

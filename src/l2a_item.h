@@ -204,9 +204,18 @@ namespace L2A
     };
 
     /**
+     * \brief Flag for the redo items function
+     */
+    enum class RedoItemsOption
+    {
+        latex,
+        bounding_box
+    };
+
+    /**
      * \brief Redo all items. Give the user the option to chose what to redo.
      */
-    void RedoItems();
+    void RedoItems(std::vector<AIArtHandle>& items, const RedoItemsOption& redo_option);
 
     /**
      * \brief Redo the LaTeX code for all items in the vector.

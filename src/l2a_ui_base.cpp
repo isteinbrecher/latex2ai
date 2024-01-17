@@ -35,6 +35,42 @@
 /**
  *
  */
+AIErr L2A::UI::FormBase::LoadForm()
+{
+    PlugPlugErrorCode result = LoadExtension();
+    if (result != PlugPlugErrorCode_success)
+    {
+        l2a_error(form_name_ + " form could not be loaded");
+        return kCantHappenErr;
+    }
+    else
+    {
+        return kNoErr;
+    }
+}
+
+/**
+ *
+ */
+AIErr L2A::UI::FormBase::CloseForm()
+{
+    // Reset the state of the form
+    ResetFormData();
+
+    // Send callback to close the form
+    const auto event_close = event_name_base_ + ".close";
+    csxs::event::Event event = {event_close.c_str(), csxs::event::kEventScope_Application, "LaTeX2AI", NULL, ""};
+    csxs::event::EventErrorCode result = htmlPPLib.DispatchEvent(&event);
+    if (result != csxs::event::kEventErrorCode_Success)
+    {
+        l2a_error(form_name_ + " form could not be closed");
+    }
+    return kNoErr;
+}
+
+/**
+ *
+ */
 void L2A::UI::FormBase::SetEventListeners(std::vector<EventListenerData>& event_listener_data)
 {
     if (event_listener_data.size() == 0) l2a_error("SetEventListeners requires at least one event listener");
@@ -49,14 +85,7 @@ csxs::event::EventErrorCode L2A::UI::FormBase::RegisterCSXSEventListeners()
     csxs::event::EventErrorCode result = csxs::event::kEventErrorCode_Success;
     for (auto& event_data : event_listener_data_)
     {
-        if (event_data.has_context_)
-        {
-            result = htmlPPLib.AddEventListener(event_data.event_id_.c_str(), event_data.event_listener_, this);
-        }
-        else
-        {
-            result = htmlPPLib.AddEventListener(event_data.event_id_.c_str(), event_data.event_listener_, nullptr);
-        }
+        result = htmlPPLib.AddEventListener(event_data.event_id_.c_str(), event_data.event_listener_, this);
 
         if (result != csxs::event::kEventErrorCode_Success)
         {
@@ -74,14 +103,7 @@ csxs::event::EventErrorCode L2A::UI::FormBase::RemoveEventListeners()
     csxs::event::EventErrorCode result = csxs::event::kEventErrorCode_Success;
     for (auto& event_data : event_listener_data_)
     {
-        if (event_data.has_context_)
-        {
-            result = htmlPPLib.RemoveEventListener(event_data.event_id_.c_str(), event_data.event_listener_, this);
-        }
-        else
-        {
-            result = htmlPPLib.RemoveEventListener(event_data.event_id_.c_str(), event_data.event_listener_, nullptr);
-        }
+        result = htmlPPLib.RemoveEventListener(event_data.event_id_.c_str(), event_data.event_listener_, this);
 
         if (result != csxs::event::kEventErrorCode_Success)
         {

@@ -45,9 +45,6 @@ namespace L2A::UI
 
         //! Function that will be called when this event is triggered
         const csxs::event::EventListenerFn event_listener_;
-
-        //! Flag it the forms object should be passed as context
-        bool has_context_;
     };
 
     /**
@@ -59,13 +56,28 @@ namespace L2A::UI
         /**
          * @brief Constructor
          */
-        FormBase(const char* form_extension_id)
-            : HtmlUIController(form_extension_id), form_extension_id_(form_extension_id){};
+        FormBase(const std::string& form_name, const char* form_extension_id, const std::string& event_name_base)
+            : HtmlUIController(form_extension_id),
+              form_name_(form_name),
+              form_extension_id_(form_extension_id),
+              event_name_base_(event_name_base){};
+
+        /**
+         * @brief Load the form
+         */
+        AIErr LoadForm();
+
+        /**
+         * @brief Close the form
+         */
+        AIErr CloseForm();
 
         /**
          * @brief Set the event listener data
          */
         void SetEventListeners(std::vector<EventListenerData>& event_listener_data);
+
+
 
         /**
          * \brief Registers the events this plug-in will listen for with PlugPlug
@@ -80,20 +92,55 @@ namespace L2A::UI
         /**
          * \brief Overload this abstract method
          */
-        ASErr SendData() override { return 0; };
+        ASErr SendData() override { return kNoErr; };
 
         /**
          * \brief Overload this abstract method
          */
         void ParseData(const char* eventData) override{};
 
+        /**
+         * @brief Reset internal data of the form that is not relevant after it is closed
+         */
+        virtual void ResetFormData(){};
+
        protected:
-        //! Name of the current form
+        //! Human readable name of the current form
+        std::string form_name_;
+
+        //! AI internal ID of the current form
         std::string form_extension_id_;
 
-       private:
+        //! Base name of events sent and received from this form
+        std::string event_name_base_;
+
         //! Vector with all event listeners
         std::vector<EventListenerData> event_listener_data_;
     };
+
+    /**
+     * @brief Return a function object that handles callbacks and calls the correct method on the correct object
+     */
+    template <typename T, void (T::*CallbackMethod)(const csxs::event::Event* const)>
+    csxs::event::EventListenerFn CallbackHandler()
+    {
+        return [](const csxs::event::Event* const event_parameter, void* const context)
+        {
+            // Get the correct form object from the function arguments
+            auto form_object = (T*)context;
+
+            // Make sure to catch errors, so we can close the form
+            try
+            {
+                (form_object->*CallbackMethod)(event_parameter);
+            }
+            catch (L2A::ERR::Exception&)
+            {
+                sAIUser->MessageAlert(ai::UnicodeString("Error in CallbackHandler"));
+                form_object->CloseForm();
+            }
+        };
+    }
+
 }  // namespace L2A::UI
 #endif

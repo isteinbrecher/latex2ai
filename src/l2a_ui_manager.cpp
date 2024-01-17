@@ -35,7 +35,11 @@
 /**
  *
  */
-L2A::UI::Manager::Manager() { forms_[FormsEnum::item_] = ItemFactory(); }
+L2A::UI::Manager::Manager()
+{
+    forms_[FormsEnum::item] = std::make_unique<Item>();
+    forms_[FormsEnum::redo] = std::make_unique<Redo>();
+}
 
 /**
  *

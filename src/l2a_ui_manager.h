@@ -31,6 +31,7 @@
 
 #include "l2a_ui_base.h"
 #include "l2a_ui_item.h"
+#include "l2a_ui_redo.h"
 
 #include <map>
 #include <memory>
@@ -42,8 +43,9 @@ namespace L2A::UI
      */
     enum class FormsEnum
     {
-        none_,
-        item_
+        none,
+        item,
+        redo
     };
 
     /**
@@ -73,6 +75,15 @@ namespace L2A::UI
         Item& GetItemForm()
         {
             Item* form = dynamic_cast<Item*>(forms_[FormsEnum::item].get());
+            return *(form);
+        }
+
+        /**
+         * @brief Return pointer to the redo form
+         */
+        Redo& GetRedoForm()
+        {
+            Redo* form = dynamic_cast<Redo*>(forms_[FormsEnum::redo].get());
             return *(form);
         }
 

@@ -48,7 +48,7 @@ $(function () {
         } else if (event.key === "Enter") {
             event.preventDefault()
             var event = new CSEvent(
-                "com.adobe.csxs.events.latex2ai.item.compile",
+                "com.adobe.csxs.events.latex2ai.item.ok",
                 "APPLICATION",
                 "ILST",
                 "LaTeX2AIUI"
@@ -65,7 +65,7 @@ $(function () {
     $("#button_ok").click(function (event) {
         event.preventDefault()
         var event = new CSEvent(
-            "com.adobe.csxs.events.latex2ai.item.compile",
+            "com.adobe.csxs.events.latex2ai.item.ok",
             "APPLICATION",
             "ILST",
             "LaTeX2AIUI"
@@ -76,7 +76,7 @@ $(function () {
     $("#button_redo_latex").click(function (event) {
         event.preventDefault()
         var event = new CSEvent(
-            "com.adobe.csxs.events.latex2ai.item.compile",
+            "com.adobe.csxs.events.latex2ai.item.ok",
             "APPLICATION",
             "ILST",
             "LaTeX2AIUI"
@@ -87,7 +87,7 @@ $(function () {
     $("#button_redo_boundary").click(function (event) {
         event.preventDefault()
         var event = new CSEvent(
-            "com.adobe.csxs.events.latex2ai.item.compile",
+            "com.adobe.csxs.events.latex2ai.item.ok",
             "APPLICATION",
             "ILST",
             "LaTeX2AIUI"
@@ -233,85 +233,4 @@ function update_create_item(event) {
     $("#dashForm").show()
     $("#latex_text").focus()
     $("#latex_text").prop("selectionEnd", cursor_position_input)
-}
-
-/**
- * Update the theme with the AppSkinInfo retrieved from the host product.
- */
-function updateThemeWithAppSkinInfo(appSkinInfo) {
-    //Update the background color of the panel
-    var panelBackgroundColor = appSkinInfo.panelBackgroundColor.color
-    document.body.bgColor = toHex(panelBackgroundColor)
-
-    var styleId = "hostStyle"
-    addRule(styleId, "body", "color:" + reverseColor(panelBackgroundColor))
-}
-
-function addRule(stylesheetId, selector, rule) {
-    var stylesheet = document.getElementById(stylesheetId)
-
-    if (stylesheet) {
-        stylesheet = stylesheet.sheet
-        if (stylesheet.addRule) {
-            stylesheet.addRule(selector, rule)
-        } else if (stylesheet.insertRule) {
-            stylesheet.insertRule(
-                selector + " { " + rule + " }",
-                stylesheet.cssRules.length
-            )
-        }
-    }
-}
-
-function reverseColor(color, delta) {
-    return toHex(
-        {
-            red: Math.abs(255 - color.red),
-            green: Math.abs(255 - color.green),
-            blue: Math.abs(255 - color.blue),
-        },
-        delta
-    )
-}
-
-/**
- * Convert the Color object to string in hexadecimal format;
- */
-function toHex(color, delta) {
-    function computeValue(value, delta) {
-        var computedValue = !isNaN(delta) ? value + delta : value
-        if (computedValue < 0) {
-            computedValue = 0
-        } else if (computedValue > 255) {
-            computedValue = 255
-        }
-
-        computedValue = computedValue.toString(16)
-        return computedValue.length == 1 ? "0" + computedValue : computedValue
-    }
-
-    var hex = ""
-    if (color) {
-        with (color) {
-            hex =
-                computeValue(red, delta) +
-                computeValue(green, delta) +
-                computeValue(blue, delta)
-        }
-    }
-    return "#" + hex
-}
-
-function onAppThemeColorChanged(event) {
-    // Should get a latest HostEnvironment object from application.
-    var skinInfo = JSON.parse(
-        window.__adobe_cep__.getHostEnvironment()
-    ).appSkinInfo
-    // Gets the style information such as color info from the skinInfo,
-    // and redraw all UI controls of your extension according to the style info.
-    updateThemeWithAppSkinInfo(skinInfo)
-}
-
-function evalScript(script, callback) {
-    new CSInterface().evalScript(script, callback)
 }

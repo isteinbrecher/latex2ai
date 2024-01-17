@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.illustrator.latex2aiui" ExtensionBundleVersion="1.0.0" Version="5.0">
   <ExtensionList>
     <Extension Id="com.adobe.illustrator.latex2aiui.dialog_item" Version="1.0.0"/>
-    <Extension Id="com.adobe.illustrator.latex2aiui.dialog2" Version="1.0.0"/>
+    <Extension Id="com.adobe.illustrator.latex2aiui.dialog_redo" Version="1.0.0"/>
   </ExtensionList>
   <ExecutionEnvironment>
     <HostList>
@@ -20,7 +20,7 @@
     <Extension Id="com.adobe.illustrator.latex2aiui.dialog_item">
       <DispatchInfo>
         <Resources>
-          <MainPath>./html/index.html</MainPath>
+          <MainPath>./html/index_item.html</MainPath>
           <CEFCommandLine/>
         </Resources>
         <Lifecycle>
@@ -47,10 +47,10 @@
         </UI>
       </DispatchInfo>
     </Extension>
-     <Extension Id="com.adobe.illustrator.latex2aiui.dialog2">
+     <Extension Id="com.adobe.illustrator.latex2aiui.dialog_redo">
       <DispatchInfo>
         <Resources>
-          <MainPath>./html/index.html</MainPath>
+          <MainPath>./html/index_redo.html</MainPath>
           <CEFCommandLine/>
         </Resources>
         <Lifecycle>
