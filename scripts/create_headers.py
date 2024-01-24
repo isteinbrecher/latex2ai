@@ -155,6 +155,34 @@ def create_cs_headers():
         version_header.write(license_c + "\n".join(version_lines))
 
 
+def create_js_headers():
+    """
+    Create the headers for the java script files.
+    """
+
+    # Create the header.
+    license_text = get_license_text()
+    license_c = license_to_source(license_text, "js")
+    version_lines = [
+        "",
+        "",
+        "// Automatic generated header with version information.",
+        "// This header will be overwritten at each build!",
+        "function get_git_sha() {",
+        f'    return "{get_git_sha()}"',
+        "}",
+        "",
+    ]
+
+    # If it does not exist, create the directory for the header.
+    dir_path = os.path.join(get_repository_dir(), "ui/js")
+    os.makedirs(dir_path, exist_ok=True)
+
+    # The script is caled form the base repository directory.
+    with open(os.path.join(dir_path, "auto_generated.js"), "w") as version_header:
+        version_header.write(license_c + "\n".join(version_lines))
+
+
 if __name__ == "__main__":
     """Execution part of script"""
 
@@ -166,3 +194,4 @@ if __name__ == "__main__":
 
     create_cpp_headers()
     create_cs_headers()
+    create_js_headers()

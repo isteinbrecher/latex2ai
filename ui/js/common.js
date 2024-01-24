@@ -78,3 +78,11 @@ function onAppThemeColorChanged(event) {
 function evalScript(script, callback) {
     new CSInterface().evalScript(script, callback)
 }
+
+function check_git_hash(xml) {
+    if (xml.find("full_data").attr("git_hash") != get_git_sha()) {
+        alert(
+            "The git hash of the LaTeX2AI plugin and the UI does not match! Did you forget to update one of them?"
+        )
+    }
+}

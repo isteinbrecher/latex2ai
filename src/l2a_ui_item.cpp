@@ -201,48 +201,38 @@ ASErr L2A::UI::Item::SendData()
 {
     ASErr error = kNoErr;
 
-    L2A::UTIL::ParameterList form_parameter_list;
+    auto form_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
 
     // Set data about the item not contained in the item property
     ai::UnicodeString key_latex("latex_exists");
     if (action_type_ == ActionType::create_item)
     {
-        form_parameter_list.SetOption(key_latex, false);
+        form_parameter_list->SetOption(key_latex, false);
     }
     else if (action_type_ == ActionType::edit_item)
     {
         ai::UnicodeString key_boundary_box("boundary_box_state");
-        form_parameter_list.SetOption(key_latex, true);
+        form_parameter_list->SetOption(key_latex, true);
         if (change_item_->IsDiamond())
         {
-            form_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("diamond"));
+            form_parameter_list->SetOption(key_boundary_box, ai::UnicodeString("diamond"));
         }
         else if (change_item_->IsStreched())
         {
-            form_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("stretched"));
+            form_parameter_list->SetOption(key_boundary_box, ai::UnicodeString("stretched"));
         }
         else
         {
-            form_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("ok"));
+            form_parameter_list->SetOption(key_boundary_box, ai::UnicodeString("ok"));
         }
     }
     else
         l2a_error("Got unexpected ActionType");
 
     // Add the item property
-    form_parameter_list.SetSubList(ai::UnicodeString("LaTeX2AI_item"), property_.ToParameterList());
+    // TODO: Make sure we dont copy the pdf contents here
+    form_parameter_list->SetSubList(ai::UnicodeString("LaTeX2AI_item"), property_.ToParameterList());
 
-    // Get the string containing all data for the form and sent it
-    std::string xml_string =
-        L2A::UTIL::StringAiToStd(form_parameter_list.ToXMLString(ai::UnicodeString("full_item_data")));
-    csxs::event::Event event = {
-        EVENT_TYPE_ITEM_UPDATE.c_str(), csxs::event::kEventScope_Application, "LaTeX2AI", NULL, xml_string.c_str()};
-    csxs::event::EventErrorCode result = htmlPPLib.DispatchEvent(&event);
-    if (result != csxs::event::kEventErrorCode_Success)
-    {
-        l2a_error("Data could not be sent to LaTeX2AI create/edit item UI");
-        error = kCantHappenErr;
-    }
-
-    return error;
+    // Send the data to the form
+    SendDataWrapper(form_parameter_list, EVENT_TYPE_ITEM_UPDATE);
 }

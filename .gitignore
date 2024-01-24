@@ -16,6 +16,7 @@
 # Automatically generated files
 auto_generated/
 scripts/executables/
+ui/js/auto_generated.js
 plugin.pipl
 
 # Python folders

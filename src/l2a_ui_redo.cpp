@@ -134,23 +134,13 @@ ASErr L2A::UI::Redo::SendData()
     L2A::AI::GetDocumentItems(selected_items_, L2A::AI::SelectionState::selected);
 
     // Add number of items to parameter list for form
-    L2A::UTIL::ParameterList redo_all_parameter_list;
+    auto redo_all_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
     const unsigned int n_all_items = (unsigned int)all_items_.size();
     const unsigned int n_selected_items = (unsigned int)selected_items_.size();
-    redo_all_parameter_list.SetOption(ai::UnicodeString("n_all_items"), n_all_items);
-    redo_all_parameter_list.SetOption(ai::UnicodeString("n_selected_items"), n_selected_items);
+    redo_all_parameter_list->SetOption(ai::UnicodeString("n_all_items"), n_all_items);
+    redo_all_parameter_list->SetOption(ai::UnicodeString("n_selected_items"), n_selected_items);
 
-    // Get the string containing all data for the form and sent it
-    std::string xml_string =
-        L2A::UTIL::StringAiToStd(redo_all_parameter_list.ToXMLString(ai::UnicodeString("redo_data")));
-    csxs::event::Event event = {
-        EVENT_TYPE_REDO_UPDATE.c_str(), csxs::event::kEventScope_Application, "LaTeX2AI", NULL, xml_string.c_str()};
-    csxs::event::EventErrorCode result = htmlPPLib.DispatchEvent(&event);
-    if (result != csxs::event::kEventErrorCode_Success)
-    {
-        l2a_error("Data could not be sent to LaTeX2AI redo item");
-        error = kCantHappenErr;
-    }
+    SendDataWrapper(redo_all_parameter_list, EVENT_TYPE_REDO_UPDATE);
 
     return error;
 }

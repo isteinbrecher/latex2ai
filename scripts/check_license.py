@@ -98,7 +98,7 @@ def license_to_source(license_text, source_type):
     if source_type == "py":
         header = "# -*- coding: utf-8 -*-"
         comment = "#"
-    elif source_type == "c":
+    elif source_type == "c" or source_type == "js":
         comment = "//"
     elif source_type == "bat":
         comment = "@REM"

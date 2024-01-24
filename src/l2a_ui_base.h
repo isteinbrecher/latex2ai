@@ -32,6 +32,8 @@
 #include "HtmlUIController.h"
 
 #include "l2a_error.h"
+#include "l2a_parameter_list.h"
+
 
 namespace L2A::UI
 {
@@ -95,6 +97,11 @@ namespace L2A::UI
         ASErr SendData() override { return kNoErr; };
 
         /**
+         * @brief Wrapper for sending data to the UI
+         */
+        void SendDataWrapper(const std::shared_ptr<L2A::UTIL::ParameterList>& form_data, const std::string& event_name);
+
+        /**
          * \brief Overload this abstract method
          */
         void ParseData(const char* eventData) override{};
@@ -141,6 +148,5 @@ namespace L2A::UI
             }
         };
     }
-
 }  // namespace L2A::UI
 #endif

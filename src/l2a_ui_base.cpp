@@ -31,6 +31,9 @@
 
 #include "l2a_ui_base.h"
 
+#include "l2a_constants.h"
+#include "l2a_string_functions.h"
+
 
 /**
  *
@@ -112,4 +115,28 @@ csxs::event::EventErrorCode L2A::UI::FormBase::RemoveEventListeners()
     }
 
     return result;
+}
+
+/**
+ *
+ */
+void L2A::UI::FormBase::SendDataWrapper(
+    const std::shared_ptr<L2A::UTIL::ParameterList>& form_data, const std::string& event_name)
+{
+    // Create the combines data object
+    L2A::UTIL::ParameterList full_form_data;
+    full_form_data.SetSubList(ai::UnicodeString("form_data"), form_data);
+
+    // Add git hash to check that the form and plugin application have the same version
+    full_form_data.SetOption(ai::UnicodeString("git_hash"), ai::UnicodeString(L2A_VERSION_GIT_SHA_HEAD_));
+
+    // Get the string containing all data for the form and sent it
+    std::string xml_string = L2A::UTIL::StringAiToStd(full_form_data.ToXMLString(ai::UnicodeString("full_data")));
+    csxs::event::Event event = {
+        event_name.c_str(), csxs::event::kEventScope_Application, "LaTeX2AI", NULL, xml_string.c_str()};
+    csxs::event::EventErrorCode result = htmlPPLib.DispatchEvent(&event);
+    if (result != csxs::event::kEventErrorCode_Success)
+    {
+        l2a_error("Data could not be sent to the " + form_name_ + " UI");
+    }
 }

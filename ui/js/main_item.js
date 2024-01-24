@@ -175,7 +175,9 @@ function update_create_item(event) {
     var xmlData = $.parseXML(event.data)
     var $xml = $(xmlData)
 
-    var l2a_xml = $xml.find("LaTeX2AI_item")
+    check_git_hash($xml)
+
+    var l2a_xml = $xml.find("form_data").find("LaTeX2AI_item")
 
     // Store the variables coming from the main plugin
     placed_option_input = l2a_xml.attr("placed_option")
