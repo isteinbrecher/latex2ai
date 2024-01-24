@@ -32,8 +32,7 @@ import sys
 import subprocess
 import os
 import shutil
-from check_license import (get_license_text, license_to_source,
-    get_repository_dir)
+from check_license import get_license_text, license_to_source, get_repository_dir
 
 
 def get_git_sha(repo=None):
@@ -42,10 +41,11 @@ def get_git_sha(repo=None):
     """
 
     # Get the git sha of the repository.
-    process = subprocess.Popen(['git', 'rev-parse', 'HEAD'],
-        stdout=subprocess.PIPE, cwd=repo)
+    process = subprocess.Popen(
+        ["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE, cwd=repo
+    )
     out, _err = process.communicate()
-    return out.decode('UTF-8').strip()
+    return out.decode("UTF-8").strip()
 
 
 def create_cpp_version_headers(dir_path, license_c):
@@ -54,18 +54,18 @@ def create_cpp_version_headers(dir_path, license_c):
     """
 
     version_lines = [
-        '\n',
-        '// Automatic generated header with version information.',
-        '#ifndef VERSION_H_',
-        '#define VERSION_H_',
+        "\n",
+        "// Automatic generated header with version information.",
+        "#ifndef VERSION_H_",
+        "#define VERSION_H_",
         '#define L2A_VERSION_GIT_SHA_HEAD_ "{}"'.format(get_git_sha()),
-        '#endif',
-        ''
-        ]
+        "#endif",
+        "",
+    ]
 
     # The script is called form the base repository directory.
-    with open(os.path.join(dir_path, 'version.h'), 'w') as version_header:
-        version_header.write(license_c + '\n'.join(version_lines))
+    with open(os.path.join(dir_path, "version.h"), "w") as version_header:
+        version_header.write(license_c + "\n".join(version_lines))
 
 
 def create_cpp_tex_headers(dir_path, license_c):
@@ -75,34 +75,32 @@ def create_cpp_tex_headers(dir_path, license_c):
 
     def load_tex_code(file_name):
         """Load the TeX code from the templates."""
-        tex_path = os.path.join('..', 'tex', file_name)
+        tex_path = os.path.join("..", "tex", file_name)
         with open(tex_path) as tex_file:
-            return (tex_file.read().strip()
-                ).replace('\\', '\\\\'
-                ).replace('"', '\\"')
+            return (tex_file.read().strip()).replace("\\", "\\\\").replace('"', '\\"')
 
     # Get the LaTeX codes.
-    header_code = load_tex_code('LaTeX2AI_header.tex')
-    item_code = load_tex_code('LaTeX2AI_item.tex')
+    header_code = load_tex_code("LaTeX2AI_header.tex")
+    item_code = load_tex_code("LaTeX2AI_item.tex")
 
     tex_lines = [
-        '\n',
-        '// Automatic generated header with TeX code.',
-        '#ifndef TEX_H_',
-        '#define TEX_H_',
-        '',
-        '#define L2A_LATEX_HEADER_ \\',
-        '  "' + '\\n"\\\n  "'.join(header_code.split('\n')) + '"',
-        '',
-        '#define L2A_LATEX_ITEM_ \\',
-        '  "' + '\\n"\\\n  "'.join(item_code.split('\n')) + '"',
-        '#endif',
-        ''
-        ]
+        "\n",
+        "// Automatic generated header with TeX code.",
+        "#ifndef TEX_H_",
+        "#define TEX_H_",
+        "",
+        "#define L2A_LATEX_HEADER_ \\",
+        '  "' + '\\n"\\\n  "'.join(header_code.split("\n")) + '"',
+        "",
+        "#define L2A_LATEX_ITEM_ \\",
+        '  "' + '\\n"\\\n  "'.join(item_code.split("\n")) + '"',
+        "#endif",
+        "",
+    ]
 
     # The script is called form the base repository directory.
-    with open(os.path.join(dir_path, 'tex.h'), 'w') as tex_header:
-        tex_header.write(license_c + '\n'.join(tex_lines))
+    with open(os.path.join(dir_path, "tex.h"), "w") as tex_header:
+        tex_header.write(license_c + "\n".join(tex_lines))
 
 
 def create_cpp_headers():
@@ -112,10 +110,10 @@ def create_cpp_headers():
 
     # Get the license text.
     license_text = get_license_text()
-    license_c = license_to_source(license_text, 'c')
+    license_c = license_to_source(license_text, "c")
 
     # Clean the directory for the automatic generated headers.
-    dir_path = os.path.join(get_repository_dir(), 'src/auto_generated')
+    dir_path = os.path.join(get_repository_dir(), "src/auto_generated")
     if os.path.exists(dir_path):
         shutil.rmtree(dir_path)
     os.makedirs(dir_path)
@@ -131,37 +129,37 @@ def create_cs_headers():
 
     # Create the header.
     license_text = get_license_text()
-    license_c = license_to_source(license_text, 'c')
+    license_c = license_to_source(license_text, "c")
     version_lines = [
-        '\n',
-        '// Automatic generated header with version information.',
-        '// This header will be overwritten at each build!',
-        'namespace L2A',
-        '{',
-        '    class Constants',
-        '    {',
+        "\n",
+        "// Automatic generated header with version information.",
+        "// This header will be overwritten at each build!",
+        "namespace L2A",
+        "{",
+        "    class Constants",
+        "    {",
         '        public const string l2a_version_git_sha_head_ = "{}";'.format(
-            get_git_sha()),
-        '    }',
-        '}',
-        ''
-        ]
+            get_git_sha()
+        ),
+        "    }",
+        "}",
+        "",
+    ]
 
     # If it does not exist, create the directory for the header.
-    dir_path = os.path.join(get_repository_dir(),
-        'forms/src/auto_generated')
+    dir_path = os.path.join(get_repository_dir(), "forms/src/auto_generated")
     os.makedirs(dir_path, exist_ok=True)
 
     # The script is caled form the base repository directory.
-    with open(os.path.join(dir_path, 'version.cs'), 'w') as version_header:
-        version_header.write(license_c + '\n'.join(version_lines))
+    with open(os.path.join(dir_path, "version.cs"), "w") as version_header:
+        version_header.write(license_c + "\n".join(version_lines))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Execution part of script"""
 
     if len(sys.argv) != 1:
-        raise ValueError('Wrong number of system arguments.')
+        raise ValueError("Wrong number of system arguments.")
 
     # Change working directory to script directory.
     os.chdir(os.path.dirname(__file__))
