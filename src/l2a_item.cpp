@@ -170,8 +170,8 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
         else if (latex_creation_result == L2A::LATEX::LatexCreationResult::error_tex_code)
         {
             // The pdf could not be created, ask the user how to proceed
-            ai::UnicodeString form_string("The pdf file could not be created, do you want to re-edit the item?");
-            AIBoolean form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
+            bool form_result = L2A::AI::YesNoAlert(
+                ai::UnicodeString("The pdf file could not be created, do you want to re-edit the item?"));
             if (form_result)
             {
                 return ItemChangeResult::get_new_user_input;
