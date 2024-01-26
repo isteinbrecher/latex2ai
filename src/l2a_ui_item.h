@@ -120,11 +120,5 @@ namespace L2A::UI
         //! Position in the document where a new item shall be inserted
         AIRealPoint new_item_insertion_point_;
     };
-
-    /**
-     * @brief Create the form with the event listeners
-     */
-    std::unique_ptr<Item> ItemFactory();
-
 }  // namespace L2A::UI
 #endif
