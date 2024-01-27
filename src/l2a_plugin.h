@@ -87,6 +87,12 @@ class L2APlugin : public Plugin
      */
     virtual ASErr Notify(AINotifierMessage* message);
 
+   public:
+    /**
+     * \brief Return a reference to the UI manager
+     */
+    L2A::UI::Manager& GetUiManager() { return *ui_manager_; }
+
    protected:
     /**
      * \brief Set a link to this plugin in the global object
