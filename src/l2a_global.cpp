@@ -549,13 +549,13 @@ L2A::GLOBAL::Global& L2A::GlobalMutable()
 /**
  *
  */
-L2APlugin* L2A::GlobalPluginPointerMutable()
+L2APlugin& L2A::GlobalPluginMutable()
 {
     if (L2A::GLOBAL::_l2a_plugin == nullptr) l2a_error("The global plugin pointer object is not defined!");
-    return L2A::GLOBAL::_l2a_plugin;
+    return *L2A::GLOBAL::_l2a_plugin;
 }
 
 /**
  *
  */
-AppContext L2A::GlobalPluginAppContext() { return AppContext(L2A::GlobalPluginPointerMutable()->GetPluginRef()); }
+AppContext L2A::GlobalPluginAppContext() { return AppContext(L2A::GlobalPluginMutable().GetPluginRef()); }

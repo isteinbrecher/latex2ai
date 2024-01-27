@@ -226,10 +226,10 @@ namespace L2A
     /**
      * \brief Return the plugin pointer mutable.
      */
-    L2APlugin* GlobalPluginPointerMutable();
+    L2APlugin& GlobalPluginMutable();
 
     /**
-     * \brief Return the plugin pointer mutable.
+     * \brief Return the app context of the plugin
      */
     AppContext GlobalPluginAppContext();
 
