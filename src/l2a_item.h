@@ -31,6 +31,7 @@
 #define L2A_ITEM_H_
 
 
+#include "l2a_latex.h"
 #include "l2a_property.h"
 
 #include <map>
@@ -61,17 +62,30 @@ namespace L2A
 namespace L2A
 {
     /**
-     * \brief Enum to manage the return values of the change function of the item
+     * \brief Container to store data returned from an item change operation
      */
-    enum class ItemChangeResult
+    struct ItemChangeResult
     {
-        //! Everything worked, the item was changed
-        ok,
-        //! The user has to be asked for the input again
-        get_new_user_input,
-        //! Not changed, and no new input wanted
-        cancel
+        /**
+         * \brief Enum to manage the return values of the change function of the item
+         */
+        enum class Result
+        {
+            //! Everything worked, the item was changed
+            ok,
+            //! There was a LaTeX error user has to be asked for the input again
+            latex_error,
+            //! Not changed, and no new input wanted
+            cancel
+        };
+
+        //! Flag with the result value
+        Result result_;
+
+        //! Container with the results from the latex creation
+        L2A::LATEX::LatexCreationResult latex_creation_result_;
     };
+
 
     /**
      * \brief Class that represents one LaTeX2AI item in AI. It has methods for creating and replacing the LaTeX
@@ -220,7 +234,7 @@ namespace L2A
     /**
      * \brief Redo the LaTeX code for all items in the vector.
      */
-    void RedoLaTeXItems(std::vector<L2A::Item>& l2a_items);
+    bool RedoLaTeXItems(std::vector<L2A::Item>& l2a_items);
 
     /**
      * \brief Check if the pdf files of the items are stored and linked correctly.

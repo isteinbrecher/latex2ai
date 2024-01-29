@@ -62,6 +62,8 @@
 		C67D8B562B038B86001F89FA /* l2a_global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B4B2B038B86001F89FA /* l2a_global.cpp */; };
 		C67D8B572B038B86001F89FA /* l2a_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B4C2B038B86001F89FA /* l2a_constants.h */; };
 		C68EDECA2B037ECB003BB3CD /* l2a_suites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68EDEC92B037ECB003BB3CD /* l2a_suites.cpp */; };
+		C6A3D2392B63A502006F3676 /* l2a_ui_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */; };
+		C6A3D23C2B63A525006F3676 /* l2a_ui_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */; };
 		C6F3D1EC2B039EDD004EF248 /* l2a_annotator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1EB2B039EDD004EF248 /* l2a_annotator.cpp */; };
 		C6F3D1EF2B039EF3004EF248 /* l2a_plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1ED2B039EF3004EF248 /* l2a_plugin.h */; };
 		C6F3D1F02B039EF3004EF248 /* l2a_plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1EE2B039EF3004EF248 /* l2a_plugin.cpp */; };
@@ -149,6 +151,8 @@
 		C67D8B4B2B038B86001F89FA /* l2a_global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_global.cpp; path = src/l2a_global.cpp; sourceTree = "<group>"; };
 		C67D8B4C2B038B86001F89FA /* l2a_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_constants.h; path = src/l2a_constants.h; sourceTree = "<group>"; };
 		C68EDEC92B037ECB003BB3CD /* l2a_suites.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_suites.cpp; path = src/l2a_suites.cpp; sourceTree = "<group>"; };
+		C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_debug.cpp; path = src/l2a_ui_debug.cpp; sourceTree = "<group>"; };
+		C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_debug.h; path = src/l2a_ui_debug.h; sourceTree = "<group>"; };
 		C6F3D1EB2B039EDD004EF248 /* l2a_annotator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_annotator.cpp; path = src/l2a_annotator.cpp; sourceTree = "<group>"; };
 		C6F3D1ED2B039EF3004EF248 /* l2a_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_plugin.h; path = src/l2a_plugin.h; sourceTree = "<group>"; };
 		C6F3D1EE2B039EF3004EF248 /* l2a_plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_plugin.cpp; path = src/l2a_plugin.cpp; sourceTree = "<group>"; };
@@ -208,6 +212,8 @@
 		508817F509F0CAB50071BF1A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */,
+				C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */,
 				C62AA9DA2B4C3BF300E27B7B /* l2a_ui_redo.cpp */,
 				C62AA9D92B4C3BF300E27B7B /* l2a_ui_redo.h */,
 				C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */,
@@ -357,6 +363,7 @@
 				C6F3D2082B03A022004EF248 /* testing.h in Headers */,
 				C6F3D20B2B03A022004EF248 /* test_framework.h in Headers */,
 				C67D8B1F2B0384D5001F89FA /* l2a_error.h in Headers */,
+				C6A3D23C2B63A525006F3676 /* l2a_ui_debug.h in Headers */,
 				C61B69A32B4AB83200AF2924 /* l2a_ui_base.h in Headers */,
 				C67D8B572B038B86001F89FA /* l2a_constants.h in Headers */,
 				C67D8B302B038842001F89FA /* l2a_version.h in Headers */,
@@ -488,6 +495,7 @@
 				C605E7F82B226FF900E74B92 /* l2a_execute.cpp in Sources */,
 				C6F3D2052B03A022004EF248 /* test_base64.cpp in Sources */,
 				C6F3D2072B03A022004EF248 /* test_file_system.cpp in Sources */,
+				C6A3D2392B63A502006F3676 /* l2a_ui_debug.cpp in Sources */,
 				C6F3D1F02B039EF3004EF248 /* l2a_plugin.cpp in Sources */,
 				C67D8B2E2B038842001F89FA /* l2a_version.cpp in Sources */,
 				C61B699F2B4AB17400AF2924 /* l2a_ui_manager.cpp in Sources */,

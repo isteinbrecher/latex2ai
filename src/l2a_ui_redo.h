@@ -45,9 +45,9 @@ namespace L2A::UI
         static const std::string FORM_NAME;
         static const std::string FORM_ID;
         static const std::string EVENT_TYPE_BASE;
-        static const std::string EVENT_TYPE_REDO_READY;
-        static const std::string EVENT_TYPE_REDO_OK;
-        static const std::string EVENT_TYPE_REDO_UPDATE;
+        static const std::string EVENT_TYPE_READY;
+        static const std::string EVENT_TYPE_OK;
+        static const std::string EVENT_TYPE_UPDATE;
 
        public:
         /**

@@ -30,6 +30,7 @@
 #define L2A_UI_MANAGER_H_
 
 #include "l2a_ui_base.h"
+#include "l2a_ui_debug.h"
 #include "l2a_ui_item.h"
 #include "l2a_ui_redo.h"
 
@@ -45,7 +46,8 @@ namespace L2A::UI
     {
         none,
         item,
-        redo
+        redo,
+        debug
     };
 
     /**
@@ -84,6 +86,15 @@ namespace L2A::UI
         Redo& GetRedoForm()
         {
             Redo* form = dynamic_cast<Redo*>(forms_[FormsEnum::redo].get());
+            return *(form);
+        }
+
+        /**
+         * @brief Return pointer to the debug form
+         */
+        Debug& GetDebugForm()
+        {
+            Debug* form = dynamic_cast<Debug*>(forms_[FormsEnum::debug].get());
             return *(form);
         }
 

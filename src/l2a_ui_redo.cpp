@@ -43,9 +43,9 @@
 const std::string L2A::UI::Redo::FORM_NAME = "LaTeX2AI redo items";
 const std::string L2A::UI::Redo::FORM_ID = "com.adobe.illustrator.latex2aiui.dialog_redo";
 const std::string L2A::UI::Redo::EVENT_TYPE_BASE = "com.adobe.csxs.events.latex2ai.redo";
-const std::string L2A::UI::Redo::EVENT_TYPE_REDO_READY = L2A::UI::Redo::EVENT_TYPE_BASE + ".ready";
-const std::string L2A::UI::Redo::EVENT_TYPE_REDO_OK = L2A::UI::Redo::EVENT_TYPE_BASE + ".ok";
-const std::string L2A::UI::Redo::EVENT_TYPE_REDO_UPDATE = L2A::UI::Redo::EVENT_TYPE_BASE + ".update";
+const std::string L2A::UI::Redo::EVENT_TYPE_READY = L2A::UI::Redo::EVENT_TYPE_BASE + ".ready";
+const std::string L2A::UI::Redo::EVENT_TYPE_OK = L2A::UI::Redo::EVENT_TYPE_BASE + ".ok";
+const std::string L2A::UI::Redo::EVENT_TYPE_UPDATE = L2A::UI::Redo::EVENT_TYPE_BASE + ".update";
 
 
 /**
@@ -55,8 +55,8 @@ L2A::UI::Redo::Redo() : FormBase(FORM_NAME, FORM_ID.c_str(), EVENT_TYPE_BASE), a
 {
     // If we don't do this this way, we get a compiler error
     std::vector<EventListenerData> event_listener_data = {
-        {EVENT_TYPE_REDO_READY, CallbackHandler<Redo, &Redo::CallbackFormReady>()},  //
-        {EVENT_TYPE_REDO_OK, CallbackHandler<Redo, &Redo::CallbackOk>()}             //
+        {EVENT_TYPE_READY, CallbackHandler<Redo, &Redo::CallbackFormReady>()},  //
+        {EVENT_TYPE_OK, CallbackHandler<Redo, &Redo::CallbackOk>()}             //
     };
     event_listener_data_ = std::move(event_listener_data);
 }
@@ -140,7 +140,7 @@ ASErr L2A::UI::Redo::SendData()
     redo_all_parameter_list->SetOption(ai::UnicodeString("n_all_items"), n_all_items);
     redo_all_parameter_list->SetOption(ai::UnicodeString("n_selected_items"), n_selected_items);
 
-    SendDataWrapper(redo_all_parameter_list, EVENT_TYPE_REDO_UPDATE);
+    SendDataWrapper(redo_all_parameter_list, EVENT_TYPE_UPDATE);
 
     return error;
 }

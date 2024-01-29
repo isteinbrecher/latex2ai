@@ -36,12 +36,15 @@
 #include "l2a_error.h"
 #include "l2a_file_system.h"
 #include "l2a_forms.h"
+#include "l2a_global.h"
 #include "l2a_latex.h"
 #include "l2a_math.h"
 #include "l2a_names.h"
 #include "l2a_parameter_list.h"
+#include "l2a_plugin.h"
 #include "l2a_string_functions.h"
 #include "l2a_suites.h"
+#include "l2a_ui_manager.h"
 #include "l2a_utils.h"
 
 
@@ -133,7 +136,7 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
     else if (form_return_value == "redo_boundary")
     {
         RedoBoundary();
-        return ItemChangeResult::ok;
+        return ItemChangeResult{ItemChangeResult::Result::ok};
     }
     else if (form_return_value == "redo_latex")
     {
@@ -152,7 +155,7 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
     if (diff.changed_latex)
     {
         auto [latex_creation_result, pdf_file] = L2A::LATEX::CreateLatexItem(new_property);
-        if (latex_creation_result == L2A::LATEX::LatexCreationResult::ok)
+        if (latex_creation_result.result_ == L2A::LATEX::LatexCreationResult::Result::ok)
         {
             // TODO: this works, but it is very strange what we copy around here, this should be improved
             // PDF could be created, now store the pdf file in the placed item
@@ -167,20 +170,9 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
             // Redo the boundary
             RedoBoundary();
         }
-        else if (latex_creation_result == L2A::LATEX::LatexCreationResult::error_tex_code)
+        else if (latex_creation_result.result_ == L2A::LATEX::LatexCreationResult::Result::error_tex_code)
         {
-            // The pdf could not be created, ask the user how to proceed
-            bool form_result = L2A::AI::YesNoAlert(
-                ai::UnicodeString("The pdf file could not be created, do you want to re-edit the item?"));
-            if (form_result)
-            {
-                return ItemChangeResult::get_new_user_input;
-            }
-            else
-            {
-                // The user does not want to re-edit the item
-                return ItemChangeResult::cancel;
-            }
+            return ItemChangeResult{ItemChangeResult::Result::latex_error, latex_creation_result};
         }
     }
 
@@ -197,7 +189,7 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
     }
 
     // Everything worked fine
-    return ItemChangeResult::ok;
+    return ItemChangeResult{ItemChangeResult::Result::ok};
 }
 
 /**
@@ -579,7 +571,7 @@ void L2A::RedoItems(std::vector<AIArtHandle>& redo_items, const RedoItemsOption&
 
     if (redo_option == RedoItemsOption::latex)
     {
-        RedoLaTeXItems(l2a_items);
+        if (!RedoLaTeXItems(l2a_items)) return;
     }
 
     // Redo the boundaries of all items (this has to be done for both cases of redo_option
@@ -589,7 +581,7 @@ void L2A::RedoItems(std::vector<AIArtHandle>& redo_items, const RedoItemsOption&
 /**
  *
  */
-void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
+bool L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
 {
     // Loop over every element and get the property
     std::vector<L2A::Property> properties;
@@ -601,9 +593,11 @@ void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
 
     // Create the pdf file for each item
     auto [latex_creation_result, pdf_files] = L2A::LATEX::CreateLatexItems(properties);
-    if (latex_creation_result != L2A::LATEX::LatexCreationResult::ok)
+    if (latex_creation_result.result_ != L2A::LATEX::LatexCreationResult::Result::ok)
     {
-        return;
+        L2A::GlobalPluginMutable().GetUiManager().GetDebugForm().OpenDebugForm(
+            L2A::UI::Debug::Action::redo_items, latex_creation_result);
+        return false;
     }
 
     // Create the PDFs for the items and store them in the placed items. We dont reset the boundary box here. This is
@@ -619,6 +613,8 @@ void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
         L2A::AI::RelinkPlacedItem(l2a_item.GetPlacedItemMutable(), new_path);
         l2a_item.SetNoteAndName();
     }
+
+    return true;
 }
 
 /**

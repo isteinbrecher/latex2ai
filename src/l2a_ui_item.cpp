@@ -35,6 +35,7 @@
 #include "l2a_global.h"
 #include "l2a_latex.h"
 #include "l2a_parameter_list.h"
+#include "l2a_plugin.h"
 #include "l2a_string_functions.h"
 
 
@@ -44,9 +45,10 @@
 const std::string L2A::UI::Item::FORM_NAME = "LaTeX2AI create/edit item";
 const std::string L2A::UI::Item::FORM_ID = "com.adobe.illustrator.latex2aiui.dialog_item";
 const std::string L2A::UI::Item::EVENT_TYPE_BASE = "com.adobe.csxs.events.latex2ai.item";
-const std::string L2A::UI::Item::EVENT_TYPE_ITEM_READY = "com.adobe.csxs.events.latex2ai.item.ready";
-const std::string L2A::UI::Item::EVENT_TYPE_ITEM_OK = "com.adobe.csxs.events.latex2ai.item.ok";
-const std::string L2A::UI::Item::EVENT_TYPE_ITEM_UPDATE = "com.adobe.csxs.events.latex2ai.item.update";
+const std::string L2A::UI::Item::EVENT_TYPE_READY = L2A::UI::Item::EVENT_TYPE_BASE + ".ready";
+const std::string L2A::UI::Item::EVENT_TYPE_OK = L2A::UI::Item::EVENT_TYPE_BASE + ".ok";
+const std::string L2A::UI::Item::EVENT_TYPE_UPDATE = L2A::UI::Item::EVENT_TYPE_BASE + ".update";
+const std::string L2A::UI::Item::EVENT_TYPE_SET_CLOSE_ON_FOCUS = L2A::UI::Item::EVENT_TYPE_BASE + ".set_close_on_focus";
 
 
 /**
@@ -56,8 +58,8 @@ L2A::UI::Item::Item() : FormBase(FORM_NAME, FORM_ID.c_str(), EVENT_TYPE_BASE)
 {
     // If we don't do this this way, we get a compiler error
     std::vector<EventListenerData> event_listener_data = {
-        {EVENT_TYPE_ITEM_READY, CallbackHandler<Item, &Item::CallbackFormReady>()},  //
-        {EVENT_TYPE_ITEM_OK, CallbackHandler<Item, &Item::CallbackOk>()}             //
+        {EVENT_TYPE_READY, CallbackHandler<Item, &Item::CallbackFormReady>()},  //
+        {EVENT_TYPE_OK, CallbackHandler<Item, &Item::CallbackOk>()}             //
     };
     event_listener_data_ = std::move(event_listener_data);
 }
@@ -142,7 +144,7 @@ void L2A::UI::Item::CreateNewItem(const L2A::UTIL::ParameterList& item_data_from
 
     property_.SetFromParameterList(item_data_from_form);
     auto [latex_create_result, pdf_file] = L2A::LATEX::CreateLatexItem(property_);
-    if (latex_create_result == L2A::LATEX::LatexCreationResult::ok)
+    if (latex_create_result.result_ == L2A::LATEX::LatexCreationResult::Result::ok)
     {
         // Create the new item
         L2A::Item(new_item_insertion_point_, property_, pdf_file);
@@ -150,20 +152,12 @@ void L2A::UI::Item::CreateNewItem(const L2A::UTIL::ParameterList& item_data_from
         // Everything worked fine, we can close the form now
         CloseForm();
     }
-    else if (latex_create_result == L2A::LATEX::LatexCreationResult::error_tex_code)
+    else if (latex_create_result.result_ == L2A::LATEX::LatexCreationResult::Result::error_tex_code)
     {
-        // The pdf could not be created, ask the user how to proceed
-        bool form_result = L2A::AI::YesNoAlert(
-            ai::UnicodeString("The pdf file could not be created, do you want to re-edit the item?"));
-        if (form_result)
-        {
-            SendData();
-        }
-        else
-        {
-            // The user does not want to re-edit the item, we can close the form now
-            CloseForm();
-        }
+        // Open the debug form for the user
+        SetCloseOnFocus(true);
+        L2A::GlobalPluginMutable().GetUiManager().GetDebugForm().OpenDebugForm(
+            Debug::Action::create_item, latex_create_result);
     }
     else
     {
@@ -182,14 +176,18 @@ void L2A::UI::Item::EditItem(const ai::UnicodeString& return_value, const L2A::U
 
     property_.SetFromParameterList(item_data_from_form);
     auto change_item_result = change_item_->Change(return_value, property_);
-    if (change_item_result == L2A::ItemChangeResult::ok or change_item_result == L2A::ItemChangeResult::cancel)
+    if (change_item_result.result_ == L2A::ItemChangeResult::Result::ok or
+        change_item_result.result_ == L2A::ItemChangeResult::Result::cancel)
     {
         CloseForm();
         return;
     }
-    else if (change_item_result == L2A::ItemChangeResult::get_new_user_input)
+    else if (change_item_result.result_ == L2A::ItemChangeResult::Result::latex_error)
     {
-        SendData();
+        // Open the debug form for the user
+        SetCloseOnFocus(true);
+        L2A::GlobalPluginMutable().GetUiManager().GetDebugForm().OpenDebugForm(
+            Debug::Action::edit_item, change_item_result.latex_creation_result_);
         return;
     }
 }
@@ -234,5 +232,15 @@ ASErr L2A::UI::Item::SendData()
     form_parameter_list->SetSubList(ai::UnicodeString("LaTeX2AI_item"), property_.ToParameterList());
 
     // Send the data to the form
-    SendDataWrapper(form_parameter_list, EVENT_TYPE_ITEM_UPDATE);
+    SendDataWrapper(form_parameter_list, EVENT_TYPE_UPDATE);
+}
+
+/**
+ *
+ */
+void L2A::UI::Item::SetCloseOnFocus(const bool value)
+{
+    auto form_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
+    form_parameter_list->SetOption(ai::UnicodeString("close_on_focus"), value);
+    SendDataWrapper(form_parameter_list, EVENT_TYPE_SET_CLOSE_ON_FOCUS);
 }

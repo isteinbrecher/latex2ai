@@ -23,14 +23,13 @@
 // -----------------------------------------------------------------------------
 
 /**
- * \brief Form for creating / editing an item
+ * \brief Form for debugging LaTeX errors
  */
 
-#ifndef L2A_UI_ITEM_H_
-#define L2A_UI_ITEM_H_
+#ifndef L2A_UI_DEBUG_H_
+#define L2A_UI_DEBUG_H_
 
-#include "l2a_item.h"
-#include "l2a_property.h"
+#include "l2a_latex.h"
 #include "l2a_ui_base.h"
 
 namespace L2A::UI
@@ -38,7 +37,7 @@ namespace L2A::UI
     /**
      * @brief Form for creating / editing an item
      */
-    class Item : public FormBase
+    class Debug : public FormBase
     {
        public:
         // Define names for this form
@@ -47,31 +46,38 @@ namespace L2A::UI
         static const std::string EVENT_TYPE_BASE;
         static const std::string EVENT_TYPE_READY;
         static const std::string EVENT_TYPE_OK;
+        static const std::string EVENT_TYPE_CANCEL;
+        static const std::string EVENT_TYPE_OPEN_LOG;
+        static const std::string EVENT_TYPE_CREATE_DEBUG;
         static const std::string EVENT_TYPE_UPDATE;
-        static const std::string EVENT_TYPE_SET_CLOSE_ON_FOCUS;
+
+        /**
+         * \brief Flags for the type of current latex creation
+         */
+        enum class Action
+        {
+            none,
+            create_item,
+            edit_item,
+            redo_items
+        };
 
        public:
         /**
          * @brief Constructor
          */
-        Item();
+        Debug();
 
         /**
          * @brief Reset internal data of the form that is not relevant after it is closed
          */
-        void ResetFormData() override;
+        void ResetFormData() override { action_ = Action::none; }
 
         /**
-         * @brief Create a new item at the given cursor position
+         * @brief Open the debug form
          * TODO: Check return type of this method and error handling
          */
-        void OpenCreateItemForm(const AIRealPoint& position);
-
-        /**
-         * @brief Edit an existing item
-         * TODO: Check return type of this method and error handling
-         */
-        void OpenEditItemForm(const AIArtHandle& art_handle);
+        void OpenDebugForm(const Action action, L2A::LATEX::LatexCreationResult& latex_creation_result);
 
         /**
          * @brief This function is called once the ui is loaded. We send the data to the ui here
@@ -79,57 +85,36 @@ namespace L2A::UI
         void CallbackFormReady(const csxs::event::Event* const eventParam);
 
         /**
-         * @brief Callback when the form is not canceled
+         * @brief Callback when the redo latex code button is pressed
          */
-        void CallbackOk(const csxs::event::Event* const eventParam);
+        void CallbackReeditLatexCode(const csxs::event::Event* const eventParam);
 
         /**
-         * @brief Compile the data from the form to a new L2A item
+         * @brief Callback when the form is canceled
          */
-        void CreateNewItem(const L2A::UTIL::ParameterList& item_data_from_form);
+        void CallbackCancel(const csxs::event::Event* const eventParam);
 
         /**
-         * @brief Edit an existing L2A item
+         * @brief Callback for opening the log file
          */
-        void EditItem(const ai::UnicodeString& return_value, const L2A::UTIL::ParameterList& item_data_from_form);
+        void CallbackOpenLog(const csxs::event::Event* const eventParam);
+
+        /**
+         * @brief Callback for creating the debug folder
+         */
+        void CallbackCreateDebugFolder(const csxs::event::Event* const eventParam);
 
         /**
          * \brief Send data to the form
          */
         ASErr SendData() override;
 
-        /**
-         * \brief Set the flag that controlls the "focus" behavior of the form
-         */
-        void SetCloseOnFocus(const bool value);
-
-        /**
-         * @brief Define what the current action of the form is
-         */
-        enum class ActionType
-        {
-            none,
-            create_item,
-            edit_item
-        };
-
-        /**
-         * @brief Return the current action type
-         */
-        ActionType GetActionType() const { return action_type_; }
-
        private:
-        //! Current action type of the UI
-        ActionType action_type_ = ActionType::none;
+        //! Flag for current latex creationß
+        Action action_;
 
-        //! Property of the last item change
-        L2A::Property property_;
-
-        //! Pointer to the item that is currently being edited
-        std::unique_ptr<L2A::Item> change_item_;
-
-        //! Position in the document where a new item shall be inserted
-        AIRealPoint new_item_insertion_point_;
+        //! Data from the LaTeX creation process
+        L2A::LATEX::LatexCreationResult latex_creation_result_;
     };
 }  // namespace L2A::UI
 #endif

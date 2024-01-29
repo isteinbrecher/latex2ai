@@ -45,33 +45,38 @@ namespace L2A
     namespace LATEX
     {
         /**
-         * \brief Enum for the result of an Latex creation.
+         * \brief Container for the result of a Latex creation operation
          */
-        enum class LatexCreationResult
+        struct LatexCreationResult
         {
-            //! Everything worked fine
-            ok,
-            //! The latex command succeeded, but no file was created
-            error_tex_code,
-            //! The creation of the latex document failed
-            error_tex,
-            //! The split with ghostscript failed
-            error_gs,
-            //! Other error
-            error_other
-        };
+            /**
+             * \brief Enum for the result
+             */
+            enum class Result
+            {
+                //! Everything worked fine
+                ok,
+                //! The latex command succeeded, but no file was created
+                error_tex_code,
+                //! The creation of the latex document failed
+                error_tex,
+                //! The split with ghostscript failed
+                error_gs,
+                //! Other error
+                error_other
+            };
 
-        /**
-         * \brief Enum for the result of an Latex creation.
-         */
-        enum class LatexCreationDebugResult
-        {
-            //! Everything worked fine.
-            item_created,
-            //! The creation failed and the user wants to edit the item.
-            fail_redo,
-            //! The creation failed and the user wants to quit.
-            fail_quit
+            //! Result flag
+            Result result_;
+
+            //! Path to the log file
+            ai::FilePath log_file_;
+
+            //! Path to the tex file
+            ai::FilePath tex_file_;
+
+            //! Path to the tex header
+            ai::FilePath tex_header_file_;
         };
 
         /**
@@ -113,17 +118,6 @@ namespace L2A
          * @return True if creation was successful.
          */
         bool CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file);
-
-        /**
-         * \brief Create a latex document for a latex code string, if the creation fails, a form with debug options
-         * will be opened.
-         * @param (in) Latex_code String with the full latex code to be compiled.
-         * @param (out) Path of the created pdf file.
-         * @param (in) Creation type for the debug form.
-         * @return Result of the Latex creation.
-         */
-        LatexCreationDebugResult CreateLatexWithDebug(
-            const ai::UnicodeString& latex_code, ai::FilePath& pdf_file, const ai::UnicodeString& creation_type);
 
         /**
          * \brief Create all the files that are needed to create a latex document.

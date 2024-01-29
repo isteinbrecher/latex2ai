@@ -4,6 +4,7 @@
   <ExtensionList>
     <Extension Id="com.adobe.illustrator.latex2aiui.dialog_item" Version="1.0.0"/>
     <Extension Id="com.adobe.illustrator.latex2aiui.dialog_redo" Version="1.0.0"/>
+    <Extension Id="com.adobe.illustrator.latex2aiui.dialog_debug" Version="1.0.0"/>
   </ExtensionList>
   <ExecutionEnvironment>
     <HostList>
@@ -51,6 +52,36 @@
       <DispatchInfo>
         <Resources>
           <MainPath>./html/index_redo.html</MainPath>
+          <CEFCommandLine/>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>ModalDialog</Type>
+          <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
+          <Geometry>
+            <Size>
+             	<Height>200</Height>
+              	<Width>400</Width>
+            </Size>
+            <MinSize>
+                <Height>200</Height>
+                <Width>400</Width>
+            </MinSize>
+            <MaxSize>
+                <Height>200</Height>
+                <Width>400</Width>
+            </MaxSize>
+          </Geometry>
+          <Icons/>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+         <Extension Id="com.adobe.illustrator.latex2aiui.dialog_debug">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./html/index_debug.html</MainPath>
           <CEFCommandLine/>
         </Resources>
         <Lifecycle>

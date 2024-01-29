@@ -4,6 +4,7 @@ var text_align_horizontal_input = null
 var text_align_vertical_input = null
 var latex_text_input = null
 var cursor_position_input = null
+var close_on_focus = false
 
 $(function () {
     var csInterface = new CSInterface()
@@ -17,6 +18,17 @@ $(function () {
         onAppThemeColorChanged
     )
 
+    // When a debug form is opened and closed with the (x) button, we don't get a callback.
+    // However, this form is put into focus again, so we close it then. If user wants to re-edit
+    // the item, the debug form sends a callback to this form, that resets the close_on_focus
+    // flag and prevents this shutdown.
+    // Initially the close_on_focus flag ist activated when the debug form is opened
+    window.addEventListener("focus", function () {
+        if (close_on_focus) {
+            csInterface.closeExtension()
+        }
+    })
+
     // Add all the event listeners we need
     csInterface.addEventListener(
         "com.adobe.csxs.events.latex2ai.item.update",
@@ -25,6 +37,10 @@ $(function () {
     csInterface.addEventListener(
         "com.adobe.csxs.events.latex2ai.item.close",
         csInterface.closeExtension
+    )
+    csInterface.addEventListener(
+        "com.adobe.csxs.events.latex2ai.item.set_close_on_focus",
+        set_close_on_focus
     )
 
     document.addEventListener("keydown", (event) => {
@@ -235,4 +251,16 @@ function update_create_item(event) {
     $("#dashForm").show()
     $("#latex_text").focus()
     $("#latex_text").prop("selectionEnd", cursor_position_input)
+}
+
+function set_close_on_focus(event) {
+    var xmlData = $.parseXML(event.data)
+    var $xml = $(xmlData)
+
+    check_git_hash($xml)
+
+    var l2a_xml = $xml.find("form_data")
+
+    close_on_focus_string = l2a_xml.attr("close_on_focus")
+    close_on_focus = close_on_focus_string == "1"
 }

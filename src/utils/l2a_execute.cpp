@@ -194,3 +194,32 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
     }
 #endif
 }
+
+/**
+ *
+ */
+void L2A::UTIL::OpenFileWithDefaultApplication(const ai::FilePath& file_path)
+{
+#ifdef _WIN32
+    std::string command = "start ";
+#else
+    std::string command = "open ";
+#endif
+    std::string full_commad = command + "\"" + L2A::UTIL::StringAiToStd(file_path.GetFullPath()) + "\"";
+    system(full_commad.c_str());
+}
+
+/**
+ *
+ */
+void L2A::UTIL::OpenFolder(const ai::FilePath& folder_path)
+{
+    if (!L2A::UTIL::IsDirectory(folder_path)) l2a_error("Expected a directory in L2A::UTIL::OpenFolder");
+#ifdef _WIN32
+    std::string command = "explorer ";
+#else
+    std::string command = "open ";
+#endif
+    std::string full_commad = command + "\"" + L2A::UTIL::StringAiToStd(folder_path.GetFullPath()) + "\"";
+    system(full_commad.c_str());
+}

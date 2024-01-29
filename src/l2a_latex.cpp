@@ -142,7 +142,7 @@ std::pair<L2A::LATEX::LatexCreationResult, ai::FilePath> L2A::LATEX::CreateLatex
 {
     std::vector<L2A::Property> properties = {property};
     auto [latex_result, file_paths] = L2A::LATEX::CreateLatexItems(properties);
-    if (latex_result == LatexCreationResult::ok)
+    if (latex_result.result_ == LatexCreationResult::Result::ok)
         return {latex_result, file_paths[0]};
     else
         return {latex_result, ai::FilePath(ai::UnicodeString(""))};
@@ -172,12 +172,20 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
         {
             if (not CreateLatexDocument(combined_latex_code, pdf_file))
             {
-                return {LatexCreationResult::error_tex_code, {}};
+                auto file_name = pdf_file.GetFileNameNoExt();
+                auto log_file = pdf_file.GetParent();
+                log_file.AddComponent(file_name + ".log");
+                auto tex_file = pdf_file.GetParent();
+                tex_file.AddComponent(file_name + ".tex");
+                auto tex_header_file = pdf_file.GetParent();
+                tex_header_file.AddComponent(ai::UnicodeString(L2A::NAMES::tex_header_name_));
+
+                return {{LatexCreationResult::Result::error_tex_code, log_file, tex_file, tex_header_file}, {}};
             }
         }
         catch (L2A::ERR::Exception& ex)
         {
-            return {LatexCreationResult::error_tex, {}};
+            return {{LatexCreationResult::Result::error_tex}, {}};
         }
 
         // Split up the created pdf file into the items, i.e., each page represents a single item. We split the document
@@ -188,16 +196,16 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
         }
         catch (L2A::ERR::Exception& ex)
         {
-            return {LatexCreationResult::error_gs, {}};
+            return {{LatexCreationResult::Result::error_gs}, {}};
         }
     }
     catch (...)
     {
-        return {LatexCreationResult::error_other, {}};
+        return {{LatexCreationResult::Result::error_other}, {}};
     }
 
     // Everything worked fine
-    return {LatexCreationResult::ok, pdf_files};
+    return {{LatexCreationResult::Result::ok}, pdf_files};
 }
 
 /**
@@ -228,82 +236,6 @@ bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::Fi
         return true;
     else
         return false;
-}
-
-/**
- *
- */
-L2A::LATEX::LatexCreationDebugResult L2A::LATEX::CreateLatexWithDebug(
-    const ai::UnicodeString& latex_code, ai::FilePath& pdf_file, const ai::UnicodeString& creation_type)
-{
-    // TODO: can this be deleted?
-    // Try to create the Latex document.
-    if (L2A::LATEX::CreateLatexDocument(latex_code, pdf_file))
-    {
-        // Creation was successful
-        return L2A::LATEX::LatexCreationDebugResult::item_created;
-    }
-    else
-    {
-        // Pdf could not be be created, this is most likely an latex error -> Open the debug form.
-
-        // Get the parameters for the debug form.
-        L2A::UTIL::ParameterList debug_parameter_list;
-        debug_parameter_list.SetOption(ai::UnicodeString("creation_type"), creation_type);
-        ai::FilePath log_file = pdf_file.GetParent();
-        log_file.AddComponent(pdf_file.GetFileNameNoExt() + ".log");
-        debug_parameter_list.SetOption(ai::UnicodeString("log_file"), log_file.GetFullPath());
-
-        // Open the debug form. This is done in a while loop, as the user can choose options that require the form to be
-        // opened again.
-        std::shared_ptr<L2A::UTIL::ParameterList> new_parameter_list;
-        while (true)
-        {
-            if (!L2A::Form(ai::UnicodeString("l2a_debug"), debug_parameter_list, new_parameter_list).canceled)
-            {
-                if (new_parameter_list->GetIntOption(ai::UnicodeString("create_debug_folder")) == 1)
-                {
-                    // The user wants to create the debug folder in the header directory.
-                    ai::FilePath debug_directory = L2A::UTIL::GetPdfFileDirectory();
-                    debug_directory.AddComponent(ai::UnicodeString("debug"));
-                    if (L2A::UTIL::IsDirectory(debug_directory))
-                    {
-                        // In this case the user has to select the path manually.
-                        AIBoolean form_result;
-                        ai::UnicodeString form_string("");
-                        form_string += "The debug folder \"" + debug_directory.GetFullPath() +
-                                       "\" and its contents will be delete in this process. Do you want to continue?";
-                        form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
-
-                        if (!form_result)
-                            // Do not create the folder and open the main debug form again.
-                            continue;
-                    }
-
-                    // Clear the contents in the debug folder.
-                    L2A::UTIL::RemoveDirectoryAI(debug_directory, false);
-                    L2A::UTIL::CreateDirectoryL2A(debug_directory);
-
-                    // Create all relevant latex files in the debug folder.
-                    L2A::LATEX::WriteLatexFiles(latex_code, debug_directory);
-                    // TODO: Add command call here as well
-                    sAIUser->MessageAlert("The debug files were created in \"" + debug_directory.GetFullPath() + "\"");
-
-#ifdef WIN_ENV
-                    // Open explorer in the debug folder.
-                    ShellExecute(nullptr, "open", debug_directory.GetFullPath().as_Platform().c_str(), nullptr, nullptr,
-                        SW_SHOWDEFAULT);
-#endif
-                }
-                else
-                    // The user wants to redo the item.
-                    return L2A::LATEX::LatexCreationDebugResult::fail_redo;
-            }
-            else
-                // The form was canceled, stop the creation process.
-                return L2A::LATEX::LatexCreationDebugResult::fail_quit;
-        }
-    }
 }
 
 /**
