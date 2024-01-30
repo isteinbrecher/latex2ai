@@ -193,14 +193,15 @@ function update_create_item(event) {
 
     check_git_hash($xml)
 
-    var l2a_xml = $xml.find("form_data").find("LaTeX2AI_item")
+    var xml_form_data = $xml.find("form_data")
+    var xml_l2a_item = xml_form_data.find("LaTeX2AI_item")
 
     // Store the variables coming from the main plugin
-    placed_option_input = l2a_xml.attr("placed_option")
-    text_align_horizontal_input = l2a_xml.attr("text_align_horizontal")
-    text_align_vertical_input = l2a_xml.attr("text_align_vertical")
-    latex_text_input = l2a_xml.find("latex").text()
-    cursor_position_input = l2a_xml.find("latex").attr("cursor_position")
+    placed_option_input = xml_l2a_item.attr("placed_option")
+    text_align_horizontal_input = xml_l2a_item.attr("text_align_horizontal")
+    text_align_vertical_input = xml_l2a_item.attr("text_align_vertical")
+    latex_text_input = xml_l2a_item.find("latex").text()
+    cursor_position_input = xml_l2a_item.find("latex").attr("cursor_position")
 
     // Set the text align
     $(
@@ -226,11 +227,10 @@ function update_create_item(event) {
     }
 
     // Activate / Deactivate the buttons
-    if (xmlData.documentElement.getAttribute("latex_exists") == "1") {
+    if (xml_form_data.attr("latex_exists") == "1") {
         $("#button_redo_latex").prop("disabled", false)
         $("#button_redo_boundary").prop("disabled", false)
-        let boundary_box_state =
-            xmlData.documentElement.getAttribute("boundary_box_state")
+        let boundary_box_state = xml_form_data.attr("boundary_box_state")
         $("#boundary_box_state").prop(
             "innerHTML",
             "Boundary box status: " + boundary_box_state
