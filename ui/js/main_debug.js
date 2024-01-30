@@ -103,5 +103,9 @@ function update_create_form(event) {
     is_redo = l2a_xml.attr("action") == "redo_items"
     if (is_redo) {
         $("#button_ok").prop("disabled", true)
+        $("#extra_text").prop(
+            "innerHTML",
+            "The error ocurred while recompiling items that were not changed.\nThis usually happens when something in the header changes or the document is compiled on a different system than before."
+        )
     }
 }

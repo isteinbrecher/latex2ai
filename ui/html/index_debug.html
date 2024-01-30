@@ -10,16 +10,18 @@
         <link id="hostStyle" rel="stylesheet" href="../css/latex2ai.css" />
     </head>
     <body>
-        <p>The LaTeX creation resulted in an error</p>
+        <p>The compilation of the LaTeX code resulted in an error</p>
+        <p id="extra_text"></p>
+        <hr />
+        <p>Debug actions</p>
         <input type="submit" id="button_open_log" value="Open LaTeX log file" />
-        <p></p>
         <input
             type="submit"
             id="button_create_debug"
             value="Create debug folder"
         />
-        <p></p>
-        <input type="submit" id="button_ok" value="OK" />
+        <hr />
+        <input type="submit" id="button_ok" value="Re-edit LaTeX code" />
         <input type="submit" id="button_cancel" value="Cancel" />
     </body>
 </html>

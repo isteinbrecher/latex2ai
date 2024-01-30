@@ -92,15 +92,15 @@
           <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
           <Geometry>
             <Size>
-             	<Height>200</Height>
+             	<Height>220</Height>
               	<Width>400</Width>
             </Size>
             <MinSize>
-                <Height>200</Height>
+                <Height>220</Height>
                 <Width>400</Width>
             </MinSize>
             <MaxSize>
-                <Height>200</Height>
+                <Height>220</Height>
                 <Width>400</Width>
             </MaxSize>
           </Geometry>
