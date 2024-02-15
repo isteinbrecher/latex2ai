@@ -83,53 +83,49 @@ ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_fil
  */
 std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file, const unsigned int& n_pages)
 {
-    // Check if file exists.
+    // Check if file exists
     if (!L2A::UTIL::IsFile(pdf_file))
         l2a_error("The file to split up '" + pdf_file.GetFullPath() + "' does not exits!");
 
-    // Get name and folder of the pdf file.
-    ai::UnicodeString split_pdf_name = pdf_file.GetFileName();
-    ai::UnicodeString split_pdf_name_no_ext = pdf_file.GetFileNameNoExt();
+    // Get name and folder of the pdf file
+    const ai::UnicodeString pdf_name = pdf_file.GetFileName();
+    const ai::UnicodeString pdf_name_no_ext = pdf_file.GetFileNameNoExt();
     ai::FilePath pdf_folder = pdf_file.GetParent();
-    ai::FilePath pdf_pages = pdf_folder;
-    pdf_pages.AddComponent(split_pdf_name_no_ext);
 
-    // Delete existing files for the individual pages.
-    for (unsigned int i = 1; i <= n_pages; i++)
+    // Delete possibly existing files for the individual pages
+    ai::UnicodeString split_files_regex;
+    split_files_regex += pdf_name_no_ext;
+    split_files_regex += "_[0-9]+\\.pdf$";
+    const auto old_pdf_pages = L2A::UTIL::FindFilesInFolder(pdf_folder, split_files_regex);
+    for (const auto old_split_page : old_pdf_pages)
     {
-        ai::UnicodeString file_name = pdf_pages.GetFullPath();
-        file_name += ai::UnicodeString("_");
-        file_name += L2A::UTIL::IntegerToString(i);
-        file_name += ai::UnicodeString(".pdf");
-        L2A::UTIL::RemoveFile(ai::FilePath(file_name), false);
+        L2A::UTIL::RemoveFile(old_split_page, false);
     }
 
-    // Get the ghostscript command to split the pdf.
+    // Get the ghostscript command to split the pdf
     ai::UnicodeString gs_command("\"");
     gs_command += L2A::Global().command_gs_;
     gs_command += "\" -sDEVICE=pdfwrite -o ";
-    gs_command += split_pdf_name_no_ext;
+    gs_command += pdf_name_no_ext;
     gs_command += "_%d.pdf ";
-    gs_command += split_pdf_name;
+    gs_command += pdf_name;
 
-    // Call the command to split up the pdf file.
+    // Call the command to split up the pdf file
     L2A::UTIL::SetWorkingDirectory(pdf_folder);
     auto command_result = L2A::UTIL::ExecuteCommandLine(gs_command, true);
     if (command_result.exit_status_ != 0) l2a_error("Error in the ghostscript call >>" + gs_command + "<<");
 
-    // Get vector of pdf files for the single items.
+    // Get vector of pdf files for the created split items
     std::vector<ai::FilePath> pdf_files;
     for (unsigned int i = 1; i <= n_pages; i++)
     {
-        ai::UnicodeString file_name = pdf_pages.GetFullPath();
-        file_name += ai::UnicodeString("_");
-        file_name += L2A::UTIL::IntegerToString(i);
-        file_name += ai::UnicodeString(".pdf");
-        pdf_files.push_back(ai::FilePath(file_name));
+        ai::FilePath split_file = pdf_folder;
+        split_file.AddComponent(pdf_name_no_ext + "_" + L2A::UTIL::IntegerToString(i) + ".pdf");
+        pdf_files.push_back(split_file);
 
-        // Check if the file was created.
-        if (!L2A::UTIL::IsFile(ai::FilePath(file_name)))
-            l2a_error("The split file '" + file_name + "' was not created!");
+        // Check if the file was created
+        if (!L2A::UTIL::IsFile(split_file))
+            l2a_error("The split file '" + split_file.GetFullPath() + "' was not created!");
     }
 
     return pdf_files;
