@@ -367,9 +367,8 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
     {
         if (std::filesystem::is_regular_file(dir_entry))
         {
-            // TODO: Possible unicode issues here with the path
-            const auto file_name = dir_entry.path().string();
-            if (std::regex_match(file_name, regex_string))
+            const auto file_name = dir_entry.path().filename().string();
+            if (std::regex_search(file_name, regex_string))
             {
                 file_vector.push_back(FilePathStdToAi(dir_entry.path()));
             }
