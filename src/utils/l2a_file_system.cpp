@@ -206,7 +206,18 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
     ai::FilePath temp_directory;
     AIErr error = sAIFolders->FindFolder(kAITemporayFolder, false, temp_directory);
     l2a_check_ai_error(error);
+    temp_directory.AddComponent(ai::UnicodeString("LaTeX2AI"));
     return temp_directory;
+}
+
+/**
+ *
+ */
+void L2A::UTIL::ClearTemporaryDirectory()
+{
+    const auto temp_dir = GetTemporaryDirectory();
+    RemoveDirectoryAI(temp_dir, false);
+    CreateDirectoryL2A(temp_dir);
 }
 
 /**

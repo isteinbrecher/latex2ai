@@ -97,9 +97,14 @@ namespace L2A
         void CopyFileL2A(const ai::FilePath& source, const ai::FilePath& target);
 
         /**
-         * \brief Return the path to the temp directory on the system.
+         * \brief Return the path to the temp LaTeX2AI directory on the system.
          */
         ai::FilePath GetTemporaryDirectory();
+
+        /**
+         * \brief Clear the temporary directory.
+         */
+        void ClearTemporaryDirectory();
 
         /**
          * \brief Return the path to the application data directory.

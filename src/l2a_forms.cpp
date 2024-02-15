@@ -56,9 +56,9 @@ L2A::FormReturnValue L2A::Form(const ai::UnicodeString& form_type, const L2A::UT
     }
 
     // Get the filepath for the input and output files.
-    ai::FilePath input_path = L2A::Global().path_temp_;
+    ai::FilePath input_path ;//= L2A::Global().path_temp_;
     input_path.AddComponent(ai::UnicodeString("l2a_forms_input.xml"));
-    ai::FilePath output_path = L2A::Global().path_temp_;
+    ai::FilePath output_path ;//= L2A::Global().path_temp_;
     output_path.AddComponent(ai::UnicodeString("l2a_forms_output.xml"));
 
     // Delte the both files that are used to communicate with the forms.

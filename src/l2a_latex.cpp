@@ -210,7 +210,7 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
 bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
 {
     // Create the latex files
-    const ai::FilePath tex_file = WriteLatexFiles(latex_code, Global().path_temp_);
+    const ai::FilePath tex_file = WriteLatexFiles(latex_code, L2A::UTIL::GetTemporaryDirectory());
 
     // Remove a mabe existing pdf file.
     pdf_file = tex_file.GetParent();
