@@ -32,6 +32,7 @@
 #include "l2a_ui_base.h"
 #include "l2a_ui_debug.h"
 #include "l2a_ui_item.h"
+#include "l2a_ui_options.h"
 #include "l2a_ui_redo.h"
 
 #include <map>
@@ -47,7 +48,8 @@ namespace L2A::UI
         none,
         item,
         redo,
-        debug
+        debug,
+        options
     };
 
     /**
@@ -72,29 +74,38 @@ namespace L2A::UI
         void RemoveEventListeners();
 
         /**
-         * @brief Return pointer to the item form
+         * @brief Return reference to the item form
          */
         Item& GetItemForm()
         {
-            Item* form = dynamic_cast<Item*>(forms_[FormsEnum::item].get());
+            auto form = dynamic_cast<Item*>(forms_[FormsEnum::item].get());
             return *(form);
         }
 
         /**
-         * @brief Return pointer to the redo form
+         * @brief Return reference to the redo form
          */
         Redo& GetRedoForm()
         {
-            Redo* form = dynamic_cast<Redo*>(forms_[FormsEnum::redo].get());
+            auto form = dynamic_cast<Redo*>(forms_[FormsEnum::redo].get());
             return *(form);
         }
 
         /**
-         * @brief Return pointer to the debug form
+         * @brief Return reference to the debug form
          */
         Debug& GetDebugForm()
         {
-            Debug* form = dynamic_cast<Debug*>(forms_[FormsEnum::debug].get());
+            auto form = dynamic_cast<Debug*>(forms_[FormsEnum::debug].get());
+            return *(form);
+        }
+
+        /**
+         * @brief Return reference to the option form
+         */
+        Options& GetOptionsForm()
+        {
+            auto form = dynamic_cast<Options*>(forms_[FormsEnum::options].get());
             return *(form);
         }
 

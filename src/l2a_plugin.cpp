@@ -434,7 +434,7 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
     }
     else if (message->tool == this->fToolHandle[2])
     {
-        //ui_manager_->GetOptionsForm().OpenOptionsForm();
+        ui_manager_->GetOptionsForm().OpenOptionsForm();
     }
     else if (message->tool == this->fToolHandle[3] && L2A::AI::GetDocumentCount() > 0)
     {

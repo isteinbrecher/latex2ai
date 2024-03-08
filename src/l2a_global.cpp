@@ -124,7 +124,6 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
     }
 }
 
-
 /**
  *
  */
@@ -134,6 +133,32 @@ L2A::GLOBAL::Global::~Global()
     L2A::UTIL::WriteFileUTF8(application_data_path_, ToString(), true);
 }
 
+/**
+ *
+ */
+void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const
+{
+    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), latex_bin_path_);
+    parameter_list->SetOption(ai::UnicodeString("latex_engine"), latex_engine_);
+    parameter_list->SetOption(ai::UnicodeString("latex_command_options"), latex_command_options_);
+    parameter_list->SetOption(ai::UnicodeString("gs_command"), gs_command_);
+    parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), warning_boundary_boxes_);
+    parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), warning_ai_not_saved_);
+}
+
+/**
+ *
+ */
+void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const
+{
+    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("latex_engine"), ai::UnicodeString("pdflatex"));
+    parameter_list->SetOption(ai::UnicodeString("latex_command_options"),
+        ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
+    parameter_list->SetOption(ai::UnicodeString("gs_command"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
+    parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
+}
 
 /**
  *
@@ -227,6 +252,8 @@ bool L2A::GLOBAL::Global::SetLatexCommand(const ai::FilePath& latex_path)
  */
 bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) const
 {
+    // TODO: Move this to Latex files. Then we will also have to do something sbout the "get latex command" so that the
+    // stuff there can be reused and does not have to be coded here again.
     ai::UnicodeString command_latex;
     if (L2A::UTIL::IsDirectory(path_latex))
     {
@@ -263,38 +290,11 @@ bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) cons
 /**
  *
  */
-void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const
-{
-    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), latex_bin_path_);
-    parameter_list->SetOption(ai::UnicodeString("latex_engine"), latex_engine_);
-    parameter_list->SetOption(ai::UnicodeString("latex_command_options"), latex_command_options_);
-    parameter_list->SetOption(ai::UnicodeString("gs_command"), gs_command_);
-    parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), warning_boundary_boxes_);
-    parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), warning_ai_not_saved_);
-}
-
-/**
- *
- */
 ai::UnicodeString L2A::GLOBAL::Global::ToString() const
 {
     std::shared_ptr<L2A::UTIL::ParameterList> parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
     ToParameterList(parameter_list);
     return parameter_list->ToXMLString(ai::UnicodeString("LaTeX2AI_options"));
-}
-
-/**
- *
- */
-void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const
-{
-    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), ai::UnicodeString(""));
-    parameter_list->SetOption(ai::UnicodeString("latex_engine"), ai::UnicodeString("pdflatex"));
-    parameter_list->SetOption(ai::UnicodeString("latex_command_options"),
-        ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
-    parameter_list->SetOption(ai::UnicodeString("gs_command"), ai::UnicodeString(""));
-    parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
-    parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
 }
 
 /**

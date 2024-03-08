@@ -65,6 +65,16 @@ namespace L2A
              */
             ~Global();
 
+            /**
+             * \brief Convert this object to a parameter list.
+             */
+            void ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;
+
+            /**
+             * \brief Get a parameter list with the default options.
+             */
+            void GetDefaultParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;
+
            private:
             /**
              * \brief Set the ghostscript and check if it is correct.
@@ -87,19 +97,9 @@ namespace L2A
             bool CheckLatexCommand(const ai::FilePath& path_latex) const;
 
             /**
-             * \brief Convert this object to a parameter list.
-             */
-            void ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;
-
-            /**
              * \brief Convert this object to a xml string.
              */
             ai::UnicodeString ToString() const;
-
-            /**
-             * \brief Get a parameter list with the default options.
-             */
-            void GetDefaultParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;
 
             /**
              * \brief Set the values for this object from a parameter list.
