@@ -119,17 +119,6 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
         error = 1;
     }
 
-    // Check which tool is selected.
-    AIToolHandle selected_tool;
-    sAITool->GetSelectedTool(&selected_tool);
-    if (fToolHandle.size() > 0 &&
-        (selected_tool == fToolHandle[1] || selected_tool == fToolHandle[2] || selected_tool == fToolHandle[3]))
-    {
-        // The redo item is selected. Since this only acts as button we want to deselect the tool here.
-        error = sAITool->SetSelectedToolByName(kSelectTool);
-        l2a_check_ai_error(error);
-    }
-
     return error;
 }
 
@@ -449,16 +438,7 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
     }
     else if (message->tool == this->fToolHandle[2])
     {
-        // Open the global options dialog.
-        L2A::GlobalMutable().SetFromUserForm();
-
-        // If a document is opend, deselect all artwork  so a call to the plugin will be given, where the tools can be
-        // deselected. And the selection tool will be activated.
-        if (L2A::AI::GetDocumentCount() > 0)
-        {
-            error = sAIMatchingArt->DeselectAll();
-            l2a_check_ai_error(error);
-        }
+        ui_manager_->GetOptionsForm().OpenOptionsForm();
     }
     else if (message->tool == this->fToolHandle[3] && L2A::AI::GetDocumentCount() > 0)
     {
@@ -510,9 +490,9 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
 
     if (message->tool == this->fToolHandle[0])
     {
-        // Create edit mode is active.
+        // Create edit mode is active
 
-        // Check if cursor is over an art item.
+        // Check if cursor is over an art item
         ai::int32 cursor_id;
         if (annotator_->CheckForArtHit(message))
             cursor_id = CURSOR_ICON_EDIT;
@@ -524,6 +504,13 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
                 cursor_id = CURSOR_ICON_CREATE;
         }
         error = sAIUser->SetSVGCursor(cursor_id, fResourceManagerHandle);
+        l2a_check_ai_error(error);
+    }
+    else if (message->tool == this->fToolHandle[1] || message->tool == this->fToolHandle[2] ||
+             message->tool == this->fToolHandle[3])
+    {
+        // A LaTeX2AI UI is opened - we want to deselect the tool in this case, we select the default AI selection tool
+        error = sAITool->SetSelectedToolByName(kSelectTool);
         l2a_check_ai_error(error);
     }
 
