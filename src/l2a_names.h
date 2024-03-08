@@ -23,7 +23,7 @@
 // -----------------------------------------------------------------------------
 
 /**
- * \brief Define constang names and function related to names for LaTeX2AI.
+ * \brief Define constant names and function related to names for LaTeX2AI.
  */
 
 
