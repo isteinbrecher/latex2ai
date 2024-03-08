@@ -35,7 +35,6 @@
 #include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_file_system.h"
-#include "l2a_forms.h"
 #include "l2a_global.h"
 #include "l2a_latex.h"
 #include "l2a_math.h"

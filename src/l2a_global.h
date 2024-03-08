@@ -33,8 +33,6 @@
 
 #include "AppContext.hpp"
 
-#include "l2a_forms.h"
-
 
 // Forward declarations.
 class L2APlugin;
@@ -98,11 +96,6 @@ namespace L2A
             bool GetWarningBoundaryBox() const { return warning_boundary_boxes_; }
 
            private:
-            /**
-             * \brief Set path to the executable of the forms application and check if it is correct.
-             */
-            bool SetFormsPath(const ai::FilePath& forms_path);
-
             /**
              * \brief Check that the path to the forms application points to a valid executable.
              */
@@ -188,10 +181,6 @@ namespace L2A
 
             //! Flag if testing is currently active.
             bool is_testing_;
-
-            //! Parameter list that will be returned for forms during testing.
-            std::shared_ptr<L2A::UTIL::ParameterList> testing_form_return_parameter_list_;
-            L2A::FormReturnValue testing_form_return_value_;
         };
 
         void CheckGlobal();

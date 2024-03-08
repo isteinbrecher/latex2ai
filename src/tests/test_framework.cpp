@@ -296,8 +296,6 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
                 item_property_change.latex_code_ = ai::UnicodeString("Test item $\\int_a^b \\mathrm dx$");
                 item_property_change.text_align_horizontal_ = horizontal;
                 item_property_change.text_align_vertical_ = vertical;
-                L2A::GlobalMutable().testing_form_return_parameter_list_ =
-                    std::make_shared<L2A::UTIL::ParameterList>(item_property_change.ToParameterList());
 
                 // Change the item.
                 l2a_item.Change(ai::UnicodeString("ok"), item_property_change);
@@ -640,7 +638,6 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
     }
 
     // Deactivate the global testing mode.
-    L2A::GlobalMutable().testing_form_return_parameter_list_ = nullptr;
     L2A::GlobalMutable().is_testing_ = false;
 }
 

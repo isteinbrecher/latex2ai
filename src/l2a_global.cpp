@@ -35,7 +35,6 @@
 #include "l2a_error.h"
 #include "l2a_execute.h"
 #include "l2a_file_system.h"
-#include "l2a_forms.h"
 #include "l2a_latex.h"
 #include "l2a_parameter_list.h"
 #include "l2a_plugin.h"
@@ -112,16 +111,6 @@ void L2A::GLOBAL::Global::SetUp()
     // Clean the temporary directory.
     L2A::UTIL::ClearTemporaryDirectory();
 
-    // Make sure the path to the forms executable is valid.
-    if (!CheckFormsPath())
-    {
-        // The path from the application data file is not valid. Try to automatically find it.
-        ai::FilePath path_form_exe_autoget = L2A::UTIL::GetFormsPath();
-
-        // "Officially" set the forms path and check if it is valid.
-        if (!SetFormsPath(path_form_exe_autoget)) return;
-    }
-
     // Make sure the ghostscript command is valid.
     if (!CheckGhostscriptCommand(command_gs_))
     {
@@ -149,55 +138,6 @@ void L2A::GLOBAL::Global::SetUp()
 /**
  *
  */
-void L2A::GLOBAL::Global::SetFromUserForm()
-{
-    // Get a parameter list with the current options and the default options.
-    std::shared_ptr<L2A::UTIL::ParameterList> form_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
-    GetParameterListForForm(form_parameter_list);
-
-    // Call the form.
-    bool exit_form = false;
-    while (!exit_form)
-    {
-        std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list =
-            std::make_shared<L2A::UTIL::ParameterList>();
-        L2A::FormReturnValue form_return =
-            L2A::Form(ai::UnicodeString("l2a_options"), *form_parameter_list, form_return_parameter_list);
-        if (!form_return.canceled)
-        {
-            if (form_return.return_string == "ok")
-            {
-                SetFromParameterList(*form_return_parameter_list);
-                exit_form = true;
-            }
-            else if (form_return.return_string == "create_default_header")
-            {
-                form_parameter_list->SetOption(ai::UnicodeString("path_latex"),
-                    form_return_parameter_list->GetStringOption(ai::UnicodeString("path_latex")));
-                form_parameter_list->SetOption(ai::UnicodeString("command_latex"),
-                    form_return_parameter_list->GetStringOption(ai::UnicodeString("command_latex")));
-                form_parameter_list->SetOption(ai::UnicodeString("command_latex_options"),
-                    form_return_parameter_list->GetStringOption(ai::UnicodeString("command_latex_options")));
-                form_parameter_list->SetOption(ai::UnicodeString("command_gs"),
-                    form_return_parameter_list->GetStringOption(ai::UnicodeString("command_gs")));
-                form_parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"),
-                    form_return_parameter_list->GetIntOption(ai::UnicodeString("warning_ai_not_saved")));
-                form_parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"),
-                    form_return_parameter_list->GetIntOption(ai::UnicodeString("warning_boundary_boxes")));
-
-                L2A::LATEX::GetHeaderPath();
-            }
-            else
-                l2a_error("Got unexpected return value from form");
-        }
-        else
-            exit_form = true;
-    }
-}
-
-/**
- *
- */
 ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
 {
     if (L2A::UTIL::IsDirectory(path_latex_))
@@ -212,61 +152,6 @@ ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
     }
     else
         return command_latex_;
-}
-
-/**
- *
- */
-bool L2A::GLOBAL::Global::SetFormsPath(const ai::FilePath& forms_path)
-{
-    // Set the path since this path will be used in the forms application for testing if the path is valid.
-    // TODO: maybe think of a better way to do this.
-    this->path_form_exe_ = forms_path;
-
-#ifdef WIN_ENV
-    // Check until the path is correct or the user cancels the operation.
-    while (!CheckFormsPath())
-    {
-        AIBoolean form_result = true;
-        ai::UnicodeString form_string(
-            "The path to the forms executable LaTeX2AIForms.exe could not be found. Please select the path, otherwise "
-            "LaTeX2AI can not be used!");
-        form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
-        if (!form_result) return false;
-
-        // Ask the user to pick the file.
-        AIFileDialogFilters options;
-        options.AddFilter(ai::UnicodeString("Executable (*.exe)"), ai::UnicodeString("*.exe"));
-        AIErr err = sAIUser->GetFileDialog(
-            ai::UnicodeString("Select *.exe for the forms Application"), &options, path_form_exe_);
-        if (err == kCanceledErr) return false;
-        l2a_check_ai_error(err);
-    }
-#endif
-    return true;
-}
-
-/**
- *
- */
-bool L2A::GLOBAL::Global::CheckFormsPath() const
-{
-    // If the path does not exist we can return right away.
-    if (!L2A::UTIL::IsFile(path_form_exe_)) return false;
-
-    L2A::UTIL::ParameterList empty_list;
-    std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list;
-
-    try
-    {
-        L2A::FormReturnValue form_return_value =
-            L2A::Form(ai::UnicodeString("l2a_check_forms"), empty_list, form_return_parameter_list);
-        return !(form_return_value.canceled);
-    }
-    catch (...)
-    {
-        return false;
-    }
 }
 
 /**

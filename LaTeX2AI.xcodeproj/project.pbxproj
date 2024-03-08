@@ -50,11 +50,9 @@
 		C67D8B3D2B0389FC001F89FA /* l2a_ai_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B3B2B0389FC001F89FA /* l2a_ai_functions.h */; };
 		C67D8B3F2B038B41001F89FA /* l2a_property.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B3E2B038B41001F89FA /* l2a_property.cpp */; };
 		C67D8B412B038B53001F89FA /* l2a_property.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B402B038B53001F89FA /* l2a_property.h */; };
-		C67D8B4D2B038B86001F89FA /* l2a_forms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B422B038B86001F89FA /* l2a_forms.cpp */; };
 		C67D8B4E2B038B86001F89FA /* l2a_global.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B432B038B86001F89FA /* l2a_global.h */; };
 		C67D8B4F2B038B86001F89FA /* l2a_latex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B442B038B86001F89FA /* l2a_latex.cpp */; };
 		C67D8B502B038B86001F89FA /* l2a_names.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B452B038B86001F89FA /* l2a_names.h */; };
-		C67D8B512B038B86001F89FA /* l2a_forms.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B462B038B86001F89FA /* l2a_forms.h */; };
 		C67D8B522B038B86001F89FA /* l2a_latex.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B472B038B86001F89FA /* l2a_latex.h */; };
 		C67D8B532B038B86001F89FA /* l2a_annotator.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B482B038B86001F89FA /* l2a_annotator.h */; };
 		C67D8B542B038B86001F89FA /* l2a_item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B492B038B86001F89FA /* l2a_item.cpp */; };
@@ -76,11 +74,9 @@
 		C6F3D20A2B03A022004EF248 /* test_framework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1F82B03A022004EF248 /* test_framework.cpp */; };
 		C6F3D20B2B03A022004EF248 /* test_framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1F92B03A022004EF248 /* test_framework.h */; };
 		C6F3D20C2B03A022004EF248 /* test_string_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1FA2B03A022004EF248 /* test_string_functions.h */; };
-		C6F3D20D2B03A022004EF248 /* test_forms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1FB2B03A022004EF248 /* test_forms.cpp */; };
 		C6F3D20E2B03A022004EF248 /* test_parameter_list.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1FC2B03A022004EF248 /* test_parameter_list.h */; };
 		C6F3D20F2B03A022004EF248 /* test_base64.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1FD2B03A022004EF248 /* test_base64.h */; };
 		C6F3D2102B03A022004EF248 /* testing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1FE2B03A022004EF248 /* testing.cpp */; };
-		C6F3D2112B03A022004EF248 /* test_forms.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1FF2B03A022004EF248 /* test_forms.h */; };
 		C6F3D2122B03A022004EF248 /* testing_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D2002B03A022004EF248 /* testing_utility.cpp */; };
 		C6F3D2132B03A022004EF248 /* test_parameter_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D2012B03A022004EF248 /* test_parameter_list.cpp */; };
 		C6F3D2142B03A022004EF248 /* test_string_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D2022B03A022004EF248 /* test_string_functions.cpp */; };
@@ -139,11 +135,9 @@
 		C67D8B3B2B0389FC001F89FA /* l2a_ai_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ai_functions.h; path = src/utils/l2a_ai_functions.h; sourceTree = "<group>"; };
 		C67D8B3E2B038B41001F89FA /* l2a_property.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_property.cpp; path = src/l2a_property.cpp; sourceTree = "<group>"; };
 		C67D8B402B038B53001F89FA /* l2a_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_property.h; path = src/l2a_property.h; sourceTree = "<group>"; };
-		C67D8B422B038B86001F89FA /* l2a_forms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_forms.cpp; path = src/l2a_forms.cpp; sourceTree = "<group>"; };
 		C67D8B432B038B86001F89FA /* l2a_global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_global.h; path = src/l2a_global.h; sourceTree = "<group>"; };
 		C67D8B442B038B86001F89FA /* l2a_latex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_latex.cpp; path = src/l2a_latex.cpp; sourceTree = "<group>"; };
 		C67D8B452B038B86001F89FA /* l2a_names.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_names.h; path = src/l2a_names.h; sourceTree = "<group>"; };
-		C67D8B462B038B86001F89FA /* l2a_forms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_forms.h; path = src/l2a_forms.h; sourceTree = "<group>"; };
 		C67D8B472B038B86001F89FA /* l2a_latex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_latex.h; path = src/l2a_latex.h; sourceTree = "<group>"; };
 		C67D8B482B038B86001F89FA /* l2a_annotator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_annotator.h; path = src/l2a_annotator.h; sourceTree = "<group>"; };
 		C67D8B492B038B86001F89FA /* l2a_item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_item.cpp; path = src/l2a_item.cpp; sourceTree = "<group>"; };
@@ -165,11 +159,9 @@
 		C6F3D1F82B03A022004EF248 /* test_framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_framework.cpp; path = src/tests/test_framework.cpp; sourceTree = "<group>"; };
 		C6F3D1F92B03A022004EF248 /* test_framework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_framework.h; path = src/tests/test_framework.h; sourceTree = "<group>"; };
 		C6F3D1FA2B03A022004EF248 /* test_string_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_string_functions.h; path = src/tests/test_string_functions.h; sourceTree = "<group>"; };
-		C6F3D1FB2B03A022004EF248 /* test_forms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_forms.cpp; path = src/tests/test_forms.cpp; sourceTree = "<group>"; };
 		C6F3D1FC2B03A022004EF248 /* test_parameter_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_parameter_list.h; path = src/tests/test_parameter_list.h; sourceTree = "<group>"; };
 		C6F3D1FD2B03A022004EF248 /* test_base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_base64.h; path = src/tests/test_base64.h; sourceTree = "<group>"; };
 		C6F3D1FE2B03A022004EF248 /* testing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing.cpp; path = src/tests/testing.cpp; sourceTree = "<group>"; };
-		C6F3D1FF2B03A022004EF248 /* test_forms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_forms.h; path = src/tests/test_forms.h; sourceTree = "<group>"; };
 		C6F3D2002B03A022004EF248 /* testing_utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing_utility.cpp; path = src/tests/testing_utility.cpp; sourceTree = "<group>"; };
 		C6F3D2012B03A022004EF248 /* test_parameter_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_parameter_list.cpp; path = src/tests/test_parameter_list.cpp; sourceTree = "<group>"; };
 		C6F3D2022B03A022004EF248 /* test_string_functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_string_functions.cpp; path = src/tests/test_string_functions.cpp; sourceTree = "<group>"; };
@@ -235,8 +227,6 @@
 				C605E7F52B226FF900E74B92 /* l2a_execute.h */,
 				C67D8B212B038670001F89FA /* l2a_file_system.cpp */,
 				C67D8B202B038670001F89FA /* l2a_file_system.h */,
-				C67D8B422B038B86001F89FA /* l2a_forms.cpp */,
-				C67D8B462B038B86001F89FA /* l2a_forms.h */,
 				C67D8B4B2B038B86001F89FA /* l2a_global.cpp */,
 				C67D8B432B038B86001F89FA /* l2a_global.h */,
 				C67D8B492B038B86001F89FA /* l2a_item.cpp */,
@@ -264,8 +254,6 @@
 				C6F3D1FD2B03A022004EF248 /* test_base64.h */,
 				C6F3D1F52B03A022004EF248 /* test_file_system.cpp */,
 				C6F3D1F42B03A022004EF248 /* test_file_system.h */,
-				C6F3D1FB2B03A022004EF248 /* test_forms.cpp */,
-				C6F3D1FF2B03A022004EF248 /* test_forms.h */,
 				C6F3D1F82B03A022004EF248 /* test_framework.cpp */,
 				C6F3D1F92B03A022004EF248 /* test_framework.h */,
 				C6F3D2012B03A022004EF248 /* test_parameter_list.cpp */,
@@ -348,7 +336,6 @@
 				C605E7F72B226FF900E74B92 /* l2a_execute.h in Headers */,
 				C67D8B222B038670001F89FA /* l2a_file_system.h in Headers */,
 				C67D8B532B038B86001F89FA /* l2a_annotator.h in Headers */,
-				C67D8B512B038B86001F89FA /* l2a_forms.h in Headers */,
 				C67D8B312B038842001F89FA /* l2a_utils.h in Headers */,
 				C67D8B2F2B038842001F89FA /* l2a_parameter_list.h in Headers */,
 				C67D8B412B038B53001F89FA /* l2a_property.h in Headers */,
@@ -358,7 +345,6 @@
 				C67D8B1D2B0384D5001F89FA /* l2a_math.h in Headers */,
 				C6F3D2092B03A022004EF248 /* test_utlity.h in Headers */,
 				C61B699E2B4AB17400AF2924 /* l2a_ui_manager.h in Headers */,
-				C6F3D2112B03A022004EF248 /* test_forms.h in Headers */,
 				C67D8B3D2B0389FC001F89FA /* l2a_ai_functions.h in Headers */,
 				C6F3D2082B03A022004EF248 /* testing.h in Headers */,
 				C6F3D20B2B03A022004EF248 /* test_framework.h in Headers */,
@@ -516,13 +502,11 @@
 				C67D8B182B03817A001F89FA /* l2a_string_functions.cpp in Sources */,
 				2AF5F7AC0CF5F3110091D961 /* Plugin.cpp in Sources */,
 				C62AA9DC2B4C3BF300E27B7B /* l2a_ui_redo.cpp in Sources */,
-				C6F3D20D2B03A022004EF248 /* test_forms.cpp in Sources */,
 				C67D8B562B038B86001F89FA /* l2a_global.cpp in Sources */,
 				2AF5F7AD0CF5F3110091D961 /* SDKAboutPluginsHelper.cpp in Sources */,
 				2AF5F7AE0CF5F3110091D961 /* Suites.cpp in Sources */,
 				E8FDCA9910209FEA00D09060 /* IAIStringFormatUtils.cpp in Sources */,
 				C67D8B542B038B86001F89FA /* l2a_item.cpp in Sources */,
-				C67D8B4D2B038B86001F89FA /* l2a_forms.cpp in Sources */,
 				C6F3D2122B03A022004EF248 /* testing_utility.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
