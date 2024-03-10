@@ -65,11 +65,6 @@ namespace L2A
              */
             ~Global();
 
-            /**
-             * \brief Set the values for this object from a xml string.
-             */
-            ai::UnicodeString GetLatexCommand() const;
-
            private:
             /**
              * \brief Set the ghostscript and check if it is correct.

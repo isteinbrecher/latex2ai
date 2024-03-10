@@ -134,27 +134,6 @@ L2A::GLOBAL::Global::~Global()
     L2A::UTIL::WriteFileUTF8(application_data_path_, ToString(), true);
 }
 
-/**
- *
- */
-ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
-{
-    if (L2A::UTIL::IsDirectory(latex_bin_path_))
-    {
-        ai::FilePath exe_path = latex_bin_path_;
-#ifdef WIN_ENV
-        exe_path.AddComponent(latex_engine_ + ".exe");
-#else
-        exe_path.AddComponent(latex_engine_);
-#endif
-        return "\"" + exe_path.GetFullPath() + "\"";
-    }
-    else
-    {
-        // In the case there is no valid bin directory, check if we can simply run the latex engine command
-        return latex_engine_;
-    }
-}
 
 /**
  *

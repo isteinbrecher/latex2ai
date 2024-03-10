@@ -66,15 +66,32 @@ ai::UnicodeString L2A::LATEX::GetLatexString(const ai::UnicodeString& latex_code
  */
 ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_file)
 {
-    ai::UnicodeString command;
-    command += L2A::Global().GetLatexCommand();
-    command += " ";
-    command += L2A::Global().latex_command_options_;
-    command += " \"";
-    command += tex_file.GetFullPath();
-    command += "\"";
+    // This string will contain the actual command send to the commandline
+    ai::UnicodeString full_latex_command;
 
-    return command;
+    if (L2A::UTIL::IsDirectory(L2A::Global().latex_bin_path_))
+    {
+        ai::FilePath exe_path = L2A::Global().latex_bin_path_;
+#ifdef WIN_ENV
+        exe_path.AddComponent(L2A::Global().latex_engine_ + ".exe");
+#else
+        exe_path.AddComponent(L2A::Global().latex_engine_);
+#endif
+        full_latex_command += "\"" + exe_path.GetFullPath() + "\"";
+    }
+    else
+    {
+        // In the case there is no valid bin directory, check if we can simply run the latex engine command
+        full_latex_command += L2A::Global().latex_engine_;
+    }
+
+    // Add the options and the name of the tex file
+    full_latex_command += " ";
+    full_latex_command += L2A::Global().latex_command_options_;
+    full_latex_command += " \"";
+    full_latex_command += tex_file.GetFullPath();
+    full_latex_command += "\"";
+    return full_latex_command;
 }
 
 /**
