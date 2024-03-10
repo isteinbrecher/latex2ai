@@ -433,7 +433,7 @@ L2A::GLOBAL::Global& L2A::GlobalMutable()
  */
 L2APlugin& L2A::GlobalPluginMutable()
 {
-    if (L2A::GLOBAL::_l2a_plugin == nullptr) l2a_error("The global plugin pointer object is not defined!");
+    L2A::GLOBAL::CheckGlobal();
     return *L2A::GLOBAL::_l2a_plugin;
 }
 
