@@ -48,19 +48,11 @@
 L2A::GLOBAL::Global* L2A::GLOBAL::_l2a_global = nullptr;
 L2APlugin* L2A::GLOBAL::_l2a_plugin = nullptr;
 
-/**
- *
- */
-L2A::GLOBAL::Global::~Global()
-{
-    // Save the options in a file.
-    L2A::UTIL::WriteFileUTF8(application_data_path_, ToString(), true);
-}
 
 /**
  *
  */
-void L2A::GLOBAL::Global::SetUp()
+L2A::GLOBAL::Global::Global() : is_testing_(false)
 {
     // Check if a new version of LaTeX2AI is available. Do this at the beginning in case there is an error in the set
     // and get path functions later on and it is fixed in a future release.
@@ -130,9 +122,16 @@ void L2A::GLOBAL::Global::SetUp()
         // "Officially" set the latex path and check if it is valid.
         if (!SetLatexCommand(path_latex_)) return;
     }
+}
 
-    // Everything was ok.
-    is_setup_ = true;
+
+/**
+ *
+ */
+L2A::GLOBAL::Global::~Global()
+{
+    // Save the options in a file.
+    L2A::UTIL::WriteFileUTF8(application_data_path_, ToString(), true);
 }
 
 /**

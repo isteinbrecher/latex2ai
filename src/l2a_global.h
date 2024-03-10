@@ -58,22 +58,12 @@ namespace L2A
             /**
              * \brief Empty constructor.
              */
-            Global() : is_setup_(false), is_testing_(false){};
+            Global();
 
             /**
              * \brief Destructor. Here the options will be stored in an application file.
              */
             ~Global();
-
-            /**
-             * \brief Set up the global variables.
-             */
-            void SetUp();
-
-            /**
-             * \brief Return true if the object could be setup correctly.
-             */
-            inline bool IsSetup() const { return is_setup_; }
 
             /**
              * \brief Open a form and let the user select some global options.
@@ -149,9 +139,6 @@ namespace L2A
             void GetParameterListForForm(std::shared_ptr<L2A::UTIL::ParameterList>& form_parameter_list) const;
 
            public:
-            //! Flag if item could be setup.
-            bool is_setup_;
-
             //! Path to the latex executables.
             ai::FilePath path_latex_;
 

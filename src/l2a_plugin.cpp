@@ -181,24 +181,20 @@ ASErr L2APlugin::StartupPlugin(SPInterfaceMessage* message)
 
         // Set the global l2a object. This object should only be used with the Get functions in L2A.
         L2A::GLOBAL::_l2a_global = new L2A::GLOBAL::Global();
-        L2A::GlobalMutable().SetUp();
-        if (L2A::Global().IsSetup())
-        {
-            error = AddNotifier(message);
-            aisdk::check_ai_error(error);
 
-            error = AddTools(message);
-            aisdk::check_ai_error(error);
-
-            error = AddAnnotator(message);
-            aisdk::check_ai_error(error);
+        // Register relevant LaTeX2AI functions
+        error = AddNotifier(message);
+        aisdk::check_ai_error(error);
+        error = AddTools(message);
+        aisdk::check_ai_error(error);
+        error = AddAnnotator(message);
+        aisdk::check_ai_error(error);
 
 #ifdef _DEBUG
-            // In the debug mode perform all unit tests at startup.
-            static const bool print_status = false;
-            L2A::TEST::TestingMain(print_status);
+        // In the debug mode perform all unit tests at startup.
+        static const bool print_status = false;
+        L2A::TEST::TestingMain(print_status);
 #endif
-        }
 
         // Lock the plug-in as we register callbacks in PlugPlug Setup
         // TODO check if this is needed
