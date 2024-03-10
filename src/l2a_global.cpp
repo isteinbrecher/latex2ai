@@ -104,7 +104,7 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
     L2A::UTIL::ClearTemporaryDirectory();
 
     // Make sure the ghostscript command is valid.
-    if (!CheckGhostscriptCommand(command_gs_))
+    if (!CheckGhostscriptCommand(gs_command_))
     {
         // The path from the application data file is not valid. Try to automatically find it.
         ai::UnicodeString gs_command = L2A::UTIL::GetGhostScriptCommand();
@@ -114,13 +114,13 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
     }
 
     // Make sure the latex path is valid.
-    if (!CheckLatexCommand(path_latex_))
+    if (!CheckLatexCommand(latex_bin_path_))
     {
         // The path from the application data file is not valid. Try the default value.
-        path_latex_ = ai::FilePath(ai::UnicodeString(""));
+        latex_bin_path_ = ai::FilePath(ai::UnicodeString(""));
 
         // "Officially" set the latex path and check if it is valid.
-        if (!SetLatexCommand(path_latex_)) return;
+        if (!SetLatexCommand(latex_bin_path_)) return;
     }
 }
 
@@ -139,18 +139,21 @@ L2A::GLOBAL::Global::~Global()
  */
 ai::UnicodeString L2A::GLOBAL::Global::GetLatexCommand() const
 {
-    if (L2A::UTIL::IsDirectory(path_latex_))
+    if (L2A::UTIL::IsDirectory(latex_bin_path_))
     {
-        ai::FilePath exe_path = path_latex_;
+        ai::FilePath exe_path = latex_bin_path_;
 #ifdef WIN_ENV
-        exe_path.AddComponent(command_latex_ + ".exe");
+        exe_path.AddComponent(latex_engine_ + ".exe");
 #else
-        exe_path.AddComponent(command_latex_);
+        exe_path.AddComponent(latex_engine_);
 #endif
         return "\"" + exe_path.GetFullPath() + "\"";
     }
     else
-        return command_latex_;
+    {
+        // In the case there is no valid bin directory, check if we can simply run the latex engine command
+        return latex_engine_;
+    }
 }
 
 /**
@@ -181,7 +184,7 @@ bool L2A::GLOBAL::Global::SetGhostscriptCommand(ai::UnicodeString gs_command)
         gs_command = gs_path.GetFullPath();
     }
 
-    command_gs_ = gs_command;
+    gs_command_ = gs_command;
     return true;
 }
 
@@ -236,7 +239,7 @@ bool L2A::GLOBAL::Global::SetLatexCommand(const ai::FilePath& latex_path)
         l2a_check_ai_error(err);
     }
 
-    path_latex_ = path;
+    latex_bin_path_ = path;
     return true;
 }
 
@@ -283,10 +286,10 @@ bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) cons
  */
 void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const
 {
-    parameter_list->SetOption(ai::UnicodeString("path_latex"), path_latex_);
-    parameter_list->SetOption(ai::UnicodeString("command_latex"), command_latex_);
-    parameter_list->SetOption(ai::UnicodeString("command_latex_options"), command_latex_options_);
-    parameter_list->SetOption(ai::UnicodeString("command_gs"), command_gs_);
+    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), latex_bin_path_);
+    parameter_list->SetOption(ai::UnicodeString("latex_engine"), latex_engine_);
+    parameter_list->SetOption(ai::UnicodeString("latex_command_options"), latex_command_options_);
+    parameter_list->SetOption(ai::UnicodeString("gs_command"), gs_command_);
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), warning_boundary_boxes_);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), warning_ai_not_saved_);
 }
@@ -306,11 +309,11 @@ ai::UnicodeString L2A::GLOBAL::Global::ToString() const
  */
 void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const
 {
-    parameter_list->SetOption(ai::UnicodeString("path_latex"), ai::UnicodeString(""));
-    parameter_list->SetOption(ai::UnicodeString("command_latex"), ai::UnicodeString("pdflatex"));
-    parameter_list->SetOption(ai::UnicodeString("command_latex_options"),
+    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("latex_engine"), ai::UnicodeString("pdflatex"));
+    parameter_list->SetOption(ai::UnicodeString("latex_command_options"),
         ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
-    parameter_list->SetOption(ai::UnicodeString("command_gs"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("gs_command"), ai::UnicodeString(""));
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
 }
@@ -322,27 +325,27 @@ bool L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
 {
     bool set_all = true;
 
-    ai::UnicodeString value("path_latex");
+    ai::UnicodeString value("latex_bin_path");
     if (parameter_list.OptionExists(value))
-        path_latex_ = ai::FilePath(parameter_list.GetStringOption(value));
+        latex_bin_path_ = ai::FilePath(parameter_list.GetStringOption(value));
     else
         set_all = false;
 
-    value = ai::UnicodeString("command_latex");
+    value = ai::UnicodeString("latex_engine");
     if (parameter_list.OptionExists(value))
-        command_latex_ = parameter_list.GetStringOption(value);
+        latex_engine_ = parameter_list.GetStringOption(value);
     else
         set_all = false;
 
-    value = ai::UnicodeString("command_latex_options");
+    value = ai::UnicodeString("latex_command_options");
     if (parameter_list.OptionExists(value))
-        command_latex_options_ = parameter_list.GetStringOption(value);
+        latex_command_options_ = parameter_list.GetStringOption(value);
     else
         set_all = false;
 
-    value = ai::UnicodeString("command_gs");
+    value = ai::UnicodeString("gs_command");
     if (parameter_list.OptionExists(value))
-        command_gs_ = parameter_list.GetStringOption(value);
+        gs_command_ = parameter_list.GetStringOption(value);
     else
         set_all = false;
 

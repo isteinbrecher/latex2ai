@@ -69,7 +69,7 @@ ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_fil
     ai::UnicodeString command;
     command += L2A::Global().GetLatexCommand();
     command += " ";
-    command += L2A::Global().command_latex_options_;
+    command += L2A::Global().latex_command_options_;
     command += " \"";
     command += tex_file.GetFullPath();
     command += "\"";
@@ -82,7 +82,7 @@ ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_fil
  */
 std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file, const unsigned int& n_pages)
 {
-    return SplitPdfPages(pdf_file, n_pages, L2A::Global().command_gs_);
+    return SplitPdfPages(pdf_file, n_pages, L2A::Global().gs_command_);
 }
 
 /**

@@ -139,32 +139,34 @@ namespace L2A
             void GetParameterListForForm(std::shared_ptr<L2A::UTIL::ParameterList>& form_parameter_list) const;
 
            public:
-            //! Path to the latex executables.
-            ai::FilePath path_latex_;
-
-            //! Command for latex in the shell.
-            ai::UnicodeString command_latex_;
-
-            //! Options for the latex command.
-            ai::UnicodeString command_latex_options_;
-
-            //! Command for ghostscript in the shell.
-            ai::UnicodeString command_gs_;
-
             //! File that stores global application data.
             ai::FilePath application_data_path_;
 
             //! File that stores last item input.
             ai::FilePath l2a_item_last_input_;
 
+            //! Flag if testing is currently active.
+            bool is_testing_;
+
+            //! From here on are the "actual" options
+
+            //! Path to the latex executables.
+            ai::FilePath latex_bin_path_;
+
+            //! Which latex engine to use.
+            ai::UnicodeString latex_engine_;
+
+            //! Options for the latex command.
+            ai::UnicodeString latex_command_options_;
+
+            //! Command for ghostscript in the shell.
+            ai::UnicodeString gs_command_;
+
             //! Flag for warning if ai file is not saved.
             bool warning_ai_not_saved_;
 
             //! Flag for warning if boundary boxes are not OK.
             bool warning_boundary_boxes_;
-
-            //! Flag if testing is currently active.
-            bool is_testing_;
         };
 
         void CheckGlobal();
