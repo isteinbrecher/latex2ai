@@ -66,24 +66,9 @@ namespace L2A
             ~Global();
 
             /**
-             * \brief Open a form and let the user select some global options.
-             **/
-            void SetFromUserForm();
-
-            /**
              * \brief Set the values for this object from a xml string.
              */
             ai::UnicodeString GetLatexCommand() const;
-
-            /**
-             * \brief Return the flag for warnings if the AI file is saved, while saving as PDF.
-             */
-            bool GetWarningSave() const { return warning_ai_not_saved_; }
-
-            /**
-             * \brief Return the flag for warnings if all boundary boxes are ok, while saving as PDF.
-             */
-            bool GetWarningBoundaryBox() const { return warning_boundary_boxes_; }
 
            private:
             /**
@@ -159,6 +144,9 @@ namespace L2A
             bool warning_boundary_boxes_;
         };
 
+        /**
+         * \brief Check if global object is set correctly
+         */
         void CheckGlobal();
 
         /**

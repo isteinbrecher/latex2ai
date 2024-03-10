@@ -549,7 +549,7 @@ void L2A::AI::SaveToPDF()
     }
 
     // Check if all boundary boxes are ok.
-    if (L2A::Global().GetWarningBoundaryBox())
+    if (L2A::Global().warning_boundary_boxes_)
     {
         std::vector<AIArtHandle> all_items;
         L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
@@ -587,7 +587,7 @@ void L2A::AI::SaveToPDF()
     AIBoolean is_modified = true;
     result = sAIDocument->GetDocumentModified(&is_modified);
     l2a_check_ai_error(result);
-    if (is_modified && L2A::Global().GetWarningSave())
+    if (is_modified && L2A::Global().warning_ai_not_saved_)
     {
         if (YesNoAlert(ai::UnicodeString(
                 "The curent document is not saved. It is advisable to save the document before exporting to pdf.")))
