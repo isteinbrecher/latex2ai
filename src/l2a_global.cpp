@@ -287,7 +287,6 @@ void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterLi
     parameter_list->SetOption(ai::UnicodeString("command_latex"), command_latex_);
     parameter_list->SetOption(ai::UnicodeString("command_latex_options"), command_latex_options_);
     parameter_list->SetOption(ai::UnicodeString("command_gs"), command_gs_);
-    parameter_list->SetOption(ai::UnicodeString("path_form_exe"), path_form_exe_);
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), warning_boundary_boxes_);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), warning_ai_not_saved_);
 }
@@ -312,7 +311,6 @@ void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::Par
     parameter_list->SetOption(ai::UnicodeString("command_latex_options"),
         ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
     parameter_list->SetOption(ai::UnicodeString("command_gs"), ai::UnicodeString(""));
-    parameter_list->SetOption(ai::UnicodeString("path_form_exe"), ai::UnicodeString(""));
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
 }
@@ -345,12 +343,6 @@ bool L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
     value = ai::UnicodeString("command_gs");
     if (parameter_list.OptionExists(value))
         command_gs_ = parameter_list.GetStringOption(value);
-    else
-        set_all = false;
-
-    value = ai::UnicodeString("path_form_exe");
-    if (parameter_list.OptionExists(value))
-        path_form_exe_ = ai::FilePath(parameter_list.GetStringOption(value));
     else
         set_all = false;
 

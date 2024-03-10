@@ -151,9 +151,6 @@ namespace L2A
             //! Command for ghostscript in the shell.
             ai::UnicodeString command_gs_;
 
-            //! Path to form exe.
-            ai::FilePath path_form_exe_;
-
             //! File that stores global application data.
             ai::FilePath application_data_path_;
 
