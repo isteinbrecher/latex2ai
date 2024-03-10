@@ -367,42 +367,6 @@ bool L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
 /**
  *
  */
-void L2A::GLOBAL::Global::GetParameterListForForm(std::shared_ptr<L2A::UTIL::ParameterList>& form_parameter_list) const
-{
-    // Get a parameter list with the current options and the default options.
-    ToParameterList(form_parameter_list);
-    std::shared_ptr<L2A::UTIL::ParameterList> default_list =
-        form_parameter_list->SetSubList(ai::UnicodeString("default_options"));
-    GetDefaultParameterList(default_list);
-    form_parameter_list->SetOption(ai::UnicodeString("version"), ai::UnicodeString(L2A_VERSION_STRING_));
-    form_parameter_list->SetOption(ai::UnicodeString("git_sha"), ai::UnicodeString(L2A_VERSION_GIT_SHA_HEAD_));
-    {
-        // Add the header path.
-        ai::int32 n_documents;
-        sAIDocumentList->Count(&n_documents);
-        if (n_documents > 0)
-        {
-            // Add the header path
-            ai::FilePath document_path = L2A::UTIL::GetDocumentPath(false);
-            if (L2A::UTIL::IsFile(document_path))
-                // The document is saved, so add the full path.
-                form_parameter_list->SetOption(
-                    ai::UnicodeString("document_header_path"), L2A::LATEX::GetHeaderPath(false).GetFullPath());
-            else
-                // Document is not save.
-                form_parameter_list->SetOption(
-                    ai::UnicodeString("document_header_path"), ai::UnicodeString("not_saved"));
-        }
-        else
-            // No open documents.
-            form_parameter_list->SetOption(
-                ai::UnicodeString("document_header_path"), ai::UnicodeString("no_documents"));
-    }
-}
-
-/**
- *
- */
 void L2A::GLOBAL::CheckGlobal()
 {
     if (_l2a_global == nullptr) l2a_error("The global object is not defined!");
