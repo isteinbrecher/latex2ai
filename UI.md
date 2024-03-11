@@ -1,4 +1,4 @@
 Create a sym link under windows:
 ´´´
-mklink /D "asd" "C:\Users\a11bivst\Desktop\Adobe Illustrator 2022 SDK\samplecode\latex2ai\StrokeFilterUI"
+mklink /D "C:\Users\xxx\AppData\Roaming\Adobe\CEP\extensions\latex2ai" "C:\Users\xxx\Desktop\Adobe Illustrator 2023 SDK\samplecode\latex2ai\ui"
 ´´´

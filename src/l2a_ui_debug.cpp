@@ -163,7 +163,7 @@ void L2A::UI::Debug::CallbackCreateDebugFolder(const csxs::event::Event* const e
 ASErr L2A::UI::Debug::SendData()
 {
     auto debug_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
-    if (action_ == Action::create_item or action_ == Action::edit_item)
+    if (action_ == Action::create_item || action_ == Action::edit_item)
         debug_parameter_list->SetOption(ai::UnicodeString("action"), ai::UnicodeString("item_create_edit"));
     else if (action_ == Action::redo_items)
         debug_parameter_list->SetOption(ai::UnicodeString("action"), ai::UnicodeString("redo_items"));

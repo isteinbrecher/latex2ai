@@ -176,7 +176,7 @@ void L2A::UI::Item::EditItem(const ai::UnicodeString& return_value, const L2A::U
 
     property_.SetFromParameterList(item_data_from_form);
     auto change_item_result = change_item_->Change(return_value, property_);
-    if (change_item_result.result_ == L2A::ItemChangeResult::Result::ok or
+    if (change_item_result.result_ == L2A::ItemChangeResult::Result::ok ||
         change_item_result.result_ == L2A::ItemChangeResult::Result::cancel)
     {
         CloseForm();

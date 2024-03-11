@@ -129,7 +129,7 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
     if (IsDirectory(directory))
     {
         std::error_code ec;
-        if (!std::filesystem::remove_all(FilePathAiToStd(directory)))
+        if (!std::filesystem::remove_all(FilePathAiToStd(directory), ec))
             l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
     }
     else if (IsFile(directory))
