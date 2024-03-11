@@ -91,8 +91,13 @@ namespace L2A
 
         /**
          * \brief Split up a pdf document in a single pdf file for each page.
+         *
+         * Optionally the path to the ghost script command can be given. Per default the one from the global object is
+         * taken.
          */
         std::vector<ai::FilePath> SplitPdfPages(const ai::FilePath& pdf_file, const unsigned int& n_pages);
+        std::vector<ai::FilePath> SplitPdfPages(
+            const ai::FilePath& pdf_file, const unsigned int& n_pages, const ai::UnicodeString& gs_command);
 
         /**
          * \brief Create a latex document for a latex code string

@@ -83,6 +83,15 @@ ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_fil
  */
 std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file, const unsigned int& n_pages)
 {
+    return SplitPdfPages(pdf_file, n_pages, L2A::Global().command_gs_);
+}
+
+/**
+ *
+ */
+std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(
+    const ai::FilePath& pdf_file, const unsigned int& n_pages, const ai::UnicodeString& gs_command)
+{
     // Check if file exists
     if (!L2A::UTIL::IsFile(pdf_file))
         l2a_error("The file to split up '" + pdf_file.GetFullPath() + "' does not exits!");
@@ -103,17 +112,27 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
     }
 
     // Get the ghostscript command to split the pdf
-    ai::UnicodeString gs_command("\"");
-    gs_command += L2A::Global().command_gs_;
-    gs_command += "\" -sDEVICE=pdfwrite -o ";
-    gs_command += pdf_name_no_ext;
-    gs_command += "_%d.pdf ";
-    gs_command += pdf_name;
+    ai::UnicodeString full_gs_command;
+    full_gs_command += "\"";
+    full_gs_command += gs_command;
+    full_gs_command += "\" -sDEVICE=pdfwrite -o ";
+    full_gs_command += pdf_name_no_ext;
+    full_gs_command += "_%d.pdf ";
+    full_gs_command += pdf_name;
 
     // Call the command to split up the pdf file
     L2A::UTIL::SetWorkingDirectory(pdf_folder);
-    auto command_result = L2A::UTIL::ExecuteCommandLine(gs_command, true);
-    if (command_result.exit_status_ != 0) l2a_error("Error in the ghostscript call >>" + gs_command + "<<");
+    auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
+    if (command_result.exit_status_ != 0) l2a_error("Error in the ghostscript call >>" + full_gs_command + "<<");
+
+#ifdef _DEBUG
+    // Check that the correct number of files was created
+    const auto new_pdf_pages = L2A::UTIL::FindFilesInFolder(pdf_folder, split_files_regex);
+    if (n_pages != new_pdf_pages.size())
+        l2a_error("The given number of pdf pages " + L2A::UTIL::IntegerToString(n_pages) +
+                  " does not match with the number of created split files " +
+                  L2A::UTIL::IntegerToString(new_pdf_pages.size()));
+#endif
 
     // Get vector of pdf files for the created split items
     std::vector<ai::FilePath> pdf_files;
@@ -121,11 +140,12 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(const ai::FilePath& pdf_file
     {
         ai::FilePath split_file = pdf_folder;
         split_file.AddComponent(pdf_name_no_ext + "_" + L2A::UTIL::IntegerToString(i) + ".pdf");
-        pdf_files.push_back(split_file);
 
         // Check if the file was created
         if (!L2A::UTIL::IsFile(split_file))
             l2a_error("The split file '" + split_file.GetFullPath() + "' was not created!");
+
+        pdf_files.push_back(split_file);
     }
 
     return pdf_files;
