@@ -62,7 +62,6 @@
 		C68EDECA2B037ECB003BB3CD /* l2a_suites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68EDEC92B037ECB003BB3CD /* l2a_suites.cpp */; };
 		C6A3D2392B63A502006F3676 /* l2a_ui_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */; };
 		C6A3D23C2B63A525006F3676 /* l2a_ui_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */; };
-		C6D3C5152B7E39D000433F89 /* l2a_latex_test_document_base64.h in Headers */ = {isa = PBXBuildFile; fileRef = C6D3C5142B7E39D000433F89 /* l2a_latex_test_document_base64.h */; };
 		C6F3D1EC2B039EDD004EF248 /* l2a_annotator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1EB2B039EDD004EF248 /* l2a_annotator.cpp */; };
 		C6F3D1EF2B039EF3004EF248 /* l2a_plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1ED2B039EF3004EF248 /* l2a_plugin.h */; };
 		C6F3D1F02B039EF3004EF248 /* l2a_plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1EE2B039EF3004EF248 /* l2a_plugin.cpp */; };
@@ -150,7 +149,6 @@
 		C68EDEC92B037ECB003BB3CD /* l2a_suites.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_suites.cpp; path = src/l2a_suites.cpp; sourceTree = "<group>"; };
 		C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_debug.cpp; path = src/l2a_ui_debug.cpp; sourceTree = "<group>"; };
 		C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_debug.h; path = src/l2a_ui_debug.h; sourceTree = "<group>"; };
-		C6D3C5142B7E39D000433F89 /* l2a_latex_test_document_base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_latex_test_document_base64.h; path = src/l2a_latex_test_document_base64.h; sourceTree = "<group>"; };
 		C6F3D1EB2B039EDD004EF248 /* l2a_annotator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_annotator.cpp; path = src/l2a_annotator.cpp; sourceTree = "<group>"; };
 		C6F3D1ED2B039EF3004EF248 /* l2a_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_plugin.h; path = src/l2a_plugin.h; sourceTree = "<group>"; };
 		C6F3D1EE2B039EF3004EF248 /* l2a_plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_plugin.cpp; path = src/l2a_plugin.cpp; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 		508817F509F0CAB50071BF1A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C6D3C5142B7E39D000433F89 /* l2a_latex_test_document_base64.h */,
 				C6FF8A092B7CC03D004C592B /* l2a_ui_options.cpp */,
 				C6FF8A0A2B7CC03D004C592B /* l2a_ui_options.h */,
 				C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */,
@@ -336,7 +333,6 @@
 			files = (
 				C67D8B522B038B86001F89FA /* l2a_latex.h in Headers */,
 				C61B69AE2B4AD6BB00AF2924 /* l2a_ui_item.h in Headers */,
-				C6D3C5152B7E39D000433F89 /* l2a_latex_test_document_base64.h in Headers */,
 				C6F3D1EF2B039EF3004EF248 /* l2a_plugin.h in Headers */,
 				C67D8B1E2B0384D5001F89FA /* l2a_string_functions.h in Headers */,
 				C67D8B502B038B86001F89FA /* l2a_names.h in Headers */,
