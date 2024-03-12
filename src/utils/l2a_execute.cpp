@@ -201,8 +201,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
 void L2A::UTIL::OpenFileWithDefaultApplication(const ai::FilePath& file_path)
 {
 #ifdef _WIN32
-    // TODO: Check how to do this
-    l2a_error("This function is currently not working under Windows");
+    ShellExecute(0, 0, L2A::UTIL::StringAiToStd(file_path.GetFullPath()).c_str(), 0, 0, SW_SHOW);
 #else
     std::string command = "open ";
     std::string full_commad = command + "\"" + L2A::UTIL::StringAiToStd(file_path.GetFullPath()) + "\"";
