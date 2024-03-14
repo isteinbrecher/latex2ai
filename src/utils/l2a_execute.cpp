@@ -44,7 +44,7 @@
 L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
     const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
 {
-#ifdef _WIN32
+#ifdef WIN_ENV
     if (quiet)
     {
         return INTERNAL::ExecuteCommandLineWindowsNoConsole(command, max_time_ms);
@@ -65,7 +65,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
 {
     std::array<char, 8192> buffer{};
     std::string result;
-#ifdef _WIN32
+#ifdef WIN_ENV
 #define popen _popen
 #define pclose _pclose
 #define WEXITSTATUS
@@ -200,7 +200,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
  */
 void L2A::UTIL::OpenFileWithDefaultApplication(const ai::FilePath& file_path)
 {
-#ifdef _WIN32
+#ifdef WIN_ENV
     ShellExecute(0, 0, L2A::UTIL::StringAiToStd(file_path.GetFullPath()).c_str(), 0, 0, SW_SHOW);
 #else
     std::string command = "open ";
@@ -215,7 +215,7 @@ void L2A::UTIL::OpenFileWithDefaultApplication(const ai::FilePath& file_path)
 void L2A::UTIL::OpenFolder(const ai::FilePath& folder_path)
 {
     if (!L2A::UTIL::IsDirectory(folder_path)) l2a_error("Expected a directory in L2A::UTIL::OpenFolder");
-#ifdef _WIN32
+#ifdef WIN_ENV
     std::string command = "explorer ";
 #else
     std::string command = "open ";
