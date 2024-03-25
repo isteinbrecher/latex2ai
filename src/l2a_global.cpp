@@ -231,43 +231,54 @@ ai::UnicodeString L2A::GLOBAL::Global::ToString() const
  */
 bool L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& parameter_list)
 {
+    // Function to convert the key from the parameter list to a file path
+    auto conversion_file_path = [](const L2A::UTIL::ParameterList& parameter_list, const ai::UnicodeString& key)
+    { return ai::FilePath(parameter_list.GetStringOption(key)); };
+
+    // Function to convert the key from the parameter list to a bool
+    auto conversion_bool = [](const L2A::UTIL::ParameterList& parameter_list, const ai::UnicodeString& key)
+    { return bool(parameter_list.GetIntOption(key)); };
+
+    // Functon to set the variable from one of the possibly multiple given keys. If the key is in the parameter list
+    // multiple times, an error will be thrown.
+    auto set_varialbe_from_keys =
+        [&](auto& variable, const std::vector<ai::UnicodeString>& keys, const bool set_all, auto conversion_function)
+    {
+        const auto [is_found, key] = parameter_list.OptionExistsMultipleKeys(keys);
+
+        if (is_found)
+        {
+            variable = conversion_function(parameter_list, key);
+            return set_all;
+        }
+        else
+        {
+            return false;
+        }
+    };
+
+    // Overload of the previous function that uses the
+    auto set_varialbe_from_keys_default =
+        [&](auto& variable, const std::vector<ai::UnicodeString>& keys, const bool set_all)
+    {
+        return set_varialbe_from_keys(variable, keys, set_all,
+            [](const L2A::UTIL::ParameterList& parameter_list, const ai::UnicodeString& key)
+            { return parameter_list.GetStringOption(key); });
+    };
+
     bool set_all = true;
-
-    ai::UnicodeString value("latex_bin_path");
-    if (parameter_list.OptionExists(value))
-        latex_bin_path_ = ai::FilePath(parameter_list.GetStringOption(value));
-    else
-        set_all = false;
-
-    value = ai::UnicodeString("latex_engine");
-    if (parameter_list.OptionExists(value))
-        latex_engine_ = parameter_list.GetStringOption(value);
-    else
-        set_all = false;
-
-    value = ai::UnicodeString("latex_command_options");
-    if (parameter_list.OptionExists(value))
-        latex_command_options_ = parameter_list.GetStringOption(value);
-    else
-        set_all = false;
-
-    value = ai::UnicodeString("gs_command");
-    if (parameter_list.OptionExists(value))
-        gs_command_ = parameter_list.GetStringOption(value);
-    else
-        set_all = false;
-
-    value = ai::UnicodeString("warning_boundary_boxes");
-    if (parameter_list.OptionExists(value))
-        warning_boundary_boxes_ = bool(parameter_list.GetIntOption(value));
-    else
-        set_all = false;
-
-    value = ai::UnicodeString("warning_ai_not_saved");
-    if (parameter_list.OptionExists(value))
-        warning_ai_not_saved_ = bool(parameter_list.GetIntOption(value));
-    else
-        set_all = false;
+    set_all = set_varialbe_from_keys(latex_bin_path_,
+        {ai::UnicodeString("latex_bin_path"), ai::UnicodeString("path_latex")}, set_all, conversion_file_path);
+    set_all = set_varialbe_from_keys_default(
+        latex_engine_, {ai::UnicodeString("latex_engine"), ai::UnicodeString("command_latex")}, set_all);
+    set_all = set_varialbe_from_keys_default(latex_command_options_,
+        {ai::UnicodeString("latex_command_options"), ai::UnicodeString("command_latex_options")}, set_all);
+    set_all = set_varialbe_from_keys_default(
+        gs_command_, {ai::UnicodeString("gs_command"), ai::UnicodeString("command_gs")}, set_all);
+    set_all = set_varialbe_from_keys(
+        warning_boundary_boxes_, {ai::UnicodeString("warning_boundary_boxes")}, set_all, conversion_bool);
+    set_all = set_varialbe_from_keys(
+        warning_ai_not_saved_, {ai::UnicodeString("warning_ai_not_saved")}, set_all, conversion_bool);
 
     return set_all;
 }
