@@ -270,55 +270,6 @@ ai::UnicodeString L2A::UTIL::GetDocumentName() { return GetDocumentPath(false).G
 /**
  *
  */
-ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
-{
-#ifdef WIN_ENV
-    // Get the path to the programs folder.
-    TCHAR pathBuffer[MAX_PATH];
-    std::array<std::tuple<int, int>, 2> programm_shortcuts = {
-        std::make_tuple(CSIDL_PROGRAM_FILESX86, 32), std::make_tuple(CSIDL_PROGRAM_FILES, 64)};
-    for (unsigned int i = 0; i < 2; i++)
-    {
-        if (SUCCEEDED(SHGetFolderPath(nullptr, std::get<0>(programm_shortcuts[i]), nullptr, 0, pathBuffer)))
-        {
-            ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
-            program_folder.AddComponent(ai::UnicodeString("gs"));
-
-            // Check if the ghostscript folder exists.
-            if (IsDirectory(program_folder))
-            {
-                ai::FilePath gs_folder;
-                for (auto& p : std::filesystem::directory_iterator(FilePathAiToStd(program_folder)))
-                {
-                    // Check if the directory starts with "gs".
-                    gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
-                    if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
-                    {
-                        // We do not care about the version -> use the first "gs*" folder that we find.
-
-                        // Check if an execuable can be found.
-                        gs_folder.AddComponent(ai::UnicodeString("bin"));
-                        gs_folder.AddComponent(ai::UnicodeString("gswin") +
-                                               L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) +
-                                               "c.exe");
-                        if (IsFile(gs_folder))
-                            return gs_folder.GetFullPath();
-                        else
-                            break;
-                    }
-                }
-            }
-        }
-    }
-#else
-    // Default return value.
-    return ai::UnicodeString("/opt/homebrew/bin/gs");
-#endif
-}
-
-/**
- *
- */
 ai::FilePath L2A::UTIL::GetFormsPath()
 {
     // Default value.

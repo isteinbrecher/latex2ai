@@ -77,19 +77,9 @@ namespace L2A
 
            private:
             /**
-             * \brief Set the ghostscript and check if it is correct.
-             */
-            bool SetGhostscriptCommand(ai::UnicodeString gs_command);
-
-            /**
              * \brief Check if the ghostscript command is valid.
              */
             bool CheckGhostscriptCommand(const ai::UnicodeString& gs_command) const;
-
-            /**
-             * \brief Set the LaTeX path and check if it is correct.
-             */
-            bool SetLatexCommand(const ai::FilePath& latex_path);
 
             /**
              * \brief Check that the stored LaTeX command is correct.

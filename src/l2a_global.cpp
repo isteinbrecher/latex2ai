@@ -31,6 +31,7 @@
 
 #include "l2a_global.h"
 
+#include "l2a_ai_functions.h"
 #include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_execute.h"
@@ -39,7 +40,6 @@
 #include "l2a_parameter_list.h"
 #include "l2a_plugin.h"
 #include "l2a_string_functions.h"
-#include "l2a_suites.h"
 #include "l2a_version.h"
 
 /**
@@ -58,7 +58,7 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
     // and get path functions later on and it is fixed in a future release.
     L2A::GLOBAL::CheckGithubVersion();
 
-    // Set the default parameters.
+    // In case something happens later on, set the default parameters, so we at least have sensible values set.
     std::shared_ptr<L2A::UTIL::ParameterList> default_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
     GetDefaultParameterList(default_parameter_list);
     SetFromParameterList(*default_parameter_list);
@@ -85,11 +85,9 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
                 if (!SetFromParameterList(data_list))
                 {
                     // Could not set all parameters -> warn the user about it.
-                    sAIUser->WarningAlert(
-                        ai::UnicodeString(
-                            "Not all Plug-In settings of LaTeX2AI could be loaded. This can happen if a new version is "
-                            "used. Please check if all options are set to your preferences."),
-                        nullptr);
+                    L2A::AI::WarningAlert(ai::UnicodeString(
+                        "Not all Plug-In settings of LaTeX2AI could be loaded. This can happen if a new version is "
+                        "used. Please check if all options are set to your preferences."));
                 }
             }
             catch (L2A::ERR::Exception&)
@@ -103,24 +101,20 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
     // Clean the temporary directory.
     L2A::UTIL::ClearTemporaryDirectory();
 
-    // Make sure the ghostscript command is valid.
-    if (!CheckGhostscriptCommand(gs_command_))
+    // We are now at a stage where we have the variables for gs and latex, either from the default parameters or from
+    // the settings file. In either case we now do some basic checks if the paths are correct and alert the user if they
+    // are not.
     {
-        // The path from the application data file is not valid. Try to automatically find it.
-        ai::UnicodeString gs_command = L2A::UTIL::GetGhostScriptCommand();
-
-        // "Officially" set the forms path and check if it is valid.
-        if (!SetGhostscriptCommand(gs_command)) return;
-    }
-
-    // Make sure the latex path is valid.
-    if (!CheckLatexCommand(latex_bin_path_))
-    {
-        // The path from the application data file is not valid. Try the default value.
-        latex_bin_path_ = ai::FilePath(ai::UnicodeString(""));
-
-        // "Officially" set the latex path and check if it is valid.
-        if (!SetLatexCommand(latex_bin_path_)) return;
+        if (!CheckGhostscriptCommand(gs_command_))
+        {
+            L2A::AI::WarningAlert(ai::UnicodeString(
+                "Could not determine the Ghostscript path. Please set the path in the LaTeX2AI options."));
+        }
+        if (!CheckLatexCommand(latex_bin_path_))
+        {
+            L2A::AI::WarningAlert(ai::UnicodeString(
+                "Could not determine the LaTeX binaries path. Please set the path in the LaTeX2AI options."));
+        }
     }
 }
 
@@ -151,45 +145,13 @@ void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterLi
  */
 void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const
 {
-    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), L2A::LATEX::GetDefaultLatexPath());
     parameter_list->SetOption(ai::UnicodeString("latex_engine"), ai::UnicodeString("pdflatex"));
     parameter_list->SetOption(ai::UnicodeString("latex_command_options"),
         ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
-    parameter_list->SetOption(ai::UnicodeString("gs_command"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("gs_command"), L2A::LATEX::GetDefaultGhostScriptCommand());
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
-}
-
-/**
- *
- */
-bool L2A::GLOBAL::Global::SetGhostscriptCommand(ai::UnicodeString gs_command)
-{
-    ai::FilePath gs_path(gs_command);
-
-    // Check until the command is correct or the user cancels the operation.
-    while (!CheckGhostscriptCommand(gs_command))
-    {
-        AIBoolean form_result = true;
-        ai::UnicodeString form_string(
-            "The path to the ghostscript executable (gswin32c.exe, gswin64c.exe) seems to be wrong. Please select the "
-            "correct path, otherwise LaTeX2AI can not be used!");
-        form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
-        if (!form_result) return false;
-
-        // Ask the user to pick the file.
-        AIFileDialogFilters options;
-        options.AddFilter(ai::UnicodeString("Executable (*.exe)"), ai::UnicodeString("*.exe"));
-        AIErr err =
-            sAIUser->GetFileDialog(ai::UnicodeString("Select *.exe for the forms Application"), &options, gs_path);
-        if (err == kCanceledErr) return false;
-        l2a_check_ai_error(err);
-
-        gs_command = gs_path.GetFullPath();
-    }
-
-    gs_command_ = gs_command;
-    return true;
 }
 
 /**
@@ -212,39 +174,6 @@ bool L2A::GLOBAL::Global::CheckGhostscriptCommand(const ai::UnicodeString& gs_co
     {
         return false;
     }
-}
-
-/**
- *
- */
-bool L2A::GLOBAL::Global::SetLatexCommand(const ai::FilePath& latex_path)
-{
-#ifdef WIN_ENV
-    ai::FilePath path = latex_path;
-#else
-    ai::FilePath path = ai::FilePath(ai::UnicodeString("/Library/TeX/texbin"));
-#endif
-
-    // Check until the command is correct or the user cancels the operation.
-    while (!CheckLatexCommand(path))
-    {
-        AIBoolean form_result = true;
-        ai::UnicodeString form_string(
-            "The path to the folder with the LaTeX executables (pdflatex.exe, ...) seems to be wrong. Please select "
-            "the correct path, otherwise LaTeX2AI can not be used!");
-        form_result = sAIUser->OKCancelAlert(form_string, true, nullptr);
-        if (!form_result) return false;
-
-        // Ask the user to pick the directory.
-        ai::UnicodeString message("Select *.exe for the forms Application");
-        AIErr err = sAIUser->GetDirectoryDialog(message, path);
-
-        if (err == kCanceledErr) return false;
-        l2a_check_ai_error(err);
-    }
-
-    latex_bin_path_ = path;
-    return true;
 }
 
 /**

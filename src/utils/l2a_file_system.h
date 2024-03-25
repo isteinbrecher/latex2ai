@@ -122,11 +122,6 @@ namespace L2A
         ai::UnicodeString GetDocumentName();
 
         /**
-         * \brief Search the path to ghostscript on the system.
-         */
-        ai::UnicodeString GetGhostScriptCommand();
-
-        /**
          * \brief Search the path to forms executable on the system.
          *
          * The folder where the plug in is located will be searched for the forms executable.

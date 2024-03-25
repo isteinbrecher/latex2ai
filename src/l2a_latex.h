@@ -145,6 +145,16 @@ namespace L2A
          * \brief Get the header as a string, where all inputs are resolved.
          */
         std::string GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
+
+        /**
+         * \brief Search the path to ghostscript on the system.
+         */
+        ai::UnicodeString GetDefaultGhostScriptCommand();
+
+        /**
+         * \brief Search the path to the latex binaries on the system.
+         */
+        ai::UnicodeString GetDefaultLatexPath();
     }  // namespace LATEX
 }  // namespace L2A
 
