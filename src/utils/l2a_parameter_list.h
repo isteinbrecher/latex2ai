@@ -204,6 +204,17 @@ namespace L2A
             }
 
             /**
+             * \brief Check if an option exists in this list, where multiple keys can possilby name this option.
+             *
+             * This can be used if the name of the option changed for some reason over time to achieve backwards
+             * compability. If multiple keys match, we raise an error.
+             *
+             * The return values are a flag if a key was found and the corresponding found key.
+             */
+            std::pair<bool, ai::UnicodeString> OptionExistsMultipleKeys(
+                const std::vector<ai::UnicodeString>& keys) const;
+
+            /**
              * \brief Overload the == operator for a parameter list.
              */
             bool operator==(const ParameterList& other) const;

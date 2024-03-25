@@ -256,6 +256,35 @@ ai::UnicodeString L2A::UTIL::ParameterList::ToXMLString(const ai::UnicodeString&
 /**
  *
  */
+std::pair<bool, ai::UnicodeString> L2A::UTIL::ParameterList::OptionExistsMultipleKeys(
+    const std::vector<ai::UnicodeString>& keys) const
+{
+    bool is_found = false;
+    ai::UnicodeString found_key("");
+
+    for (const auto& key : keys)
+    {
+        if (OptionExists(key))
+        {
+            if (!is_found)
+            {
+                found_key = key;
+                is_found = true;
+            }
+            else
+            {
+                l2a_error("in the method OptionExistsMultipleKeys the keys \"" + found_key + "\" and \"" + key +
+                          "\" were both found. This should not happen.");
+            }
+        }
+    }
+
+    return {is_found, found_key};
+}
+
+/**
+ *
+ */
 bool L2A::UTIL::ParameterList::operator==(const L2A::UTIL::ParameterList& other) const
 {
     //! Compare sublists.

@@ -101,4 +101,12 @@ void L2A::TEST::TestParameterList(L2A::TEST::UTIL::UnitTest& ut)
     ut.CompareStr(
         transformed_list.GetSubList(ai::UnicodeString("sublist_key0"))->GetStringOption(ai::UnicodeString("subkey0")),
         ai::UnicodeString("666"));
+
+    // Test the OptionExistsMultipleKeys method
+    L2A::UTIL::ParameterList multiple_options_list;
+    multiple_options_list.SetOption(ai::UnicodeString("new_key"), 1);
+    auto [is_found, key] =
+        multiple_options_list.OptionExistsMultipleKeys({ai::UnicodeString("old_key"), ai::UnicodeString("new_key")});
+    ut.CompareInt(multiple_options_list.GetIntOption(key), 1);
+    ut.CompareInt(is_found, 1);
 }
