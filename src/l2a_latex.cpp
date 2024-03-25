@@ -69,20 +69,26 @@ ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_fil
     // This string will contain the actual command send to the commandline
     ai::UnicodeString full_latex_command;
 
-    if (L2A::UTIL::IsDirectory(L2A::Global().latex_bin_path_))
+    const auto& latex_bin_path = L2A::Global().latex_bin_path_;
+    const auto& latex_engine = L2A::Global().latex_engine_;
+    if (latex_bin_path.GetFullPath() == "")
     {
-        ai::FilePath exe_path = L2A::Global().latex_bin_path_;
+        // In the case there is an empty bin directory, so we simply run the latex engine command name
+        full_latex_command += latex_engine;
+    }
+    else if (L2A::UTIL::IsDirectory(latex_bin_path))
+    {
+        ai::FilePath exe_path = latex_bin_path;
 #ifdef WIN_ENV
-        exe_path.AddComponent(L2A::Global().latex_engine_ + ".exe");
+        exe_path.AddComponent(latex_engine + ".exe");
 #else
-        exe_path.AddComponent(L2A::Global().latex_engine_);
+        exe_path.AddComponent(latex_engine);
 #endif
         full_latex_command += "\"" + exe_path.GetFullPath() + "\"";
     }
     else
     {
-        // In the case there is no valid bin directory, check if we can simply run the latex engine command
-        full_latex_command += L2A::Global().latex_engine_;
+        l2a_error("Got unexpected latex path: " + latex_bin_path.GetFullPath());
     }
 
     // Add the options and the name of the tex file
