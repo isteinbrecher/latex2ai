@@ -428,7 +428,7 @@ ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
 #ifdef WIN_ENV
     return ai::UnicodeString("");
 #else
-    return ai::UnicodeString("/opt/homebrew/bin/gs");
+    return ai::UnicodeString("/Library/TeX/texbin");
 #endif
 }
 
