@@ -310,13 +310,13 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         "LaTeX2AI redo items",                                           //
         "LaTeX2AI options",                                              //
         "LaTeX2AI save to PDF",                                          //
-        "Perform LaTeX2AI Tests"};
+        "Perform LaTeX2AI tests"};
     std::vector<std::string> tool_tip = {
-        "LaTeX2AI create edit mode: Create a new LaTeX2AI item, or edit and existing item by clicking on it.",  //
-        "LaTeX2AI redo items: Redo multiple items in this document.",                                           //
-        "LaTeX2AI options: Set local and global options for LaTeX2AI",                                          //
-        "LaTeX2AI save to PDF: Save a copy of the current Illustrator file to a pdf file with the same name.",  //
-        "Perform certain tests to ensure LaTeX2AI is working as expected."};
+        "LaTeX2AI create edit mode: Create a new LaTeX2AI item, or edit an existing item by clicking on it",   //
+        "LaTeX2AI redo items: Redo multiple items in this document",                                           //
+        "LaTeX2AI options: Set local and global options for LaTeX2AI",                                         //
+        "LaTeX2AI save to PDF: Save a copy of the current Illustrator file to a pdf file with the same name",  //
+        "Perform LaTeX2AI framework test suite"};
 
     // Define icons.
     std::vector<ai::uint32> light_icon_id = {TOOL_ICON_CREATE_LIGHT_ID, TOOL_ICON_REDO_LIGHT_ID,
