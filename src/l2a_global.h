@@ -77,16 +77,6 @@ namespace L2A
 
            private:
             /**
-             * \brief Check if the ghostscript command is valid.
-             */
-            bool CheckGhostscriptCommand(const ai::UnicodeString& gs_command) const;
-
-            /**
-             * \brief Check that the stored LaTeX command is correct.
-             */
-            bool CheckLatexCommand(const ai::FilePath& path_latex) const;
-
-            /**
              * \brief Convert this object to a xml string.
              */
             ai::UnicodeString ToString() const;

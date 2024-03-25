@@ -155,6 +155,16 @@ namespace L2A
          * \brief Search the path to the latex binaries on the system.
          */
         ai::UnicodeString GetDefaultLatexPath();
+
+        /**
+         * \brief Check if the ghostscript command is valid.
+         */
+        bool CheckGhostscriptCommand(const ai::UnicodeString& gs_command);
+
+        /**
+         * \brief Check that the stored LaTeX command is correct.
+         */
+        bool CheckLatexCommand(const ai::FilePath& path_latex);
     }  // namespace LATEX
 }  // namespace L2A
 

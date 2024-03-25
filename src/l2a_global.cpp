@@ -105,12 +105,12 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
     // the settings file. In either case we now do some basic checks if the paths are correct and alert the user if they
     // are not.
     {
-        if (!CheckGhostscriptCommand(gs_command_))
+        if (!L2A::LATEX::CheckGhostscriptCommand(gs_command_))
         {
             L2A::AI::WarningAlert(ai::UnicodeString(
                 "Could not determine the Ghostscript path. Please set the path in the LaTeX2AI options."));
         }
-        if (!CheckLatexCommand(latex_bin_path_))
+        if (!L2A::LATEX::CheckLatexCommand(latex_bin_path_))
         {
             L2A::AI::WarningAlert(ai::UnicodeString(
                 "Could not determine the LaTeX binaries path. Please set the path in the LaTeX2AI options."));
@@ -152,68 +152,6 @@ void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::Par
     parameter_list->SetOption(ai::UnicodeString("gs_command"), L2A::LATEX::GetDefaultGhostScriptCommand());
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
-}
-
-/**
- *
- */
-bool L2A::GLOBAL::Global::CheckGhostscriptCommand(const ai::UnicodeString& gs_command) const
-{
-    ai::UnicodeString full_gs_command = "\"" + gs_command + "\" -v";
-    ai::UnicodeString command_output;
-
-    try
-    {
-        auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
-        if (command_result.output_.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
-            return true;
-        else
-            return false;
-    }
-    catch (...)
-    {
-        return false;
-    }
-}
-
-/**
- *
- */
-bool L2A::GLOBAL::Global::CheckLatexCommand(const ai::FilePath& path_latex) const
-{
-    // TODO: Move this to Latex files. Then we will also have to do something sbout the "get latex command" so that the
-    // stuff there can be reused and does not have to be coded here again.
-    ai::UnicodeString command_latex;
-    if (L2A::UTIL::IsDirectory(path_latex))
-    {
-        ai::FilePath exe_path = path_latex;
-#ifdef WIN_ENV
-        exe_path.AddComponent(ai::UnicodeString("pdflatex.exe"));
-#else
-        exe_path.AddComponent(ai::UnicodeString("pdflatex"));
-#endif
-        command_latex = "\"" + exe_path.GetFullPath() + "\"";
-    }
-    else if (path_latex.IsEmpty())
-        command_latex = ai::UnicodeString("pdflatex");
-    else
-        // The directory does not exist and is not empty -> this will not work.
-        return false;
-
-    command_latex += " -version";
-    ai::UnicodeString command_output;
-    try
-    {
-        auto command_result = L2A::UTIL::ExecuteCommandLine(command_latex, true);
-        if (command_result.output_.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
-            return true;
-        else
-            return false;
-    }
-    catch (...)
-    {
-        return false;
-    }
 }
 
 /**

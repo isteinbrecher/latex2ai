@@ -431,3 +431,65 @@ ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
     return ai::UnicodeString("/opt/homebrew/bin/gs");
 #endif
 }
+
+/**
+ *
+ */
+bool L2A::LATEX::CheckGhostscriptCommand(const ai::UnicodeString& gs_command)
+{
+    ai::UnicodeString full_gs_command = "\"" + gs_command + "\" -v";
+    ai::UnicodeString command_output;
+
+    try
+    {
+        auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
+        if (command_result.output_.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
+            return true;
+        else
+            return false;
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
+
+/**
+ *
+ */
+bool L2A::LATEX::CheckLatexCommand(const ai::FilePath& path_latex)
+{
+    // TODO: Move this to Latex files. Then we will also have to do something sbout the "get latex command" so that the
+    // stuff there can be reused and does not have to be coded here again.
+    ai::UnicodeString command_latex;
+    if (L2A::UTIL::IsDirectory(path_latex))
+    {
+        ai::FilePath exe_path = path_latex;
+#ifdef WIN_ENV
+        exe_path.AddComponent(ai::UnicodeString("pdflatex.exe"));
+#else
+        exe_path.AddComponent(ai::UnicodeString("pdflatex"));
+#endif
+        command_latex = "\"" + exe_path.GetFullPath() + "\"";
+    }
+    else if (path_latex.IsEmpty())
+        command_latex = ai::UnicodeString("pdflatex");
+    else
+        // The directory does not exist and is not empty -> this will not work.
+        return false;
+
+    command_latex += " -version";
+    ai::UnicodeString command_output;
+    try
+    {
+        auto command_result = L2A::UTIL::ExecuteCommandLine(command_latex, true);
+        if (command_result.output_.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
+            return true;
+        else
+            return false;
+    }
+    catch (...)
+    {
+        return false;
+    }
+}
