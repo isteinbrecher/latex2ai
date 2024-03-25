@@ -1055,3 +1055,8 @@ void L2A::AI::MessageAlert(const ai::UnicodeString& message_string)
 {
     if (!L2A::Global().is_testing_) sAIUser->MessageAlert(message_string);
 }
+
+/**
+ *
+ */
+void L2A::AI::WarningAlert(const ai::UnicodeString& warning_string) { sAIUser->WarningAlert(warning_string, nullptr); }

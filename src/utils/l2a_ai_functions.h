@@ -335,11 +335,16 @@ namespace L2A
         ai::UnicodeString GetInputFromUser();
 
         /**
-         * \brief Provides the MessageAllert functionality, which can be turned off for testing purposes
+         * \brief Provides the MessageAlert functionality, which can be turned off for testing purposes
          *  TODO: Allow to optionally activate the testing stuff, so we can display the error message on failed tests
-         *  TODO: Apply this function to all occurences of message alert in L2A
+         *  TODO: Apply this function to all occurrences of message alert in L2A
          */
         void MessageAlert(const ai::UnicodeString& message_string);
+
+        /**
+         * \brief Provides the WarningAlert functionality, which can be turned off for testing purposes
+         */
+        void WarningAlert(const ai::UnicodeString& warning_string);
 
     }  // namespace AI
 }  // namespace L2A
