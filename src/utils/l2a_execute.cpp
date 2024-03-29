@@ -44,7 +44,7 @@
 L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
     const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
 {
-#ifdef _WIN32
+#ifdef WIN_ENV
     if (quiet)
     {
         return INTERNAL::ExecuteCommandLineWindowsNoConsole(command, max_time_ms);
@@ -61,28 +61,11 @@ L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
 /**
  *
  */
-int L2A::UTIL::ExecuteFile(const ai::FilePath& file_path)
-{
-    // TODO : delete this function and the batch stuff
-    if (L2A::UTIL::IsFile(file_path))
-    {
-        std::string command = "\"" + file_path.GetFullPath().as_Platform() + "\"";
-
-        return system(command.c_str());
-    }
-    else
-        l2a_error("The file " + file_path.GetFullPath() + " does not exist!");
-}
-
-
-/**
- *
- */
 L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::UnicodeString& command)
 {
     std::array<char, 8192> buffer{};
     std::string result;
-#ifdef _WIN32
+#ifdef WIN_ENV
 #define popen _popen
 #define pclose _pclose
 #define WEXITSTATUS
@@ -210,4 +193,33 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
         return CommandResult{(int)exitCode, L2A::UTIL::StringStdToAi(result_string)};
     }
 #endif
+}
+
+/**
+ *
+ */
+void L2A::UTIL::OpenFileWithDefaultApplication(const ai::FilePath& file_path)
+{
+#ifdef WIN_ENV
+    ShellExecute(0, 0, L2A::UTIL::StringAiToStd(file_path.GetFullPath()).c_str(), 0, 0, SW_SHOW);
+#else
+    std::string command = "open ";
+    std::string full_commad = command + "\"" + L2A::UTIL::StringAiToStd(file_path.GetFullPath()) + "\"";
+    system(full_commad.c_str());
+#endif
+}
+
+/**
+ *
+ */
+void L2A::UTIL::OpenFolder(const ai::FilePath& folder_path)
+{
+    if (!L2A::UTIL::IsDirectory(folder_path)) l2a_error("Expected a directory in L2A::UTIL::OpenFolder");
+#ifdef WIN_ENV
+    std::string command = "explorer ";
+#else
+    std::string command = "open ";
+#endif
+    std::string full_commad = command + "\"" + L2A::UTIL::StringAiToStd(folder_path.GetFullPath()) + "\"";
+    system(full_commad.c_str());
 }

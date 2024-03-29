@@ -39,19 +39,44 @@
 
 namespace L2A
 {
+    // Forward declarations
+    class Property;
+
     namespace LATEX
     {
         /**
-         * \brief Enum for the result of an Latex creation.
+         * \brief Container for the result of a Latex creation operation
          */
-        enum class LatexCreationResult
+        struct LatexCreationResult
         {
-            //! Everyting worked fine.
-            item_created,
-            //! The creation failed and the user wants to edit the item.
-            fail_redo,
-            //! The creation failed and the user wants to quit.
-            fail_quit
+            /**
+             * \brief Enum for the result
+             */
+            enum class Result
+            {
+                //! Everything worked fine
+                ok,
+                //! The latex command succeeded, but no file was created
+                error_tex_code,
+                //! The creation of the latex document failed
+                error_tex,
+                //! The split with ghostscript failed
+                error_gs,
+                //! Other error
+                error_other
+            };
+
+            //! Result flag
+            Result result_;
+
+            //! Path to the log file
+            ai::FilePath log_file_;
+
+            //! Path to the tex file
+            ai::FilePath tex_file_;
+
+            //! Path to the tex header
+            ai::FilePath tex_header_file_;
         };
 
         /**
@@ -66,27 +91,38 @@ namespace L2A
 
         /**
          * \brief Split up a pdf document in a single pdf file for each page.
+         *
+         * Optionally the path to the ghost script command can be given. Per default the one from the global object is
+         * taken.
          */
         std::vector<ai::FilePath> SplitPdfPages(const ai::FilePath& pdf_file, const unsigned int& n_pages);
+        std::vector<ai::FilePath> SplitPdfPages(
+            const ai::FilePath& pdf_file, const unsigned int& n_pages, const ai::UnicodeString& gs_command);
+
+        /**
+         * \brief Create a latex document for a latex code string
+         * @param (in/out) property Property containing the item property that should be converted. If everything is
+         * successful the pdf contents are stored in the property.
+         * @return Result of the latex creation function
+         */
+        std::pair<LatexCreationResult, ai::FilePath> CreateLatexItem(const L2A::Property& property);
+
+        /**
+         * \brief Create a latex document for a latex code string
+         * @param (in/out) properties Vector containing all item properties that should be converted. If everything
+         * is successful the pdf contents are stored in the properties.
+         * @return Result of the latex creation function
+         */
+        std::pair<LatexCreationResult, std::vector<ai::FilePath>> CreateLatexItems(
+            const std::vector<L2A::Property>& properties);
 
         /**
          * \brief Create a latex document for a latex code string.
          * @param (in) Latex_code String with the full latex code to be compiled.
          * @param (out) Path of the created pdf file.
-         * @return True if creation was successfull.
+         * @return True if creation was successful.
          */
-        bool CreateLatex(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file);
-
-        /**
-         * \brief Create a latex document for a latex code string, if the creation failes, a form with debug options
-         * will be opened.
-         * @param (in) Latex_code String with the full latex code to be compiled.
-         * @param (out) Path of the created pdf file.
-         * @param (in) Creation type for the debug form.
-         * @return Result of the Latex creation.
-         */
-        L2A::LATEX::LatexCreationResult CreateLatexWithDebug(
-            const ai::UnicodeString& latex_code, ai::FilePath& pdf_file, const ai::UnicodeString& creation_type);
+        bool CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file);
 
         /**
          * \brief Create all the files that are needed to create a latex document.
@@ -106,9 +142,29 @@ namespace L2A
         ai::FilePath GetHeaderPath(const bool create_default_if_not_exist = true);
 
         /**
-         * \brief Get the header as a string, wehre all inputs are resoved.
+         * \brief Get the header as a string, where all inputs are resolved.
          */
         std::string GetHeaderWithIncludedInputs(const ai::FilePath& header_path);
+
+        /**
+         * \brief Search the path to ghostscript on the system.
+         */
+        ai::UnicodeString GetDefaultGhostScriptCommand();
+
+        /**
+         * \brief Search the path to the latex binaries on the system.
+         */
+        ai::UnicodeString GetDefaultLatexPath();
+
+        /**
+         * \brief Check if the ghostscript command is valid.
+         */
+        bool CheckGhostscriptCommand(const ai::UnicodeString& gs_command);
+
+        /**
+         * \brief Check that the stored LaTeX command is correct.
+         */
+        bool CheckLatexCommand(const ai::FilePath& path_latex);
     }  // namespace LATEX
 }  // namespace L2A
 

@@ -31,6 +31,7 @@
 #define L2A_ITEM_H_
 
 
+#include "l2a_latex.h"
 #include "l2a_property.h"
 
 #include <map>
@@ -61,18 +62,33 @@ namespace L2A
 namespace L2A
 {
     /**
-     * \brief Enum to manage the return values of the form for the Item.
+     * \brief Container to store data returned from an item change operation
      */
-    enum class ItemFormReturnValues
+    struct ItemChangeResult
     {
-        ok,
-        cancel,
-        redo_boundary,
-        redo_latex
+        /**
+         * \brief Enum to manage the return values of the change function of the item
+         */
+        enum class Result
+        {
+            //! Everything worked, the item was changed
+            ok,
+            //! There was a LaTeX error user has to be asked for the input again
+            latex_error,
+            //! Not changed, and no new input wanted
+            cancel
+        };
+
+        //! Flag with the result value
+        Result result_;
+
+        //! Container with the results from the latex creation
+        L2A::LATEX::LatexCreationResult latex_creation_result_;
     };
 
+
     /**
-     * \brief Class that represents one LaTeX2AI item in AI. It has mehtods for creating and replacing the LaTeX
+     * \brief Class that represents one LaTeX2AI item in AI. It has methods for creating and replacing the LaTeX
      *        document in AI.
      */
     class Item
@@ -83,10 +99,12 @@ namespace L2A
 
        public:
         /**
-         * \brief Create a new L2AItem from a position, the user clicked in the document.
-         * @param position AIRealPoint of the cursor in the document.
+         * \brief Create a new L2AItem from a position the user clicked in the document and a given property object
+         * @param position AIRealPoint of the cursor in the document
+         * @param property Property of the item, has to include the saved pdf file
+         * @param created_pdf_file Path to the (existing) pdf file
          */
-        Item(const AIRealPoint& position);
+        Item(const AIRealPoint& position, const L2A::Property& property, const ai::FilePath& created_pdf_file);
 
         /**
          * \brief Create the object from an existing placed item
@@ -95,9 +113,10 @@ namespace L2A
         Item(const AIArtHandle& placed_item_handle);
 
         /**
-         * \brief Change the l2a item.
+         * \brief Change the l2a item
+         * @return Return the result of the item change operation
          */
-        void Change();
+        ItemChangeResult Change(const ai::UnicodeString& form_return_value, L2A::Property& new_property);
 
         /**
          * \brief Get a non-const reference to the property of this item.
@@ -160,11 +179,6 @@ namespace L2A
         void Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment, AIRealPoint>& item_boundaries) const;
 
         /**
-         * \brief Open a form to edit the values related to this item.
-         */
-        ItemFormReturnValues OpenUserForm(L2A::Property& input_property) const;
-
-        /**
          * \brief Check if the item is of diamond shape.
          */
         bool IsDiamond() const;
@@ -204,14 +218,23 @@ namespace L2A
     };
 
     /**
+     * \brief Flag for the redo items function
+     */
+    enum class RedoItemsOption
+    {
+        latex,
+        bounding_box
+    };
+
+    /**
      * \brief Redo all items. Give the user the option to chose what to redo.
      */
-    void RedoItems();
+    void RedoItems(std::vector<AIArtHandle>& items, const RedoItemsOption& redo_option);
 
     /**
      * \brief Redo the LaTeX code for all items in the vector.
      */
-    void RedoLaTeXItems(std::vector<L2A::Item>& l2a_items);
+    bool RedoLaTeXItems(std::vector<L2A::Item>& l2a_items);
 
     /**
      * \brief Check if the pdf files of the items are stored and linked correctly.

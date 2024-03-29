@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <script src="../js/CSInterface.js"></script>
+        <script src="../js/jquery-3.7.1.min.js"></script>
+        <script src="../js/auto_generated.js"></script>
+        <script src="../js/common.js"></script>
+        <script src="../js/main_redo.js"></script>
+        <link id="hostStyle" rel="stylesheet" href="../css/latex2ai.css" />
+
+        <style></style>
+    </head>
+    <body>
+        <p>Action</p>
+        <input type="radio" name="action" value="latex" id="action_latex" />
+        <label>Redo LaTeX</label>
+        <br />
+        <input
+            type="radio"
+            name="action"
+            value="bounding_box"
+            id="action_bounding_box"
+            checked
+        />
+        <label>Redo Bounding Box</label>
+        <p>Items</p>
+        <input type="radio" name="items" value="all" id="items_all" checked />
+        <label id="items_all_label">All Items (?)</label>
+        <br />
+        <input type="radio" name="items" value="selected" id="items_selected" />
+        <label id="items_selected_label">Selected Items (?)</label>
+        <hr />
+        <input type="submit" id="button_ok" value="OK" />
+        <input type="submit" id="button_cancel" value="Cancel" />
+    </body>
+</html>

@@ -35,69 +35,43 @@
 #include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_file_system.h"
-#include "l2a_forms.h"
+#include "l2a_global.h"
 #include "l2a_latex.h"
 #include "l2a_math.h"
 #include "l2a_names.h"
 #include "l2a_parameter_list.h"
+#include "l2a_plugin.h"
 #include "l2a_string_functions.h"
 #include "l2a_suites.h"
+#include "l2a_ui_manager.h"
 #include "l2a_utils.h"
 
 
 /**
  *
  */
-L2A::Item::Item(const AIRealPoint& position)
+L2A::Item::Item(const AIRealPoint& position, const L2A::Property& property, const ai::FilePath& created_pdf_file)
 {
-    // Set new empty property for this item.
-    property_ = L2A::Property();
-    property_.SetFromLastInput();
+    // TODO: Mabe move this to a factory function that can give better error return values
 
-    // Loop until either the pdf was created sucessfully, or the user aborted the creation process.
-    ai::FilePath pdf_file;
-    while (true)
-    {
-        // Get user input for the item. If the form is canceled the creation of this object is also canceled.
-        ItemFormReturnValues return_value = OpenUserForm(property_);
-        if (return_value == ItemFormReturnValues::cancel)
-            return;
-        else if (return_value == ItemFormReturnValues::ok)
-        {
-            // Do nothing in this case.
-        }
-        else
-            l2a_error("Unexpected return value");
+    // Set the property 1for this item
+    property_ = property;
 
-        // Create the pdf file.
-        L2A::LATEX::LatexCreationResult result =
-            L2A::LATEX::CreateLatexWithDebug(property_.GetLaTeXCode(), pdf_file, ai::UnicodeString("create"));
-        if (result == L2A::LATEX::LatexCreationResult::fail_quit)
-            return;
-        else if (result == L2A::LATEX::LatexCreationResult::item_created)
-            break;
-        // In the case of an error and redo, do nothing here, as we are already in the while loop.
-    }
+    // Store the pdf data in the property
+    property_.SetPDFFile(created_pdf_file);
 
-    // Convert pdf with postscript.
-    pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
+    // Save the pdf in the pdf folder
+    const auto pdf_file = GetPDFPath();
+    SaveEncodedPDFFile(pdf_file);
 
-    // Store the pdf data in the property.
-    this->property_.SetPDFFile(pdf_file);
-
-    // Create and link to the pdf file. We do not check here if the file already exists, because the hash of a newly
-    // created item will always be different, even if the LaTeX code is exactly the same.
-    pdf_file = GetPDFPath();
-    this->SaveEncodedPDFFile(pdf_file);
-
-    // Create the placed item.
+    // Create the placed item
     placed_item_ = L2A::AI::CreatePlacedItem(pdf_file);
     L2A::AI::SetPlacement(placed_item_, property_);
 
-    // Set the name and tag for the item.
+    // Set the name and tag for the item
     SetNoteAndName();
 
-    // Move the file to the cursor position.
+    // Move the file to the cursor position
     MoveItem(position);
 
     // Everything was successfull, we write the input from this item to the application directory, so we can use it with
@@ -146,83 +120,75 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
 /**
  *
  */
-void L2A::Item::Change()
+L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_value, L2A::Property& new_property)
 {
-    // Create a copy of the current input parameters.
-    L2A::Property new_input = property_;
+    L2A::AI::SetUndoText(
+        ai::UnicodeString("Undo Change LaTeX2AI Item"), ai::UnicodeString("Redo Change LaTeX2AI Item"));
 
-    // Do this until the creation process is canceled or the process was successfull.
-    ai::FilePath pdf_file;
     L2A::PropertyCompare diff;
-    while (true)
-    {
-        // Get input from user.
-        ItemFormReturnValues return_value = OpenUserForm(new_input);
-        if (return_value == ItemFormReturnValues::ok)
-            // Compare the current input and the new one.
-            diff = property_.Compare(new_input);
-        else if (return_value == ItemFormReturnValues::cancel)
-            return;
-        else if (return_value == ItemFormReturnValues::redo_boundary)
-        {
-            RedoBoundary();
-            return;
-        }
-        else if (return_value == ItemFormReturnValues::redo_latex)
-        {
-            diff.changed_latex = true;
-            // We have to set the new input here, since it will be set as the property of this label at the end of this
-            // function.
-            new_input = property_;
-        }
 
-        if (diff.changed_latex)
-        {
-            // Redo the latex item.
-            L2A::LATEX::LatexCreationResult result =
-                L2A::LATEX::CreateLatexWithDebug(new_input.GetLaTeXCode(), pdf_file, ai::UnicodeString("edit"));
-            if (result == L2A::LATEX::LatexCreationResult::fail_quit)
-                return;
-            else if (result == L2A::LATEX::LatexCreationResult::item_created)
-                break;
-            // In the case of an error and redo, do nothing here, as we are already in the while loop.
-        }
-        else
-            // Nothing in the LaTeX changes, continue with this function.
-            break;
+    if (form_return_value == "ok")
+    {
+        // Compare the current input and the new one
+        diff = GetProperty().Compare(new_property);
+    }
+    else if (form_return_value == "redo_boundary")
+    {
+        RedoBoundary();
+        return ItemChangeResult{ItemChangeResult::Result::ok};
+    }
+    else if (form_return_value == "redo_latex")
+    {
+        diff.changed_latex = true;
+        // We have to set the property here since the redo latex button will redo the existing item, not the text that
+        // might be changed in the UI. We raise a warning for that case in the UI.
+        // TODO: maybe return the correct data directly?
+        // TODO: copy here without copying the pdf contents
+        new_property = GetProperty();
+    }
+    else
+    {
+        l2a_error("Got unexpected form_return_value: " + form_return_value);
     }
 
     if (diff.changed_latex)
     {
-        // Convert pdf with postscript.
-        pdf_file = L2A::LATEX::SplitPdfPages(pdf_file, 1).at(0);
+        auto [latex_creation_result, pdf_file] = L2A::LATEX::CreateLatexItem(new_property);
+        if (latex_creation_result.result_ == L2A::LATEX::LatexCreationResult::Result::ok)
+        {
+            // TODO: this works, but it is very strange what we copy around here, this should be improved
+            // PDF could be created, now store the pdf file in the placed item
+            new_property.SetPDFFile(pdf_file);
+            GetPropertyMutable() = new_property;
+            pdf_file = GetPDFPath();
+            SaveEncodedPDFFile(pdf_file);
 
-        // Store the pdf file in the placed item.
-        new_input.SetPDFFile(pdf_file);
-        property_ = new_input;
-        pdf_file = GetPDFPath();
-        SaveEncodedPDFFile(pdf_file);
+            // Relink the placed item with the new pdf file
+            L2A::AI::RelinkPlacedItem(GetPlacedItemMutable(), pdf_file);
 
-        // Relink the placed item with the pdf file.
-        L2A::AI::RelinkPlacedItem(placed_item_, pdf_file);
-
-        // Redo the boundary.
-        RedoBoundary();
+            // Redo the boundary
+            RedoBoundary();
+        }
+        else if (latex_creation_result.result_ == L2A::LATEX::LatexCreationResult::Result::error_tex_code)
+        {
+            return ItemChangeResult{ItemChangeResult::Result::latex_error, latex_creation_result};
+        }
     }
 
-    if (diff.changed_align || diff.changed_placement)
-    {
-        // Placement changed.
-        property_ = new_input;
-        L2A::AI::SetPlacement(placed_item_, property_);
-    }
-
-    // If something changed add the information to the placed item note.
+    // If something changed add the information to the placed item note
     if (diff.Changed())
     {
-        property_ = new_input;
+        GetPropertyMutable() = new_property;
         SetNoteAndName();
+
+        if (diff.changed_align || diff.changed_placement)
+        {
+            L2A::AI::SetPlacement(GetPlacedItemMutable(), GetProperty());
+        }
     }
+
+    // Everything worked fine
+    return ItemChangeResult{ItemChangeResult::Result::ok};
 }
 
 /**
@@ -504,50 +470,6 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
 /**
  *
  */
-L2A::ItemFormReturnValues L2A::Item::OpenUserForm(L2A::Property& input_property) const
-{
-    L2A::UTIL::ParameterList form_input_parameter_list;
-    ai::UnicodeString key_latex("latex_exists");
-    ai::UnicodeString key_boundary_box("boundary_box_state");
-    if (!sAIArt->ValidArt(placed_item_, true))
-    {
-        form_input_parameter_list.SetOption(key_latex, false);
-        form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("none"));
-    }
-    else
-    {
-        form_input_parameter_list.SetOption(key_latex, true);
-        if (IsDiamond())
-            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("diamond"));
-        else if (IsStreched())
-            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("streched"));
-        else
-            form_input_parameter_list.SetOption(key_boundary_box, ai::UnicodeString("ok"));
-    }
-    form_input_parameter_list.SetSubList(ai::UnicodeString("property_list"), input_property.ToParameterList());
-
-    std::shared_ptr<L2A::UTIL::ParameterList> form_return_parameter_list;
-    ai::UnicodeString return_string =
-        L2A::Form(ai::UnicodeString("l2a_item"), form_input_parameter_list, form_return_parameter_list).return_string;
-
-    if (return_string == ai::UnicodeString("ok"))
-    {
-        input_property.SetFromParameterList(*form_return_parameter_list);
-        return ItemFormReturnValues::ok;
-    }
-    else if (return_string == ai::UnicodeString("redo_boundary_box"))
-        return ItemFormReturnValues::redo_boundary;
-    else if (return_string == ai::UnicodeString("redo_latex"))
-        return ItemFormReturnValues::redo_latex;
-    else if (return_string == ai::UnicodeString("cancel"))
-        return ItemFormReturnValues::cancel;
-    else
-        l2a_error("Unexpected result. Got return string: \"" + return_string + "\"");
-}
-
-/**
- *
- */
 AIReal L2A::Item::GetAngle(unsigned short director) const
 {
     // Get the values from the matrix.
@@ -616,41 +538,14 @@ bool L2A::Item::IsStreched() const
 /**
  *
  */
-void L2A::RedoItems()
+void L2A::RedoItems(std::vector<AIArtHandle>& redo_items, const RedoItemsOption& redo_option)
 {
-    // First get all and all selected l2a items.
-    std::vector<AIArtHandle> all_items;
-    std::vector<AIArtHandle> selected_items;
-    L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
-    L2A::AI::GetDocumentItems(selected_items, L2A::AI::SelectionState::selected);
+    L2A::AI::SetUndoText(ai::UnicodeString("Undo Redo LaTeX2AI Items"), ai::UnicodeString("Redo LaTeX2AI Items"));
 
-    // Add number of items to parameter list for form.
-    L2A::UTIL::ParameterList redo_all_parameter_list;
-    const unsigned int n_all_items = (unsigned int)all_items.size();
-    const unsigned int n_selected_items = (unsigned int)selected_items.size();
-    redo_all_parameter_list.SetOption(ai::UnicodeString("n_all_items"), n_all_items);
-    redo_all_parameter_list.SetOption(ai::UnicodeString("n_selected_items"), n_selected_items);
+    // Check if something needs to be done
+    if (redo_items.size() == 0) return;
 
-    // Get the user input for the redo all function.
-    std::shared_ptr<L2A::UTIL::ParameterList> new_parameter_list;
-    if (L2A::Form(ai::UnicodeString("l2a_redo"), redo_all_parameter_list, new_parameter_list).canceled) return;
-
-    // Get the result from the form.
-    const bool redo_latex = new_parameter_list->GetIntOption(ai::UnicodeString("redo_latex"));
-    const bool redo_boundary = new_parameter_list->GetIntOption(ai::UnicodeString("redo_boundary"));
-    if (redo_latex && !redo_boundary) l2a_error("Got unexpected combination of options.");
-    std::vector<AIArtHandle> redo_items;
-    const bool is_all_items =
-        new_parameter_list->GetStringOption(ai::UnicodeString("item_type")) == ai::UnicodeString("all");
-    if (is_all_items)
-        redo_items = all_items;
-    else
-        redo_items = selected_items;
-
-    // Check if something needs to be done.
-    if (!redo_latex && !redo_boundary || redo_items.size() == 0) return;
-
-    // Create an Item for all placed items that need to be redone.
+    // Create an Item for all placed items that need to be redone
     unsigned int locked_counter = 0;
     std::vector<L2A::Item> l2a_items;
     for (const auto& placed_item : redo_items)
@@ -673,41 +568,40 @@ void L2A::RedoItems()
         sAIUser->MessageAlert(message_text);
     }
 
-    if (redo_latex)
+    if (redo_option == RedoItemsOption::latex)
     {
-        RedoLaTeXItems(l2a_items);
+        if (!RedoLaTeXItems(l2a_items)) return;
     }
 
-    // Redo the boundaries of all items.
-    if (redo_boundary)
-        for (auto& item : l2a_items) item.RedoBoundary();
+    // Redo the boundaries of all items (this has to be done for both cases of redo_option
+    for (auto& item : l2a_items) item.RedoBoundary();
 }
 
 /**
  *
  */
-void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
+bool L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
 {
-    // Loop over every element and get the latex code as string.
-    ai::UnicodeString global_latex_code("\n\n");
+    // Loop over every element and get the property
+    std::vector<L2A::Property> properties;
     for (const auto& item : l2a_items)
     {
-        global_latex_code += "% Name of the item in Illustrator: \"" + item.GetAIName() + "\"\n";
-        global_latex_code += item.GetProperty().GetLaTeXCode();
-        global_latex_code += "\n\n";
+        // TODO: dont copy the pdf contents here
+        properties.push_back(item.GetProperty());
     }
 
-    // Create a latex document with the code from all items to redo.
-    ai::FilePath pdf_path;
-    L2A::LATEX::LatexCreationResult result =
-        L2A::LATEX::CreateLatexWithDebug(global_latex_code, pdf_path, ai::UnicodeString("redo_all"));
-    if (result == L2A::LATEX::LatexCreationResult::fail_quit || result == L2A::LATEX::LatexCreationResult::fail_redo)
-        return;
+    // Create the pdf file for each item
+    auto [latex_creation_result, pdf_files] = L2A::LATEX::CreateLatexItems(properties);
+    if (latex_creation_result.result_ != L2A::LATEX::LatexCreationResult::Result::ok)
+    {
+        L2A::GlobalPluginMutable().GetUiManager().GetDebugForm().OpenDebugForm(
+            L2A::UI::Debug::Action::redo_items, latex_creation_result);
+        return false;
+    }
 
-    // Split up the created items into the individual pdf files.
-    std::vector<ai::FilePath> pdf_files = L2A::LATEX::SplitPdfPages(pdf_path, (unsigned int)l2a_items.size());
-
-    // Create the PDFs for the items and store them in the placed items.
+    // Create the PDFs for the items and store them in the placed items. We dont reset the boundary box here. This is
+    // done in the redo function, we leave it out here, since one might want to use this funciton without resetting the
+    // bounding box.
     for (unsigned int i = 0; i < l2a_items.size(); i++)
     {
         // Get the PDF path.
@@ -718,6 +612,8 @@ void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
         L2A::AI::RelinkPlacedItem(l2a_item.GetPlacedItemMutable(), new_path);
         l2a_item.SetNoteAndName();
     }
+
+    return true;
 }
 
 /**

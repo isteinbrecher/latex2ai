@@ -31,12 +31,12 @@
 
 #include "l2a_plugin.h"
 
+#include "AICSXS.h"
 #include "AIMenuCommandNotifiers.h"
 #include "SDKErrors.h"
 #include "testing.h"
 
 #include "l2a_ai_functions.h"
-#include "l2a_annotator.h"
 #include "l2a_constants.h"
 #include "l2a_error.h"
 #include "l2a_global.h"
@@ -59,10 +59,19 @@ L2APlugin::L2APlugin(SPPluginRef pluginRef)
       fNotifyDocumentSave(nullptr),
       fNotifyDocumentSaveAs(nullptr),
       fNotifyDocumentOpened(nullptr),
-      fResourceManagerHandle(nullptr)
+      fResourceManagerHandle(nullptr),
+      ui_manager_(nullptr)
 {
     // Set the name that of this plugin in Illustrator.
     strncpy(fPluginName, L2A_PLUGIN_NAME, kMaxStringLength);
+}
+
+/*
+ */
+ASErr L2APlugin::SetGlobal(Plugin* plugin)
+{
+    L2A::GLOBAL::_l2a_plugin = ((L2APlugin*)plugin);
+    return kNoErr;
 }
 
 /*
@@ -88,9 +97,8 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             AIArtHandle placed_item;
             if (L2A::AI::GetSingleIsolationItem(placed_item))
             {
-                // Create Item and change it's contents.
-                L2A::Item change_item(placed_item);
-                change_item.Change();
+                // Change the item
+                ui_manager_->GetItemForm().OpenEditItemForm(placed_item);
             }
         }
         else if (message->notifier == fNotifyDocumentOpened || message->notifier == fNotifyDocumentSave ||
@@ -99,21 +107,16 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             L2A::AI::UndoActivate();
             L2A::CheckItemDataStructure();
         }
+        else if (message->notifier == fCSXSPlugPlugSetupCompleteNotifier)
+        {
+            ui_manager_->RegisterCSXSEventListeners();
+        }
     }
     catch (L2A::ERR::Exception&)
     {
         sAIUser->MessageAlert(ai::UnicodeString("L2APlugin::Notify Error caught."));
-    }
-
-    // Check which tool is selected.
-    AIToolHandle selected_tool;
-    sAITool->GetSelectedTool(&selected_tool);
-    if (fToolHandle.size() > 0 &&
-        (selected_tool == fToolHandle[1] || selected_tool == fToolHandle[2] || selected_tool == fToolHandle[3]))
-    {
-        // The redo item is selected. Since this only acts as button we want to deselect the tool here.
-        error = sAITool->SetSelectedToolByName(kSelectTool);
-        l2a_check_ai_error(error);
+        // TODO: check this error message here
+        error = 1;
     }
 
     return error;
@@ -178,24 +181,26 @@ ASErr L2APlugin::StartupPlugin(SPInterfaceMessage* message)
 
         // Set the global l2a object. This object should only be used with the Get functions in L2A.
         L2A::GLOBAL::_l2a_global = new L2A::GLOBAL::Global();
-        L2A::GlobalMutable().SetUp();
-        if (L2A::Global().IsSetup())
-        {
-            error = AddNotifier(message);
-            aisdk::check_ai_error(error);
 
-            error = AddTools(message);
-            aisdk::check_ai_error(error);
-
-            error = AddAnnotator(message);
-            aisdk::check_ai_error(error);
+        // Register relevant LaTeX2AI functions
+        error = AddNotifier(message);
+        aisdk::check_ai_error(error);
+        error = AddTools(message);
+        aisdk::check_ai_error(error);
+        error = AddAnnotator(message);
+        aisdk::check_ai_error(error);
 
 #ifdef _DEBUG
-            // In the debug mode perform all unit tests at startup.
-            static const bool print_status = false;
-            L2A::TEST::TestingMain(print_status);
+        // In the debug mode perform all unit tests at startup.
+        static const bool print_status = false;
+        L2A::TEST::TestingMain(print_status);
 #endif
-        }
+
+        // Lock the plug-in as we register callbacks in PlugPlug Setup
+        // TODO check if this is needed
+        ui_manager_ = std::make_unique<L2A::UI::Manager>();
+        error = Plugin::LockPlugin(true);
+        aisdk::check_ai_error(error);
     }
     catch (ai::Error& ex)
     {
@@ -218,8 +223,13 @@ ASErr L2APlugin::ShutdownPlugin(SPInterfaceMessage* message)
         // If it was created, delete the global object.
         if (L2A::GLOBAL::_l2a_global != nullptr) delete L2A::GLOBAL::_l2a_global;
 
-        // Dereference the annotator -> the object will be delete here, otherwise we would have a memory leak later.
+        // Remove the UI event listeners
+        ui_manager_->RemoveEventListeners();
+
+        // Dereference the annotator and the ui manager -> the objects will be delete here, otherwise we would have a
+        // memory leak later
         annotator_ = nullptr;
+        ui_manager_ = nullptr;
 
         // We need to call the base shutdown method to avoid memory leaks when closing the plugin.
         error = Plugin::ShutdownPlugin(message);
@@ -245,35 +255,25 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
     if (message->tool == this->fToolHandle[0])
     {
         // Selected tool is item create.
-
         try
         {
             if (annotator_->IsArtHit())
             {
-                ai::UnicodeString undo_string("Undo Change LaTeX2AI item");
-                ai::UnicodeString redo_string("Redo Change LaTeX2AI item");
-                sAIUndo->SetUndoTextUS(undo_string, redo_string);
-
-                // Get the existing item and change it.
-                L2A::Item hit_item(annotator_->GetArtHit());
-                hit_item.Change();
+                ui_manager_->GetItemForm().OpenEditItemForm(annotator_->GetArtHit());
             }
             else
             {
                 // Check if the current insertion point is locked.
                 if (!L2A::AI::GetLockedInsertionPoint())
                 {
-                    ai::UnicodeString undo_string("Undo Create LaTeX2AI item");
-                    ai::UnicodeString redo_string("Redo Create LaTeX2AI item");
-                    sAIUndo->SetUndoTextUS(undo_string, redo_string);
-
-                    // Create am item at the clicked position.
-                    L2A::Item(message->cursor);
+                    ui_manager_->GetItemForm().OpenCreateItemForm(message->cursor);
                 }
                 else
+                {
                     sAIUser->MessageAlert(
                         ai::UnicodeString("You tried to create a LaTeX2AI item inside a locked or hidden layer / "
                                           "group. This is not possible."));
+                }
             }
         }
         catch (L2A::ERR::Exception&)
@@ -310,13 +310,13 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         "LaTeX2AI redo items",                                           //
         "LaTeX2AI options",                                              //
         "LaTeX2AI save to PDF",                                          //
-        "Perform LaTeX2AI Tests"};
+        "Perform LaTeX2AI tests"};
     std::vector<std::string> tool_tip = {
-        "LaTeX2AI create edit mode: Create a new LaTeX2AI item, or edit and existing item by clicking on it.",  //
-        "LaTeX2AI redo items: Redo multiple items in this document.",                                           //
-        "LaTeX2AI options: Set local and global options for LaTeX2AI",                                          //
-        "LaTeX2AI save to PDF: Save a copy of the current Illustrator file to a pdf file with the same name.",  //
-        "Perform certain tests to ensure LaTeX2AI is working as expected."};
+        "LaTeX2AI create edit mode: Create a new LaTeX2AI item, or edit an existing item by clicking on it",   //
+        "LaTeX2AI redo items: Redo multiple items in this document",                                           //
+        "LaTeX2AI options: Set local and global options for LaTeX2AI",                                         //
+        "LaTeX2AI save to PDF: Save a copy of the current Illustrator file to a pdf file with the same name",  //
+        "Perform LaTeX2AI framework test suite"};
 
     // Define icons.
     std::vector<ai::uint32> light_icon_id = {TOOL_ICON_CREATE_LIGHT_ID, TOOL_ICON_REDO_LIGHT_ID,
@@ -383,7 +383,7 @@ ASErr L2APlugin::AddAnnotator(SPInterfaceMessage* message)
 /*
  *
  */
-ASErr L2APlugin::AddNotifier(SPInterfaceMessage* /*message*/)
+ASErr L2APlugin::AddNotifier(SPInterfaceMessage* message)
 {
     ASErr result = kNoErr;
     try
@@ -394,12 +394,14 @@ ASErr L2APlugin::AddNotifier(SPInterfaceMessage* /*message*/)
         result =
             sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAISaveCommandPreNotifierStr, &fNotifyDocumentSave);
         aisdk::check_ai_error(result);
-        aisdk::check_ai_error(result);
         result = sAINotifier->AddNotifier(
             fPluginRef, L2A_PLUGIN_NAME, kAISaveAsCommandPostNotifierStr, &fNotifyDocumentSaveAs);
         aisdk::check_ai_error(result);
         result =
             sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAIDocumentOpenedNotifier, &fNotifyDocumentOpened);
+        aisdk::check_ai_error(result);
+        result = sAINotifier->AddNotifier(message->d.self, L2A_PLUGIN_NAME, kAICSXSPlugPlugSetupCompleteNotifier,
+            &fCSXSPlugPlugSetupCompleteNotifier);
         aisdk::check_ai_error(result);
     }
     catch (ai::Error& ex)
@@ -428,31 +430,11 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
     }
     else if (message->tool == this->fToolHandle[1] && L2A::AI::GetDocumentCount() > 0)
     {
-        // Activate undo.
-        ai::UnicodeString undo_string("Undo Update LaTeX2AI item");
-        ai::UnicodeString redo_string("Redo Update LaTeX2AI item");
-        sAIUndo->SetUndoTextUS(undo_string, redo_string);
-        L2A::AI::UndoActivate();
-
-        // Redo tool is selected.
-        L2A::RedoItems();
-
-        // Deselect all so a call to the plugin will be given, where the tools can be deselected.
-        error = sAIMatchingArt->DeselectAll();
-        l2a_check_ai_error(error);
+        ui_manager_->GetRedoForm().OpenRedoForm();
     }
     else if (message->tool == this->fToolHandle[2])
     {
-        // Open the global options dialog.
-        L2A::GlobalMutable().SetFromUserForm();
-
-        // If a document is opend, deselect all artwork  so a call to the plugin will be given, where the tools can be
-        // deselected. And the selection tool will be activated.
-        if (L2A::AI::GetDocumentCount() > 0)
-        {
-            error = sAIMatchingArt->DeselectAll();
-            l2a_check_ai_error(error);
-        }
+        ui_manager_->GetOptionsForm().OpenOptionsForm();
     }
     else if (message->tool == this->fToolHandle[3] && L2A::AI::GetDocumentCount() > 0)
     {
@@ -504,9 +486,9 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
 
     if (message->tool == this->fToolHandle[0])
     {
-        // Create edit mode is active.
+        // Create edit mode is active
 
-        // Check if cursor is over an art item.
+        // Check if cursor is over an art item
         ai::int32 cursor_id;
         if (annotator_->CheckForArtHit(message))
             cursor_id = CURSOR_ICON_EDIT;
@@ -518,6 +500,13 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
                 cursor_id = CURSOR_ICON_CREATE;
         }
         error = sAIUser->SetSVGCursor(cursor_id, fResourceManagerHandle);
+        l2a_check_ai_error(error);
+    }
+    else if (message->tool == this->fToolHandle[1] || message->tool == this->fToolHandle[2] ||
+             message->tool == this->fToolHandle[3])
+    {
+        // A LaTeX2AI UI is opened - we want to deselect the tool in this case, we select the default AI selection tool
+        error = sAITool->SetSelectedToolByName(kSelectTool);
         l2a_check_ai_error(error);
     }
 

@@ -31,10 +31,11 @@
 #define L2A_GLOBAL_H_
 
 
-#include "l2a_forms.h"
+#include "AppContext.hpp"
 
 
 // Forward declarations.
+class L2APlugin;
 namespace L2A
 {
     namespace UTIL
@@ -57,7 +58,7 @@ namespace L2A
             /**
              * \brief Empty constructor.
              */
-            Global() : is_setup_(false), is_testing_(false){};
+            Global();
 
             /**
              * \brief Destructor. Here the options will be stored in an application file.
@@ -65,80 +66,20 @@ namespace L2A
             ~Global();
 
             /**
-             * \brief Set up the global variables.
-             */
-            void SetUp();
-
-            /**
-             * \brief Return true if the object could be setup correctly.
-             */
-            inline bool IsSetup() const { return is_setup_; }
-
-            /**
-             * \brief Open a form and let the user select some global options.
-             **/
-            void SetFromUserForm();
-
-            /**
-             * \brief Set the values for this object from a xml string.
-             */
-            ai::UnicodeString GetLatexCommand() const;
-
-            /**
-             * \brief Return the flag for warnings if the AI file is saved, while saving as PDF.
-             */
-            bool GetWarningSave() const { return warning_ai_not_saved_; }
-
-            /**
-             * \brief Return the flag for warnings if all boundary boxes are ok, while saving as PDF.
-             */
-            bool GetWarningBoundaryBox() const { return warning_boundary_boxes_; }
-
-           private:
-            /**
-             * \brief Set path to the executable of the forms application and check if it is correct.
-             */
-            bool SetFormsPath(const ai::FilePath& forms_path);
-
-            /**
-             * \brief Check that the path to the forms application points to a valid executable.
-             */
-            bool CheckFormsPath() const;
-
-            /**
-             * \brief Set the ghostscript and check if it is correct.
-             */
-            bool SetGhostscriptCommand(ai::UnicodeString gs_command);
-
-            /**
-             * \brief Check if the ghostscript command is valid.
-             */
-            bool CheckGhostscriptCommand(const ai::UnicodeString& gs_command) const;
-
-            /**
-             * \brief Set the LaTeX path and check if it is correct.
-             */
-            bool SetLatexCommand(const ai::FilePath& latex_path);
-
-            /**
-             * \brief Check that the stored LaTeX command is correct.
-             */
-            bool CheckLatexCommand(const ai::FilePath& path_latex) const;
-
-            /**
              * \brief Convert this object to a parameter list.
              */
             void ToParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;
 
             /**
-             * \brief Convert this object to a xml string.
-             */
-            ai::UnicodeString ToString() const;
-
-            /**
              * \brief Get a parameter list with the default options.
              */
             void GetDefaultParameterList(std::shared_ptr<L2A::UTIL::ParameterList>& parameter_list) const;
+
+           private:
+            /**
+             * \brief Convert this object to a xml string.
+             */
+            ai::UnicodeString ToString() const;
 
             /**
              * \brief Set the values for this object from a parameter list.
@@ -147,53 +88,40 @@ namespace L2A
              */
             bool SetFromParameterList(const L2A::UTIL::ParameterList& parameter_list);
 
-            /**
-             * \brief Get the parameter list for displaying the global options in the form.
-             */
-            void GetParameterListForForm(std::shared_ptr<L2A::UTIL::ParameterList>& form_parameter_list) const;
-
            public:
-            //! Flag if item could be setup.
-            bool is_setup_;
-
-            //! Path to the latex executables.
-            ai::FilePath path_latex_;
-
-            //! Command for latex in the shell.
-            ai::UnicodeString command_latex_;
-
-            //! Options for the latex command.
-            ai::UnicodeString command_latex_options_;
-
-            //! Command for ghostscript in the shell.
-            ai::UnicodeString command_gs_;
-
-            //! Path to temp folder.
-            ai::FilePath path_temp_;
-
-            //! Path to form exe.
-            ai::FilePath path_form_exe_;
-
             //! File that stores global application data.
             ai::FilePath application_data_path_;
 
             //! File that stores last item input.
             ai::FilePath l2a_item_last_input_;
 
+            //! Flag if testing is currently active.
+            bool is_testing_;
+
+            //! From here on are the "actual" options
+
+            //! Path to the latex executables.
+            ai::FilePath latex_bin_path_;
+
+            //! Which latex engine to use.
+            ai::UnicodeString latex_engine_;
+
+            //! Options for the latex command.
+            ai::UnicodeString latex_command_options_;
+
+            //! Command for ghostscript in the shell.
+            ai::UnicodeString gs_command_;
+
             //! Flag for warning if ai file is not saved.
             bool warning_ai_not_saved_;
 
             //! Flag for warning if boundary boxes are not OK.
             bool warning_boundary_boxes_;
-
-            //! Flag if testing is currently active.
-            bool is_testing_;
-
-            //! Parameter list that will be returned for forms during testing.
-            std::shared_ptr<L2A::UTIL::ParameterList> testing_form_return_parameter_list_;
-            L2A::FormReturnValue testing_form_return_value_;
         };
 
+        /**
+         * \brief Check if global object is set correctly
+         */
         void CheckGlobal();
 
         /**
@@ -201,6 +129,12 @@ namespace L2A
          * functions.
          */
         extern Global* _l2a_global;
+
+        /**
+         * \brief Define global pointer to the plugin, this object should not be used, only accessed via the Get
+         * functions.
+         */
+        extern L2APlugin* _l2a_plugin;
 
     }  // namespace GLOBAL
 
@@ -213,6 +147,16 @@ namespace L2A
      * \brief Return the global object mutable.
      */
     L2A::GLOBAL::Global& GlobalMutable();
+
+    /**
+     * \brief Return the plugin pointer mutable.
+     */
+    L2APlugin& GlobalPluginMutable();
+
+    /**
+     * \brief Return the app context of the plugin
+     */
+    AppContext GlobalPluginAppContext();
 
 }  // namespace L2A
 

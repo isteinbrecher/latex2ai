@@ -55,11 +55,6 @@ namespace L2A
         CommandResult ExecuteCommandLine(
             const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms = 10000);
 
-        /**
-         * \brief Execute a file on disc.
-         */
-        int ExecuteFile(const ai::FilePath& file_path);
-
         namespace INTERNAL
         {
             /**
@@ -79,7 +74,17 @@ namespace L2A
             CommandResult ExecuteCommandLineWindowsNoConsole(
                 const ai::UnicodeString& command, const unsigned long max_time_ms);
         }  // namespace INTERNAL
-    }      // namespace UTIL
+
+        /**
+         * \brief Open a file on disk with the default application.
+         */
+        void OpenFileWithDefaultApplication(const ai::FilePath& file_path);
+
+        /**
+         * \brief Open a folder in the GUI of the OS
+         */
+        void OpenFolder(const ai::FilePath& folder_path);
+    }  // namespace UTIL
 }  // namespace L2A
 
 #endif

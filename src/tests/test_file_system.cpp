@@ -86,7 +86,8 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
     // Set test name.
     ut.SetTestName(ai::UnicodeString("TestFileSystem"));
 
-    // Get the name of the temp directory.
+    // Get the name of the temp directory and clear it.
+    L2A::UTIL::ClearTemporaryDirectory();
     const ai::FilePath temp_directory = L2A::UTIL::GetTemporaryDirectory();
 
     // Perform the tests

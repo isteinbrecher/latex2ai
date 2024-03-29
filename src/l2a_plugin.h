@@ -33,6 +33,9 @@
 
 #include "Plugin.hpp"
 
+#include "l2a_annotator.h"
+#include "l2a_ui_manager.h"
+
 
 //! Check if the Illustrator version is supported.
 //! The only reason we define the max value here is so the user is aware that a new SDK version is being used.
@@ -42,13 +45,6 @@
 #if (kPluginInterfaceVersion < L2A_ILLUSTRATOR_VERSION_MIN) || (kPluginInterfaceVersion > L2A_ILLUSTRATOR_VERSION_MAX)
 #error Currently LaTeX2AI only supports Illustrator CS6, Illustrator CC2017, Illustrator CC2018, Illustrator 2021, Illustrator 2022, Illustrator 2023 and Illustrator 2024
 #endif
-
-
-// Forward declaration.
-namespace L2A
-{
-    class Annotator;
-}
 
 
 /**
@@ -91,7 +87,18 @@ class L2APlugin : public Plugin
      */
     virtual ASErr Notify(AINotifierMessage* message);
 
+   public:
+    /**
+     * \brief Return a reference to the UI manager
+     */
+    L2A::UI::Manager& GetUiManager() { return *ui_manager_; }
+
    protected:
+    /**
+     * \brief Set a link to this plugin in the global object
+     */
+    ASErr SetGlobal(Plugin* plugin);
+
     /**
      * \brief Calls Plugin::Message and handles any errors returned.
      * @param caller IN sender of the message.
@@ -173,10 +180,10 @@ class L2APlugin : public Plugin
     ASErr PostStartupPlugin();
 
    private:
-    //! Store handle for each tool of the plugin.
+    //! Store handle for each tool of the plugin
     std::vector<AIToolHandle> fToolHandle;
 
-    //! Handle for the selection changed notifier.
+    //! Handle for the selection changed notifier
     AINotifierHandle fNotifySelectionChanged;
 
     //! Handle for docuement actions.
@@ -184,11 +191,17 @@ class L2APlugin : public Plugin
     AINotifierHandle fNotifyDocumentSaveAs;
     AINotifierHandle fNotifyDocumentOpened;
 
+    //! Handle for plug plug actions
+    AINotifierHandle fCSXSPlugPlugSetupCompleteNotifier;
+
     //! Handle for the resource manager added by this plug-in used for setting cursor
     AIResourceManagerHandle fResourceManagerHandle;
 
-    //! Annotator object.
+    //! Annotator object
     std::unique_ptr<L2A::Annotator> annotator_;
+
+    //! User Interface manager
+    std::unique_ptr<L2A::UI::Manager> ui_manager_;
 };
 
 #endif  // L2A_PLUGIN_H_

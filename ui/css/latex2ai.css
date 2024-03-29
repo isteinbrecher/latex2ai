@@ -1,0 +1,9 @@
+body {
+    font-size: 13px;
+    font-family: sans-serif;
+    user-select: none;
+}
+
+.allow_user_select {
+    user-select: text;
+}

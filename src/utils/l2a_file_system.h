@@ -97,9 +97,14 @@ namespace L2A
         void CopyFileL2A(const ai::FilePath& source, const ai::FilePath& target);
 
         /**
-         * \brief Return the path to the temp directory on the system.
+         * \brief Return the path to the temp LaTeX2AI directory on the system.
          */
         ai::FilePath GetTemporaryDirectory();
+
+        /**
+         * \brief Clear the temporary directory.
+         */
+        void ClearTemporaryDirectory();
 
         /**
          * \brief Return the path to the application data directory.
@@ -117,11 +122,6 @@ namespace L2A
         ai::UnicodeString GetDocumentName();
 
         /**
-         * \brief Search the path to ghostscript on the system.
-         */
-        ai::UnicodeString GetGhostScriptCommand();
-
-        /**
          * \brief Search the path to forms executable on the system.
          *
          * The folder where the plug in is located will be searched for the forms executable.
@@ -137,6 +137,12 @@ namespace L2A
          * \brief Find all files in a folder matching a regular expression.
          */
         std::vector<ai::FilePath> FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& regex);
+
+        /**
+         * \brief Check the given directories if the executable is in them. Return the first one that matches.
+         */
+        std::pair<bool, ai::FilePath> FindExecutable(
+            const std::vector<ai::FilePath>& possible_bin_paths, const ai::UnicodeString& executable_name);
 
         /**
          * \brief Return the full file path for a given path. This also resolves ".." inside the file path.

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <script src="../js/CSInterface.js"></script>
+        <script src="../js/jquery-3.7.1.min.js"></script>
+        <script src="../js/auto_generated.js"></script>
+        <script src="../js/common.js"></script>
+        <script src="../js/main_options.js"></script>
+        <link id="hostStyle" rel="stylesheet" href="../css/latex2ai.css" />
+
+        <style></style>
+    </head>
+    <body>
+        <p>LaTeX2AI information</p>
+        <label>Version</label>
+        <label id="l2a_version">x.x.x</label>
+        <br />
+        <label>Git SHA</label>
+        <label class="allow_user_select" id="l2a_git_sha">abcdefgh</label>
+        <hr />
+        <p>Global LaTeX options</p>
+        <label>Engine</label>
+        <select id="tex_engine">
+            <option value="pdflatex">pdflatex</option>
+            <option value="lualatex">lualatex</option>
+            <option value="xelatex">xelatex</option>
+        </select>
+        <br />
+        <label>Commandline options</label><br />
+        <input type="text" id="tex_options" />
+        <br />
+        <label>Folder with LaTeX executables</label>
+        <br />
+        <input type="text" id="tex_folder" />
+        <input type="submit" id="button_folder_tex" value="..." />
+        <br />
+        <label>Ghostscript command</label>
+        <br />
+        <input type="text" id="gs_command" />
+        <input type="submit" id="button_command_gs" value="..." />
+        <br />
+        <hr />
+        <p>Warnings</p>
+        <label>On "Save to PDF", if there are bad boundary boxes</label>
+        <input type="checkbox" id="warning_save_boundary_box" />
+        <br />
+        <label>On "Save to PDF", if Illustrator file is not saved</label>
+        <input type="checkbox" id="warning_save_illustrator" />
+        <hr />
+        <p>LaTeX2AI document information</p>
+        <label>LaTeX2AI header</label>
+        <br />
+        <label id="header_label">header</label>
+        <input type="submit" id="button_header" value="Open" />
+        <hr />
+        <input type="submit" id="button_default" value="Default values" />
+        <input type="submit" id="button_save_and_exit" value="Save and exit" />
+        <input type="submit" id="button_cancel" value="Cancel" />
+    </body>
+</html>

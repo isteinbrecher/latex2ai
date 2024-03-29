@@ -49,7 +49,7 @@
 /**
  *
  */
-AIArtHandle L2A::AI::CreatePlacedItem(ai::FilePath pdf_path)
+AIArtHandle L2A::AI::CreatePlacedItem(const ai::FilePath& pdf_path)
 {
     ASErr error = kNoErr;
 
@@ -474,6 +474,16 @@ void L2A::AI::UndoSetActive(bool active)
 /**
  *
  */
+void L2A::AI::SetUndoText(const ai::UnicodeString& undo_text, const ai::UnicodeString& redo_text)
+{
+    AIErr error;
+    error = sAIUndo->SetUndoTextUS(undo_text, redo_text);
+    l2a_check_ai_error(error);
+}
+
+/**
+ *
+ */
 unsigned int L2A::AI::GetDocumentCount()
 {
     ai::int32 n;
@@ -539,7 +549,7 @@ void L2A::AI::SaveToPDF()
     }
 
     // Check if all boundary boxes are ok.
-    if (L2A::Global().GetWarningBoundaryBox())
+    if (L2A::Global().warning_boundary_boxes_)
     {
         std::vector<AIArtHandle> all_items;
         L2A::AI::GetDocumentItems(all_items, L2A::AI::SelectionState::all);
@@ -577,7 +587,7 @@ void L2A::AI::SaveToPDF()
     AIBoolean is_modified = true;
     result = sAIDocument->GetDocumentModified(&is_modified);
     l2a_check_ai_error(result);
-    if (is_modified && L2A::Global().GetWarningSave())
+    if (is_modified && L2A::Global().warning_ai_not_saved_)
     {
         if (YesNoAlert(ai::UnicodeString(
                 "The curent document is not saved. It is advisable to save the document before exporting to pdf.")))
@@ -1037,3 +1047,16 @@ ai::UnicodeString L2A::AI::GetInputFromUser()
     l2a_check_ai_error(error);
     return return_string;
 }
+
+/**
+ *
+ */
+void L2A::AI::MessageAlert(const ai::UnicodeString& message_string)
+{
+    if (!L2A::Global().is_testing_) sAIUser->MessageAlert(message_string);
+}
+
+/**
+ *
+ */
+void L2A::AI::WarningAlert(const ai::UnicodeString& warning_string) { sAIUser->WarningAlert(warning_string, nullptr); }

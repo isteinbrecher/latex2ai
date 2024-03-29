@@ -41,7 +41,8 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/Adobe Illustrator 2024/Adobe Illustrator.app">
+         BundleIdentifier = "com.adobe.illustrator"
+         FilePath = "/Applications/Adobe Illustrator 2023/Adobe Illustrator.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

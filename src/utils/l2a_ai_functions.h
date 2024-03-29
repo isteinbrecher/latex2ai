@@ -60,7 +60,7 @@ namespace L2A
         /**
          * \brief Create a new placed item.
          */
-        AIArtHandle CreatePlacedItem(ai::FilePath pdf_path);
+        AIArtHandle CreatePlacedItem(const ai::FilePath& pdf_path);
 
         /**
          * \brief Get the ai enum for the placement of a property.
@@ -211,6 +211,11 @@ namespace L2A
         void UndoSetActive(bool silent);
 
         /**
+         * \brief Set undo text
+         */
+        void SetUndoText(const ai::UnicodeString& undo_text, const ai::UnicodeString& redo_text);
+
+        /**
          * \brief Get the number of active documents.
          */
         unsigned int GetDocumentCount();
@@ -328,6 +333,18 @@ namespace L2A
          * Should oly be used for debug purposes. With the current implementation, the user can not cancel the dialog
          */
         ai::UnicodeString GetInputFromUser();
+
+        /**
+         * \brief Provides the MessageAlert functionality, which can be turned off for testing purposes
+         *  TODO: Allow to optionally activate the testing stuff, so we can display the error message on failed tests
+         *  TODO: Apply this function to all occurrences of message alert in L2A
+         */
+        void MessageAlert(const ai::UnicodeString& message_string);
+
+        /**
+         * \brief Provides the WarningAlert functionality, which can be turned off for testing purposes
+         */
+        void WarningAlert(const ai::UnicodeString& warning_string);
 
     }  // namespace AI
 }  // namespace L2A

@@ -129,7 +129,7 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
     if (IsDirectory(directory))
     {
         std::error_code ec;
-        if (!std::filesystem::remove_all(FilePathAiToStd(directory)))
+        if (!std::filesystem::remove_all(FilePathAiToStd(directory), ec))
             l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
     }
     else if (IsFile(directory))
@@ -206,7 +206,18 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
     ai::FilePath temp_directory;
     AIErr error = sAIFolders->FindFolder(kAITemporayFolder, false, temp_directory);
     l2a_check_ai_error(error);
+    temp_directory.AddComponent(ai::UnicodeString("LaTeX2AI"));
     return temp_directory;
+}
+
+/**
+ *
+ */
+void L2A::UTIL::ClearTemporaryDirectory()
+{
+    const auto temp_dir = GetTemporaryDirectory();
+    RemoveDirectoryAI(temp_dir, false);
+    CreateDirectoryL2A(temp_dir);
 }
 
 /**
@@ -234,8 +245,8 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
     // Check if the path is a file.
     if (!IsFile(path) && fail_if_not_saved)
     {
-        l2a_warning(ai::UnicodeString(
-            "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved."));
+        l2a_warning(
+            "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved.");
     }
     else
     {
@@ -244,8 +255,8 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
         ai::UnicodeString utf8_path(L2A::UTIL::StringStdToAi(L2A::UTIL::StringAiToStd(path.GetFullPath())));
         if (unicode_path != utf8_path)
             l2a_warning(
-                ai::UnicodeString("The document path contains non ASCII characters. LaTeX2AI is only working if there "
-                                  "are non ASCII characters in the document name / path."));
+                "The document path contains non ASCII characters. LaTeX2AI is only working if there "
+                "are non ASCII characters in the document name / path.");
     }
 
     return path;
@@ -255,55 +266,6 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
  *
  */
 ai::UnicodeString L2A::UTIL::GetDocumentName() { return GetDocumentPath(false).GetFileNameNoExt(); }
-
-/**
- *
- */
-ai::UnicodeString L2A::UTIL::GetGhostScriptCommand()
-{
-#ifdef WIN_ENV
-    // Get the path to the programs folder.
-    TCHAR pathBuffer[MAX_PATH];
-    std::array<std::tuple<int, int>, 2> programm_shortcuts = {
-        std::make_tuple(CSIDL_PROGRAM_FILESX86, 32), std::make_tuple(CSIDL_PROGRAM_FILES, 64)};
-    for (unsigned int i = 0; i < 2; i++)
-    {
-        if (SUCCEEDED(SHGetFolderPath(nullptr, std::get<0>(programm_shortcuts[i]), nullptr, 0, pathBuffer)))
-        {
-            ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
-            program_folder.AddComponent(ai::UnicodeString("gs"));
-
-            // Check if the ghostscript folder exists.
-            if (IsDirectory(program_folder))
-            {
-                ai::FilePath gs_folder;
-                for (auto& p : std::filesystem::directory_iterator(FilePathAiToStd(program_folder)))
-                {
-                    // Check if the directory starts with "gs".
-                    gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
-                    if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
-                    {
-                        // We do not care about the version -> use the first "gs*" folder that we find.
-
-                        // Check if an execuable can be found.
-                        gs_folder.AddComponent(ai::UnicodeString("bin"));
-                        gs_folder.AddComponent(ai::UnicodeString("gswin") +
-                                               L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) +
-                                               "c.exe");
-                        if (IsFile(gs_folder))
-                            return gs_folder.GetFullPath();
-                        else
-                            break;
-                    }
-                }
-            }
-        }
-    }
-#else
-    // Default return value.
-    return ai::UnicodeString("/opt/homebrew/bin/gs");
-#endif
-}
 
 /**
  *
@@ -367,15 +329,32 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
     {
         if (std::filesystem::is_regular_file(dir_entry))
         {
-            // TODO: Possible unicode issues here with the path
-            const auto file_name = dir_entry.path().string();
-            if (std::regex_match(file_name, regex_string))
+            const auto file_name = dir_entry.path().filename().string();
+            if (std::regex_search(file_name, regex_string))
             {
                 file_vector.push_back(FilePathStdToAi(dir_entry.path()));
             }
         }
     }
     return file_vector;
+}
+
+/**
+ *
+ */
+std::pair<bool, ai::FilePath> L2A::UTIL::FindExecutable(
+    const std::vector<ai::FilePath>& possible_bin_paths, const ai::UnicodeString& executable_name)
+{
+    for (const auto& bin_path : possible_bin_paths)
+    {
+        auto executable_path = bin_path;
+        executable_path.AddComponent(executable_name);
+        if (IsFile(executable_path))
+        {
+            return {true, executable_path};
+        }
+    }
+    return {false, ai::FilePath(ai::UnicodeString(""))};
 }
 
 /**

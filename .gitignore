@@ -5,6 +5,10 @@
 .vs/*
 */.vs/*
 
+# XCode files
+*xcuserdata*
+*xcworkspacedata*
+
 # Build files
 /forms/obj
 /build
@@ -12,6 +16,7 @@
 # Automatically generated files
 auto_generated/
 scripts/executables/
+ui/js/auto_generated.js
 plugin.pipl
 
 # Python folders
