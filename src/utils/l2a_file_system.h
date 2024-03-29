@@ -139,6 +139,12 @@ namespace L2A
         std::vector<ai::FilePath> FindFilesInFolder(const ai::FilePath& folder, const ai::UnicodeString& regex);
 
         /**
+         * \brief Check the given directories if the executable is in them. Return the first one that matches.
+         */
+        std::pair<bool, ai::FilePath> FindExecutable(
+            const std::vector<ai::FilePath>& possible_bin_paths, const ai::UnicodeString& executable_name);
+
+        /**
          * \brief Return the full file path for a given path. This also resolves ".." inside the file path.
          */
         ai::FilePath GetFullFilePath(const ai::FilePath& path);

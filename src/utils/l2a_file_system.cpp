@@ -342,6 +342,24 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
 /**
  *
  */
+std::pair<bool, ai::FilePath> L2A::UTIL::FindExecutable(
+    const std::vector<ai::FilePath>& possible_bin_paths, const ai::UnicodeString& executable_name)
+{
+    for (const auto& bin_path : possible_bin_paths)
+    {
+        auto executable_path = bin_path;
+        executable_path.AddComponent(executable_name);
+        if (IsFile(executable_path))
+        {
+            return {true, executable_path};
+        }
+    }
+    return {false, ai::FilePath(ai::UnicodeString(""))};
+}
+
+/**
+ *
+ */
 ai::FilePath L2A::UTIL::GetFullFilePath(const ai::FilePath& path)
 {
     const auto path_std = FilePathAiToStd(path);
