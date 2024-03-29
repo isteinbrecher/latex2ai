@@ -76,7 +76,7 @@ ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_fil
         // In the case there is an empty bin directory, so we simply run the latex engine command name
         full_latex_command += latex_engine;
     }
-    else if (L2A::UTIL::IsDirectory(latex_bin_path))
+    else
     {
         ai::FilePath exe_path = latex_bin_path;
 #ifdef WIN_ENV
@@ -85,10 +85,6 @@ ai::UnicodeString L2A::LATEX::GetLatexCompileCommand(const ai::FilePath& tex_fil
         exe_path.AddComponent(latex_engine);
 #endif
         full_latex_command += "\"" + exe_path.GetFullPath() + "\"";
-    }
-    else
-    {
-        l2a_error("Got unexpected latex path: " + latex_bin_path.GetFullPath());
     }
 
     // Add the options and the name of the tex file
@@ -145,7 +141,17 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(
     // Call the command to split up the pdf file
     L2A::UTIL::SetWorkingDirectory(pdf_folder);
     auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
-    if (command_result.exit_status_ != 0) l2a_error("Error in the ghostscript call >>" + full_gs_command + "<<");
+    if (command_result.exit_status_ == 127)
+    {
+        // This exit code means that the command was not found.
+        l2a_warning("Got wrong Ghostscript path: \"" + gs_command +
+                    "\". Please set the correct path to your Ghostscript executable in the LaTeX2AI options.");
+    }
+    else if (command_result.exit_status_ != 0)
+    {
+        l2a_error("Error in the ghostscript call >>" + full_gs_command +
+                  "<<. Exit code: " + L2A::UTIL::IntegerToString(command_result.exit_status_));
+    }
 
 #ifdef _DEBUG
     // Check that the correct number of files was created
@@ -267,7 +273,14 @@ bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::Fi
     // Sometimes we get 0 exit status but still no pdf file. TODO: Find the reason for that. Intermediate fix: loop as
     // long as this condition is not fulfilled any more
     if (command_result.exit_status_ == 0 && !L2A::UTIL::IsFile(pdf_file))
+    {
         l2a_error("Got 0 exit status, but no pdf file was created");
+    }
+    else if (command_result.exit_status_ == 127)
+    {
+        l2a_warning("Got wrong LaTeX binaries path: \"" + L2A::Global().latex_bin_path_.GetFullPath() +
+                    "\". Please set the correct path to your LaTeX installation in the LaTeX2AI options.");
+    }
 
     // Check if the pdf file was created.
     if (L2A::UTIL::IsFile(pdf_file))
