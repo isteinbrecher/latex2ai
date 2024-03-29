@@ -415,8 +415,22 @@ ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
         }
     }
 #else
-    // Default return value.
-    return ai::UnicodeString("/opt/homebrew/bin/gs");
+    // Check possible locations for ghost script
+    std::vector<ai::FilePath> gs_bin_locations = {             //
+        ai::FilePath(ai::UnicodeString("/opt/homebrew/bin")),  //
+        ai::FilePath(ai::UnicodeString("/usr/local/bin")),     //
+        ai::FilePath(ai::UnicodeString("/opt/local/bin")),     //
+        ai::FilePath(ai::UnicodeString("/usr/bin"))};
+
+    const auto& [is_gs_path, gs_path] = L2A::UTIL::FindExecutable(gs_bin_locations, ai::UnicodeString("gs"));
+    if (is_gs_path)
+    {
+        return gs_path.GetFullPath();
+    }
+    else
+    {
+        return ai::UnicodeString("");
+    }
 #endif
 }
 
@@ -428,7 +442,49 @@ ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
 #ifdef WIN_ENV
     return ai::UnicodeString("");
 #else
-    return ai::UnicodeString("/Library/TeX/texbin");
+    // Check possible locations for latex
+    const std::vector<ai::FilePath> latex_bin_locations = {
+        ai::FilePath(
+            ai::UnicodeString("/Library/TeX/texbin")),      // MacTeX (Intel and Apple Silicon, via universal binaries)
+        ai::FilePath(ai::UnicodeString("/usr/local/bin")),  // Common for Homebrew (Intel)
+        ai::FilePath(ai::UnicodeString("/opt/homebrew/bin")),  // Homebrew on Apple Silicon
+        ai::FilePath(ai::UnicodeString("/opt/local/bin")),     // MacPorts (Intel and Apple Silicon, if supported)
+        // TeX Live versions 2017 to 2024 for Intel and Apple Silicon architectures, including universal
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2024/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2024/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2024/bin/universal-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2023/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2023/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2023/bin/universal-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2022/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2022/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2022/bin/universal-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2021/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2021/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2021/bin/universal-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2020/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2020/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2020/bin/universal-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2019/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2019/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2019/bin/universal-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2018/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2018/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2018/bin/universal-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2017/bin/x86_64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2017/bin/arm64-darwin")),
+        ai::FilePath(ai::UnicodeString("/usr/local/texlive/2017/bin/universal-darwin"))};
+
+    const auto& [is_latex_path, latex_path] =
+        L2A::UTIL::FindExecutable(latex_bin_locations, ai::UnicodeString("pdflatex"));
+    if (is_latex_path)
+    {
+        return latex_path.GetParent().GetFullPath();
+    }
+    else
+    {
+        return ai::UnicodeString("");
+    }
 #endif
 }
 
