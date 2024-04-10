@@ -56,7 +56,7 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
 {
     // Check if a new version of LaTeX2AI is available. Do this at the beginning in case there is an error in the set
     // and get path functions later on and it is fixed in a future release.
-    L2A::GLOBAL::CheckGithubVersion();
+    L2A::UTIL::CheckGithubVersion();
 
     // In case something happens later on, set the default parameters, so we at least have sensible values set.
     std::shared_ptr<L2A::UTIL::ParameterList> default_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
