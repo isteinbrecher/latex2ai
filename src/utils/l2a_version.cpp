@@ -43,7 +43,7 @@
 /**
  *
  */
-L2A::GLOBAL::Version::Version(std::string version_string) : version_(0)
+L2A::UTIL::Version::Version(std::string version_string) : version_(0)
 {
     // The github versions have a prefix "v" -> remove this.
     if (version_string.at(0) == 'v') version_string = version_string.substr(1, version_string.size() - 1);
@@ -71,7 +71,7 @@ L2A::GLOBAL::Version::Version(std::string version_string) : version_(0)
 /**
  *
  */
-L2A::GLOBAL::Version::Version(unsigned int version) : version_(version)
+L2A::UTIL::Version::Version(unsigned int version) : version_(version)
 {
     // Check that no unwanted data was given.
     if ((version_ & (0xff << (8 * 3))) != 0) l2a_error("Version number contains data out of range!");
@@ -80,7 +80,7 @@ L2A::GLOBAL::Version::Version(unsigned int version) : version_(version)
 /**
  * \brief Convert the version to a string.
  */
-ai::UnicodeString L2A::GLOBAL::Version::ToString() const
+ai::UnicodeString L2A::UTIL::Version::ToString() const
 {
     ai::UnicodeString return_string("");
     for (unsigned int version_type = 0; version_type < 3; version_type++)
@@ -95,7 +95,7 @@ ai::UnicodeString L2A::GLOBAL::Version::ToString() const
 /**
  *
  */
-void L2A::GLOBAL::Version::SetVersion(const unsigned int version, const size_t version_type)
+void L2A::UTIL::Version::SetVersion(const unsigned int version, const size_t version_type)
 {
     // Check that the version is not larger than 255 -> max number that can be stored.
     if (version > 255) l2a_error("Version number can be a maximum of 256");
@@ -110,7 +110,7 @@ void L2A::GLOBAL::Version::SetVersion(const unsigned int version, const size_t v
 /**
  *
  */
-void L2A::GLOBAL::CheckGithubVersion()
+void L2A::UTIL::CheckGithubVersion()
 {
     try
     {
@@ -130,17 +130,17 @@ void L2A::GLOBAL::CheckGithubVersion()
         auto github_releases = json::parse(curl_output);
 
         // Get the version tags.
-        std::vector<L2A::GLOBAL::Version> github_versions;
+        std::vector<L2A::UTIL::Version> github_versions;
         for (auto& [key, value] : github_releases.items())
             if (value.contains("tag_name"))
-                github_versions.push_back(L2A::GLOBAL::Version(value["tag_name"].get<std::string>()));
+                github_versions.push_back(L2A::UTIL::Version(value["tag_name"].get<std::string>()));
 
         // If for some reasons no version could be found, return here.
         if (github_versions.size() == 0) l2a_error_quiet(ai::UnicodeString("Could not retrieve github versions."));
 
         // Get the current version.
         auto& newest_version = *(std::max_element(std::begin(github_versions), std::end(github_versions)));
-        L2A::GLOBAL::Version current_version(L2A_VERSION_STRING_);
+        L2A::UTIL::Version current_version(L2A_VERSION_STRING_);
         if (current_version < newest_version)
         {
             ai::UnicodeString message_string("The new LaTeX2AI version v");

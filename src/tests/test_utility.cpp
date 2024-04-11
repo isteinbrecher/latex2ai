@@ -70,19 +70,19 @@ void L2A::TEST::TestVersion(L2A::TEST::UTIL::UnitTest& ut)
     // Set test name.
     ut.SetTestName(ai::UnicodeString("TestVersion"));
 
-    L2A::GLOBAL::Version main_version(L2A_VERSION_STRING_);
+    L2A::UTIL::Version main_version(L2A_VERSION_STRING_);
     ut.CompareStr(main_version.ToString(), ai::UnicodeString(L2A_VERSION_STRING_));
 
-    L2A::GLOBAL::Version version_from_github("v0.0.5");
+    L2A::UTIL::Version version_from_github("v0.0.5");
     ut.CompareStr(version_from_github.ToString(), ai::UnicodeString("0.0.5"));
 
-    L2A::GLOBAL::Version version_from_int(0x11204);
+    L2A::UTIL::Version version_from_int(0x11204);
     ut.CompareStr(version_from_int.ToString(), ai::UnicodeString("1.18.4"));
 
-    L2A::GLOBAL::Version version_a("0.1.20");
-    L2A::GLOBAL::Version version_b("1.0.2");
-    L2A::GLOBAL::Version version_c("0.10.2");
-    L2A::GLOBAL::Version version_d("0.1.20");
+    L2A::UTIL::Version version_a("0.1.20");
+    L2A::UTIL::Version version_b("1.0.2");
+    L2A::UTIL::Version version_c("0.10.2");
+    L2A::UTIL::Version version_d("0.1.20");
     ut.CompareInt(1, version_a < version_b);
     ut.CompareInt(1, version_a == version_d);
     ut.CompareInt(1, version_a <= version_d);

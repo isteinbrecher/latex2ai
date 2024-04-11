@@ -33,7 +33,7 @@
 
 namespace L2A
 {
-    namespace GLOBAL
+    namespace UTIL
     {
         class Version
         {
@@ -81,7 +81,7 @@ namespace L2A
          * \brief Check if the current version is up to date with the GitHub version.
          */
         void CheckGithubVersion();
-    }  // namespace GLOBAL
+    }  // namespace UTIL
 }  // namespace L2A
 
 
