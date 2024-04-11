@@ -37,6 +37,7 @@
 #include "l2a_parameter_list.h"
 #include "l2a_string_functions.h"
 #include "l2a_utils.h"
+#include "l2a_version.h"
 
 
 /**
@@ -79,6 +80,20 @@ void L2A::Property::DefaultPropertyValues()
  */
 void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& property_parameter_list)
 {
+    // Get the LaTeX2AI version information. We don't store this information, we only use it here to possibly help
+    // import an item created with an older version. Up to now we don't use this information.
+    std::string version_string;
+    if (property_parameter_list.OptionExists(ai::UnicodeString("latex2ai_version")))
+    {
+        version_string =
+            L2A::UTIL::StringAiToStd(property_parameter_list.GetStringOption(ai::UnicodeString("latex2ai_version")));
+    }
+    else
+    {
+        version_string = "0.0.0";
+    }
+    const L2A::UTIL::Version version(version_string);
+
     // Set the options.
     text_align_horizontal_ = L2A::UTIL::KeyToValue(TextAlignHorizontalStrings(), TextAlignHorizontalEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_horizontal")));
@@ -172,6 +187,11 @@ L2A::UTIL::ParameterList L2A::Property::ToParameterList(const bool write_pdf_con
         pdf_sub_list->SetOption(ai::UnicodeString("hash_method"),
             L2A::UTIL::KeyToValue(HashMethodEnums(), HashMethodStrings(), pdf_file_hash_method_));
     }
+
+    // We add the current version, i.e., each time a property is saved to an item, we add the version of the plugin that
+    // was used to create the item.
+    property_parameter_list.SetOption(ai::UnicodeString("latex2ai_version"), ai::UnicodeString(L2A_VERSION_STRING_));
+
     return property_parameter_list;
 }
 
