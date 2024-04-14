@@ -59,7 +59,7 @@ L2APlugin::L2APlugin(SPPluginRef pluginRef)
       notify_selection_changed_(nullptr),
       notify_document_save_(nullptr),
       notify_document_save_as_(nullptr),
-      notify_document_opened_(nullptr),
+      notify_active_doc_view_title_changed_(nullptr),
       notify_CSXS_plugplug_setup_complete_(nullptr),
       resource_manager_handle_(nullptr),
       ui_manager_(nullptr)
@@ -103,8 +103,8 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
                 ui_manager_->GetItemForm().OpenEditItemForm(placed_item);
             }
         }
-        else if (message->notifier == notify_document_opened_ || message->notifier == notify_document_save_ ||
-                 message->notifier == notify_document_save_as_)
+        else if (message->notifier == notify_active_doc_view_title_changed_ ||
+                 message->notifier == notify_document_save_ || message->notifier == notify_document_save_as_)
         {
             L2A::AI::UndoActivate();
             L2A::CheckItemDataStructure();
@@ -400,8 +400,8 @@ ASErr L2APlugin::AddNotifier(SPInterfaceMessage* message)
         result = sAINotifier->AddNotifier(
             fPluginRef, L2A_PLUGIN_NAME, kAISaveAsCommandPostNotifierStr, &notify_document_save_as_);
         aisdk::check_ai_error(result);
-        result =
-            sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAIDocumentOpenedNotifier, &notify_document_opened_);
+        result = sAINotifier->AddNotifier(
+            fPluginRef, L2A_PLUGIN_NAME, kAIActiveDocViewTitleChangedNotifier, &notify_active_doc_view_title_changed_);
         aisdk::check_ai_error(result);
         result = sAINotifier->AddNotifier(message->d.self, L2A_PLUGIN_NAME, kAICSXSPlugPlugSetupCompleteNotifier,
             &notify_CSXS_plugplug_setup_complete_);

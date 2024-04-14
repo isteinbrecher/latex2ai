@@ -189,7 +189,7 @@ class L2APlugin : public Plugin
     //! Handle for document actions.
     AINotifierHandle notify_document_save_;
     AINotifierHandle notify_document_save_as_;
-    AINotifierHandle notify_document_opened_;
+    AINotifierHandle notify_active_doc_view_title_changed_;
 
     //! Handle for plug plug actions
     AINotifierHandle notify_CSXS_plugplug_setup_complete_;
