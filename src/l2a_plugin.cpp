@@ -59,6 +59,7 @@ L2APlugin::L2APlugin(SPPluginRef pluginRef)
       fNotifyDocumentSave(nullptr),
       fNotifyDocumentSaveAs(nullptr),
       fNotifyDocumentOpened(nullptr),
+      fCSXSPlugPlugSetupCompleteNotifier(nullptr),
       fResourceManagerHandle(nullptr),
       ui_manager_(nullptr)
 {
@@ -301,17 +302,18 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
     // Data used to add tool.
     AIAddToolData data;
 
-    // General options for the tool.
-    ai::int32 options = kToolWantsToTrackCursorOption;
+    // General options for the tools.
+    std::vector<ai::int32> options = {kToolWantsToTrackCursorOption, 0, 0, 0, 0};
 
     // Define the name and icon for the tools.
     char toolGroupName[256];
-    std::vector<std::string> tool_title = {"LaTeX2AI create edit mode",  //
-        "LaTeX2AI redo items",                                           //
-        "LaTeX2AI options",                                              //
-        "LaTeX2AI save to PDF",                                          //
+    std::vector<std::string> tool_title = {//
+        "LaTeX2AI create edit mode",       //
+        "LaTeX2AI redo items",             //
+        "LaTeX2AI options",                //
+        "LaTeX2AI save to PDF",            //
         "Perform LaTeX2AI tests"};
-    std::vector<std::string> tool_tip = {
+    std::vector<std::string> tool_tip = {                                                                      //
         "LaTeX2AI create edit mode: Create a new LaTeX2AI item, or edit an existing item by clicking on it",   //
         "LaTeX2AI redo items: Redo multiple items in this document",                                           //
         "LaTeX2AI options: Set local and global options for LaTeX2AI",                                         //
@@ -352,7 +354,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, options, &fToolHandle[i]);
+        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, options[i], &fToolHandle[i]);
         l2a_check_ai_error(error);
     }
 

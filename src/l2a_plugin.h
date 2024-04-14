@@ -186,7 +186,7 @@ class L2APlugin : public Plugin
     //! Handle for the selection changed notifier
     AINotifierHandle fNotifySelectionChanged;
 
-    //! Handle for docuement actions.
+    //! Handle for document actions.
     AINotifierHandle fNotifyDocumentSave;
     AINotifierHandle fNotifyDocumentSaveAs;
     AINotifierHandle fNotifyDocumentOpened;
