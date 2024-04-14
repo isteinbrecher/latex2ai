@@ -19,8 +19,9 @@ scripts/executables/
 ui/js/auto_generated.js
 plugin.pipl
 
-# Python folders
-*/__pycache__/*
+# Python
+__pycache__
+*.pyc
 
 # TeX files
 *.aux
