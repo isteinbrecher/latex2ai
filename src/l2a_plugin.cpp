@@ -303,9 +303,6 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
     // Data used to add tool.
     AIAddToolData data;
 
-    // General options for the tools.
-    std::vector<ai::int32> options = {kToolWantsToTrackCursorOption, 0, 0, 0, 0};
-
     // Define the name and icon for the tools.
     char toolGroupName[256];
     std::vector<std::string> tool_title = {//
@@ -355,7 +352,8 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, options[i], &tool_handles_[i]);
+        // We want to track the cursor with each tool. Otherwise, we can not deselect some tools when using them as "buttons".
+        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, kToolWantsToTrackCursorOption, &tool_handles_[i]);
         l2a_check_ai_error(error);
     }
 
