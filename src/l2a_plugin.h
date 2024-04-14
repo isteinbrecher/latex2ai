@@ -181,21 +181,21 @@ class L2APlugin : public Plugin
 
    private:
     //! Store handle for each tool of the plugin
-    std::vector<AIToolHandle> fToolHandle;
+    std::vector<AIToolHandle> tool_handles_;
 
     //! Handle for the selection changed notifier
-    AINotifierHandle fNotifySelectionChanged;
+    AINotifierHandle notify_selection_changed_;
 
-    //! Handle for docuement actions.
-    AINotifierHandle fNotifyDocumentSave;
-    AINotifierHandle fNotifyDocumentSaveAs;
-    AINotifierHandle fNotifyDocumentOpened;
+    //! Handle for document actions.
+    AINotifierHandle notify_document_save_;
+    AINotifierHandle notify_document_save_as_;
+    AINotifierHandle notify_active_doc_view_title_changed_;
 
     //! Handle for plug plug actions
-    AINotifierHandle fCSXSPlugPlugSetupCompleteNotifier;
+    AINotifierHandle notify_CSXS_plugplug_setup_complete_;
 
     //! Handle for the resource manager added by this plug-in used for setting cursor
-    AIResourceManagerHandle fResourceManagerHandle;
+    AIResourceManagerHandle resource_manager_handle_;
 
     //! Annotator object
     std::unique_ptr<L2A::Annotator> annotator_;

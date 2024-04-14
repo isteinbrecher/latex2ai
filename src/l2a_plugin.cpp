@@ -55,11 +55,13 @@ void FixupReload(Plugin* plugin) { L2APlugin::FixupVTable((L2APlugin*)plugin); }
  */
 L2APlugin::L2APlugin(SPPluginRef pluginRef)
     : Plugin(pluginRef),
-      fNotifySelectionChanged(nullptr),
-      fNotifyDocumentSave(nullptr),
-      fNotifyDocumentSaveAs(nullptr),
-      fNotifyDocumentOpened(nullptr),
-      fResourceManagerHandle(nullptr),
+      tool_handles_(0),
+      notify_selection_changed_(nullptr),
+      notify_document_save_(nullptr),
+      notify_document_save_as_(nullptr),
+      notify_active_doc_view_title_changed_(nullptr),
+      notify_CSXS_plugplug_setup_complete_(nullptr),
+      resource_manager_handle_(nullptr),
       ui_manager_(nullptr)
 {
     // Set the name that of this plugin in Illustrator.
@@ -83,7 +85,7 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
 
     try
     {
-        if (message->notifier == fNotifySelectionChanged)
+        if (message->notifier == notify_selection_changed_)
         {
             // Selection of art items changed in the document.
 
@@ -101,13 +103,13 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
                 ui_manager_->GetItemForm().OpenEditItemForm(placed_item);
             }
         }
-        else if (message->notifier == fNotifyDocumentOpened || message->notifier == fNotifyDocumentSave ||
-                 message->notifier == fNotifyDocumentSaveAs)
+        else if (message->notifier == notify_active_doc_view_title_changed_ ||
+                 message->notifier == notify_document_save_ || message->notifier == notify_document_save_as_)
         {
             L2A::AI::UndoActivate();
             L2A::CheckItemDataStructure();
         }
-        else if (message->notifier == fCSXSPlugPlugSetupCompleteNotifier)
+        else if (message->notifier == notify_CSXS_plugplug_setup_complete_)
         {
             ui_manager_->RegisterCSXSEventListeners();
         }
@@ -252,7 +254,7 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
 {
     ASErr error = kNoErr;
 
-    if (message->tool == this->fToolHandle[0])
+    if (message->tool == this->tool_handles_[0])
     {
         // Selected tool is item create.
         try
@@ -301,17 +303,18 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
     // Data used to add tool.
     AIAddToolData data;
 
-    // General options for the tool.
-    ai::int32 options = kToolWantsToTrackCursorOption;
+    // General options for the tools.
+    std::vector<ai::int32> options = {kToolWantsToTrackCursorOption, 0, 0, 0, 0};
 
     // Define the name and icon for the tools.
     char toolGroupName[256];
-    std::vector<std::string> tool_title = {"LaTeX2AI create edit mode",  //
-        "LaTeX2AI redo items",                                           //
-        "LaTeX2AI options",                                              //
-        "LaTeX2AI save to PDF",                                          //
+    std::vector<std::string> tool_title = {//
+        "LaTeX2AI create edit mode",       //
+        "LaTeX2AI redo items",             //
+        "LaTeX2AI options",                //
+        "LaTeX2AI save to PDF",            //
         "Perform LaTeX2AI tests"};
-    std::vector<std::string> tool_tip = {
+    std::vector<std::string> tool_tip = {                                                                      //
         "LaTeX2AI create edit mode: Create a new LaTeX2AI item, or edit an existing item by clicking on it",   //
         "LaTeX2AI redo items: Redo multiple items in this document",                                           //
         "LaTeX2AI options: Set local and global options for LaTeX2AI",                                         //
@@ -325,7 +328,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         TOOL_ICON_SAVE_AS_PDF_DARK_ID, TOOL_ICON_TESTING_DARK_ID};
 
     // Create all tools.
-    fToolHandle.resize(n_tools);
+    tool_handles_.resize(n_tools);
     for (short i = 0; i < n_tools; i++)
     {
         // Define the name and icon for the tool.
@@ -352,7 +355,7 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, options, &fToolHandle[i]);
+        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, options[i], &tool_handles_[i]);
         l2a_check_ai_error(error);
     }
 
@@ -389,19 +392,19 @@ ASErr L2APlugin::AddNotifier(SPInterfaceMessage* message)
     try
     {
         result = sAINotifier->AddNotifier(
-            fPluginRef, L2A_PLUGIN_NAME, kAIArtSelectionChangedNotifier, &fNotifySelectionChanged);
+            fPluginRef, L2A_PLUGIN_NAME, kAIArtSelectionChangedNotifier, &notify_selection_changed_);
         aisdk::check_ai_error(result);
         result =
-            sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAISaveCommandPreNotifierStr, &fNotifyDocumentSave);
+            sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAISaveCommandPreNotifierStr, &notify_document_save_);
         aisdk::check_ai_error(result);
         result = sAINotifier->AddNotifier(
-            fPluginRef, L2A_PLUGIN_NAME, kAISaveAsCommandPostNotifierStr, &fNotifyDocumentSaveAs);
+            fPluginRef, L2A_PLUGIN_NAME, kAISaveAsCommandPostNotifierStr, &notify_document_save_as_);
         aisdk::check_ai_error(result);
-        result =
-            sAINotifier->AddNotifier(fPluginRef, L2A_PLUGIN_NAME, kAIDocumentOpenedNotifier, &fNotifyDocumentOpened);
+        result = sAINotifier->AddNotifier(
+            fPluginRef, L2A_PLUGIN_NAME, kAIActiveDocViewTitleChangedNotifier, &notify_active_doc_view_title_changed_);
         aisdk::check_ai_error(result);
         result = sAINotifier->AddNotifier(message->d.self, L2A_PLUGIN_NAME, kAICSXSPlugPlugSetupCompleteNotifier,
-            &fCSXSPlugPlugSetupCompleteNotifier);
+            &notify_CSXS_plugplug_setup_complete_);
         aisdk::check_ai_error(result);
     }
     catch (ai::Error& ex)
@@ -422,21 +425,21 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
 {
     AIErr error = kNoErr;
 
-    if (message->tool == this->fToolHandle[0])
+    if (message->tool == this->tool_handles_[0])
     {
         // Create / edit tool is selected.
         // Activate the annotator.
         annotator_->SetAnnotatorActive();
     }
-    else if (message->tool == this->fToolHandle[1] && L2A::AI::GetDocumentCount() > 0)
+    else if (message->tool == this->tool_handles_[1] && L2A::AI::GetDocumentCount() > 0)
     {
         ui_manager_->GetRedoForm().OpenRedoForm();
     }
-    else if (message->tool == this->fToolHandle[2])
+    else if (message->tool == this->tool_handles_[2])
     {
         ui_manager_->GetOptionsForm().OpenOptionsForm();
     }
-    else if (message->tool == this->fToolHandle[3] && L2A::AI::GetDocumentCount() > 0)
+    else if (message->tool == this->tool_handles_[3] && L2A::AI::GetDocumentCount() > 0)
     {
         L2A::AI::SaveToPDF();
 
@@ -445,7 +448,7 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
         l2a_check_ai_error(error);
     }
 #ifdef _DEBUG
-    else if (message->tool == this->fToolHandle[4])
+    else if (message->tool == this->tool_handles_[4])
     {
         // Test the LaTeX2AI framework.
         L2A::TEST::TestFramework();
@@ -484,7 +487,7 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
 {
     AIErr error = kNoErr;
 
-    if (message->tool == this->fToolHandle[0])
+    if (message->tool == this->tool_handles_[0])
     {
         // Create edit mode is active
 
@@ -499,11 +502,11 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
             else
                 cursor_id = CURSOR_ICON_CREATE;
         }
-        error = sAIUser->SetSVGCursor(cursor_id, fResourceManagerHandle);
+        error = sAIUser->SetSVGCursor(cursor_id, resource_manager_handle_);
         l2a_check_ai_error(error);
     }
-    else if (message->tool == this->fToolHandle[1] || message->tool == this->fToolHandle[2] ||
-             message->tool == this->fToolHandle[3])
+    else if (message->tool == this->tool_handles_[1] || message->tool == this->tool_handles_[2] ||
+             message->tool == this->tool_handles_[3])
     {
         // A LaTeX2AI UI is opened - we want to deselect the tool in this case, we select the default AI selection tool
         error = sAITool->SetSelectedToolByName(kSelectTool);
@@ -519,6 +522,6 @@ ASErr L2APlugin::TrackToolCursor(AIToolMessage* message)
 ASErr L2APlugin::PostStartupPlugin()
 {
     AIErr result = kNoErr;
-    result = sAIUser->CreateCursorResourceMgr(fPluginRef, &fResourceManagerHandle);
+    result = sAIUser->CreateCursorResourceMgr(fPluginRef, &resource_manager_handle_);
     return result;
 }
