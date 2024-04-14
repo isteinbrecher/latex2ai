@@ -60,7 +60,7 @@ class pipl:
 #Add entry point function
 ##############################################
 	def add_plugin_entry(self, value, id = 0):
-		if platform.system() is 'Windows':
+		if platform.system() == 'Windows':
 			self.data['win']['wx86']['id'] = id
 			if type(value) is not type("string"):
 				raise Exception('value type should be {0}'.format(type("string")))
@@ -114,18 +114,18 @@ class pipl:
 def generate_pipl_bin_recursively_from_dict(pipl_dict, file_obj):
 	for key in pipl_dict:
 		if key == 'win':
-			if platform.system() is 'Windows':
+			if platform.system() == 'Windows':
 				generate_pipl_bin_recursively_from_dict(pipl_dict['win'], file_obj)
 			continue
 		elif key == 'mac':
-			if platform.system() is not 'Windows':
+			if not platform.system() == 'Windows':
 				generate_pipl_bin_recursively_from_dict(pipl_dict['mac'], file_obj)
 			continue
 		else:
 			#write vendor ID
-			file_obj.write(pipl_dict[key]['vendor'])
+			file_obj.write(pipl_dict[key]['vendor'].encode())
 			#write property key
-			file_obj.write(key)
+			file_obj.write(key.encode())
 			#write property ID
 			prop_id = 0
 			if 'id' in pipl_dict[key]:
@@ -143,7 +143,10 @@ def generate_pipl_bin_recursively_from_dict(pipl_dict, file_obj):
 			#write property length
 			file_obj.write(make_4_byte_hex_string(len(out_prop_value)))
 			#write property value
-			file_obj.write(out_prop_value)
+			if isinstance(out_prop_value, str):
+				file_obj.write(out_prop_value.encode())
+			else:
+				file_obj.write(out_prop_value)
 
 		
 ##############################################
@@ -179,11 +182,11 @@ def clean_pipl_json_recursively(pipl_dict):
 	output_data = {}
 	for key in pipl_dict:
 		if key == 'win':
-			if platform.system() is 'Windows':
+			if platform.system() == 'Windows':
 				output_data['win'] = clean_pipl_json_recursively(pipl_dict['win'])
 			continue
 		elif key == 'mac':
-			if platform.system() is not 'Windows':
+			if not platform.system() == 'Windows':
 				output_data['mac'] = clean_pipl_json_recursively(pipl_dict['mac'])
 			continue
 		elif 'value' in pipl_dict[key]:
