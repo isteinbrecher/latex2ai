@@ -465,7 +465,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "python ../../tools/pipl/create_pipl.py -input '[{\"name\":\"LaTeX2AI\"}]' \npython3 scripts/create_headers.py\n";
+			shellScript = "python3 scripts/pipl/create_pipl.py -input '[{\"name\":\"LaTeX2AI\"}]' \npython3 scripts/create_headers.py\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
