@@ -21,3 +21,10 @@ body {
 .label_almost_full_width {
     width: 90%;
 }
+
+.fake_label {
+    /* Makes the input behave like a label */
+    pointer-events: none;
+    border: none;
+    background: transparent;
+}
