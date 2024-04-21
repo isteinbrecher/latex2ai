@@ -352,8 +352,10 @@ ASErr L2APlugin::AddTools(SPInterfaceMessage* message)
         data.sameToolsetAs = kNoTool;
 
         // Add the tool.
-        // We want to track the cursor with each tool. Otherwise, we can not deselect some tools when using them as "buttons".
-        error = sAITool->AddTool(message->d.self, tool_title[i].c_str(), data, kToolWantsToTrackCursorOption, &tool_handles_[i]);
+        // We want to track the cursor with each tool. Otherwise, we can not deselect some tools when using them as
+        // "buttons".
+        error = sAITool->AddTool(
+            message->d.self, tool_title[i].c_str(), data, kToolWantsToTrackCursorOption, &tool_handles_[i]);
         l2a_check_ai_error(error);
     }
 

@@ -68,37 +68,14 @@ AIArtHandle L2A::AI::CreatePlacedItem(const ai::FilePath& pdf_path)
 /**
  *
  */
-PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
-{
-    // Get the alignment from the property.
-    std::pair<TextAlignHorizontal, TextAlignVertical> text_alignment = item_property.GetTextAlignment();
-    return L2A::UTIL::KeyToValue(TextAlignPairs(), TextAlignEnumsAI(), text_alignment);
-}
-
-/**
- *
- */
-void L2A::AI::GetPropertyPlacedMethodClip(const L2A::Property& item_property, PlaceMethod& place_method, bool& clip)
-{
-    std::pair<PlaceMethod&, bool&> pair_enums_ai = {place_method, clip};
-    pair_enums_ai =
-        L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), item_property.GetPlacedMethod());
-}
-
-/**
- *
- */
 void L2A::AI::SetPlacement(const AIArtHandle& placed_item, const L2A::Property& item_property)
 {
-    // Get placement enum.
-    PlaceAlignment alignment = GetPropertyAlignment(item_property);
+    // Get all values we need to set in Illustrator. We only support the fill to boundary box option.
+    PlaceAlignment alignment = item_property.GetAIAlignment();
+    const auto& [method, clip] =
+        L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), PlacedArtMethod::fill_to_boundary_box);
 
-    // Set correct alignment.
-    PlaceMethod method;
-    bool clip;
-    GetPropertyPlacedMethodClip(item_property, method, clip);
-
-    // Set the placed item options.
+    // Set the placed item options
     SetPlacement(placed_item, method, alignment, clip);
 }
 
@@ -116,12 +93,15 @@ void L2A::AI::SetPlacement(
 /**
  *
  */
-void L2A::AI::GetPlacement(
-    const AIArtHandle& placed_item, PlaceMethod& method, PlaceAlignment& alignment, AIBoolean& clip)
+std::tuple<PlaceMethod, PlaceAlignment, AIBoolean> L2A::AI::GetPlacement(const AIArtHandle& placed_item)
 {
+    PlaceMethod method;
+    PlaceAlignment alignment;
+    AIBoolean clip;
     ASErr error = kNoErr;
     error = sAIPlaced->GetPlaceOptions(placed_item, &method, &alignment, &clip);
     l2a_check_ai_error(error);
+    return {method, alignment, clip};
 }
 
 /**
