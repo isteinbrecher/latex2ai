@@ -71,8 +71,8 @@ AIArtHandle L2A::AI::CreatePlacedItem(const ai::FilePath& pdf_path)
 PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
 {
     // Get the alignment from the property.
-    std::tuple<TextAlignHorizontal, TextAlignVertical> text_alignment = item_property.GetTextAlignment();
-    return L2A::UTIL::KeyToValue(TextAlignTuples(), TextAlignEnumsAI(), text_alignment);
+    std::pair<TextAlignHorizontal, TextAlignVertical> text_alignment = item_property.GetTextAlignment();
+    return L2A::UTIL::KeyToValue(TextAlignPairs(), TextAlignEnumsAI(), text_alignment);
 }
 
 /**
@@ -80,8 +80,8 @@ PlaceAlignment L2A::AI::GetPropertyAlignment(const L2A::Property& item_property)
  */
 void L2A::AI::GetPropertyPlacedMethodClip(const L2A::Property& item_property, PlaceMethod& place_method, bool& clip)
 {
-    std::tuple<PlaceMethod&, bool&> tuple_enums_ai = {place_method, clip};
-    tuple_enums_ai =
+    std::pair<PlaceMethod&, bool&> pair_enums_ai = {place_method, clip};
+    pair_enums_ai =
         L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), item_property.GetPlacedMethod());
 }
 
@@ -279,10 +279,7 @@ void L2A::AI::SetPlacedMatrix(const AIArtHandle& placed_item, AIRealMatrix& plac
  */
 void L2A::AI::AlignmentToFac(const PlaceAlignment& alignment, AIReal (&pos_fac)[2])
 {
-    TextAlignHorizontal horizontal;
-    TextAlignVertical vertical;
-    std::tuple<TextAlignHorizontal&, TextAlignVertical&> text_align_tuple = {horizontal, vertical};
-    text_align_tuple = L2A::UTIL::KeyToValue(TextAlignEnumsAI(), TextAlignTuples(), alignment);
+    const auto& [horizontal, vertical] = L2A::UTIL::KeyToValue(TextAlignEnumsAI(), TextAlignPairs(), alignment);
 
     const std::array<AIReal, 3> text_align_horizontal_factors = {0.0, 0.5, 1.0};
     const std::array<AIReal, 4> text_align_vertical_factors = {1.0, 0.5, 0.5, 0.0};

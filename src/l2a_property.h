@@ -33,7 +33,6 @@
 #include "IllustratorSDK.h"
 
 #include <array>
-#include <tuple>
 
 
 // Forward declaration.
@@ -117,20 +116,20 @@ namespace L2A
     /**
      *\brief Define enum conversions for TextAlignHorizontal and TextAlignVertical.
      */
-    inline std::array<std::tuple<TextAlignHorizontal, TextAlignVertical>, 12> TextAlignTuples()
+    inline std::array<std::pair<TextAlignHorizontal, TextAlignVertical>, 12> TextAlignPairs()
     {
-        return {std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::top),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::top),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::top),
-            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::centre),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::centre),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::centre),
-            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::baseline),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::baseline),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::baseline),
-            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::bottom),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::bottom),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::bottom)};
+        return {std::make_pair(TextAlignHorizontal::left, TextAlignVertical::top),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::top),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::top),
+            std::make_pair(TextAlignHorizontal::left, TextAlignVertical::centre),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::centre),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::centre),
+            std::make_pair(TextAlignHorizontal::left, TextAlignVertical::baseline),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::baseline),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::baseline),
+            std::make_pair(TextAlignHorizontal::left, TextAlignVertical::bottom),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::bottom),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::bottom)};
     }
     inline std::array<PlaceAlignment, 12> TextAlignEnumsAI()
     {
@@ -165,9 +164,9 @@ namespace L2A
         return {ai::UnicodeString("fill_to_boundary_box"), ai::UnicodeString("keep_scale"),
             ai::UnicodeString("keep_scale_clip")};
     }
-    inline std::array<std::tuple<PlaceMethod, bool>, 3> PlacedArtMethodEnumsAI()
+    inline std::array<std::pair<PlaceMethod, bool>, 3> PlacedArtMethodEnumsAI()
     {
-        return {std::make_tuple(kConform, false), std::make_tuple(kAsIs, false), std::make_tuple(kAsIs, true)};
+        return {std::make_pair(kConform, false), std::make_pair(kAsIs, false), std::make_pair(kAsIs, true)};
     }
 
     /**
@@ -275,9 +274,9 @@ namespace L2A
         /**
          * \brief Get the text alignment enums.
          */
-        std::tuple<TextAlignHorizontal, TextAlignVertical> GetTextAlignment() const
+        std::pair<TextAlignHorizontal, TextAlignVertical> GetTextAlignment() const
         {
-            return std::make_tuple(text_align_horizontal_, text_align_vertical_);
+            return std::make_pair(text_align_horizontal_, text_align_vertical_);
         }
 
         /**

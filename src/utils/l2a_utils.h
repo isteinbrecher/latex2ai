@@ -39,9 +39,9 @@ namespace L2A
     {
         /**
          * \brief Convert a key that is in one array to a corresponding key in a second array.
-         * @param key_array Array with tuples containing the keys.
-         * @param value_array Array with tuples containing the values.
-         * @param key Key that should be converted to a string.
+         * @param key_array Array containing the keys.
+         * @param value_array Array containing the values.
+         * @param key Key that should be converted to a value.
          *
          * @tparam T Type of key.
          * @tparam V Type of value.

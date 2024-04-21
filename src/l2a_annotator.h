@@ -124,9 +124,9 @@ namespace L2A
         //! Item the cursor is over.
         AIArtHandle cursor_item_;
 
-        //! Vector of items. The items are stored in tuples, where the second tuple entry are all positions of the
+        //! Vector of items. The items are stored in pairs, where the second pair entry are all positions of the
         //! bounding box.
-        std::vector<std::tuple<L2A::Item, std::map<PlaceAlignment, AIRealPoint>>> item_vector_;
+        std::vector<std::pair<L2A::Item, std::map<PlaceAlignment, AIRealPoint>>> item_vector_;
     };
 }  // namespace L2A
 
