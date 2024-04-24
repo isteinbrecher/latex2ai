@@ -76,13 +76,20 @@ def get_all_source_files():
         ".tex": "tex",
     }
     source_files = {"py": [], "c": [], "bat": [], "sh": [], "tex": []}
+
+    skip_folders = ["scripts/pipl"]
+
     for file in files:
         extension = os.path.splitext(file)[1]
-        if extension not in source_line_endings:
-            pass
+        for skip_folder in skip_folders:
+            if file.startswith(skip_folder):
+                break
         else:
-            source_files[source_ending_types[extension]].append(
-                os.path.join(repo_dir, file)
+            if extension not in source_line_endings:
+                pass
+            else:
+                source_files[source_ending_types[extension]].append(
+                    os.path.join(repo_dir, file)
             )
     return source_files
 
