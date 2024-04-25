@@ -537,7 +537,7 @@ void L2A::AI::SaveToPDF()
             bool is_hidden;
             bool is_locked;
             L2A::Item item_temp(placed_item);
-            if (item_temp.IsStreched() || item_temp.IsDiamond())
+            if (item_temp.IsStretched() || item_temp.IsDiamond())
             {
                 L2A::AI::GetIsHiddenLocked(placed_item, is_hidden, is_locked);
 
