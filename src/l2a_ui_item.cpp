@@ -215,7 +215,7 @@ ASErr L2A::UI::Item::SendData()
         {
             form_parameter_list->SetOption(key_boundary_box, ai::UnicodeString("diamond"));
         }
-        else if (change_item_->IsStreched())
+        else if (change_item_->IsStretched())
         {
             form_parameter_list->SetOption(key_boundary_box, ai::UnicodeString("stretched"));
         }

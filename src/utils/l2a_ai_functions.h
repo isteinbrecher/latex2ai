@@ -63,16 +63,6 @@ namespace L2A
         AIArtHandle CreatePlacedItem(const ai::FilePath& pdf_path);
 
         /**
-         * \brief Get the ai enum for the placement of a property.
-         */
-        PlaceAlignment GetPropertyAlignment(const L2A::Property& item_property);
-
-        /**
-         * \brief Get the placement options for the placed items.
-         */
-        void GetPropertyPlacedMethodClip(const L2A::Property& item_property, PlaceMethod& place_method, bool& clip);
-
-        /**
          * \brief Set the placement of the placed item, acording to the option in property.
          */
         void SetPlacement(const AIArtHandle& placed_item, const L2A::Property& item_property);
@@ -86,8 +76,7 @@ namespace L2A
         /**
          * \brief Get the ai enums placement of the placed item.
          */
-        void GetPlacement(
-            const AIArtHandle& placed_item, PlaceMethod& method, PlaceAlignment& alignment, AIBoolean& clip);
+        std::tuple<PlaceMethod, PlaceAlignment, AIBoolean> GetPlacement(const AIArtHandle& placed_item);
 
         /**
          * \brief Get the filepath of the linked file in a placed item.

@@ -184,9 +184,9 @@ namespace L2A
         bool IsDiamond() const;
 
         /**
-         * \brief Check if the item is streched.
+         * \brief Check if the item is stretched.
          */
-        bool IsStreched() const;
+        bool IsStretched() const;
 
        private:
         /**
@@ -205,9 +205,9 @@ namespace L2A
         bool IsRotated() const;
 
         /**
-         * \brief Get the strech of the item in a direction.
+         * \brief Get the stretch of the item in a direction.
          */
-        AIReal GetStrech(unsigned short director = 0) const;
+        AIReal GetStretch(unsigned short director = 0) const;
 
        private:
         //! Properties of this item.
