@@ -37,13 +37,12 @@
 #include "l2a_parameter_list.h"
 #include "l2a_string_functions.h"
 #include "l2a_utils.h"
-#include "l2a_version.h"
 
 
 /**
  *
  */
-L2A::Property::Property()
+L2A::Property::Property() : version_(0)
 {
     // Set default values.
     DefaultPropertyValues();
@@ -59,9 +58,6 @@ void L2A::Property::DefaultPropertyValues()
     // Text is centre / centre.
     text_align_horizontal_ = L2A::TextAlignHorizontal::centre;
     text_align_vertical_ = L2A::TextAlignVertical::centre;
-
-    // Do not scale the image and keep it at the same size, also clip it.
-    placed_method_ = L2A::PlacedArtMethod::fill_to_boundary_box;
 
     // Default latex code.
     latex_code_ = ai::UnicodeString("$a^2+b^2=c^2$");
@@ -80,8 +76,7 @@ void L2A::Property::DefaultPropertyValues()
  */
 void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& property_parameter_list)
 {
-    // Get the LaTeX2AI version information. We don't store this information, we only use it here to possibly help
-    // import an item created with an older version. Up to now we don't use this information.
+    // Get the LaTeX2AI version information used to last create the property.
     std::string version_string;
     if (property_parameter_list.OptionExists(ai::UnicodeString("latex2ai_version")))
     {
@@ -92,15 +87,13 @@ void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& propert
     {
         version_string = "0.0.0";
     }
-    const L2A::UTIL::Version version(version_string);
+    version_ = L2A::UTIL::Version(version_string);
 
-    // Set the options.
+    // Set the placement options
     text_align_horizontal_ = L2A::UTIL::KeyToValue(TextAlignHorizontalStrings(), TextAlignHorizontalEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_horizontal")));
     text_align_vertical_ = L2A::UTIL::KeyToValue(TextAlignVerticalStrings(), TextAlignVerticalEnums(),
         property_parameter_list.GetStringOption(ai::UnicodeString("text_align_vertical")));
-    placed_method_ = L2A::UTIL::KeyToValue(PlacedArtMethodStrings(), PlacedArtMethodEnums(),
-        property_parameter_list.GetStringOption(ai::UnicodeString("placed_option")));
 
     // Set the latex code.
     latex_code_ = property_parameter_list.GetSubList(ai::UnicodeString("latex"))->GetMainOption();
@@ -166,8 +159,6 @@ L2A::UTIL::ParameterList L2A::Property::ToParameterList(const bool write_pdf_con
         L2A::UTIL::KeyToValue(TextAlignHorizontalEnums(), TextAlignHorizontalStrings(), text_align_horizontal_));
     property_parameter_list.SetOption(ai::UnicodeString("text_align_vertical"),
         L2A::UTIL::KeyToValue(TextAlignVerticalEnums(), TextAlignVerticalStrings(), text_align_vertical_));
-    property_parameter_list.SetOption(ai::UnicodeString("placed_option"),
-        L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodStrings(), placed_method_));
 
     // Add the latex text.
     std::shared_ptr<L2A::UTIL::ParameterList> tex_sub_list =
@@ -224,9 +215,6 @@ L2A::PropertyCompare L2A::Property::Compare(const Property& other_property) cons
         if (IsBaseline() != other_property.IsBaseline()) output.changed_latex = true;
     }
 
-    // Compare the placement methods (and clip).
-    if (placed_method_ != other_property.placed_method_) output.changed_placement = true;
-
     // Compare the cursor position.
     if (cursor_position_ != other_property.cursor_position_) output.changed_cursor = true;
 
@@ -250,6 +238,14 @@ ai::UnicodeString L2A::Property::GetLaTeXCode() const
     string += ai::UnicodeString("}");
 
     return string;
+}
+
+/**
+ *
+ */
+PlaceAlignment L2A::Property::GetAIAlignment() const
+{
+    return L2A::UTIL::KeyToValue(TextAlignPairs(), TextAlignEnumsAI(), {text_align_horizontal_, text_align_vertical_});
 }
 
 /**

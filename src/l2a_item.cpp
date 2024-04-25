@@ -52,7 +52,7 @@
  */
 L2A::Item::Item(const AIRealPoint& position, const L2A::Property& property, const ai::FilePath& created_pdf_file)
 {
-    // TODO: Mabe move this to a factory function that can give better error return values
+    // TODO: Maybe move this to a factory function that can give better error return values
 
     // Set the property 1for this item
     property_ = property;
@@ -74,7 +74,7 @@ L2A::Item::Item(const AIRealPoint& position, const L2A::Property& property, cons
     // Move the file to the cursor position
     MoveItem(position);
 
-    // Everything was successfull, we write the input from this item to the application directory, so we can use it with
+    // Everything was successful, we write the input from this item to the application directory, so we can use it with
     // the next one.
     property_.WriteLastInput();
 }
@@ -91,27 +91,34 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
     property_ = L2A::Property();
     property_.SetFromString(L2A::AI::GetNote(placed_item_));
 
-    // Check that the placed options in AI and the set LaTeX2AI options are the same.
+    // Check that the placed options are correctly in sync with AI and that the stretch behavior is set to fit to
+    // boundary box
     {
-        PlaceMethod method_ai;
-        PlaceAlignment alignment_ai;
-        AIBoolean clip_ai;
-        L2A::AI::GetPlacement(placed_item_, method_ai, alignment_ai, clip_ai);
+        // Placement of the LaTeX2AI item
+        const auto [method_l2a, clip_l2a] = L2A::UTIL::KeyToValue(
+            PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), L2A::PlacedArtMethod::fill_to_boundary_box);
+        PlaceAlignment alignment_l2a = property_.GetAIAlignment();
 
-        PlaceMethod method_l2a;
-        AIBoolean clip_l2a;
-        std::tuple<PlaceMethod&, AIBoolean&> method_tuple{method_l2a, clip_l2a};
-        method_tuple =
-            L2A::UTIL::KeyToValue(PlacedArtMethodEnums(), PlacedArtMethodEnumsAI(), property_.GetPlacedMethod());
-        PlaceAlignment alignment_l2a =
-            L2A::UTIL::KeyToValue(TextAlignTuples(), TextAlignEnumsAI(), property_.GetTextAlignment());
+        // Actual placement settings of the placed art in Illustrator
+        const auto [method_placed_item, alignment_placed_item, clip_placed_item] = L2A::AI::GetPlacement(placed_item_);
 
-        if (method_ai != method_l2a || alignment_ai != alignment_l2a || clip_ai != clip_l2a)
+        if (method_placed_item != method_l2a || alignment_placed_item != alignment_l2a || clip_placed_item != clip_l2a)
         {
-            // The options do not match, apply the ones from the LaTeX2AI options.
-            sAIUser->MessageAlert(ai::UnicodeString(
-                "The Illustrator placement values for a LaTeX2AI item do not match! The ones from the LaTeX2AI "
-                "settings are applied. This can happen if the placement values are changed manually via Illustrator."));
+            if (alignment_placed_item == alignment_l2a && property_.GetVersion() < L2A::UTIL::Version("0.1.0"))
+            {
+                // Starting from v0.1.0 we only support items that are stretched to the boundary box for simplicity
+                // reasons. No warning is needed here.
+            }
+            else
+            {
+                // The options do not match, apply the ones from the LaTeX2AI options.
+                sAIUser->MessageAlert(ai::UnicodeString(
+                    "The Illustrator placement values for a LaTeX2AI item do not match! The ones from the LaTeX2AI "
+                    "settings are applied. This can happen if the placement values are changed manually via "
+                    "Illustrator."));
+            }
+
+            // Set the correct placement options
             L2A::AI::SetPlacement(placed_item_, property_);
         }
     }
@@ -181,7 +188,7 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
         GetPropertyMutable() = new_property;
         SetNoteAndName();
 
-        if (diff.changed_align || diff.changed_placement)
+        if (diff.changed_align)
         {
             L2A::AI::SetPlacement(GetPlacedItemMutable(), GetProperty());
         }
@@ -196,8 +203,8 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
  */
 void L2A::Item::RedoBoundary()
 {
-    // If object is not streched and not diamond -> do nothing.
-    if (!IsStreched() && !IsDiamond()) return;
+    // If object is not stretched and not diamond -> do nothing.
+    if (!IsStretched() && !IsDiamond()) return;
 
     // Get the position of the reference point.
     AIRealPoint old_position = GetPosition();
@@ -279,7 +286,7 @@ void L2A::Item::MoveItem(const AIRealPoint& position)
     // Get the current position of the placed art item.
     AIRealPoint old_position = GetPosition();
 
-    // For some objects that are far out of the artwork, multiple translations can be nessesary to reach the desired
+    // For some objects that are far out of the artwork, multiple translations can be necessary to reach the desired
     // position transform the object until the desired position is reached.
     AIReal position_error = 1.;
     int counter = 0;
@@ -310,7 +317,7 @@ AIRealPoint L2A::Item::GetPosition() const
 {
     std::vector<PlaceAlignment> alignment_vector;
     alignment_vector.clear();
-    alignment_vector.push_back(L2A::AI::GetPropertyAlignment(property_));
+    alignment_vector.push_back(property_.GetAIAlignment());
     return GetPosition(alignment_vector).at(0);
 }
 
@@ -321,15 +328,6 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
 {
     // Vector of points to return.
     std::vector<AIRealPoint> positions;
-
-    // Get the placement options for this item.
-    PlaceMethod place_method;
-    bool item_is_cliped;
-    L2A::AI::GetPropertyPlacedMethodClip(property_, place_method, item_is_cliped);
-
-    // If the item is fixed size and not cliped, the clip option is activated for calcualting the position.
-    bool set_clip = place_method == kAsIs && !item_is_cliped;
-    if (set_clip) L2A::AI::SetPlacement(placed_item_, place_method, L2A::AI::GetPropertyAlignment(property_), true);
 
     // Variables for the placement factor and the points on the item.
     AIReal pos_fac[2];
@@ -358,8 +356,8 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
         AIReal angle_2 = GetAngle(1);
 
         // Scale factor of the basis vectors.
-        AIReal scale_1 = GetStrech(0);
-        AIReal scale_2 = GetStrech(1);
+        AIReal scale_1 = GetStretch(0);
+        AIReal scale_2 = GetStretch(1);
 
         // Dimensions of the pdf file.
         AIRealRect image_box = L2A::AI::GetPlacedBoundingBox(placed_item_);
@@ -389,9 +387,6 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
         }
     }
 
-    // If item was cliped for this function only, set back to original clipping state.
-    if (set_clip) L2A::AI::SetPlacement(placed_item_, property_);
-
     return positions;
 }
 
@@ -404,7 +399,7 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     AIRGBColor item_color;
     if (IsDiamond())
         item_color = L2A::CONSTANTS::color_diamond_;
-    else if (IsStreched())
+    else if (IsStretched())
         item_color = L2A::CONSTANTS::color_scaled_;
     else
         item_color = L2A::CONSTANTS::color_ok_;
@@ -441,8 +436,7 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
     l2a_check_ai_error(error);
 
     // Draw the placement point.
-    AIPoint placement_point =
-        L2A::AI::ArtworkPointToViewPoint(item_boundaries.at(L2A::AI::GetPropertyAlignment(property_)));
+    AIPoint placement_point = L2A::AI::ArtworkPointToViewPoint(item_boundaries.at(property_.GetAIAlignment()));
     AIRect centre;
     centre.left = placement_point.h - L2A::CONSTANTS::radius_;
     centre.right = placement_point.h + L2A::CONSTANTS::radius_;
@@ -511,7 +505,7 @@ bool L2A::Item::IsDiamond() const
 /**
  *
  */
-AIReal L2A::Item::GetStrech(unsigned short director) const
+AIReal L2A::Item::GetStretch(unsigned short director) const
 {
     // Get the values from the matrix.
     AIRealMatrix artMatrix = L2A::AI::GetPlacedMatrix(placed_item_);
@@ -525,11 +519,11 @@ AIReal L2A::Item::GetStrech(unsigned short director) const
 /**
  *
  */
-bool L2A::Item::IsStreched() const
+bool L2A::Item::IsStretched() const
 {
     // Check if item is streched, both strech factors must be smaller than eps.
-    if ((abs(1. - GetStrech(0)) < L2A::CONSTANTS::eps_strech_) &&
-        (abs(1. - GetStrech(1)) < L2A::CONSTANTS::eps_strech_))
+    if ((abs(1. - GetStretch(0)) < L2A::CONSTANTS::eps_strech_) &&
+        (abs(1. - GetStretch(1)) < L2A::CONSTANTS::eps_strech_))
         return false;
     else
         return true;

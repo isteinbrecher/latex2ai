@@ -167,22 +167,6 @@ function item_content_to_xml() {
         placement_id_split[2]
     )
 
-    var placed_option
-    switch ($("#stretch_behaviour").prop("value")) {
-        case "stretch":
-            placed_option = "fill_to_boundary_box"
-            break
-        case "original":
-            placed_option = "keep_scale"
-            break
-        case "original_clip":
-            placed_option = "keep_scale_clip"
-            break
-        default:
-        // Could not match the string
-    }
-    xml_document.documentElement.setAttribute("placed_option", placed_option)
-
     // Return the created xml document
     return xml_document
 }
@@ -210,21 +194,6 @@ function update_create_item(event) {
             "_" +
             text_align_horizontal_input
     ).prop("checked", true)
-
-    // Set the placed item option
-    switch (placed_option_input) {
-        case "fill_to_boundary_box":
-            $("#stretch_behaviour").prop("value", "stretch")
-            break
-        case "keep_scale":
-            $("#stretch_behaviour").prop("value", "original")
-            break
-        case "keep_scale_clip":
-            $("#stretch_behaviour").prop("value", "original_clip")
-            break
-        default:
-        // Could not match the string
-    }
 
     // Activate / Deactivate the buttons
     if (xml_form_data.attr("latex_exists") == "1") {

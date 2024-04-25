@@ -32,8 +32,9 @@
 
 #include "IllustratorSDK.h"
 
+#include "l2a_version.h"
+
 #include <array>
-#include <tuple>
 
 
 // Forward declaration.
@@ -117,20 +118,20 @@ namespace L2A
     /**
      *\brief Define enum conversions for TextAlignHorizontal and TextAlignVertical.
      */
-    inline std::array<std::tuple<TextAlignHorizontal, TextAlignVertical>, 12> TextAlignTuples()
+    inline std::array<std::pair<TextAlignHorizontal, TextAlignVertical>, 12> TextAlignPairs()
     {
-        return {std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::top),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::top),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::top),
-            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::centre),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::centre),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::centre),
-            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::baseline),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::baseline),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::baseline),
-            std::make_tuple(TextAlignHorizontal::left, TextAlignVertical::bottom),
-            std::make_tuple(TextAlignHorizontal::centre, TextAlignVertical::bottom),
-            std::make_tuple(TextAlignHorizontal::right, TextAlignVertical::bottom)};
+        return {std::make_pair(TextAlignHorizontal::left, TextAlignVertical::top),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::top),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::top),
+            std::make_pair(TextAlignHorizontal::left, TextAlignVertical::centre),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::centre),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::centre),
+            std::make_pair(TextAlignHorizontal::left, TextAlignVertical::baseline),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::baseline),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::baseline),
+            std::make_pair(TextAlignHorizontal::left, TextAlignVertical::bottom),
+            std::make_pair(TextAlignHorizontal::centre, TextAlignVertical::bottom),
+            std::make_pair(TextAlignHorizontal::right, TextAlignVertical::bottom)};
     }
     inline std::array<PlaceAlignment, 12> TextAlignEnumsAI()
     {
@@ -145,29 +146,17 @@ namespace L2A
     {
         //! None.
         none,
-        //! Scale the placed art to the boundary bod of the item in ai.
-        fill_to_boundary_box,
-        //! Keep size of the item.
-        keep_scale,
-        //! Keep size of the item and clip at boundary box.
-        keep_scale_clip
+        //! Scale the placed art to the boundary bod of the item in ai. This is the only supported option by LaTeX2AI.
+        fill_to_boundary_box
     };
 
     /**
      *\brief Define the PlacedArtMethod enum conversions.
      */
-    inline std::array<PlacedArtMethod, 3> PlacedArtMethodEnums()
+    inline std::array<PlacedArtMethod, 1> PlacedArtMethodEnums() { return {PlacedArtMethod::fill_to_boundary_box}; }
+    inline std::array<std::pair<PlaceMethod, bool>, 1> PlacedArtMethodEnumsAI()
     {
-        return {PlacedArtMethod::fill_to_boundary_box, PlacedArtMethod::keep_scale, PlacedArtMethod::keep_scale_clip};
-    }
-    inline std::array<ai::UnicodeString, 3> PlacedArtMethodStrings()
-    {
-        return {ai::UnicodeString("fill_to_boundary_box"), ai::UnicodeString("keep_scale"),
-            ai::UnicodeString("keep_scale_clip")};
-    }
-    inline std::array<std::tuple<PlaceMethod, bool>, 3> PlacedArtMethodEnumsAI()
-    {
-        return {std::make_tuple(kConform, false), std::make_tuple(kAsIs, false), std::make_tuple(kAsIs, true)};
+        return {std::make_pair(kConform, false)};
     }
 
     /**
@@ -196,15 +185,13 @@ namespace L2A
         bool changed_latex = false;
         //! Alignment of the item changed.
         bool changed_align = false;
-        //! Placement option of the item changed.
-        bool changed_placement = false;
         //! Cursor position changed.
         bool changed_cursor = false;
 
         /**
          * \brief Check if anything changed.
          */
-        bool Changed() const { return changed_align || changed_latex || changed_placement || changed_cursor; }
+        bool Changed() const { return changed_align || changed_latex || changed_cursor; }
     };
 
     /**
@@ -213,7 +200,7 @@ namespace L2A
      */
     class Property
     {
-        // Define the friend class for testing.
+        // Define the friend function for testing.
         friend void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut);
 
        public:
@@ -273,17 +260,9 @@ namespace L2A
         ai::UnicodeString GetLaTeXCode() const;
 
         /**
-         * \brief Get the text alignment enums.
+         * \brief Get the alignment options needed for Illustrator
          */
-        std::tuple<TextAlignHorizontal, TextAlignVertical> GetTextAlignment() const
-        {
-            return std::make_tuple(text_align_horizontal_, text_align_vertical_);
-        }
-
-        /**
-         * \brief Get the placement method.
-         */
-        PlacedArtMethod GetPlacedMethod() const { return placed_method_; }
+        PlaceAlignment GetAIAlignment() const;
 
         /**
          * \brief Write the contents of this property to the last input file.
@@ -312,6 +291,11 @@ namespace L2A
          */
         void SetPDFFile(const ai::FilePath& pdf_file);
 
+        /**
+         * \brief Get the version of LaTeX2AI which was used to create this item.
+         */
+        const L2A::UTIL::Version& GetVersion() const { return version_; }
+
        private:
         //! Horizontal and Vertical alignment of the text.
         TextAlignHorizontal text_align_horizontal_;
@@ -319,9 +303,6 @@ namespace L2A
 
         //! LaTeX code of the item.
         ai::UnicodeString latex_code_;
-
-        //! Placement method of the item.
-        PlacedArtMethod placed_method_;
 
         //! Position of the cursor in the form.
         unsigned int cursor_position_;
@@ -334,6 +315,12 @@ namespace L2A
 
         //! Method used to get the file hash.
         HashMethod pdf_file_hash_method_;
+
+        //! Version used to created this property
+        //! This version will not be saved when the item is written to text, but rather the current version will be
+        //! saved. This means that all compability issues have to be resoled in the time between reading and writing the
+        //! propoerty.
+        L2A::UTIL::Version version_;
     };
 }  // namespace L2A
 
