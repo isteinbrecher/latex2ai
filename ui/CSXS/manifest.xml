@@ -33,16 +33,16 @@
           <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
           <Geometry>
             <Size>
-             	<Height>285</Height>
-              	<Width>700</Width>
+             	<Height>190</Height>
+              	<Width>800</Width>
             </Size>
             <MinSize>
-                <Height>285</Height>
-                <Width>700</Width>
+                <Height>190</Height>
+                <Width>800</Width>
             </MinSize>
             <MaxSize>
-                <Height>285</Height>
-                <Width>700</Width>
+                <Height>190</Height>
+                <Width>800</Width>
             </MaxSize>
           </Geometry>
           <Icons/>
@@ -123,15 +123,15 @@
           <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
           <Geometry>
             <Size>
-             	<Height>550</Height>
+             	<Height>540</Height>
               	<Width>400</Width>
             </Size>
             <MinSize>
-                <Height>550</Height>
+                <Height>540</Height>
                 <Width>400</Width>
             </MinSize>
             <MaxSize>
-                <Height>550</Height>
+                <Height>540</Height>
                 <Width>400</Width>
             </MaxSize>
           </Geometry>
