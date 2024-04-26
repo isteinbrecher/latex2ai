@@ -31,6 +31,7 @@
 
 #include "l2a_ui_base.h"
 
+#include "l2a_ai_functions.h"
 #include "l2a_constants.h"
 #include "l2a_string_functions.h"
 
@@ -43,13 +44,13 @@ AIErr L2A::UI::FormBase::LoadForm()
     PlugPlugErrorCode result = LoadExtension();
     if (result != PlugPlugErrorCode_success)
     {
-        l2a_error(form_name_ + " form could not be loaded");
-        return kCantHappenErr;
+        ai::UnicodeString warning_string("");
+        warning_string += "Could not open the LaTeX2AI user interface!\n";
+        warning_string += "Please followed the installation instructions for the user interface stated on";
+        warning_string += "\"https://github.com/isteinbrecher/latex2ai\"";
+        L2A::AI::WarningAlert(warning_string);
     }
-    else
-    {
-        return kNoErr;
-    }
+    return kNoErr;
 }
 
 /**
