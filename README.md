@@ -25,7 +25,7 @@ The following software dependencies are required to run LaTeX2AI:
 1. Copy the native plugin
     - **macOS:** copy `macOS/LaTeX2AI.aip` to
         - An arbitrary directory, this directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
-        - For all users (requires administrator privileges): `/Applications/Adobe Illustrator 2022/Plug-ins/`
+        - For all users (requires administrator privileges): `/Applications/Adobe Illustrator <YOUR VERSION>/Plug-ins/`
     - **Windows:** copy `WIN/LaTeX2AI.aip` to
         - An arbitrary directory, this directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder\`
         - For all users (requires administrator privileges): `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
