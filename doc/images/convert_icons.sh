@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#! /bin/bash
 # -----------------------------------------------------------------------------
 # MIT License
 #
@@ -23,25 +23,12 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
-"""
-Convert integers to different bases and show the ascii equivalent.
-"""
 
+declare -a ARRAY=("tool_create" "tool_options" "tool_redo" "tool_save_as_pdf" "tool_testing")
 
-def number_to_digits(number, base):
-    """Convert a positive number to its digit representation in base."""
-    digits = []
-    while number > 0:
-        digits.insert(0, number % base)
-        number = number // base
-    return digits
-
-
-def number_to_string(number):
-    """Print the ascii characters for the given digits."""
-    print("".join([chr(i) for i in number_to_digits(number, 256)]))
-
-
-def hex_to_string(hex_code):
-    """Print the string represented by the hex code."""
-    print(bytearray.fromhex(hex_code).decode())
+# Loop over the strings in the array
+for NAME in "${ARRAY[@]}"
+do
+  qlmanage -t -s 32 -o . "../../resources/raw/LaTeX2AI_${NAME}_light@2x.svg"
+  mv "LaTeX2AI_${NAME}_light@2x.svg.png" "${NAME}.png"
+done
