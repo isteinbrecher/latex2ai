@@ -209,26 +209,26 @@ function update_form(event) {
         if (document_state == "saved") {
             var header_path = header_xml.attr("header_path")
             if (header_path == "") {
-                label.prop("innerHTML", "No LaTeX2AI header created yet")
-                label.prop("className", "")
+                label.prop("value", "No LaTeX2AI header created yet")
+                label.prop("className", "fake_label")
                 button.val("Create default")
             } else {
-                label.prop("innerHTML", header_path)
-                label.prop("className", "allow_user_select")
+                label.prop("value", header_path)
+                label.prop("className", "")
                 button.val("Open")
             }
             button.show()
         } else if (document_state == "not_saved") {
             label.prop(
-                "innerHTML",
+                "value",
                 "Current Adobe Illustrator document is not saved"
             )
-            label.prop("className", "")
+            label.prop("className", "fake_label")
             button.val("")
             button.hide()
         } else if (document_state == "no_documents") {
-            label.prop("innerHTML", "No opened Adobe Illustrator documents")
-            label.prop("className", "")
+            label.prop("value", "No opened Adobe Illustrator documents")
+            label.prop("className", "fake_label")
             button.val("")
             button.hide()
         }

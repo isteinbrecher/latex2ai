@@ -37,163 +37,194 @@
                 cursor: pointer;
                 border-radius: 5px;
             }
+
+            .column1 {
+                float: left;
+                width: 20%;
+            }
+            .column2 {
+                float: left;
+                width: 57%;
+            }
+            .column3 {
+                float: left;
+                width: 23%;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .button_half {
+                width: 49%;
+            }
+            .button_full {
+                width: 100%;
+            }
+
+            /* For vertical space */
+            .bottom-three {
+                margin-top: 2px;
+                margin-bottom: 10px;
+            }
         </style>
     </head>
 
     <body>
-        <table style="width: 100%">
-            <tr>
-                <td></td>
-                <td>
-                    <p id="boundary_box_state"></p>
-                </td>
-                <td>
-                    <p>LaTeX</p>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
+        <div class="row">
+            <div class="column1">
+                <p class="bottom-three">Placement</p>
+            </div>
+            <div class="column2">
+                <p class="bottom-three">
+                    LaTeX code - for newline press SHIFT+ENTER
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column1">
+                <div class="container">
+                    <img src="item_placement.png" />
                     <input
-                        type="submit"
-                        id="button_redo_boundary"
-                        value="Redo Boundary"
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_top_left"
+                        style="top: 3%; left: 0%"
+                        checked
                     />
-                </td>
-                <td>
                     <input
-                        type="submit"
-                        id="button_redo_latex"
-                        value="Redo LaTeX"
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_top_centreH"
+                        style="top: 3%; left: 50%"
+                        checked
                     />
-                </td>
-                <td>
-                    <input type="submit" id="button_ok" value="OK" />
-                    <input type="submit" id="button_cancel" value="Cancel" />
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%">
-            <tr>
-                <td style="width: 24%">
-                    <p>Placement</p>
-                </td>
-                <td>LaTeX code - for newline press SHIFT+ENTER</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="container">
-                        <img src="item_placement.png" />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_top_left"
-                            style="top: 3%; left: 0%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_top_centreH"
-                            style="top: 3%; left: 50%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_top_right"
-                            style="top: 3%; left: 100%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_centreV_left"
-                            style="top: 51%; left: 0%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_centreV_centreH"
-                            style="top: 51%; left: 50%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_centreV_right"
-                            style="top: 51%; left: 100%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_baseline_left"
-                            style="top: 70%; left: 0%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_baseline_centreH"
-                            style="top: 70%; left: 50%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_baseline_right"
-                            style="top: 70%; left: 100%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_bottom_left"
-                            style="top: 98%; left: 0%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_bottom_centreH"
-                            style="top: 98%; left: 50%"
-                            checked
-                        />
-                        <input
-                            type="radio"
-                            class="item_placement"
-                            name="item_placement"
-                            id="placement_bottom_right"
-                            style="top: 98%; left: 100%"
-                            checked
-                        />
-                    </div>
-                </td>
-                <td style="vertical-align: top">
-                    <textarea
-                        id="latex_text"
-                        name="latex_text"
-                        rows="8"
-                        style="font-size: 11pt; width: 100%; resize: none"
-                    >
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_top_right"
+                        style="top: 3%; left: 100%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_centreV_left"
+                        style="top: 51%; left: 0%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_centreV_centreH"
+                        style="top: 51%; left: 50%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_centreV_right"
+                        style="top: 51%; left: 100%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_baseline_left"
+                        style="top: 70%; left: 0%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_baseline_centreH"
+                        style="top: 70%; left: 50%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_baseline_right"
+                        style="top: 70%; left: 100%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_bottom_left"
+                        style="top: 98%; left: 0%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_bottom_centreH"
+                        style="top: 98%; left: 50%"
+                        checked
+                    />
+                    <input
+                        type="radio"
+                        class="item_placement"
+                        name="item_placement"
+                        id="placement_bottom_right"
+                        style="top: 98%; left: 100%"
+                        checked
+                    />
+                </div>
+            </div>
+            <div class="column2">
+                <textarea
+                    id="latex_text"
+                    name="latex_text"
+                    rows="8"
+                    style="font-size: 11pt; width: 97%; resize: none"
+                >
 TeX code</textarea
-                    >
-                </td>
-            </tr>
-        </table>
+                >
+            </div>
+            <div class="column3">
+                <input
+                    type="submit"
+                    class="button_half"
+                    id="button_ok"
+                    value="OK"
+                />
+                <input
+                    type="submit"
+                    class="button_half"
+                    id="button_cancel"
+                    value="Cancel"
+                />
+                <br />
+                <br />
+                <input
+                    type="submit"
+                    class="button_full"
+                    id="button_redo_latex"
+                    value="Recompile LaTeX code"
+                />
+                <p id="boundary_box_state"></p>
+                <input
+                    type="submit"
+                    class="button_full"
+                    id="button_redo_boundary"
+                    value="Redo Boundary"
+                />
+            </div>
+        </div>
     </body>
 </html>

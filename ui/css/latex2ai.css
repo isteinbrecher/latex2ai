@@ -7,3 +7,24 @@ body {
 .allow_user_select {
     user-select: text;
 }
+
+.spread_over_width {
+    display: flex;
+    justify-content: space-between; /* This spreads the child elements to each end */
+    align-items: center; /* This vertically centers the items in the container */
+}
+
+.button_third {
+    width: 30%;
+}
+
+.label_almost_full_width {
+    width: 90%;
+}
+
+.fake_label {
+    /* Makes the input behave like a label */
+    pointer-events: none;
+    border: none;
+    background: transparent;
+}

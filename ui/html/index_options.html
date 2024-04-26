@@ -12,50 +12,89 @@
         <style></style>
     </head>
     <body>
-        <p>LaTeX2AI information</p>
-        <label>Version</label>
-        <label id="l2a_version">x.x.x</label>
+        <p><b>LaTeX2AI information</b></p>
+        <div class="spread_over_width">
+            <label>Version</label>
+            <label id="l2a_version">x.x.x</label>
+        </div>
         <br />
-        <label>Git SHA</label>
-        <label class="allow_user_select" id="l2a_git_sha">abcdefgh</label>
+        <div class="spread_over_width">
+            <label>Git SHA</label>
+            <label class="allow_user_select" id="l2a_git_sha">abcdefgh</label>
+        </div>
         <hr />
-        <p>Global LaTeX options</p>
-        <label>Engine</label>
-        <select id="tex_engine">
-            <option value="pdflatex">pdflatex</option>
-            <option value="lualatex">lualatex</option>
-            <option value="xelatex">xelatex</option>
-        </select>
+        <p><b>Global LaTeX options</b></p>
+        <div class="spread_over_width">
+            <label>Engine</label>
+            <select id="tex_engine">
+                <option value="pdflatex">pdflatex</option>
+                <option value="lualatex">lualatex</option>
+                <option value="xelatex">xelatex</option>
+            </select>
+        </div>
         <br />
-        <label>Commandline options</label><br />
-        <input type="text" id="tex_options" />
+        <label>Commandline options</label>
+        <br />
+        <input class="label_almost_full_width" type="text" id="tex_options" />
+        <br />
         <br />
         <label>Folder with LaTeX executables</label>
         <br />
-        <input type="text" id="tex_folder" />
-        <input type="submit" id="button_folder_tex" value="..." />
+        <div class="spread_over_width">
+            <input
+                class="label_almost_full_width"
+                type="text"
+                id="tex_folder"
+            />
+            <input type="submit" id="button_folder_tex" value="..." />
+        </div>
         <br />
         <label>Ghostscript command</label>
         <br />
-        <input type="text" id="gs_command" />
-        <input type="submit" id="button_command_gs" value="..." />
+        <div class="spread_over_width">
+            <input
+                class="label_almost_full_width"
+                type="text"
+                id="gs_command"
+            />
+            <input type="submit" id="button_command_gs" value="..." />
+        </div>
         <br />
         <hr />
-        <p>Warnings</p>
-        <label>On "Save to PDF", if there are bad boundary boxes</label>
+        <p><b>Warnings</b></p>
         <input type="checkbox" id="warning_save_boundary_box" />
+        <label>On "Save to PDF", if there are bad boundary boxes</label>
         <br />
-        <label>On "Save to PDF", if Illustrator file is not saved</label>
         <input type="checkbox" id="warning_save_illustrator" />
+        <label>On "Save to PDF", if Illustrator file is not saved</label>
         <hr />
-        <p>LaTeX2AI document information</p>
+        <p><b>LaTeX2AI document information</b></p>
         <label>LaTeX2AI header</label>
         <br />
-        <label id="header_label">header</label>
-        <input type="submit" id="button_header" value="Open" />
+        <div class="spread_over_width">
+            <input type="text" id="header_label" style="width: 84%" readonly />
+            <input type="submit" id="button_header" value="Open" />
+        </div>
         <hr />
-        <input type="submit" id="button_default" value="Default values" />
-        <input type="submit" id="button_save_and_exit" value="Save and exit" />
-        <input type="submit" id="button_cancel" value="Cancel" />
+        <div class="spread_over_width">
+            <input
+                class="button_third"
+                type="submit"
+                id="button_default"
+                value="Default values"
+            />
+            <input
+                class="button_third"
+                type="submit"
+                id="button_save_and_exit"
+                value="Save and exit"
+            />
+            <input
+                class="button_third"
+                type="submit"
+                id="button_cancel"
+                value="Cancel"
+            />
+        </div>
     </body>
 </html>
