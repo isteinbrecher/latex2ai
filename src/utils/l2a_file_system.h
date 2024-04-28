@@ -122,13 +122,6 @@ namespace L2A
         ai::UnicodeString GetDocumentName();
 
         /**
-         * \brief Search the path to forms executable on the system.
-         *
-         * The folder where the plug in is located will be searched for the forms executable.
-         */
-        ai::FilePath GetFormsPath();
-
-        /**
          * \brief Get the direcotry where l2a files will be placed for the current document.
          */
         ai::FilePath GetPdfFileDirectory();
