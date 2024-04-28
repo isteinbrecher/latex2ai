@@ -131,7 +131,7 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
         // Search for a regex match
         const auto files_in_folder =
             L2A::UTIL::FindFilesInFolder(test_directory, ai::UnicodeString(".*_\\d{2}\\.[tT][eE][xX]$"));
-        ut.CompareInt(2, files_in_folder.size());
+        ut.CompareInt(2, static_cast<int>(files_in_folder.size()));
         for (unsigned int i = 0; i < 2; i++) ut.CompareStr(files[i].GetFullPath(), files_in_folder[i].GetFullPath());
 
         // Delete directory

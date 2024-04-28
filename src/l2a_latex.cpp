@@ -159,7 +159,7 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(
     if (n_pages != new_pdf_pages.size())
         l2a_error("The given number of pdf pages " + L2A::UTIL::IntegerToString(n_pages) +
                   " does not match with the number of created split files " +
-                  L2A::UTIL::IntegerToString(new_pdf_pages.size()));
+                  L2A::UTIL::IntegerToString(static_cast<unsigned int>(new_pdf_pages.size())));
 #endif
 
     // Get vector of pdf files for the created split items

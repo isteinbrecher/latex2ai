@@ -32,8 +32,6 @@
 
 #include "IllustratorSDK.h"
 
-#include "l2a_constants.h"
-
 
 namespace L2A
 {
@@ -120,19 +118,19 @@ namespace ai
     /**
      * \brief Overload the + operator for a string and a char*. Now existing strings can be simply added.
      */
-    inline UnicodeString operator+(const UnicodeString& lhs, const char* rhs)
+    inline UnicodeString operator+(const UnicodeString& lhs, const std::string& rhs)
     {
         ai::UnicodeString return_string(lhs);
-        return_string += ai::UnicodeString(rhs);
+        return_string += L2A::UTIL::StringStdToAi(rhs);
         return return_string;
     }
 
     /**
      * \brief Overload the + operator for a string and a char*.
      */
-    inline UnicodeString operator+(const char* lhs, const UnicodeString& rhs)
+    inline UnicodeString operator+(const std::string& lhs, const UnicodeString& rhs)
     {
-        ai::UnicodeString return_string(lhs);
+        ai::UnicodeString return_string = L2A::UTIL::StringStdToAi(lhs);
         return_string += ai::UnicodeString(rhs);
         return return_string;
     }
@@ -141,21 +139,27 @@ namespace ai
     /**
      * \brief Overload the += operator for a string and a char*.
      */
-    inline UnicodeString& operator+=(UnicodeString& lhs, char* rhs)
+    inline UnicodeString& operator+=(UnicodeString& lhs, const std::string& rhs)
     {
-        lhs += ai::UnicodeString(rhs);
+        lhs += L2A::UTIL::StringStdToAi(rhs);
         return lhs;
     }
 
     /**
      * \brief Overload the == operator for a string and a char*.
      */
-    inline bool operator==(const UnicodeString& lhs, const char* rhs) { return lhs == ai::UnicodeString(rhs); }
+    inline bool operator==(const UnicodeString& lhs, const std::string& rhs)
+    {
+        return lhs == L2A::UTIL::StringStdToAi(rhs);
+    }
 
     /**
      * \brief Overload the == operator for a char* and a string.
      */
-    inline bool operator==(const char* lhs, const UnicodeString& rhs) { return rhs == ai::UnicodeString(lhs); }
+    inline bool operator==(const std::string& lhs, const UnicodeString& rhs)
+    {
+        return rhs == L2A::UTIL::StringStdToAi(lhs);
+    }
 
 }  // namespace ai
 
