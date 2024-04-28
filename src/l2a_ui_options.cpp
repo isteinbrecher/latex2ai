@@ -32,13 +32,13 @@
 #include "l2a_ui_options.h"
 
 #include "l2a_ai_functions.h"
+#include "l2a_constants.h"
 #include "l2a_execute.h"
 #include "l2a_file_system.h"
 #include "l2a_global.h"
 #include "l2a_latex.h"
 #include "l2a_parameter_list.h"
 #include "l2a_string_functions.h"
-
 
 /**
  * \brief Set the names for item forms
