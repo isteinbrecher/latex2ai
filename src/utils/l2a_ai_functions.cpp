@@ -552,7 +552,7 @@ void L2A::AI::SaveToPDF()
         if (n_bad_items > 0)
         {
             ai::UnicodeString warning_string("There are ");
-            warning_string += L2A::UTIL::IntegerToString(n_bad_items) + " items with bad boundary boxes.";
+            warning_string += L2A::UTIL::IntegerToString(n_bad_items) + " items which can be rescaled.";
             if (n_hidden_bad_boundary_box_items > 0)
                 warning_string +=
                     " Of them, " + L2A::UTIL::IntegerToString(n_hidden_bad_boundary_box_items) + " are locked.";

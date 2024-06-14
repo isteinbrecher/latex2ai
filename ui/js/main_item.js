@@ -202,7 +202,7 @@ function update_create_item(event) {
         let boundary_box_state = xml_form_data.attr("boundary_box_state")
         $("#boundary_box_state").prop(
             "innerHTML",
-            "Boundary box status: " + boundary_box_state
+            "Item scaling status: " + boundary_box_state
         )
         if (boundary_box_state == "ok") {
             $("#button_redo_boundary").prop("disabled", true)

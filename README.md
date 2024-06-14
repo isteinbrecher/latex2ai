@@ -37,7 +37,7 @@ To uninstall LaTeX2AI, simply delete the files you copied.
 LaTeX2AI adds four buttons to the main toolbar:
 
 -   ![Create / Edit](/doc/images/tool_create.png?raw=true "Create / Edit") **Create / Edit**: Edit an existing label by clicking on it, or creating a new one by clicking somewhere in the document.
--   ![Redo items](/doc/images/tool_redo.png?raw=true "Redo labels") **Redo LaTeX2AI labels**: This allows for the LaTeX recompilation and/or boundary box reset of all existing LaTeX2AI labels.
+-   ![Redo items](/doc/images/tool_redo.png?raw=true "Redo labels") **Redo LaTeX2AI labels**: This allows for the LaTeX recompilation and/or scaling reset of all existing LaTeX2AI labels.
 -   ![LaTeX2AI options](/doc/images/tool_options.png?raw=true "LaTeX2AI options") **LaTeX2AI options**: Open a form where the global LaTeX2AI options can be set. Also the LaTeX header can be opened in an external application.
 -   ![Save document as PDF](/doc/images/tool_save_as_pdf.png?raw=true "Save document as PDF") **Save as PDF**: Save the current `.ai` document as a `.pdf` document with the same name. The LaTeX2AI labels are included into the created `.pdf` document.
 
@@ -74,14 +74,15 @@ The resulting label can now be easily adjusted and snapped to align with another
 
 ![Placement baseline](/doc/images/placement_baseline.png?raw=true)
 
-## Item scale and bounding box behavior
+## Item scaling behavior
 
-Per default, LaTeX2AI places the LaTeX labels inside Illustrator with a scale of 1:1, i.e., the font size is not scaled relative to native Illustrator text.
-The user can resize the labels, however, be aware that every time the LaTeX code of a label changes, the boundary box is reset to a scale of 1:1.
+Per default, LaTeX2AI places the LaTeX labels inside Illustrator with a scale of 1:1, i.e., 1pt in the LaTeX label is 1pt in the Illustrator document.
+For example, if the LaTeX item is created with a font size of 12pt the font will match Illustrator text with 12pt.
+The user can resize the labels like any other Illustrator object, however, be aware that every time the LaTeX code of a label changes, the scale is reset to 1:1.
 
 The recommended way of using LaTeX2AI is to always have items at a scale of 1:1.
 By doing so, the exported Illustrator document can be simply included into a LaTeX document with the `\includegraphics` option `scale=1`, and the font size of the labels in the figures will exactly match the font size of the document (assuming that the header options are the same).
-With the LaTeX2AI tool **Redo items**, one can easily reset the bounding box of all LaTeX2AI items in the document.
+With the LaTeX2AI tool **Redo items**, one can easily reset the scaling of all LaTeX2AI items in the document.
 
 ## LaTeX header
 
