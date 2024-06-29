@@ -225,20 +225,7 @@ L2A::PropertyCompare L2A::Property::Compare(const Property& other_property) cons
 /**
  *
  */
-ai::UnicodeString L2A::Property::GetLaTeXCode() const
-{
-    ai::UnicodeString string;
-
-    // Add code according if item is baseline or not.
-    if (this->IsBaseline())
-        string = ai::UnicodeString("\\LaTeXtoAIbase{");
-    else
-        string = ai::UnicodeString("\\LaTeXtoAI{");
-    string += this->latex_code_;
-    string += ai::UnicodeString("}");
-
-    return string;
-}
+ai::UnicodeString L2A::Property::GetLaTeXCode() const { return this->latex_code_; }
 
 /**
  *

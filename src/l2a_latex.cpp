@@ -206,8 +206,12 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
         ai::UnicodeString combined_latex_code("\n\n");
         for (const auto& property : properties)
         {
+            if (property.IsBaseline())
+                combined_latex_code += ai::UnicodeString("\\LaTeXtoAIbase{");
+            else
+                combined_latex_code += ai::UnicodeString("\\LaTeXtoAI{");
             combined_latex_code += property.GetLaTeXCode();
-            combined_latex_code += "\n\n";
+            combined_latex_code += ai::UnicodeString("}\n\n");
         }
 
         // Create the latex document
