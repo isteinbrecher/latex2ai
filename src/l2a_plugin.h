@@ -39,10 +39,10 @@
 
 //! Check if the Illustrator version is supported.
 //! The only reason we define the max value here is so the user is aware that a new SDK version is being used.
-#define L2A_ILLUSTRATOR_VERSION_MIN 0x16000001
-#define L2A_ILLUSTRATOR_VERSION_MAX 0x28000001
+#define L2A_ILLUSTRATOR_VERSION_MIN 0x18000001
+#define L2A_ILLUSTRATOR_VERSION_MAX 0x29000001
 
-#if (kPluginInterfaceVersion < L2A_ILLUSTRATOR_VERSION_MIN) || (kPluginInterfaceVersion > L2A_ILLUSTRATOR_VERSION_MAX)
+#if (kPluginInterfaceVersion < L2A_ILLUSTRATOR_VERSION_MIN) || (kPluginInterfaceVersion >= L2A_ILLUSTRATOR_VERSION_MAX)
 #error Currently LaTeX2AI only supports Illustrator CS6, Illustrator CC2017, Illustrator CC2018, Illustrator 2021, Illustrator 2022, Illustrator 2023 and Illustrator 2024
 #endif
 
