@@ -463,10 +463,10 @@ ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
 /**
  *
  */
-ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
+ai::FilePath L2A::LATEX::GetDefaultLatexPath()
 {
 #ifdef WIN_ENV
-    return ai::UnicodeString("");
+    return ai::FilePath(ai::UnicodeString(""));
 #else
     // Check possible locations for latex
     const std::vector<ai::FilePath> latex_bin_locations = {
@@ -505,11 +505,11 @@ ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
         L2A::UTIL::FindExecutable(latex_bin_locations, ai::UnicodeString("pdflatex"));
     if (is_latex_path)
     {
-        return latex_path.GetParent().GetFullPath();
+        return latex_path.GetParent();
     }
     else
     {
-        return ai::UnicodeString("");
+        return ai::FilePath(ai::UnicodeString(""));
     }
 #endif
 }
@@ -546,8 +546,8 @@ bool L2A::LATEX::CheckGhostscriptCommand(const ai::UnicodeString& gs_command)
  */
 bool L2A::LATEX::CheckLatexCommand(const ai::FilePath& path_latex)
 {
-    // TODO: Move this to Latex files. Then we will also have to do something sbout the "get latex command" so that the
-    // stuff there can be reused and does not have to be coded here again.
+    // We check the path to the binaries with pdflatex, independently of what engine the user selects
+
     ai::UnicodeString command_latex;
     if (L2A::UTIL::IsDirectory(path_latex))
     {

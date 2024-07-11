@@ -154,7 +154,7 @@ namespace L2A
         /**
          * \brief Search the path to the latex binaries on the system.
          */
-        ai::UnicodeString GetDefaultLatexPath();
+        ai::FilePath GetDefaultLatexPath();
 
         /**
          * \brief Check if the ghostscript command is valid.
