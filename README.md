@@ -29,6 +29,7 @@ The following software dependencies are required to run LaTeX2AI:
     - **Windows:** copy `WIN/LaTeX2AI.aip` to
         - An arbitrary directory, this directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder\`
         - For all users (requires administrator privileges): `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
+1. After a restart of Adobe Illustrator, you can display the LaTeX2AI tools in the main toolbar by selecting `Window/Toolbars/Advanced`.
 
 To uninstall LaTeX2AI, simply delete the files you copied.
 
@@ -43,8 +44,6 @@ LaTeX2AI adds four buttons to the main toolbar:
 
 These buttons are the main way of interacting with LaTeX2AI.
 Additionally, double clicking on a LaTeX2AI label will enable the edit mode for that label.
-
-If the buttons are not shown, you can display them via `Window/Toolbars/Advanced`.
 
 ## Create / Edit a LaTeX2AI label
 
