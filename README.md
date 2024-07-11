@@ -34,7 +34,7 @@ The following software dependencies are required to run LaTeX2AI:
             - Copy `com.isteinbrecher.latex2ai` to `/Library/Application Support/Adobe/CEP/extensions/`
     - **Windows:**
         - LaTeX2AI only for _current_ user:
-            - Copy `com.isteinbrecher.latex2ai` to `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions`
+            - Copy `com.isteinbrecher.latex2ai` to `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions` (the directory might have to be created by the user)
         - LaTeX2AI for _all_ users (requires administrator privileges):
             - Copy `com.isteinbrecher.latex2ai` to `C:\Program Files\Common Files\Adobe\CEP\extensions\`
 1. Copy the native plugin
