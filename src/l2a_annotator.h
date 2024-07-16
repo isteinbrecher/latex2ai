@@ -53,7 +53,7 @@ namespace L2A
 
         /**	Destructor.
          */
-        ~Annotator(){};
+        ~Annotator() {};
 
         /**
          * \brief This method is called when the art selection changed. If the annotator is active, the items are

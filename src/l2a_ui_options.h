@@ -61,7 +61,7 @@ namespace L2A::UI
         /**
          * @brief Reset internal data of the form that is not relevant after it is closed
          */
-        void ResetFormData() override{};
+        void ResetFormData() override {};
 
         /**
          * @brief Open the form to edit all items in a document

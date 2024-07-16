@@ -62,7 +62,7 @@ namespace L2A::UI
             : HtmlUIController(form_extension_id),
               form_name_(form_name),
               form_extension_id_(form_extension_id),
-              event_name_base_(event_name_base){};
+              event_name_base_(event_name_base) {};
 
         /**
          * @brief Load the form
@@ -104,12 +104,12 @@ namespace L2A::UI
         /**
          * \brief Overload this abstract method
          */
-        void ParseData(const char* eventData) override{};
+        void ParseData(const char* eventData) override {};
 
         /**
          * @brief Reset internal data of the form that is not relevant after it is closed
          */
-        virtual void ResetFormData(){};
+        virtual void ResetFormData() {};
 
        protected:
         //! Human readable name of the current form

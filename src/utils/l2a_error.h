@@ -44,7 +44,7 @@ namespace L2A
             /**
              * \brief Constructor with error string and detailed information about the error.
              */
-            ExceptionBase(){};
+            ExceptionBase() {};
         };
 
         /**
