@@ -43,6 +43,19 @@
 #include "l2a_item.h"
 
 
+/*
+ * Free function to check if the document is a cloud document and throw a warning if this is the case
+ */
+bool IsActiveDocumentCloudDocumentWithWarning()
+{
+    const bool return_value = L2A::AI::IsActiveDocumentCloudDocument();
+    if (return_value)
+    {
+        L2A::AI::MessageAlert(ai::UnicodeString("LaTeX2AI does not work with cloud documents!"));
+    }
+    return return_value;
+}
+
 /**
  */
 Plugin* AllocatePlugin(SPPluginRef pluginRef) { return new L2APlugin(pluginRef); }
@@ -99,15 +112,21 @@ ASErr L2APlugin::Notify(AINotifierMessage* message)
             AIArtHandle placed_item;
             if (L2A::AI::GetSingleIsolationItem(placed_item))
             {
-                // Change the item
-                ui_manager_->GetItemForm().OpenEditItemForm(placed_item);
+                if (!IsActiveDocumentCloudDocumentWithWarning())
+                {
+                    // Change the item
+                    ui_manager_->GetItemForm().OpenEditItemForm(placed_item);
+                }
             }
         }
         else if (message->notifier == notify_active_doc_view_title_changed_ ||
                  message->notifier == notify_document_save_ || message->notifier == notify_document_save_as_)
         {
-            L2A::AI::UndoActivate();
-            L2A::CheckItemDataStructure();
+            if (!L2A::AI::IsActiveDocumentCloudDocument())
+            {
+                L2A::AI::UndoActivate();
+                L2A::CheckItemDataStructure();
+            }
         }
         else if (message->notifier == notify_CSXS_plugplug_setup_complete_)
         {
@@ -259,22 +278,25 @@ ASErr L2APlugin::ToolMouseDown(AIToolMessage* message)
         // Selected tool is item create.
         try
         {
-            if (annotator_->IsArtHit())
+            if (!IsActiveDocumentCloudDocumentWithWarning())
             {
-                ui_manager_->GetItemForm().OpenEditItemForm(annotator_->GetArtHit());
-            }
-            else
-            {
-                // Check if the current insertion point is locked.
-                if (!L2A::AI::GetLockedInsertionPoint())
+                if (annotator_->IsArtHit())
                 {
-                    ui_manager_->GetItemForm().OpenCreateItemForm(message->cursor);
+                    ui_manager_->GetItemForm().OpenEditItemForm(annotator_->GetArtHit());
                 }
                 else
                 {
-                    sAIUser->MessageAlert(
-                        ai::UnicodeString("You tried to create a LaTeX2AI item inside a locked or hidden layer / "
-                                          "group. This is not possible."));
+                    // Check if the current insertion point is locked.
+                    if (!L2A::AI::GetLockedInsertionPoint())
+                    {
+                        ui_manager_->GetItemForm().OpenCreateItemForm(message->cursor);
+                    }
+                    else
+                    {
+                        sAIUser->MessageAlert(
+                            ai::UnicodeString("You tried to create a LaTeX2AI item inside a locked or hidden layer / "
+                                              "group. This is not possible."));
+                    }
                 }
             }
         }
@@ -433,11 +455,17 @@ ASErr L2APlugin::SelectTool(AIToolMessage* message)
     }
     else if (message->tool == this->tool_handles_[1] && L2A::AI::GetDocumentCount() > 0)
     {
-        ui_manager_->GetRedoForm().OpenRedoForm();
+        if (!IsActiveDocumentCloudDocumentWithWarning())
+        {
+            ui_manager_->GetRedoForm().OpenRedoForm();
+        }
     }
     else if (message->tool == this->tool_handles_[2])
     {
-        ui_manager_->GetOptionsForm().OpenOptionsForm();
+        if (!IsActiveDocumentCloudDocumentWithWarning())
+        {
+            ui_manager_->GetOptionsForm().OpenOptionsForm();
+        }
     }
     else if (message->tool == this->tool_handles_[3] && L2A::AI::GetDocumentCount() > 0)
     {
