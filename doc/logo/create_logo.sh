@@ -37,4 +37,5 @@ gs -dFirstPage=4 -dLastPage=4 -sDEVICE=pngalpha -dTextAlphaBits=4 -r1250 -o icon
 pdflatex item_placement.tex
 
 # Convert the pdf into png
-gs -sDEVICE=pngalpha -dTextAlphaBits=4 -r650 -o ../ui/html/item_placement.png item_placement.pdf
+gs -dFirstPage=1 -dLastPage=1 -sDEVICE=pngalpha -dTextAlphaBits=4 -r650 -o ../../ui/html/item_placement_light.png item_placement.pdf
+gs -dFirstPage=2 -dLastPage=2 -sDEVICE=pngalpha -dTextAlphaBits=4 -r650 -o ../../ui/html/item_placement_dark.png item_placement.pdf

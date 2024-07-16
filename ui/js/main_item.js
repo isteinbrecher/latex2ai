@@ -12,6 +12,21 @@ $(function () {
     // Set the current skin colors
     updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo)
 
+    // Depending on the background color we set the image in light or dark mode
+    var panelBackgroundColor =
+        csInterface.hostEnvironment.appSkinInfo.panelBackgroundColor.color
+    var average_color =
+        (panelBackgroundColor.red +
+            panelBackgroundColor.green +
+            panelBackgroundColor.blue) /
+        3.0
+    var is_light = average_color > 255 / 2.0
+    if (is_light) {
+        $("#item_placement_image").prop("src", "item_placement_light.png")
+    } else {
+        $("#item_placement_image").prop("src", "item_placement_dark.png")
+    }
+
     // Update the color of the panel when the theme color of the product changed
     csInterface.addEventListener(
         CSInterface.THEME_COLOR_CHANGED_EVENT,

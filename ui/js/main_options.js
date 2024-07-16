@@ -4,6 +4,23 @@ $(function () {
     // Set the current skin colors
     updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo)
 
+    // On Windows we add the notification that the path to the executables can be left empty
+    var is_mac = CSInterface.prototype
+        .getOSInformation()
+        .toLowerCase()
+        .includes("mac")
+    if (is_mac) {
+        $("#tex_folder_label").prop(
+            "innerHTML",
+            "Folder with LaTeX executables"
+        )
+    } else {
+        $("#tex_folder_label").prop(
+            "innerHTML",
+            "Folder with LaTeX executables (may be left empty)"
+        )
+    }
+
     // Update the color of the panel when the theme color of the product changed
     csInterface.addEventListener(
         CSInterface.THEME_COLOR_CHANGED_EVENT,
