@@ -22,18 +22,29 @@
 % SOFTWARE.
 % -----------------------------------------------------------------------------
 
-\documentclass[border=0.2pt]{standalone}
+\documentclass[multi=page,border=0.2pt]{standalone}
 
 \usepackage{tikz}
 
 \newcommand{\ysep}{0.2mm}
+\newcommand{\demotext}{afg}
 
 \begin{document}
 %
-\begin{tikzpicture}[]
-    \node [anchor=base west,inner sep=0pt] (A) {\large afg};
+\begin{page}%
+  \begin{tikzpicture}[]
+    \node [anchor=base west,inner sep=0pt] (A) {\large \demotext};
     \draw [red, dash pattern=on 1.5pt off 0.82pt] (A.base west) -- (A.base east);
     \draw [opacity=0]([yshift=-\ysep]A.south west) -- ([yshift=\ysep]A.north east);
-\end{tikzpicture}%
+  \end{tikzpicture}%
+\end{page}%
+%
+\begin{page}%
+	\begin{tikzpicture}[]
+		\node [anchor=base west,inner sep=0pt] (A) {\large \textcolor{lightgray}{\demotext}};
+		\draw [red, dash pattern=on 1.5pt off 0.82pt] (A.base west) -- (A.base east);
+		\draw [opacity=0]([yshift=-\ysep]A.south west) -- ([yshift=\ysep]A.north east);
+	\end{tikzpicture}%
+\end{page}%
 %
 \end{document}
