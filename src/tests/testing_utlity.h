@@ -75,7 +75,7 @@ namespace L2A
                 /**
                  * \brief Default constructor.
                  */
-                UnitTest() : test_name_(ai::UnicodeString("default")), test_count_(0), test_count_passed_(0){};
+                UnitTest() : test_name_(ai::UnicodeString("default")), test_count_(0), test_count_passed_(0) {};
 
                 /**
                  * \brief Set the name of the current test.
@@ -124,7 +124,7 @@ namespace L2A
                 unsigned int test_count_passed_;
             };
         }  // namespace UTIL
-    }      // namespace TEST
+    }  // namespace TEST
 }  // namespace L2A
 
 #endif
