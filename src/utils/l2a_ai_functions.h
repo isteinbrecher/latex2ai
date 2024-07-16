@@ -185,6 +185,11 @@ namespace L2A
         bool GetSingleIsolationItem(AIArtHandle& item);
 
         /**
+         * \brief Check if the active document is a cloud document.
+         */
+        bool IsActiveDocumentCloudDocument();
+
+        /**
          * \brief Activate undo tracking.
          */
         void UndoActivate();

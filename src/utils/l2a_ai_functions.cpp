@@ -431,6 +431,11 @@ bool L2A::AI::GetSingleIsolationItem(AIArtHandle& item)
 /**
  *
  */
+bool L2A::AI::IsActiveDocumentCloudDocument() { return sAIDocument->IsCloudAIDocument(); }
+
+/**
+ *
+ */
 void L2A::AI::UndoActivate() { UndoSetActive(true); }
 
 /**
