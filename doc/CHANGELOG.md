@@ -6,6 +6,7 @@
         -   Fix pdf file structure before missing links message is shown.
         -   Improve finding of LaTeX and ghostscript paths.
         -   Rework documentation.
+        -   Fix errors when working with Creative Cloud documents.
     -   Other:
         -   Use platform independent string hash algorithm.
         -   Use native `html` based UI.
