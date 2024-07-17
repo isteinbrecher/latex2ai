@@ -26,19 +26,16 @@
 # Get the path of the current script
 SCRIPT_DIR="$(dirname "$0")"
 
-# Set the key for the certificate
-. ${SCRIPT_DIR}/SET_KEY.sh
+# Remove an existing release version
+BUILD_PATH=${SCRIPT_DIR}/../../output/mac/release/LaTeX2AI.aip
+rm -rf ${BUILD_PATH}
 
-# Remove the packed zxp file if it exists
-ZXP_FILE=${SCRIPT_DIR}/latex2ai_ui.zxp
-rm -f $ZXP_FILE
+# Build the release version of LaTeX2AI
+xcodebuild -project ${SCRIPT_DIR}/../LaTeX2AI.xcodeproj -scheme "LaTeX2AI" -configuration "release" -destination "generic/platform=macOS" clean build
 
-# Create the signed zxp file
-${SCRIPT_DIR}/ZXPSignCmd-64bit -sign ${SCRIPT_DIR}/../../ui $ZXP_FILE ${SCRIPT_DIR}/latex2ai_certificate.p12 $LATEX2AI_CERTIFICATE_PASSWORD -tsa http://timestamp.digicert.com
-
-# Unzip to folder
-SIGNED_UI_FOLDER=${SCRIPT_DIR}/../release_files/com.isteinbrecher.latex2ai
-rm -rf $SIGNED_UI_FOLDER
-mkdir $SIGNED_UI_FOLDER
-unzip $ZXP_FILE -d $SIGNED_UI_FOLDER
-rm -f $ZXP_FILE
+# Move to the correct folder
+FINAL_PATH_DIR=${SCRIPT_DIR}/release_files/macOS
+mkdir -p ${FINAL_PATH_DIR}
+FINAL_PATH=${FINAL_PATH_DIR}/LaTeX2AI.aip
+rm -rf ${FINAL_PATH}
+mv ${BUILD_PATH} ${FINAL_PATH}

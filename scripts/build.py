@@ -139,7 +139,7 @@ def clean_repository(repository_dir):
 
 def correct_git_state(repository_dir, git_sha, git_build_name):
     """
-    Check if the repositroy is at the correct state.
+    Check if the repository is at the correct state.
     """
 
     # Check if the repository is clean.

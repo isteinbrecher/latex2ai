@@ -28,9 +28,14 @@ __pycache__
 *.log
 *.pdf
 *.synctex.gz
+*.fls
+*.fdb_latexmk
 
 # Certificate
 latex2ai_certificate.p12
 SET_KEY.sh
 latex2ai_ui.zxp
 com.isteinbrecher.latex2ai
+
+# Release
+LaTeX2AI*.aip
