@@ -74,7 +74,7 @@ namespace L2A
              */
             AIReal GetDistance(const AIRealPoint& point_a, const AIRealPoint& point_b);
         }  // namespace MATH
-    }      // namespace UTIL
+    }  // namespace UTIL
 }  // namespace L2A
 
 

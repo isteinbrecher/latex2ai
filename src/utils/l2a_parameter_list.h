@@ -77,7 +77,7 @@ namespace L2A
             /**
              * \brief Destructor.
              */
-            ~ParameterList(){};
+            ~ParameterList() {};
 
             /**
              * \brief Add a sublist to this option.

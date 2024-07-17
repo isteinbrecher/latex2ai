@@ -75,7 +75,7 @@ class L2APlugin : public Plugin
     /**
      * \brief Destructor.
      */
-    ~L2APlugin(){};
+    ~L2APlugin() {};
 
     /**
      * \brief Restores state of L2APlugin during reload.
