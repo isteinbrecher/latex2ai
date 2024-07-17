@@ -43,68 +43,14 @@
 /**
  *
  */
-L2A::UTIL::Version::Version(std::string version_string) : version_(0)
+semver::version L2A::UTIL::ParseVersion(const std::string& version_string)
 {
+    std::string string_to_parse = version_string;
+
     // The github versions have a prefix "v" -> remove this.
-    if (version_string.at(0) == 'v') version_string = version_string.substr(1, version_string.size() - 1);
+    if (version_string.at(0) == 'v') string_to_parse = string_to_parse.substr(1, string_to_parse.size() - 1);
 
-    // Split at each "."
-    unsigned int version_type = 0;
-    size_t pos = 0;
-    size_t pos_old = 0;
-    while (true)
-    {
-        pos_old = pos;
-        pos = version_string.find('.', pos_old);
-        if (pos != string::npos)
-            SetVersion(std::stoi(version_string.substr(pos_old, pos - pos_old)), version_type);
-        else
-        {
-            SetVersion(std::stoi(version_string.substr(pos_old, version_string.size() - pos_old)), version_type);
-            break;
-        }
-        pos++;
-        version_type++;
-    }
-}
-
-/**
- *
- */
-L2A::UTIL::Version::Version(unsigned int version) : version_(version)
-{
-    // Check that no unwanted data was given.
-    if ((version_ & (0xff << (8 * 3))) != 0) l2a_error("Version number contains data out of range!");
-}
-
-/**
- * \brief Convert the version to a string.
- */
-ai::UnicodeString L2A::UTIL::Version::ToString() const
-{
-    ai::UnicodeString return_string("");
-    for (unsigned int version_type = 0; version_type < 3; version_type++)
-    {
-        return_string +=
-            L2A::UTIL::IntegerToString((version_ & (0xff << (8 * (2 - version_type)))) >> (8 * (2 - version_type)));
-        if (version_type != 2) return_string += ".";
-    }
-    return return_string;
-}
-
-/**
- *
- */
-void L2A::UTIL::Version::SetVersion(const unsigned int version, const size_t version_type)
-{
-    // Check that the version is not larger than 255 -> max number that can be stored.
-    if (version > 255) l2a_error("Version number can be a maximum of 256");
-
-    // Clear the relevant bits.
-    version_ &= ~(0xff << 8 * (2 - version_type));
-
-    // Set the current bits.
-    version_ |= ((version & 0xff) << 8 * (2 - version_type));
+    return semver::version::parse(string_to_parse);
 }
 
 /**
@@ -130,23 +76,35 @@ void L2A::UTIL::CheckGithubVersion()
         auto github_releases = json::parse(curl_output);
 
         // Get the version tags.
-        std::vector<L2A::UTIL::Version> github_versions;
+        std::vector<semver::version> github_versions;
         for (auto& [key, value] : github_releases.items())
+        {
             if (value.contains("tag_name"))
-                github_versions.push_back(L2A::UTIL::Version(value["tag_name"].get<std::string>()));
+            {
+                const auto tag_version = L2A::UTIL::ParseVersion(value["tag_name"].get<std::string>());
+
+                // Only add versions that are not pre release versions
+                if (not tag_version.is_prerelease())
+                {
+                    github_versions.push_back(tag_version);
+                }
+            }
+        }
 
         // If for some reasons no version could be found, return here.
         if (github_versions.size() == 0) l2a_error_quiet(ai::UnicodeString("Could not retrieve github versions."));
 
         // Get the current version.
         auto& newest_version = *(std::max_element(std::begin(github_versions), std::end(github_versions)));
-        L2A::UTIL::Version current_version(L2A_VERSION_STRING_);
+        const auto current_version = L2A::UTIL::ParseVersion(L2A_VERSION_STRING_);
         if (current_version < newest_version)
         {
             ai::UnicodeString message_string("The new LaTeX2AI version v");
-            message_string += newest_version.ToString();
-            message_string += " is available at GitHub. The currently used version is v";
-            message_string += current_version.ToString() + ".";
+            message_string += newest_version.str();
+            message_string +=
+                " is available at GitHub (https://github.com/isteinbrecher/latex2ai/releases). The currently used "
+                "version is v";
+            message_string += current_version.str() + ".";
             sAIUser->MessageAlert(message_string);
         }
     }

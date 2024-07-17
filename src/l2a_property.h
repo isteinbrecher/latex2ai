@@ -294,7 +294,7 @@ namespace L2A
         /**
          * \brief Get the version of LaTeX2AI which was used to create this item.
          */
-        const L2A::UTIL::Version& GetVersion() const { return version_; }
+        const semver::version& GetVersion() const { return version_; }
 
        private:
         //! Horizontal and Vertical alignment of the text.
@@ -318,9 +318,9 @@ namespace L2A
 
         //! Version used to created this property
         //! This version will not be saved when the item is written to text, but rather the current version will be
-        //! saved. This means that all compability issues have to be resoled in the time between reading and writing the
-        //! propoerty.
-        L2A::UTIL::Version version_;
+        //! saved. This means that all compatibility issues have to be resoled in the time between reading and writing
+        //! the property.
+        semver::version version_;
     };
 }  // namespace L2A
 

@@ -31,51 +31,16 @@
 
 #include "IllustratorSDK.h"
 
+#include "semver.hpp"
+
 namespace L2A
 {
     namespace UTIL
     {
-        class Version
-        {
-           public:
-            /**
-             * \brief Initialize the version from a string.
-             */
-            Version(std::string version_string);
-
-            /**
-             * \brief Initialize the version from an integer.
-             */
-            Version(unsigned int version);
-
-            /**
-             * \brief Overload the relevant comparison operators.
-             */
-            bool operator==(const Version& other) const { return version_ == other.version_; }
-            bool operator<(const Version& other) const { return version_ < other.version_; }
-            bool operator<=(const Version& other) const { return version_ <= other.version_; }
-            bool operator>(const Version& other) const { return version_ > other.version_; }
-            bool operator>=(const Version& other) const { return version_ >= other.version_; }
-
-            /**
-             * \brief Convert the version to a string.
-             */
-            ai::UnicodeString ToString() const;
-
-            /**
-             * \brief Get the interger representing this version.
-             */
-            unsigned int GetVersionInt() const { return version_; }
-
-           private:
-            /**
-             * \brief Derive the other operators from the basic ones.
-             */
-            void SetVersion(const unsigned int version, const size_t version_type);
-
-            //! Integer to store the version number [major, minor, patch]. For each version number 8 bits are used.
-            unsigned int version_;
-        };
+        /**
+         * \brief Parse a string to a version object
+         */
+        semver::version ParseVersion(const std::string& version_string);
 
         /**
          * \brief Check if the current version is up to date with the GitHub version.
