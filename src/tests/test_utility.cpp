@@ -84,6 +84,15 @@ void L2A::TEST::TestVersion(L2A::TEST::UTIL::UnitTest& ut)
         ut.CompareStr(ai::UnicodeString(version_pre_release.str()), ai::UnicodeString("1.3.5-rc4"));
         ut.CompareInt(1, version_pre_release.is_prerelease());
 
+        const auto version_pre_release_2 = L2A::UTIL::ParseVersion("v1.3.5-rc9");
+        ut.CompareInt(1, version_pre_release < version_pre_release_2);
+        ut.CompareInt(0, version_pre_release > version_pre_release_2);
+        ut.CompareInt(0, version_pre_release == version_pre_release_2);
+
+        const auto version_alpha = L2A::UTIL::ParseVersion("v1.3.5-alpha");
+        ut.CompareStr(ai::UnicodeString(version_alpha.str()), ai::UnicodeString("1.3.5-alpha"));
+        ut.CompareInt(1, version_alpha.is_prerelease());
+
         const auto version_a = L2A::UTIL::ParseVersion("0.1.20");
         const auto version_b = L2A::UTIL::ParseVersion("1.0.2");
         const auto version_c = L2A::UTIL::ParseVersion("0.10.2");
