@@ -23,18 +23,21 @@
 # SOFTWARE.
 # -----------------------------------------------------------------------------
 
+# Set the script path as the current working directory
+SCRIPT_DIR="$(dirname "$0")"
+
 # Set the key for the certificate
-. ./SET_KEY.sh
+. ${SCRIPT_DIR}/SET_KEY.sh
 
 # Remove the packed zxp file if it exists
-ZXP_FILE=latex2ai_ui.zxp
-rm $ZXP_FILE
+ZXP_FILE=${SCRIPT_DIR}/latex2ai_ui.zxp
+rm -f $ZXP_FILE
 
 # Create the signed zxp file
-./ZXPSignCmd-64bit -sign ../../ui $ZXP_FILE latex2ai_certificate.p12 $LATEX2AI_CERTIFICATE_PASSWORD -tsa http://timestamp.digicert.com
+${SCRIPT_DIR}/ZXPSignCmd-64bit -sign ${SCRIPT_DIR}/../../ui $ZXP_FILE ${SCRIPT_DIR}/latex2ai_certificate.p12 $LATEX2AI_CERTIFICATE_PASSWORD -tsa http://timestamp.digicert.com
 
 # Unzip to folder
-SIGNED_UI_FOLDER="com.isteinbrecher.latex2ai"
+SIGNED_UI_FOLDER=${SCRIPT_DIR}/"com.isteinbrecher.latex2ai"
 rm -rf $SIGNED_UI_FOLDER
 mkdir $SIGNED_UI_FOLDER
 unzip $ZXP_FILE -d $SIGNED_UI_FOLDER
