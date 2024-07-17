@@ -13,3 +13,6 @@
 [submodule "tpl/CRCpp"]
 	path = tpl/CRCpp
 	url = https://github.com/d-bahr/CRCpp.git
+[submodule "tpl/cpp-semver"]
+	path = tpl/cpp-semver
+	url = https://github.com/z4kn4fein/cpp-semver.git
