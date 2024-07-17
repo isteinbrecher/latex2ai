@@ -15,23 +15,33 @@ The following software dependencies are required to run LaTeX2AI:
 
 1. Download LaTeX2AI from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases)
 1. Unzip the file
-1. Copy the user interface extension folder `com.isteinbrecher.latex2ai` to
+1. Copy the user interface folder
     - **macOS:**
-        - For current user: `~/Library/Application Support/Adobe/CEP/extensions/`
-        - For all users (requires administrator privileges): `/Library/Application Support/Adobe/CEP/extensions/`
+        - LaTeX2AI only for _current_ user:
+            - Copy `com.isteinbrecher.latex2ai` to `~/Library/Application Support/Adobe/CEP/extensions/`
+        - LaTeX2AI for _all_ users (requires administrator privileges):
+            - Copy `com.isteinbrecher.latex2ai` to `/Library/Application Support/Adobe/CEP/extensions/`
     - **Windows:**
-        - For current user: `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions`
-        - For all users (requires administrator privileges): `C:\Program Files\Common Files\Adobe\CEP\extensions\`
+        - LaTeX2AI only for _current_ user:
+            - Copy `com.isteinbrecher.latex2ai` to `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions`
+        - LaTeX2AI for _all_ users (requires administrator privileges):
+            - Copy `com.isteinbrecher.latex2ai` to `C:\Program Files\Common Files\Adobe\CEP\extensions\`
 1. Copy the native plugin
-    - **macOS:** copy `macOS/LaTeX2AI.aip` to
-        - An arbitrary directory, this directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
-        - For all users (requires administrator privileges): `/Applications/Adobe Illustrator <YOUR VERSION>/Plug-ins/`
-    - **Windows:** copy `WIN/LaTeX2AI.aip` to
-        - An arbitrary directory, this directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder\`
-        - For all users (requires administrator privileges): `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
-1. After a restart of Adobe Illustrator, you can display the LaTeX2AI tools in the main toolbar by selecting `Window/Toolbars/Advanced`.
 
-To uninstall LaTeX2AI, simply delete the files you copied.
+    - **macOS:**
+        - LaTeX2AI only for _current_ user:
+            - Copy `macOS/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
+        - LaTeX2AI for _all_ users (requires administrator privileges):
+            - Copy `macOS/LaTeX2AI.aip` to `/Applications/Adobe Illustrator <YOUR VERSION>/Plug-ins/`
+    - **Windows:**
+        - LaTeX2AI only for _current_ user:
+            - Copy `WIN/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
+        - LaTeX2AI for _all_ users (requires administrator privileges):
+            - Copy `WIN/LaTeX2AI.aip` to `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
+
+1. After a restart of Adobe Illustrator, you can display the LaTeX2AI tools with `Window/Toolbars/Advanced`.
+
+To uninstall LaTeX2AI, delete the files you copied.
 
 # How to use LaTeX2AI
 
@@ -58,7 +68,7 @@ Take for example the well-known formula `$\sum_{k=0}^{\infty}\frac{x^k}{k!}$` wh
 
 ![Placement small](/doc/images/placement_small.png?raw=true)
 
-The green box indicates the boundary box of the LaTeX2I label and the dot describes the placement of the label, i.e., if the size changes the position of this dot relative to the label will stay the same.
+The green box indicates the size of the LaTeX2I label and the dot describes the placement of the label. If the size changes due to a change in the LaTeX code, the position of this dot relative to the label will stay the same.
 If the previous label is now changed to `\displaystyle` we get the following result:
 
 ![Placement large](/doc/images/placement_large.png?raw=true)
@@ -69,7 +79,7 @@ The size of the label changed due to a change in the underlying LaTeX code, but 
 
 Additionally, there is the possibility of a _baseline_ placement.
 This will result in a label where the baseline is exactly in the vertical center of the label.
-The resulting label can now be easily adjusted and snapped to align with another baseline label or Illustrator text:
+This label can now be easily adjusted and snapped to align with another baseline label or Illustrator text:
 
 ![Placement baseline](/doc/images/placement_baseline.png?raw=true)
 
@@ -86,7 +96,7 @@ With the LaTeX2AI tool **Redo items**, one can easily reset the scaling of all L
 ## LaTeX header
 
 LaTeX2AI assumed that all Illustrator files in the same directory use the same LaTeX header `LaTeX2AI_header.tex` (if no one exits in the directory, it will be created the first time it is needed).
-This header can be edited to include packages and macros needed for the labels to match the parent LaTeX document style.
+This header can be edited to include packages and macros needed for the labels.
 
 ## File structure
 
@@ -128,8 +138,8 @@ A few things to keep in mind:
     You might also consider adding tests for your changes (`./src/tests`).
 -   Run the `python3` script `./scripts/check_license.py` to ensure that all added source files have the correct license header.
 -   LaTeX2AI uses `clang-format` to format the C++ code.
-    Make sure to apply clang format to the changed source files
-    -   With the Visual Studio solution in the repository this should happen automatically).
+    Make sure to apply clang format to the changed source files:
+    -   With the Visual Studio solution in the repository this can be done with `Crtl-K` followed by `Ctrl-D`.
     -   On macOS you can use the following command (run in the root directory of LaTeX2AI):
         ```bash
         find src -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i
