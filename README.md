@@ -2,6 +2,17 @@
 
 LaTeX2AI is a plugin for Adobe Illustrator (MacOS and Windows) that enables the use of editable text labels typeset in LaTeX inside an Illustrator document.
 
+# License & How to cite
+
+LaTeX2AI is under the MIT license, see [./LICENSE](LICENSE).
+If you use LaTeX2AI to create figures for your work, please acknowledge it with a link to the GitHub repository.
+For example:
+
+-   Sketches in this work have been created using the Adobe Illustrator plug-in LaTeX2AI ([https://github.com/isteinbrecher/latex2ai](https://github.com/isteinbrecher/latex2ai)).
+
+Feel free to leave a :star: on [GitHub](https://github.com/isteinbrecher/latex2ai).
+You can also add your work to [Work that uses LaTeX2AI](#work-that-uses-latex2ai).
+
 # Installation
 
 ### Requirements
@@ -113,15 +124,7 @@ LaTeX2AI currently does not work if there are non ASCII characters in the docume
 
 LaTeX2AI currently does not work with _Creative Cloud documents_. However, if the document is stored in the _Creative Cloud Files_ folder on the disk, LaTeX2AI should work as expected.
 
-# License & How to cite
-
-LaTeX2AI is under the MIT license, see [./LICENSE](LICENSE).
-If you use LaTeX2AI to create figures for your work, please acknowledge it with a link to the GitHub repository.
-For example:
-
--   Sketches in this work have been created using the Adobe Illustrator plug-in LaTeX2AI ([https://github.com/isteinbrecher/latex2ai](https://github.com/isteinbrecher/latex2ai)).
-
-## Work that uses LaTeX2AI
+# Work that uses LaTeX2AI
 
 -   F. Toenniessen, Die Homotopie der Sphären, eine Einführung in die Technik der Faserungen, Spektralsequenzen und Kohomologie-Operationen, Springer Verlag Heidelberg (to appear in 2022).
 -   Steinbrecher, I., Popp, A., Meier, C.: Consistent coupling of positions and rotations for embedding 1D Cosserat beams into 3D solid volumes. Comput Mech (2021), [Open Access](https://doi.org/10.1007/s00466-021-02111-4)
