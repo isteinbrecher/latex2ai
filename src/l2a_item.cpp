@@ -178,7 +178,14 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
         }
         else if (latex_creation_result.result_ == L2A::LATEX::LatexCreationResult::Result::error_tex_code)
         {
+            // The LaTeX call worked, but the LaTeX code resulted in errors -> ask the user to fix the code
             return ItemChangeResult{ItemChangeResult::Result::latex_error, latex_creation_result};
+        }
+        else
+        {
+            // An error occurred that is not caused by bad LaTeX code. Likely reasons can be a bad file path to TeX or
+            // ghostscript. In this case we cancel the item creation.
+            return ItemChangeResult{ItemChangeResult::Result::cancel};
         }
     }
 

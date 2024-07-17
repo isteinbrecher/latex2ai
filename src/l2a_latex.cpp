@@ -206,8 +206,12 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
         ai::UnicodeString combined_latex_code("\n\n");
         for (const auto& property : properties)
         {
+            if (property.IsBaseline())
+                combined_latex_code += ai::UnicodeString("\\LaTeXtoAIbase{");
+            else
+                combined_latex_code += ai::UnicodeString("\\LaTeXtoAI{");
             combined_latex_code += property.GetLaTeXCode();
-            combined_latex_code += "\n\n";
+            combined_latex_code += ai::UnicodeString("}\n\n");
         }
 
         // Create the latex document
@@ -271,7 +275,7 @@ bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::Fi
     const auto command_result = L2A::UTIL::ExecuteCommandLine(latex_command, false);
 
     // Sometimes we get 0 exit status but still no pdf file. TODO: Find the reason for that. Intermediate fix: loop as
-    // long as this condition is not fulfilled any more
+    // long as this condition is not fulfilled any more -> Use this fix and print the warning in debug mode
     if (command_result.exit_status_ == 0 && !L2A::UTIL::IsFile(pdf_file))
     {
         l2a_error("Got 0 exit status, but no pdf file was created");
