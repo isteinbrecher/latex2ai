@@ -87,7 +87,7 @@ void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& propert
     {
         version_string = "0.0.0";
     }
-    version_ = L2A::UTIL::Version(version_string);
+    version_ = L2A::UTIL::ParseVersion(version_string);
 
     // Set the placement options
     text_align_horizontal_ = L2A::UTIL::KeyToValue(TextAlignHorizontalStrings(), TextAlignHorizontalEnums(),

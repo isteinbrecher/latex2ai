@@ -555,6 +555,7 @@
 					src,
 					tpl/tinyxml2,
 					tpl/json/single_include/nlohmann,
+					"tpl/cpp-semver/include/semver",
 					tpl/CRCpp/inc,
 				);
 				PRODUCT_NAME = LaTeX2AI;
@@ -580,6 +581,7 @@
 					src,
 					tpl/tinyxml2,
 					tpl/json/single_include/nlohmann,
+					"tpl/cpp-semver/include/semver",
 					tpl/CRCpp/inc,
 				);
 				PRODUCT_NAME = LaTeX2AI;
