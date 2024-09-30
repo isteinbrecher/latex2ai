@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # Check if the windows identifier matches with the current one
     if not git_identifier == windows_git_identifier:
         print(
-            f'The git identifier for Windows "{git_identifier}" does not match the current repository "{windows_git_identifier}"'
+            f'The git identifier for Windows "{windows_git_identifier}" does not match the current repository "{git_identifier}"'
         )
         sys.exit(1)
 
