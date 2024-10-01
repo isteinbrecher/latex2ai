@@ -31,7 +31,6 @@ Automatically build LaTeX2AI and create a archive with the executables.
 import os
 import shutil
 import subprocess
-from zipfile import ZipFile
 from pathlib import Path
 from create_headers import get_git_sha
 
@@ -70,6 +69,7 @@ def get_illustrator_version(path):
         "Adobe Illustrator CC 2018 SDK": "IllustratorCC2018",
         "Adobe Illustrator 2021 SDK": "Illustrator2021",
         "Adobe Illustrator 2022 SDK": "Illustrator2022",
+        "Adobe Illustrator 2024 SDK": "Illustrator2024",
     }
     illustrator_version = None
     for path_part in split_path:
@@ -99,24 +99,13 @@ def build_solution(repository_dir, build_type, git_info, illustrator_version):
     if return_value == 0:
         # The build passed, compress the executables.
         executable_dir = os.path.realpath(
-            os.path.join(repository_dir, "..\output", "win", "x64", build_type)
+            os.path.join(repository_dir, "..\\output", "win", "x64", build_type)
         )
-        os.chdir(executable_dir)
-        # TODO: Add the UI to an individual zip file here
-        executables = ["LaTeX2AI.aip", "LaTeX2AIForms.exe"]
-        zip_name = (
-            "LaTeX2AI_"
-            + git_info
-            + "_"
-            + build_type.lower()
-            + "_"
-            + illustrator_version
-            + ".zip"
-        )
-        with ZipFile(zip_name, mode="w") as zf:
-            for f in executables:
-                zf.write(f)
-        return os.path.join(executable_dir, zip_name)
+
+        executable = os.path.join(executable_dir, "LaTeX2AI.aip")
+        final_name = os.path.join(executable_dir, "LaTeX2AI_" + git_info + "_" + build_type.lower() + ".aip")
+        shutil.copyfile(executable, final_name)
+        return final_name
     else:
         raise ValueError("Could not build solution in {}".format(repository_dir))
 
@@ -209,15 +198,8 @@ if __name__ == "__main__":
     print("The LaTeX2AI state that will be built is: {}".format(git_buid_name))
 
     # Get all repositories that should be build.
-    env_key = "LATEX2AI_REPOSITORIES"
-    if env_key not in os.environ.keys():
-        raise KeyError(
-            "No repositories are defined in the enviroment "
-            "variable {}".format(env_key)
-        )
-    repositories = os.environ[env_key].strip().split(";")
-    if repositories[-1] == "":
-        del repositories[-1]
+    repositories = [base_dir]
+
     print("The following repositories will be built:")
     all_clean = True
     for repo in repositories:
