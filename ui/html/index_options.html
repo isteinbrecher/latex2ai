@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <script src="../js/CSInterface.js"></script>
+        <script src="../js/jquery-3.7.1.min.js"></script>
+        <script src="../js/auto_generated.js"></script>
+        <script src="../js/common.js"></script>
+        <script src="../js/main_options.js"></script>
+        <link id="hostStyle" rel="stylesheet" href="../css/latex2ai.css" />
+
+        <style></style>
+    </head>
+    <body>
+        <p><b>LaTeX2AI information</b></p>
+        <div class="spread_over_width">
+            <label>Version</label>
+            <label id="l2a_version">x.x.x</label>
+        </div>
+        <br />
+        <div class="spread_over_width">
+            <label>Git SHA</label>
+            <label class="allow_user_select" id="l2a_git_sha">dummy</label>
+        </div>
+        <hr />
+        <p><b>Global LaTeX options</b></p>
+        <div class="spread_over_width">
+            <label>Engine</label>
+            <select id="tex_engine">
+                <option value="pdflatex">pdflatex</option>
+                <option value="lualatex">lualatex</option>
+                <option value="xelatex">xelatex</option>
+            </select>
+        </div>
+        <br />
+        <label>TeX command line options</label>
+        <br />
+        <input class="label_almost_full_width" type="text" id="tex_options" />
+        <br />
+        <br />
+        <label id="tex_folder_label">dummy</label>
+        <br />
+        <div class="spread_over_width">
+            <input
+                class="label_almost_full_width"
+                type="text"
+                id="tex_folder"
+            />
+            <input type="submit" id="button_folder_tex" value="..." />
+        </div>
+        <br />
+        <label>Ghostscript command</label>
+        <br />
+        <div class="spread_over_width">
+            <input
+                class="label_almost_full_width"
+                type="text"
+                id="gs_command"
+            />
+            <input type="submit" id="button_command_gs" value="..." />
+        </div>
+        <br />
+        <hr />
+        <p><b>Warnings</b></p>
+        <input type="checkbox" id="warning_save_boundary_box" />
+        <label>On "Save to PDF", if there are stretched items</label>
+        <br />
+        <input type="checkbox" id="warning_save_illustrator" />
+        <label>On "Save to PDF", if Illustrator file is not saved</label>
+        <hr />
+        <p><b>LaTeX2AI document information</b></p>
+        <label>LaTeX2AI header</label>
+        <br />
+        <div class="spread_over_width">
+            <input type="text" id="header_label" style="width: 84%" readonly />
+            <input type="submit" id="button_header" value="Open" />
+        </div>
+        <hr />
+        <div class="spread_over_width">
+            <input
+                class="button_third"
+                type="submit"
+                id="button_default"
+                value="Default values"
+            />
+            <input
+                class="button_third"
+                type="submit"
+                id="button_save_and_exit"
+                value="Save and exit"
+            />
+            <input
+                class="button_third"
+                type="submit"
+                id="button_cancel"
+                value="Cancel"
+            />
+        </div>
+    </body>
+</html>

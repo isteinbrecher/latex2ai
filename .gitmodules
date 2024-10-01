@@ -1,12 +1,18 @@
-[submodule "l2a/tpl/tinyxml2"]
-	path = l2a/tpl/tinyxml2
+[submodule "tpl/tinyxml2"]
+	path = tpl/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
-[submodule "l2a/tpl/StackWalker"]
-	path = l2a/tpl/StackWalker
+[submodule "tpl/StackWalker"]
+	path = tpl/StackWalker
 	url = https://github.com/JochenKalmbach/StackWalker.git
-[submodule "l2a/tpl/json"]
-	path = l2a/tpl/json
+[submodule "tpl/json"]
+	path = tpl/json
 	url = https://github.com/nlohmann/json.git
-[submodule "l2a/tpl/base64"]
-	path = l2a/tpl/base64
+[submodule "tpl/base64"]
+	path = tpl/base64
 	url = https://github.com/isteinbrecher/base64.git
+[submodule "tpl/CRCpp"]
+	path = tpl/CRCpp
+	url = https://github.com/d-bahr/CRCpp.git
+[submodule "tpl/cpp-semver"]
+	path = tpl/cpp-semver
+	url = https://github.com/z4kn4fein/cpp-semver.git

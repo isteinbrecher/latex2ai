@@ -1,0 +1,31 @@
+# Define the base style
+BasedOnStyle: Google
+
+# Modifications of base style
+AlignAfterOpenBracket: DontAlign
+BreakBeforeBraces: Allman
+ColumnLimit: 120
+MaxEmptyLinesToKeep: 3
+NamespaceIndentation: All
+SpacesInContainerLiterals: false
+Standard: c++17
+TabWidth: 4
+IndentWidth: 4
+
+# Sort imported headers
+IncludeBlocks: Regroup
+SortIncludes: CaseInsensitive
+IncludeCategories:
+  # Precompiled Illustrator header
+  - Regex: "IllustratorSDK\\.h"
+    Priority: -1
+
+  # Header corresponging to cpp file has priority 0
+
+  # LaTeX2AI headers
+  - Regex: "l2a_.*\\.(h|H)"
+    Priority: 10
+
+  # Standard library headers
+  - Regex: "<[a-z_]+>"
+    Priority: 100

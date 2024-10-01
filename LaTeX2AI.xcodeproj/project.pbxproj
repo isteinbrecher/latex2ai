@@ -1,0 +1,615 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2AF5F7A20CF5F3030091D961 /* IAIUnicodeString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5F7A00CF5F3030091D961 /* IAIUnicodeString.cpp */; };
+		2AF5F7A90CF5F3110091D961 /* AppContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5F7A30CF5F3110091D961 /* AppContext.cpp */; };
+		2AF5F7AA0CF5F3110091D961 /* IllustratorSDK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5F7A40CF5F3110091D961 /* IllustratorSDK.cpp */; };
+		2AF5F7AB0CF5F3110091D961 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5F7A50CF5F3110091D961 /* Main.cpp */; };
+		2AF5F7AC0CF5F3110091D961 /* Plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5F7A60CF5F3110091D961 /* Plugin.cpp */; };
+		2AF5F7AD0CF5F3110091D961 /* SDKAboutPluginsHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5F7A70CF5F3110091D961 /* SDKAboutPluginsHelper.cpp */; };
+		2AF5F7AE0CF5F3110091D961 /* Suites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5F7A80CF5F3110091D961 /* Suites.cpp */; };
+		3249918517F099AF004381AE /* LaTeX2AI.r in Rez */ = {isa = PBXBuildFile; fileRef = 3249918317F099AF004381AE /* LaTeX2AI.r */; };
+		3249918617F099AF004381AE /* LaTeX2AI2x.r in Rez */ = {isa = PBXBuildFile; fileRef = 3249918417F099AF004381AE /* LaTeX2AI2x.r */; };
+		A1A458C925E4DC890077068A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A458C825E4DC890077068A /* Cocoa.framework */; };
+		C605E7F72B226FF900E74B92 /* l2a_execute.h in Headers */ = {isa = PBXBuildFile; fileRef = C605E7F52B226FF900E74B92 /* l2a_execute.h */; };
+		C605E7F82B226FF900E74B92 /* l2a_execute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C605E7F62B226FF900E74B92 /* l2a_execute.cpp */; };
+		C61B699B2B4AAE0C00AF2924 /* SDKPlugPlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */; };
+		C61B699E2B4AB17400AF2924 /* l2a_ui_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */; };
+		C61B699F2B4AB17400AF2924 /* l2a_ui_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */; };
+		C61B69A22B4AB83200AF2924 /* l2a_ui_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B69A02B4AB83200AF2924 /* l2a_ui_base.cpp */; };
+		C61B69A32B4AB83200AF2924 /* l2a_ui_base.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */; };
+		C61B69AE2B4AD6BB00AF2924 /* l2a_ui_item.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */; };
+		C61B69AF2B4AD6BB00AF2924 /* l2a_ui_item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */; };
+		C62AA9DB2B4C3BF300E27B7B /* l2a_ui_redo.h in Headers */ = {isa = PBXBuildFile; fileRef = C62AA9D92B4C3BF300E27B7B /* l2a_ui_redo.h */; };
+		C62AA9DC2B4C3BF300E27B7B /* l2a_ui_redo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62AA9DA2B4C3BF300E27B7B /* l2a_ui_redo.cpp */; };
+		C62F72262B25B34A00947D31 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62F72252B25B34A00947D31 /* tinyxml2.cpp */; };
+		C64D02C72B4A067300079AFE /* HtmlUIController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64D02C62B4A067300079AFE /* HtmlUIController.cpp */; };
+		C67D8B152B03814D001F89FA /* l2a_math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B142B03814D001F89FA /* l2a_math.cpp */; };
+		C67D8B182B03817A001F89FA /* l2a_string_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B162B03817A001F89FA /* l2a_string_functions.cpp */; };
+		C67D8B192B03817A001F89FA /* l2a_error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B172B03817A001F89FA /* l2a_error.cpp */; };
+		C67D8B1D2B0384D5001F89FA /* l2a_math.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B1A2B0384D5001F89FA /* l2a_math.h */; };
+		C67D8B1E2B0384D5001F89FA /* l2a_string_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B1B2B0384D5001F89FA /* l2a_string_functions.h */; };
+		C67D8B1F2B0384D5001F89FA /* l2a_error.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B1C2B0384D5001F89FA /* l2a_error.h */; };
+		C67D8B222B038670001F89FA /* l2a_file_system.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B202B038670001F89FA /* l2a_file_system.h */; };
+		C67D8B232B038670001F89FA /* l2a_file_system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B212B038670001F89FA /* l2a_file_system.cpp */; };
+		C67D8B262B0386A6001F89FA /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B242B0386A6001F89FA /* base64.cpp */; };
+		C67D8B272B0386A6001F89FA /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B252B0386A6001F89FA /* base64.h */; };
+		C67D8B2D2B038842001F89FA /* l2a_parameter_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B282B038842001F89FA /* l2a_parameter_list.cpp */; };
+		C67D8B2E2B038842001F89FA /* l2a_version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B292B038842001F89FA /* l2a_version.cpp */; };
+		C67D8B2F2B038842001F89FA /* l2a_parameter_list.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B2A2B038842001F89FA /* l2a_parameter_list.h */; };
+		C67D8B302B038842001F89FA /* l2a_version.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B2B2B038842001F89FA /* l2a_version.h */; };
+		C67D8B312B038842001F89FA /* l2a_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B2C2B038842001F89FA /* l2a_utils.h */; };
+		C67D8B382B0389DF001F89FA /* l2a_suites.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B362B0389DF001F89FA /* l2a_suites.h */; };
+		C67D8B3C2B0389FC001F89FA /* l2a_ai_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B3A2B0389FC001F89FA /* l2a_ai_functions.cpp */; };
+		C67D8B3D2B0389FC001F89FA /* l2a_ai_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B3B2B0389FC001F89FA /* l2a_ai_functions.h */; };
+		C67D8B3F2B038B41001F89FA /* l2a_property.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B3E2B038B41001F89FA /* l2a_property.cpp */; };
+		C67D8B412B038B53001F89FA /* l2a_property.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B402B038B53001F89FA /* l2a_property.h */; };
+		C67D8B4E2B038B86001F89FA /* l2a_global.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B432B038B86001F89FA /* l2a_global.h */; };
+		C67D8B4F2B038B86001F89FA /* l2a_latex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B442B038B86001F89FA /* l2a_latex.cpp */; };
+		C67D8B502B038B86001F89FA /* l2a_names.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B452B038B86001F89FA /* l2a_names.h */; };
+		C67D8B522B038B86001F89FA /* l2a_latex.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B472B038B86001F89FA /* l2a_latex.h */; };
+		C67D8B532B038B86001F89FA /* l2a_annotator.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B482B038B86001F89FA /* l2a_annotator.h */; };
+		C67D8B542B038B86001F89FA /* l2a_item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B492B038B86001F89FA /* l2a_item.cpp */; };
+		C67D8B552B038B86001F89FA /* l2a_item.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B4A2B038B86001F89FA /* l2a_item.h */; };
+		C67D8B562B038B86001F89FA /* l2a_global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67D8B4B2B038B86001F89FA /* l2a_global.cpp */; };
+		C67D8B572B038B86001F89FA /* l2a_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = C67D8B4C2B038B86001F89FA /* l2a_constants.h */; };
+		C68EDECA2B037ECB003BB3CD /* l2a_suites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68EDEC92B037ECB003BB3CD /* l2a_suites.cpp */; };
+		C6A3D2392B63A502006F3676 /* l2a_ui_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */; };
+		C6A3D23C2B63A525006F3676 /* l2a_ui_debug.h in Headers */ = {isa = PBXBuildFile; fileRef = C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */; };
+		C6F3D1EC2B039EDD004EF248 /* l2a_annotator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1EB2B039EDD004EF248 /* l2a_annotator.cpp */; };
+		C6F3D1EF2B039EF3004EF248 /* l2a_plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1ED2B039EF3004EF248 /* l2a_plugin.h */; };
+		C6F3D1F02B039EF3004EF248 /* l2a_plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1EE2B039EF3004EF248 /* l2a_plugin.cpp */; };
+		C6F3D1F22B03A005004EF248 /* IAIFilePath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1F12B03A005004EF248 /* IAIFilePath.cpp */; };
+		C6F3D2052B03A022004EF248 /* test_base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1F32B03A022004EF248 /* test_base64.cpp */; };
+		C6F3D2062B03A022004EF248 /* test_file_system.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1F42B03A022004EF248 /* test_file_system.h */; };
+		C6F3D2072B03A022004EF248 /* test_file_system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1F52B03A022004EF248 /* test_file_system.cpp */; };
+		C6F3D2082B03A022004EF248 /* testing.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1F62B03A022004EF248 /* testing.h */; };
+		C6F3D2092B03A022004EF248 /* test_utlity.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1F72B03A022004EF248 /* test_utlity.h */; };
+		C6F3D20A2B03A022004EF248 /* test_framework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1F82B03A022004EF248 /* test_framework.cpp */; };
+		C6F3D20B2B03A022004EF248 /* test_framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1F92B03A022004EF248 /* test_framework.h */; };
+		C6F3D20C2B03A022004EF248 /* test_string_functions.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1FA2B03A022004EF248 /* test_string_functions.h */; };
+		C6F3D20E2B03A022004EF248 /* test_parameter_list.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1FC2B03A022004EF248 /* test_parameter_list.h */; };
+		C6F3D20F2B03A022004EF248 /* test_base64.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D1FD2B03A022004EF248 /* test_base64.h */; };
+		C6F3D2102B03A022004EF248 /* testing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D1FE2B03A022004EF248 /* testing.cpp */; };
+		C6F3D2122B03A022004EF248 /* testing_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D2002B03A022004EF248 /* testing_utility.cpp */; };
+		C6F3D2132B03A022004EF248 /* test_parameter_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D2012B03A022004EF248 /* test_parameter_list.cpp */; };
+		C6F3D2142B03A022004EF248 /* test_string_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D2022B03A022004EF248 /* test_string_functions.cpp */; };
+		C6F3D2152B03A022004EF248 /* testing_utlity.h in Headers */ = {isa = PBXBuildFile; fileRef = C6F3D2032B03A022004EF248 /* testing_utlity.h */; };
+		C6F3D2162B03A022004EF248 /* test_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6F3D2042B03A022004EF248 /* test_utility.cpp */; };
+		C6FF8A0B2B7CC03D004C592B /* l2a_ui_options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6FF8A092B7CC03D004C592B /* l2a_ui_options.cpp */; };
+		C6FF8A0C2B7CC03D004C592B /* l2a_ui_options.h in Headers */ = {isa = PBXBuildFile; fileRef = C6FF8A0A2B7CC03D004C592B /* l2a_ui_options.h */; };
+		E8FDCA9910209FEA00D09060 /* IAIStringFormatUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8FDCA9810209FEA00D09060 /* IAIStringFormatUtils.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2AF5F7A00CF5F3030091D961 /* IAIUnicodeString.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = IAIUnicodeString.cpp; path = ../../illustratorapi/illustrator/IAIUnicodeString.cpp; sourceTree = SOURCE_ROOT; };
+		2AF5F7A30CF5F3110091D961 /* AppContext.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = AppContext.cpp; path = ../common/source/AppContext.cpp; sourceTree = SOURCE_ROOT; };
+		2AF5F7A40CF5F3110091D961 /* IllustratorSDK.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = IllustratorSDK.cpp; path = ../common/source/IllustratorSDK.cpp; sourceTree = SOURCE_ROOT; };
+		2AF5F7A50CF5F3110091D961 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../common/source/Main.cpp; sourceTree = SOURCE_ROOT; };
+		2AF5F7A60CF5F3110091D961 /* Plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Plugin.cpp; path = ../common/source/Plugin.cpp; sourceTree = SOURCE_ROOT; };
+		2AF5F7A70CF5F3110091D961 /* SDKAboutPluginsHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = SDKAboutPluginsHelper.cpp; path = ../common/source/SDKAboutPluginsHelper.cpp; sourceTree = SOURCE_ROOT; };
+		2AF5F7A80CF5F3110091D961 /* Suites.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Suites.cpp; path = ../common/source/Suites.cpp; sourceTree = SOURCE_ROOT; };
+		3249918317F099AF004381AE /* LaTeX2AI.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = LaTeX2AI.r; path = resources/Mac/LaTeX2AI.r; sourceTree = "<group>"; };
+		3249918417F099AF004381AE /* LaTeX2AI2x.r */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.rez; name = LaTeX2AI2x.r; path = resources/Mac/LaTeX2AI2x.r; sourceTree = "<group>"; };
+		3257373017F08E3D0068501E /* IDToFile.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = IDToFile.txt; path = Resources/raw/IDToFile.txt; sourceTree = "<group>"; };
+		6E0C530E0A8B98EC00C9A14A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; name = Info.plist; path = ../common/mac/Info.plist; sourceTree = SOURCE_ROOT; };
+		6EE2BA530A40BB2600CC7CE2 /* LaTeX2AI.aip */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LaTeX2AI.aip; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1A458C425E4DC240077068A /* AIPluginCommon.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = AIPluginCommon.xcconfig; path = ../common/mac/AIPluginCommon.xcconfig; sourceTree = "<group>"; };
+		A1A458C525E4DC240077068A /* AIPluginDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = AIPluginDebug.xcconfig; path = ../common/mac/AIPluginDebug.xcconfig; sourceTree = "<group>"; };
+		A1A458C625E4DC240077068A /* AIPluginRelease.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = AIPluginRelease.xcconfig; path = ../common/mac/AIPluginRelease.xcconfig; sourceTree = "<group>"; };
+		A1A458C825E4DC890077068A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		C605E7F52B226FF900E74B92 /* l2a_execute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_execute.h; path = src/utils/l2a_execute.h; sourceTree = "<group>"; };
+		C605E7F62B226FF900E74B92 /* l2a_execute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_execute.cpp; path = src/utils/l2a_execute.cpp; sourceTree = "<group>"; };
+		C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugPlug.cpp; path = ../common/source/SDKPlugPlug.cpp; sourceTree = "<group>"; };
+		C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_manager.h; path = src/l2a_ui_manager.h; sourceTree = "<group>"; };
+		C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_manager.cpp; path = src/l2a_ui_manager.cpp; sourceTree = "<group>"; };
+		C61B69A02B4AB83200AF2924 /* l2a_ui_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_base.cpp; path = src/l2a_ui_base.cpp; sourceTree = "<group>"; };
+		C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_base.h; path = src/l2a_ui_base.h; sourceTree = "<group>"; };
+		C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_item.h; path = src/l2a_ui_item.h; sourceTree = "<group>"; };
+		C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_item.cpp; path = src/l2a_ui_item.cpp; sourceTree = "<group>"; };
+		C62AA9D92B4C3BF300E27B7B /* l2a_ui_redo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_redo.h; path = src/l2a_ui_redo.h; sourceTree = "<group>"; };
+		C62AA9DA2B4C3BF300E27B7B /* l2a_ui_redo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_redo.cpp; path = src/l2a_ui_redo.cpp; sourceTree = "<group>"; };
+		C62F72252B25B34A00947D31 /* tinyxml2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml2.cpp; path = tpl/tinyxml2/tinyxml2.cpp; sourceTree = "<group>"; };
+		C64D02C62B4A067300079AFE /* HtmlUIController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HtmlUIController.cpp; path = ../common/source/HtmlUIController.cpp; sourceTree = "<group>"; };
+		C67D8B142B03814D001F89FA /* l2a_math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_math.cpp; path = src/utils/l2a_math.cpp; sourceTree = "<group>"; };
+		C67D8B162B03817A001F89FA /* l2a_string_functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_string_functions.cpp; path = src/utils/l2a_string_functions.cpp; sourceTree = "<group>"; };
+		C67D8B172B03817A001F89FA /* l2a_error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_error.cpp; path = src/utils/l2a_error.cpp; sourceTree = "<group>"; };
+		C67D8B1A2B0384D5001F89FA /* l2a_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_math.h; path = src/utils/l2a_math.h; sourceTree = "<group>"; };
+		C67D8B1B2B0384D5001F89FA /* l2a_string_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_string_functions.h; path = src/utils/l2a_string_functions.h; sourceTree = "<group>"; };
+		C67D8B1C2B0384D5001F89FA /* l2a_error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_error.h; path = src/utils/l2a_error.h; sourceTree = "<group>"; };
+		C67D8B202B038670001F89FA /* l2a_file_system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_file_system.h; path = src/utils/l2a_file_system.h; sourceTree = "<group>"; };
+		C67D8B212B038670001F89FA /* l2a_file_system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_file_system.cpp; path = src/utils/l2a_file_system.cpp; sourceTree = "<group>"; };
+		C67D8B242B0386A6001F89FA /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base64.cpp; path = tpl/base64/src/base64.cpp; sourceTree = "<group>"; };
+		C67D8B252B0386A6001F89FA /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base64.h; path = tpl/base64/src/base64.h; sourceTree = "<group>"; };
+		C67D8B282B038842001F89FA /* l2a_parameter_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_parameter_list.cpp; path = src/utils/l2a_parameter_list.cpp; sourceTree = "<group>"; };
+		C67D8B292B038842001F89FA /* l2a_version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_version.cpp; path = src/utils/l2a_version.cpp; sourceTree = "<group>"; };
+		C67D8B2A2B038842001F89FA /* l2a_parameter_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_parameter_list.h; path = src/utils/l2a_parameter_list.h; sourceTree = "<group>"; };
+		C67D8B2B2B038842001F89FA /* l2a_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_version.h; path = src/utils/l2a_version.h; sourceTree = "<group>"; };
+		C67D8B2C2B038842001F89FA /* l2a_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_utils.h; path = src/utils/l2a_utils.h; sourceTree = "<group>"; };
+		C67D8B362B0389DF001F89FA /* l2a_suites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_suites.h; path = src/l2a_suites.h; sourceTree = "<group>"; };
+		C67D8B3A2B0389FC001F89FA /* l2a_ai_functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ai_functions.cpp; path = src/utils/l2a_ai_functions.cpp; sourceTree = "<group>"; };
+		C67D8B3B2B0389FC001F89FA /* l2a_ai_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ai_functions.h; path = src/utils/l2a_ai_functions.h; sourceTree = "<group>"; };
+		C67D8B3E2B038B41001F89FA /* l2a_property.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_property.cpp; path = src/l2a_property.cpp; sourceTree = "<group>"; };
+		C67D8B402B038B53001F89FA /* l2a_property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_property.h; path = src/l2a_property.h; sourceTree = "<group>"; };
+		C67D8B432B038B86001F89FA /* l2a_global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_global.h; path = src/l2a_global.h; sourceTree = "<group>"; };
+		C67D8B442B038B86001F89FA /* l2a_latex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_latex.cpp; path = src/l2a_latex.cpp; sourceTree = "<group>"; };
+		C67D8B452B038B86001F89FA /* l2a_names.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_names.h; path = src/l2a_names.h; sourceTree = "<group>"; };
+		C67D8B472B038B86001F89FA /* l2a_latex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_latex.h; path = src/l2a_latex.h; sourceTree = "<group>"; };
+		C67D8B482B038B86001F89FA /* l2a_annotator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_annotator.h; path = src/l2a_annotator.h; sourceTree = "<group>"; };
+		C67D8B492B038B86001F89FA /* l2a_item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_item.cpp; path = src/l2a_item.cpp; sourceTree = "<group>"; };
+		C67D8B4A2B038B86001F89FA /* l2a_item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_item.h; path = src/l2a_item.h; sourceTree = "<group>"; };
+		C67D8B4B2B038B86001F89FA /* l2a_global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_global.cpp; path = src/l2a_global.cpp; sourceTree = "<group>"; };
+		C67D8B4C2B038B86001F89FA /* l2a_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_constants.h; path = src/l2a_constants.h; sourceTree = "<group>"; };
+		C68EDEC92B037ECB003BB3CD /* l2a_suites.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_suites.cpp; path = src/l2a_suites.cpp; sourceTree = "<group>"; };
+		C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_debug.cpp; path = src/l2a_ui_debug.cpp; sourceTree = "<group>"; };
+		C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_debug.h; path = src/l2a_ui_debug.h; sourceTree = "<group>"; };
+		C6F3D1EB2B039EDD004EF248 /* l2a_annotator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_annotator.cpp; path = src/l2a_annotator.cpp; sourceTree = "<group>"; };
+		C6F3D1ED2B039EF3004EF248 /* l2a_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_plugin.h; path = src/l2a_plugin.h; sourceTree = "<group>"; };
+		C6F3D1EE2B039EF3004EF248 /* l2a_plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_plugin.cpp; path = src/l2a_plugin.cpp; sourceTree = "<group>"; };
+		C6F3D1F12B03A005004EF248 /* IAIFilePath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IAIFilePath.cpp; path = ../../illustratorapi/illustrator/IAIFilePath.cpp; sourceTree = "<group>"; };
+		C6F3D1F32B03A022004EF248 /* test_base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_base64.cpp; path = src/tests/test_base64.cpp; sourceTree = "<group>"; };
+		C6F3D1F42B03A022004EF248 /* test_file_system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_file_system.h; path = src/tests/test_file_system.h; sourceTree = "<group>"; };
+		C6F3D1F52B03A022004EF248 /* test_file_system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_file_system.cpp; path = src/tests/test_file_system.cpp; sourceTree = "<group>"; };
+		C6F3D1F62B03A022004EF248 /* testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = testing.h; path = src/tests/testing.h; sourceTree = "<group>"; };
+		C6F3D1F72B03A022004EF248 /* test_utlity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_utlity.h; path = src/tests/test_utlity.h; sourceTree = "<group>"; };
+		C6F3D1F82B03A022004EF248 /* test_framework.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_framework.cpp; path = src/tests/test_framework.cpp; sourceTree = "<group>"; };
+		C6F3D1F92B03A022004EF248 /* test_framework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_framework.h; path = src/tests/test_framework.h; sourceTree = "<group>"; };
+		C6F3D1FA2B03A022004EF248 /* test_string_functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_string_functions.h; path = src/tests/test_string_functions.h; sourceTree = "<group>"; };
+		C6F3D1FC2B03A022004EF248 /* test_parameter_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_parameter_list.h; path = src/tests/test_parameter_list.h; sourceTree = "<group>"; };
+		C6F3D1FD2B03A022004EF248 /* test_base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_base64.h; path = src/tests/test_base64.h; sourceTree = "<group>"; };
+		C6F3D1FE2B03A022004EF248 /* testing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing.cpp; path = src/tests/testing.cpp; sourceTree = "<group>"; };
+		C6F3D2002B03A022004EF248 /* testing_utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing_utility.cpp; path = src/tests/testing_utility.cpp; sourceTree = "<group>"; };
+		C6F3D2012B03A022004EF248 /* test_parameter_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_parameter_list.cpp; path = src/tests/test_parameter_list.cpp; sourceTree = "<group>"; };
+		C6F3D2022B03A022004EF248 /* test_string_functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_string_functions.cpp; path = src/tests/test_string_functions.cpp; sourceTree = "<group>"; };
+		C6F3D2032B03A022004EF248 /* testing_utlity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = testing_utlity.h; path = src/tests/testing_utlity.h; sourceTree = "<group>"; };
+		C6F3D2042B03A022004EF248 /* test_utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_utility.cpp; path = src/tests/test_utility.cpp; sourceTree = "<group>"; };
+		C6FF8A092B7CC03D004C592B /* l2a_ui_options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_options.cpp; path = src/l2a_ui_options.cpp; sourceTree = "<group>"; };
+		C6FF8A0A2B7CC03D004C592B /* l2a_ui_options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_options.h; path = src/l2a_ui_options.h; sourceTree = "<group>"; };
+		E8FDCA9810209FEA00D09060 /* IAIStringFormatUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IAIStringFormatUtils.cpp; path = ../../illustratorapi/illustrator/IAIStringFormatUtils.cpp; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		508817D209F0C9AD0071BF1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1A458C925E4DC890077068A /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		508817C209F0C9740071BF1A = {
+			isa = PBXGroup;
+			children = (
+				A1A458C325E4DC120077068A /* xcconfigs */,
+				A1A458C725E4DC880077068A /* Frameworks */,
+				508817F509F0CAB50071BF1A /* Sources */,
+				6EE2BA590A40BDD300CC7CE2 /* Resources */,
+				508817D509F0C9AD0071BF1A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		508817D509F0C9AD0071BF1A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6EE2BA530A40BB2600CC7CE2 /* LaTeX2AI.aip */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		508817F509F0CAB50071BF1A /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C6FF8A092B7CC03D004C592B /* l2a_ui_options.cpp */,
+				C6FF8A0A2B7CC03D004C592B /* l2a_ui_options.h */,
+				C6A3D2372B63A502006F3676 /* l2a_ui_debug.cpp */,
+				C6A3D23B2B63A525006F3676 /* l2a_ui_debug.h */,
+				C62AA9DA2B4C3BF300E27B7B /* l2a_ui_redo.cpp */,
+				C62AA9D92B4C3BF300E27B7B /* l2a_ui_redo.h */,
+				C61B69AD2B4AD6BB00AF2924 /* l2a_ui_item.cpp */,
+				C61B69AC2B4AD6BB00AF2924 /* l2a_ui_item.h */,
+				C61B69A02B4AB83200AF2924 /* l2a_ui_base.cpp */,
+				C61B69A12B4AB83200AF2924 /* l2a_ui_base.h */,
+				C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */,
+				C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */,
+				C67D8B242B0386A6001F89FA /* base64.cpp */,
+				C67D8B252B0386A6001F89FA /* base64.h */,
+				C67D8B3A2B0389FC001F89FA /* l2a_ai_functions.cpp */,
+				C67D8B3B2B0389FC001F89FA /* l2a_ai_functions.h */,
+				C6F3D1EB2B039EDD004EF248 /* l2a_annotator.cpp */,
+				C67D8B482B038B86001F89FA /* l2a_annotator.h */,
+				C67D8B4C2B038B86001F89FA /* l2a_constants.h */,
+				C67D8B172B03817A001F89FA /* l2a_error.cpp */,
+				C67D8B1C2B0384D5001F89FA /* l2a_error.h */,
+				C605E7F62B226FF900E74B92 /* l2a_execute.cpp */,
+				C605E7F52B226FF900E74B92 /* l2a_execute.h */,
+				C67D8B212B038670001F89FA /* l2a_file_system.cpp */,
+				C67D8B202B038670001F89FA /* l2a_file_system.h */,
+				C67D8B4B2B038B86001F89FA /* l2a_global.cpp */,
+				C67D8B432B038B86001F89FA /* l2a_global.h */,
+				C67D8B492B038B86001F89FA /* l2a_item.cpp */,
+				C67D8B4A2B038B86001F89FA /* l2a_item.h */,
+				C67D8B442B038B86001F89FA /* l2a_latex.cpp */,
+				C67D8B472B038B86001F89FA /* l2a_latex.h */,
+				C67D8B142B03814D001F89FA /* l2a_math.cpp */,
+				C67D8B1A2B0384D5001F89FA /* l2a_math.h */,
+				C67D8B452B038B86001F89FA /* l2a_names.h */,
+				C67D8B282B038842001F89FA /* l2a_parameter_list.cpp */,
+				C67D8B2A2B038842001F89FA /* l2a_parameter_list.h */,
+				C6F3D1EE2B039EF3004EF248 /* l2a_plugin.cpp */,
+				C6F3D1ED2B039EF3004EF248 /* l2a_plugin.h */,
+				C67D8B3E2B038B41001F89FA /* l2a_property.cpp */,
+				C67D8B402B038B53001F89FA /* l2a_property.h */,
+				C67D8B162B03817A001F89FA /* l2a_string_functions.cpp */,
+				C67D8B1B2B0384D5001F89FA /* l2a_string_functions.h */,
+				C68EDEC92B037ECB003BB3CD /* l2a_suites.cpp */,
+				C67D8B362B0389DF001F89FA /* l2a_suites.h */,
+				C67D8B2C2B038842001F89FA /* l2a_utils.h */,
+				C67D8B292B038842001F89FA /* l2a_version.cpp */,
+				C67D8B2B2B038842001F89FA /* l2a_version.h */,
+				F9C02BCE0BA6E8E90039151A /* Shared */,
+				C6F3D1F32B03A022004EF248 /* test_base64.cpp */,
+				C6F3D1FD2B03A022004EF248 /* test_base64.h */,
+				C6F3D1F52B03A022004EF248 /* test_file_system.cpp */,
+				C6F3D1F42B03A022004EF248 /* test_file_system.h */,
+				C6F3D1F82B03A022004EF248 /* test_framework.cpp */,
+				C6F3D1F92B03A022004EF248 /* test_framework.h */,
+				C6F3D2012B03A022004EF248 /* test_parameter_list.cpp */,
+				C6F3D1FC2B03A022004EF248 /* test_parameter_list.h */,
+				C6F3D2022B03A022004EF248 /* test_string_functions.cpp */,
+				C6F3D1FA2B03A022004EF248 /* test_string_functions.h */,
+				C6F3D2042B03A022004EF248 /* test_utility.cpp */,
+				C6F3D1F72B03A022004EF248 /* test_utlity.h */,
+				C6F3D2002B03A022004EF248 /* testing_utility.cpp */,
+				C6F3D2032B03A022004EF248 /* testing_utlity.h */,
+				C6F3D1FE2B03A022004EF248 /* testing.cpp */,
+				C6F3D1F62B03A022004EF248 /* testing.h */,
+				C62F72252B25B34A00947D31 /* tinyxml2.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		6EE2BA590A40BDD300CC7CE2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3249918317F099AF004381AE /* LaTeX2AI.r */,
+				3249918417F099AF004381AE /* LaTeX2AI2x.r */,
+				3257373017F08E3D0068501E /* IDToFile.txt */,
+				6E0C530E0A8B98EC00C9A14A /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		A1A458C325E4DC120077068A /* xcconfigs */ = {
+			isa = PBXGroup;
+			children = (
+				A1A458C425E4DC240077068A /* AIPluginCommon.xcconfig */,
+				A1A458C525E4DC240077068A /* AIPluginDebug.xcconfig */,
+				A1A458C625E4DC240077068A /* AIPluginRelease.xcconfig */,
+			);
+			name = xcconfigs;
+			sourceTree = "<group>";
+		};
+		A1A458C725E4DC880077068A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A1A458C825E4DC890077068A /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F9C02BCE0BA6E8E90039151A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */,
+				C64D02C62B4A067300079AFE /* HtmlUIController.cpp */,
+				C6F3D1F12B03A005004EF248 /* IAIFilePath.cpp */,
+				E8FDCA9810209FEA00D09060 /* IAIStringFormatUtils.cpp */,
+				2AF5F7A30CF5F3110091D961 /* AppContext.cpp */,
+				2AF5F7A40CF5F3110091D961 /* IllustratorSDK.cpp */,
+				2AF5F7A50CF5F3110091D961 /* Main.cpp */,
+				2AF5F7A60CF5F3110091D961 /* Plugin.cpp */,
+				2AF5F7A70CF5F3110091D961 /* SDKAboutPluginsHelper.cpp */,
+				2AF5F7A80CF5F3110091D961 /* Suites.cpp */,
+				2AF5F7A00CF5F3030091D961 /* IAIUnicodeString.cpp */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		6EE2BA0A0A40B76300CC7CE2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C67D8B522B038B86001F89FA /* l2a_latex.h in Headers */,
+				C61B69AE2B4AD6BB00AF2924 /* l2a_ui_item.h in Headers */,
+				C6F3D1EF2B039EF3004EF248 /* l2a_plugin.h in Headers */,
+				C67D8B1E2B0384D5001F89FA /* l2a_string_functions.h in Headers */,
+				C67D8B502B038B86001F89FA /* l2a_names.h in Headers */,
+				C6F3D20E2B03A022004EF248 /* test_parameter_list.h in Headers */,
+				C67D8B4E2B038B86001F89FA /* l2a_global.h in Headers */,
+				C62AA9DB2B4C3BF300E27B7B /* l2a_ui_redo.h in Headers */,
+				C605E7F72B226FF900E74B92 /* l2a_execute.h in Headers */,
+				C67D8B222B038670001F89FA /* l2a_file_system.h in Headers */,
+				C67D8B532B038B86001F89FA /* l2a_annotator.h in Headers */,
+				C67D8B312B038842001F89FA /* l2a_utils.h in Headers */,
+				C67D8B2F2B038842001F89FA /* l2a_parameter_list.h in Headers */,
+				C67D8B412B038B53001F89FA /* l2a_property.h in Headers */,
+				C6F3D20C2B03A022004EF248 /* test_string_functions.h in Headers */,
+				C67D8B382B0389DF001F89FA /* l2a_suites.h in Headers */,
+				C6FF8A0C2B7CC03D004C592B /* l2a_ui_options.h in Headers */,
+				C6F3D2152B03A022004EF248 /* testing_utlity.h in Headers */,
+				C67D8B1D2B0384D5001F89FA /* l2a_math.h in Headers */,
+				C6F3D2092B03A022004EF248 /* test_utlity.h in Headers */,
+				C61B699E2B4AB17400AF2924 /* l2a_ui_manager.h in Headers */,
+				C67D8B3D2B0389FC001F89FA /* l2a_ai_functions.h in Headers */,
+				C6F3D2082B03A022004EF248 /* testing.h in Headers */,
+				C6F3D20B2B03A022004EF248 /* test_framework.h in Headers */,
+				C67D8B1F2B0384D5001F89FA /* l2a_error.h in Headers */,
+				C6A3D23C2B63A525006F3676 /* l2a_ui_debug.h in Headers */,
+				C61B69A32B4AB83200AF2924 /* l2a_ui_base.h in Headers */,
+				C67D8B572B038B86001F89FA /* l2a_constants.h in Headers */,
+				C67D8B302B038842001F89FA /* l2a_version.h in Headers */,
+				C67D8B552B038B86001F89FA /* l2a_item.h in Headers */,
+				C67D8B272B0386A6001F89FA /* base64.h in Headers */,
+				C6F3D2062B03A022004EF248 /* test_file_system.h in Headers */,
+				C6F3D20F2B03A022004EF248 /* test_base64.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		508817D309F0C9AD0071BF1A /* LaTeX2AI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 508817D709F0C9AE0071BF1A /* Build configuration list for PBXNativeTarget "LaTeX2AI" */;
+			buildPhases = (
+				FDD9160321AC07B30018B958 /* ShellScript */,
+				6EE2BA0A0A40B76300CC7CE2 /* Headers */,
+				508817D109F0C9AD0071BF1A /* Sources */,
+				508817D009F0C9AD0071BF1A /* Resources */,
+				508817D209F0C9AD0071BF1A /* Frameworks */,
+				6EE2BA0C0A40B77400CC7CE2 /* Rez */,
+				3257372F17F088E20068501E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LaTeX2AI;
+			productName = LaTeX2AI;
+			productReference = 6EE2BA530A40BB2600CC7CE2 /* LaTeX2AI.aip */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		508817C409F0C9740071BF1A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 508817C509F0C9740071BF1A /* Build configuration list for PBXProject "LaTeX2AI" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 508817C209F0C9740071BF1A;
+			productRefGroup = 508817D509F0C9AD0071BF1A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				508817D309F0C9AD0071BF1A /* LaTeX2AI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		508817D009F0C9AD0071BF1A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		6EE2BA0C0A40B77400CC7CE2 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3249918517F099AF004381AE /* LaTeX2AI.r in Rez */,
+				3249918617F099AF004381AE /* LaTeX2AI2x.r in Rez */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3257372F17F088E20068501E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg\"\nmkdir -p \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/txt\"\ncp -f \"./resources/raw/LaTeX2AI_tool_create_dark@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_create_dark@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_create_light@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_create_light@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_redo_dark@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_redo_dark@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_redo_light@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_redo_light@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_options_dark@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_options_dark@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_options_light@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_options_light@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_save_as_pdf_dark@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_save_as_pdf_dark@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_save_as_pdf_light@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_save_as_pdf_light@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_testing_dark@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_testing_dark@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_tool_testing_light@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_tool_testing_light@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_cursor_create@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_cursor_create@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_cursor_locked@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_cursor_locked@2x.svg\"\ncp -f \"./resources/raw/LaTeX2AI_cursor_edit@2x.svg\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/svg/LaTeX2AI_cursor_edit@2x.svg\"\ncp -f \"./resources/raw/IDToFile.txt\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/txt/IDToFile.txt\"\nmkdir -p \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/pipl\"\ncp -f \"plugin.pipl\" \"${CONFIGURATION_BUILD_DIR}/${PRODUCT_NAME}.aip/Contents/Resources/pipl/plugin.pipl\"\n\nexit\n";
+		};
+		FDD9160321AC07B30018B958 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "python3 scripts/pipl/create_pipl.py -input '[{\"name\":\"LaTeX2AI\"}]' \npython3 scripts/create_headers.py\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		508817D109F0C9AD0071BF1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6F3D20A2B03A022004EF248 /* test_framework.cpp in Sources */,
+				C67D8B192B03817A001F89FA /* l2a_error.cpp in Sources */,
+				C6F3D2102B03A022004EF248 /* testing.cpp in Sources */,
+				C64D02C72B4A067300079AFE /* HtmlUIController.cpp in Sources */,
+				C6F3D2132B03A022004EF248 /* test_parameter_list.cpp in Sources */,
+				C6F3D2142B03A022004EF248 /* test_string_functions.cpp in Sources */,
+				C67D8B3C2B0389FC001F89FA /* l2a_ai_functions.cpp in Sources */,
+				C6F3D2162B03A022004EF248 /* test_utility.cpp in Sources */,
+				C67D8B2D2B038842001F89FA /* l2a_parameter_list.cpp in Sources */,
+				C67D8B4F2B038B86001F89FA /* l2a_latex.cpp in Sources */,
+				C61B699B2B4AAE0C00AF2924 /* SDKPlugPlug.cpp in Sources */,
+				C605E7F82B226FF900E74B92 /* l2a_execute.cpp in Sources */,
+				C6F3D2052B03A022004EF248 /* test_base64.cpp in Sources */,
+				C6F3D2072B03A022004EF248 /* test_file_system.cpp in Sources */,
+				C6A3D2392B63A502006F3676 /* l2a_ui_debug.cpp in Sources */,
+				C6F3D1F02B039EF3004EF248 /* l2a_plugin.cpp in Sources */,
+				C67D8B2E2B038842001F89FA /* l2a_version.cpp in Sources */,
+				C61B699F2B4AB17400AF2924 /* l2a_ui_manager.cpp in Sources */,
+				C6F3D1F22B03A005004EF248 /* IAIFilePath.cpp in Sources */,
+				C61B69A22B4AB83200AF2924 /* l2a_ui_base.cpp in Sources */,
+				C67D8B3F2B038B41001F89FA /* l2a_property.cpp in Sources */,
+				2AF5F7A20CF5F3030091D961 /* IAIUnicodeString.cpp in Sources */,
+				C67D8B232B038670001F89FA /* l2a_file_system.cpp in Sources */,
+				2AF5F7A90CF5F3110091D961 /* AppContext.cpp in Sources */,
+				C67D8B152B03814D001F89FA /* l2a_math.cpp in Sources */,
+				2AF5F7AA0CF5F3110091D961 /* IllustratorSDK.cpp in Sources */,
+				C61B69AF2B4AD6BB00AF2924 /* l2a_ui_item.cpp in Sources */,
+				2AF5F7AB0CF5F3110091D961 /* Main.cpp in Sources */,
+				C68EDECA2B037ECB003BB3CD /* l2a_suites.cpp in Sources */,
+				C62F72262B25B34A00947D31 /* tinyxml2.cpp in Sources */,
+				C67D8B262B0386A6001F89FA /* base64.cpp in Sources */,
+				C6F3D1EC2B039EDD004EF248 /* l2a_annotator.cpp in Sources */,
+				C67D8B182B03817A001F89FA /* l2a_string_functions.cpp in Sources */,
+				2AF5F7AC0CF5F3110091D961 /* Plugin.cpp in Sources */,
+				C6FF8A0B2B7CC03D004C592B /* l2a_ui_options.cpp in Sources */,
+				C62AA9DC2B4C3BF300E27B7B /* l2a_ui_redo.cpp in Sources */,
+				C67D8B562B038B86001F89FA /* l2a_global.cpp in Sources */,
+				2AF5F7AD0CF5F3110091D961 /* SDKAboutPluginsHelper.cpp in Sources */,
+				2AF5F7AE0CF5F3110091D961 /* Suites.cpp in Sources */,
+				E8FDCA9910209FEA00D09060 /* IAIStringFormatUtils.cpp in Sources */,
+				C67D8B542B038B86001F89FA /* l2a_item.cpp in Sources */,
+				C6F3D2122B03A022004EF248 /* testing_utility.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		508817C609F0C9740071BF1A /* debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1A458C425E4DC240077068A /* AIPluginCommon.xcconfig */;
+			buildSettings = {
+			};
+			name = debug;
+		};
+		508817C709F0C9740071BF1A /* release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1A458C425E4DC240077068A /* AIPluginCommon.xcconfig */;
+			buildSettings = {
+			};
+			name = release;
+		};
+		508817D809F0C9AE0071BF1A /* debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1A458C525E4DC240077068A /* AIPluginDebug.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				HEADER_SEARCH_PATHS = (
+					../../illustratorapi/ate,
+					../../illustratorapi/illustrator,
+					../../illustratorapi/illustrator/actions,
+					../../illustratorapi/pica_sp,
+					/Developer/Headers/FlatCarbon,
+					../common/includes,
+					Source,
+					src/tests,
+					src/utils,
+					src/auto_generated,
+					src,
+					tpl/tinyxml2,
+					tpl/json/single_include/nlohmann,
+					"tpl/cpp-semver/include/semver",
+					tpl/CRCpp/inc,
+				);
+				PRODUCT_NAME = LaTeX2AI;
+			};
+			name = debug;
+		};
+		508817D909F0C9AE0071BF1A /* release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1A458C625E4DC240077068A /* AIPluginRelease.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				HEADER_SEARCH_PATHS = (
+					../../illustratorapi/ate,
+					../../illustratorapi/illustrator,
+					../../illustratorapi/illustrator/actions,
+					../../illustratorapi/pica_sp,
+					/Developer/Headers/FlatCarbon,
+					../common/includes,
+					Source,
+					src/tests,
+					src/utils,
+					src/auto_generated,
+					src,
+					tpl/tinyxml2,
+					tpl/json/single_include/nlohmann,
+					"tpl/cpp-semver/include/semver",
+					tpl/CRCpp/inc,
+				);
+				PRODUCT_NAME = LaTeX2AI;
+			};
+			name = release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		508817C509F0C9740071BF1A /* Build configuration list for PBXProject "LaTeX2AI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				508817C609F0C9740071BF1A /* debug */,
+				508817C709F0C9740071BF1A /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+		508817D709F0C9AE0071BF1A /* Build configuration list for PBXNativeTarget "LaTeX2AI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				508817D809F0C9AE0071BF1A /* debug */,
+				508817D909F0C9AE0071BF1A /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 508817C409F0C9740071BF1A /* Project object */;
+}
