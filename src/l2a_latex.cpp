@@ -44,6 +44,10 @@
 
 #include <regex>
 
+#ifdef WIN_ENV
+#include <Shlobj.h>
+#endif
+
 
 /**
  *
@@ -395,42 +399,47 @@ ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
 {
 #ifdef WIN_ENV
     // Get the path to the programs folder.
+    std::array<std::tuple<REFKNOWNFOLDERID, int>, 2> programm_shortcuts = {
+        std::make_tuple(FOLDERID_ProgramFilesX86, 32), std::make_tuple(FOLDERID_ProgramFiles, 64)};
     TCHAR pathBuffer[MAX_PATH];
-    std::array<std::tuple<int, int>, 2> programm_shortcuts = {
-        std::make_tuple(CSIDL_PROGRAM_FILESX86, 32), std::make_tuple(CSIDL_PROGRAM_FILES, 64)};
+    ITEMIDLIST* pIDList;
     for (unsigned int i = 0; i < 2; i++)
     {
-        if (SUCCEEDED(SHGetFolderPath(nullptr, std::get<0>(programm_shortcuts[i]), nullptr, 0, pathBuffer)))
+        if (S_OK == SHGetKnownFolderIDList(std::get<0>(programm_shortcuts[i]), 0, nullptr, &pIDList))
         {
-            ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
-            program_folder.AddComponent(ai::UnicodeString("gs"));
-
-            // Check if the ghostscript folder exists.
-            if (IsDirectory(program_folder))
+            if (SHGetPathFromIDList(pIDList, pathBuffer))
             {
-                ai::FilePath gs_folder;
-                for (auto& p : std::filesystem::directory_iterator(FilePathAiToStd(program_folder)))
-                {
-                    // Check if the directory starts with "gs".
-                    gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
-                    if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
-                    {
-                        // We do not care about the version -> use the first "gs*" folder that we find.
+                ai::FilePath program_folder = ai::FilePath(ai::UnicodeString(pathBuffer));
+                program_folder.AddComponent(ai::UnicodeString("gs"));
 
-                        // Check if an execuable can be found.
-                        gs_folder.AddComponent(ai::UnicodeString("bin"));
-                        gs_folder.AddComponent(ai::UnicodeString("gswin") +
-                                               L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) +
-                                               "c.exe");
-                        if (IsFile(gs_folder))
-                            return gs_folder.GetFullPath();
-                        else
-                            break;
+                // Check if the ghostscript folder exists.
+                if (L2A::UTIL::IsDirectory(program_folder))
+                {
+                    ai::FilePath gs_folder;
+                    for (auto& p : std::filesystem::directory_iterator(L2A::UTIL::FilePathAiToStd(program_folder)))
+                    {
+                        // Check if the directory starts with "gs".
+                        gs_folder = ai::FilePath(ai::UnicodeString(p.path().string()));
+                        if (L2A::UTIL::StartsWith(gs_folder.GetFileName(), ai::UnicodeString("gs"), true))
+                        {
+                            // We do not care about the version -> use the first "gs*" folder that we find.
+
+                            // Check if an execuable can be found.
+                            gs_folder.AddComponent(ai::UnicodeString("bin"));
+                            gs_folder.AddComponent(ai::UnicodeString("gswin") +
+                                                   L2A::UTIL::IntegerToString(std::get<1>(programm_shortcuts[i])) +
+                                                   "c.exe");
+                            if (L2A::UTIL::IsFile(gs_folder))
+                                return gs_folder.GetFullPath();
+                            else
+                                break;
+                        }
                     }
                 }
             }
         }
     }
+    return ai::UnicodeString("");
 #else
     // Check possible locations for ghost script
     std::vector<ai::FilePath> gs_bin_locations = {             //
@@ -454,10 +463,10 @@ ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
 /**
  *
  */
-ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
+ai::FilePath L2A::LATEX::GetDefaultLatexPath()
 {
 #ifdef WIN_ENV
-    return ai::UnicodeString("");
+    return ai::FilePath(ai::UnicodeString(""));
 #else
     // Check possible locations for latex
     const std::vector<ai::FilePath> latex_bin_locations = {
@@ -496,11 +505,11 @@ ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
         L2A::UTIL::FindExecutable(latex_bin_locations, ai::UnicodeString("pdflatex"));
     if (is_latex_path)
     {
-        return latex_path.GetParent().GetFullPath();
+        return latex_path.GetParent();
     }
     else
     {
-        return ai::UnicodeString("");
+        return ai::FilePath(ai::UnicodeString(""));
     }
 #endif
 }
@@ -510,6 +519,11 @@ ai::UnicodeString L2A::LATEX::GetDefaultLatexPath()
  */
 bool L2A::LATEX::CheckGhostscriptCommand(const ai::UnicodeString& gs_command)
 {
+    if (gs_command == ai::UnicodeString(""))
+    {
+        return false;
+    }
+
     ai::UnicodeString full_gs_command = "\"" + gs_command + "\" -v";
     ai::UnicodeString command_output;
 
@@ -532,8 +546,8 @@ bool L2A::LATEX::CheckGhostscriptCommand(const ai::UnicodeString& gs_command)
  */
 bool L2A::LATEX::CheckLatexCommand(const ai::FilePath& path_latex)
 {
-    // TODO: Move this to Latex files. Then we will also have to do something sbout the "get latex command" so that the
-    // stuff there can be reused and does not have to be coded here again.
+    // We check the path to the binaries with pdflatex, independently of what engine the user selects
+
     ai::UnicodeString command_latex;
     if (L2A::UTIL::IsDirectory(path_latex))
     {

@@ -84,7 +84,7 @@ void L2A::UTIL::CheckGithubVersion()
                 const auto tag_version = L2A::UTIL::ParseVersion(value["tag_name"].get<std::string>());
 
                 // Only add versions that are not pre release versions
-                if (not tag_version.is_prerelease())
+                if (!tag_version.is_prerelease())
                 {
                     github_versions.push_back(tag_version);
                 }
