@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<ExtensionManifest 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.adobe.illustrator.latex2aiui" ExtensionBundleVersion="1.0.0" Version="5.0">
+  <ExtensionList>
+    <Extension Id="com.adobe.illustrator.latex2aiui.dialog_item" Version="1.0.0"/>
+    <Extension Id="com.adobe.illustrator.latex2aiui.dialog_redo" Version="1.0.0"/>
+    <Extension Id="com.adobe.illustrator.latex2aiui.dialog_debug" Version="1.0.0"/>
+    <Extension Id="com.adobe.illustrator.latex2aiui.dialog_options" Version="1.0.0"/>
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="ILST" Version="18.0"/>
+    </HostList>
+    <LocaleList>
+      <Locale Code="All"/>
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="5.0"/>
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.adobe.illustrator.latex2aiui.dialog_item">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./html/index_item.html</MainPath>
+          <CEFCommandLine/>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>ModalDialog</Type>
+          <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
+          <Geometry>
+            <Size>
+             	<Height>190</Height>
+              	<Width>800</Width>
+            </Size>
+            <MinSize>
+                <Height>190</Height>
+                <Width>800</Width>
+            </MinSize>
+            <MaxSize>
+                <Height>190</Height>
+                <Width>800</Width>
+            </MaxSize>
+          </Geometry>
+          <Icons/>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+     <Extension Id="com.adobe.illustrator.latex2aiui.dialog_redo">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./html/index_redo.html</MainPath>
+          <CEFCommandLine/>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>ModalDialog</Type>
+          <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
+          <Geometry>
+            <Size>
+             	<Height>210</Height>
+              	<Width>400</Width>
+            </Size>
+            <MinSize>
+                <Height>210</Height>
+                <Width>400</Width>
+            </MinSize>
+            <MaxSize>
+                <Height>210</Height>
+                <Width>400</Width>
+            </MaxSize>
+          </Geometry>
+          <Icons/>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+         <Extension Id="com.adobe.illustrator.latex2aiui.dialog_debug">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./html/index_debug.html</MainPath>
+          <CEFCommandLine/>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>ModalDialog</Type>
+          <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
+          <Geometry>
+            <Size>
+             	<Height>220</Height>
+              	<Width>400</Width>
+            </Size>
+            <MinSize>
+                <Height>220</Height>
+                <Width>400</Width>
+            </MinSize>
+            <MaxSize>
+                <Height>220</Height>
+                <Width>400</Width>
+            </MaxSize>
+          </Geometry>
+          <Icons/>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+         <Extension Id="com.adobe.illustrator.latex2aiui.dialog_options">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./html/index_options.html</MainPath>
+          <CEFCommandLine/>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>ModalDialog</Type>
+          <Menu/> <!-- menu provided by plug-in at: Object > Filters > SDK -->
+          <Geometry>
+            <Size>
+             	<Height>540</Height>
+              	<Width>400</Width>
+            </Size>
+            <MinSize>
+                <Height>540</Height>
+                <Width>400</Width>
+            </MinSize>
+            <MaxSize>
+                <Height>540</Height>
+                <Width>400</Width>
+            </MaxSize>
+          </Geometry>
+          <Icons/>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>

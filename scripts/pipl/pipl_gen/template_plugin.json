@@ -1,0 +1,34 @@
+{
+	"kind" : {
+		"vendor": "ADBE",
+		"value":"SPEA",
+		"comment":"Only change vendor property, do not change value property"
+	},
+	"ivrs" : {
+		"vendor": "ADBE",
+		"value": 2,
+		"comment":"Only change vendor property, do not change value property"
+	},
+	"mac" : {
+		"mi32" : {
+			"vendor": "ADBE",
+			"value": "",
+			"comment": "MacOnly, Change Vendor, set value to your plugin's entry point name, or pass name in API"
+		}
+	},
+	"win" : {
+		"wx86" : {
+			"vendor": "ADBE",
+			"value": "",
+			"comment": "WinOnly, Change Vendor, set value to your plugin's entry point name, or pass name in API"
+		}
+	},
+	"pinm" : {
+		"vendor": "ADBE",
+		"value":"Sample Plugin",
+		"comment":"Change Vendor, change Sample Plugin to your plugin name, or pass name in API"
+	},
+    "StsP" : {
+        "vendor": "ADBE"
+    }
+}

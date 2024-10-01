@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # MIT License
 #
-# Copyright (c) 2020 Ivo Steinbrecher
+# Copyright (c) 2020-2024 Ivo Steinbrecher
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,13 @@ def number_to_digits(number, base):
     digits = []
     while number > 0:
         digits.insert(0, number % base)
-        number  = number // base
+        number = number // base
     return digits
 
 
 def number_to_string(number):
     """Print the ascii characters for the given digits."""
-    print(''.join([chr(i) for i in number_to_digits(number, 256)]))
+    print("".join([chr(i) for i in number_to_digits(number, 256)]))
 
 
 def hex_to_string(hex_code):

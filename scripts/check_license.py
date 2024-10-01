@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # MIT License
 #
-# Copyright (c) 2020 Ivo Steinbrecher
+# Copyright (c) 2020-2024 Ivo Steinbrecher
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ def get_license_text():
     Return the license text as a string.
     """
 
-    license_path = os.path.join(get_repository_dir(), 'LICENSE')
+    license_path = os.path.join(get_repository_dir(), "LICENSE")
     with open(license_path) as license_file:
         return license_file.read().strip()
 
@@ -59,23 +59,38 @@ def get_all_source_files():
 
     # Get the files in the git repository.
     repo_dir = get_repository_dir()
-    process = subprocess.Popen(['git', 'ls-files'], stdout=subprocess.PIPE,
-        cwd=repo_dir)
+    process = subprocess.Popen(
+        ["git", "ls-files"], stdout=subprocess.PIPE, cwd=repo_dir
+    )
     out, _err = process.communicate()
-    files = out.decode('UTF-8').strip().split('\n')
+    files = out.decode("UTF-8").strip().split("\n")
 
-    source_line_endings = ['.py', '.cs', '.cpp', '.h', '.rc', '.bat', '.sh',
-        '.tex']
-    source_ending_types = {'.py': 'py', '.cs': 'c', '.cpp': 'c', '.h': 'c',
-        '.rc': 'c', '.bat': 'bat', '.sh': 'sh', '.tex': 'tex'}
-    source_files = {'py': [], 'c': [], 'bat': [], 'sh': [], 'tex': []}
+    source_line_endings = [".py", ".cs", ".cpp", ".h", ".bat", ".sh", ".tex"]
+    source_ending_types = {
+        ".py": "py",
+        ".cs": "c",
+        ".cpp": "c",
+        ".h": "c",
+        ".bat": "bat",
+        ".sh": "sh",
+        ".tex": "tex",
+    }
+    source_files = {"py": [], "c": [], "bat": [], "sh": [], "tex": []}
+
+    skip_folders = ["scripts/pipl"]
+
     for file in files:
         extension = os.path.splitext(file)[1]
-        if extension not in source_line_endings:
-            pass
+        for skip_folder in skip_folders:
+            if file.startswith(skip_folder):
+                break
         else:
-            source_files[source_ending_types[extension]].append(
-                os.path.join(repo_dir, file))
+            if extension not in source_line_endings:
+                pass
+            else:
+                source_files[source_ending_types[extension]].append(
+                    os.path.join(repo_dir, file)
+            )
     return source_files
 
 
@@ -85,33 +100,33 @@ def license_to_source(license_text, source_type):
     """
 
     header = None
-    start_line = '-' * 77
-    if source_type == 'py':
-        header = '# -*- coding: utf-8 -*-'
-        comment = '#'
-    elif source_type == 'c':
-        comment = '//'
-    elif source_type == 'bat':
-        comment = '@REM'
-    elif source_type == 'sh':
-        header = '#! /bin/bash'
-        comment = '#'
-    elif source_type == 'tex':
-        comment = '%'
+    start_line = "-" * 77
+    if source_type == "py":
+        header = "# -*- coding: utf-8 -*-"
+        comment = "#"
+    elif source_type == "c" or source_type == "js":
+        comment = "//"
+    elif source_type == "bat":
+        comment = "@REM"
+    elif source_type == "sh":
+        header = "#! /bin/bash"
+        comment = "#"
+    elif source_type == "tex":
+        comment = "%"
     else:
-        raise ValueError('Wrong extension!')
+        raise ValueError("Wrong extension!")
 
     source = []
     if header is not None:
         source.append(header)
-    source.append(comment + ' ' + start_line)
-    for line in license_text.split('\n'):
+    source.append(comment + " " + start_line)
+    for line in license_text.split("\n"):
         if len(line) > 0:
-            source.append(comment + ' ' + line)
+            source.append(comment + " " + line)
         else:
             source.append(comment + line)
-    source.append(comment + ' ' + start_line)
-    return '\n'.join(source)
+    source.append(comment + " " + start_line)
+    return "\n".join(source)
 
 
 def check_license():
@@ -122,12 +137,7 @@ def check_license():
     license_text = get_license_text()
     source_files = get_all_source_files()
 
-    skip_list = [
-        'l2a/resources/resource.h',
-        'l2a/resources/l2a.rc',
-        'forms/Properties/Resources.Designer.cs',
-        'forms/Properties/Settings.Designer.cs'
-        ]
+    skip_list = ["resources/Win/Resource.h"]
 
     for key in source_files:
         header = license_to_source(license_text, key)
@@ -136,13 +146,13 @@ def check_license():
                 if file.endswith(skip):
                     break
             else:
-                with open(file, encoding='ISO-8859-1') as source_file:
+                with open(file) as source_file:
                     source_text = source_file.read()
                     if not source_text.startswith(header):
-                        print('Wrong header in: {}'.format(file))
+                        print("Wrong header in: {}".format(file))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """
     Execution part of script.
     """

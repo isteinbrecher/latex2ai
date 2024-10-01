@@ -1,7 +1,7 @@
 % -----------------------------------------------------------------------------
 % MIT License
 %
-% Copyright (c) 2020 Ivo Steinbrecher
+% Copyright (c) 2020-2024 Ivo Steinbrecher
 %
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,16 @@
 % SOFTWARE.
 % -----------------------------------------------------------------------------
 
-% DO NOT change the document class
+% The document class `standalone` MAY NOT BE CHANGED!
+% With the `class` option, the `standalone` class can be based on anther document class
+% (the default base class for LaTeX2AI is `scrartcl`).
 \documentclass[class=scrartcl]{standalone}
-\KOMAoptions{fontsize=11pt}
-\usepackage{amsmath}
 
-% All items can be scaled using this variable. This variable HAS to be defined (default 1).
+% Set the default font size
+\KOMAoptions{fontsize=11pt}
+
+% All LaTeX2AI items can be scaled using this variable. This variable HAS to be defined (default 1)
 \newcommand{\itemscalefactor}{1}
 
-% Add needed packages and macros here:
+% Add your needed packages/macros/includes here:
+\usepackage{amsmath}

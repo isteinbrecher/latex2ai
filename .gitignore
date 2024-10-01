@@ -5,19 +5,37 @@
 .vs/*
 */.vs/*
 
+# XCode files
+*xcuserdata*
+*xcworkspacedata*
+
 # Build files
 /forms/obj
+/build
 
 # Automatically generated files
 auto_generated/
 scripts/executables/
+ui/js/auto_generated.js
+plugin.pipl
 
-# Python folders
-*/__pycache__/*
+# Python
+__pycache__
+*.pyc
 
 # TeX files
 *.aux
 *.log
 *.pdf
 *.synctex.gz
+*.fls
+*.fdb_latexmk
 
+# Certificate
+latex2ai_certificate.p12
+SET_KEY.sh
+latex2ai_ui.zxp
+com.isteinbrecher.latex2ai
+
+# Release
+LaTeX2AI*.aip

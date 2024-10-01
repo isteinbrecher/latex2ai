@@ -1,0 +1,99 @@
+//========================================================================================
+//  
+//  $File$
+//
+//  $Revision$
+//
+//  Copyright 1987 Adobe Systems Incorporated. All rights reserved.
+//  
+//  NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance 
+//  with the terms of the Adobe license agreement accompanying it.  If you have received
+//  this file from a source other than Adobe, then your use, modification, or 
+//  distribution of it requires the prior written permission of Adobe.
+//  
+//========================================================================================
+
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "l2a_constants.h"
+#include "windows.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#define kMySDKPluginName L2A_PLUGIN_NAME
+#define PIPL_PLUGIN_NAME kMySDKPluginName
+
+/////////////////////////////////////////////////////////////////////////////
+// VersionInfo
+//
+
+#include "VersionInfo.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PIPL
+//
+
+plugin pipl "plugin.pipl"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""l2a_constants.h""\r\n"
+    "#include ""windows.h""\r\n"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+IDToFile txt IDToFile.txt
+
+LaTeX2AI_tool_create_dark_at_2x svg "LaTeX2AI_tool_create_dark@2x.svg"
+LaTeX2AI_tool_create_light_at_2x svg "LaTeX2AI_tool_create_light@2x.svg"
+LaTeX2AI_tool_redo_dark_at_2x svg "LaTeX2AI_tool_redo_dark@2x.svg"
+LaTeX2AI_tool_redo_light_at_2x svg "LaTeX2AI_tool_redo_light@2x.svg"
+LaTeX2AI_tool_options_dark_at_2x svg "LaTeX2AI_tool_options_dark@2x.svg"
+LaTeX2AI_tool_options_light_at_2x svg "LaTeX2AI_tool_options_light@2x.svg"
+LaTeX2AI_tool_save_as_pdf_dark_at_2x svg "LaTeX2AI_tool_save_as_pdf_dark@2x.svg"
+LaTeX2AI_tool_save_as_pdf_light_at_2x svg "LaTeX2AI_tool_save_as_pdf_light@2x.svg"
+LaTeX2AI_tool_testing_dark_at_2x svg "LaTeX2AI_tool_testing_dark@2x.svg"
+LaTeX2AI_tool_testing_light_at_2x svg "LaTeX2AI_tool_testing_light@2x.svg"
+
+LaTeX2AI_cursor_create_at_2x svg "LaTeX2AI_cursor_create@2x.svg"
+LaTeX2AI_cursor_edit_at_2x svg "LaTeX2AI_cursor_edit@2x.svg"
+LaTeX2AI_cursor_locked_at_2x svg "LaTeX2AI_cursor_locked@2x.svg"

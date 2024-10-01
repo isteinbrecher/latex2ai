@@ -1,7 +1,7 @@
 @REM -----------------------------------------------------------------------------
 @REM MIT License
 @REM
-@REM Copyright (c) 2020 Ivo Steinbrecher
+@REM Copyright (c) 2020-2024 Ivo Steinbrecher
 @REM
 @REM Permission is hereby granted, free of charge, to any person obtaining a copy
 @REM of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 @REM -----------------------------------------------------------------------------
 
 @REM Load the Visual Studio developer command prompt
-call  "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+call  "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"
 
 @REM Compile the LaTeX2AI solutions
 msbuild "..\LaTeX2AI.sln" /nologo /t:rebuild /p:Configuration=%LaTeX2AI_build_type% /p:Platform=x64
