@@ -67,8 +67,8 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\tpl\CRCpp\inc;.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\tpl\cpp-semver\include\semver;.\tpl\CRCpp\inc;.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN_ENV;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -127,8 +127,8 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\tpl\CRCpp\inc;.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN_ENV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\tpl\cpp-semver\include\semver;.\tpl\CRCpp\inc;.\src;.\src\utils;.\src\tests;.\resources;..\common\includes;..\common\win;..\..\illustratorapi\adm;..\..\illustratorapi\ate;..\..\illustratorapi\illustrator;..\..\illustratorapi\illustrator\actions;..\..\illustratorapi\pica_sp;..\..\illustratorapi\illustrator\legacy;.\tpl\tinyxml2;.\tpl\StackWalker\Main\StackWalker;.\tpl\base64\src;.\tpl\json\single_include\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN_ENV;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
       <PrecompiledHeader>Use</PrecompiledHeader>
