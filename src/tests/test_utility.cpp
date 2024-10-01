@@ -80,14 +80,27 @@ void L2A::TEST::TestVersion(L2A::TEST::UTIL::UnitTest& ut)
         ut.CompareStr(ai::UnicodeString(version_from_github.str()), ai::UnicodeString("0.0.5"));
         ut.CompareInt(0, version_from_github.is_prerelease());
 
-        const auto version_pre_release = L2A::UTIL::ParseVersion("v1.3.5-rc4");
-        ut.CompareStr(ai::UnicodeString(version_pre_release.str()), ai::UnicodeString("1.3.5-rc4"));
-        ut.CompareInt(1, version_pre_release.is_prerelease());
+        const auto version_pre_release_4 = L2A::UTIL::ParseVersion("v1.3.5-rc.4");
+        ut.CompareStr(ai::UnicodeString(version_pre_release_4.str()), ai::UnicodeString("1.3.5-rc.4"));
+        ut.CompareInt(1, version_pre_release_4.is_prerelease());
 
-        const auto version_pre_release_2 = L2A::UTIL::ParseVersion("v1.3.5-rc9");
-        ut.CompareInt(1, version_pre_release < version_pre_release_2);
-        ut.CompareInt(0, version_pre_release > version_pre_release_2);
-        ut.CompareInt(0, version_pre_release == version_pre_release_2);
+        const auto version_pre_release_5 = L2A::UTIL::ParseVersion("v1.3.5-rc.5");
+        ut.CompareStr(ai::UnicodeString(version_pre_release_5.str()), ai::UnicodeString("1.3.5-rc.5"));
+        ut.CompareInt(1, version_pre_release_5.is_prerelease());
+
+        const auto version_pre_release_9 = L2A::UTIL::ParseVersion("v1.3.5-rc.9");
+
+        ut.CompareInt(1, version_pre_release_4 < version_pre_release_5);
+        ut.CompareInt(0, version_pre_release_4 > version_pre_release_5);
+        ut.CompareInt(0, version_pre_release_4 == version_pre_release_5);
+
+        ut.CompareInt(1, version_pre_release_4 < version_pre_release_9);
+        ut.CompareInt(0, version_pre_release_4 > version_pre_release_9);
+        ut.CompareInt(0, version_pre_release_4 == version_pre_release_9);
+
+        ut.CompareInt(1, version_pre_release_5 < version_pre_release_9);
+        ut.CompareInt(0, version_pre_release_5 > version_pre_release_9);
+        ut.CompareInt(0, version_pre_release_5 == version_pre_release_9);
 
         const auto version_alpha = L2A::UTIL::ParseVersion("v1.3.5-alpha");
         ut.CompareStr(ai::UnicodeString(version_alpha.str()), ai::UnicodeString("1.3.5-alpha"));

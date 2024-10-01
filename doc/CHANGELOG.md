@@ -1,6 +1,6 @@
 # Changelog
 
--   **pre-release**
+-   **v1.0.0**
     -   Features:
         -   Add macOS support.
         -   Fix pdf file structure before missing links message is shown.
