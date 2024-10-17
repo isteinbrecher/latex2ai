@@ -36,6 +36,6 @@ xcodebuild -project ${SCRIPT_DIR}/../LaTeX2AI.xcodeproj -scheme "LaTeX2AI" -conf
 # Move to the correct folder
 FINAL_PATH_DIR=${SCRIPT_DIR}/release_files/macOS
 mkdir -p ${FINAL_PATH_DIR}
-FINAL_PATH=${FINAL_PATH_DIR}/LaTeX2AI.aip
+FINAL_PATH=${FINAL_PATH_DIR}/LaTeX2AI_${L2A_GIT_IDENTIFIER}.aip
 rm -rf ${FINAL_PATH}
 mv ${BUILD_PATH} ${FINAL_PATH}
