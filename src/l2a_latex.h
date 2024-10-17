@@ -149,12 +149,24 @@ namespace L2A
         /**
          * \brief Search the path to ghostscript on the system.
          */
-        ai::UnicodeString GetDefaultGhostScriptCommand();
+        ai::UnicodeString SearchDefaultGhostScriptCommand();
+
+        /**
+         * \brief Get a path to ghostscript on the system. It is checked if this path works, the first item in the
+         * return pair is the flag if the command is fine.
+         */
+        std::pair<bool, ai::UnicodeString> GetDefaultGhostScriptCommand();
 
         /**
          * \brief Search the path to the latex binaries on the system.
          */
-        ai::FilePath GetDefaultLatexPath();
+        ai::FilePath SearchDefaultLatexPath();
+
+        /**
+         * \brief Search the path to the latex binaries on the system. It is checked if this path works, the first item
+         * in the return pair is the flag if the command is fine.
+         */
+        std::pair<bool, ai::FilePath> GetDefaultLatexPath();
 
         /**
          * \brief Check if the ghostscript command is valid.
