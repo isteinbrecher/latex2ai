@@ -122,7 +122,7 @@ if __name__ == "__main__":
         sys.exit(0)
     else:
         # Build the plugin
-        # subprocess.call(os.path.join(repo_dir, "scripts/compile_mac.sh"))
+        subprocess.call(os.path.join(repo_dir, "scripts/compile_mac.sh"))
         mac_release_dir = os.path.join(
             repo_dir, "scripts/release_files/macOS", f"LaTeX2AI_{git_identifier}.aip"
         )
