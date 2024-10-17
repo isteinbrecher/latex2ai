@@ -65,12 +65,19 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
 {
     std::array<char, 8192> buffer{};
     std::string result;
+
 #ifdef WIN_ENV
 #define popen _popen
 #define pclose _pclose
 #define WEXITSTATUS
-#endif
+    // On Windows, the popen function used to call the command strips quotes at the start and end of the command string
+    // (https://stackoverflow.com/questions/1557091/how-to-call-popen-with-a-pathname-containing-spaces-under-windows-in-c-c).
+    // Therefore, we add additional quotes at the start and end here.
+    FILE* pipe = popen(L2A::UTIL::StringAiToStd("\"" + command + "\"").c_str(), "r");
+#else
     FILE* pipe = popen(L2A::UTIL::StringAiToStd(command).c_str(), "r");
+#endif
+
     if (pipe == nullptr)
     {
         l2a_error("popen() failed!");
