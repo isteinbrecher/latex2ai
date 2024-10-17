@@ -104,9 +104,9 @@ L2A::Item::Item(const AIArtHandle& placed_item_handle)
 
         if (method_placed_item != method_l2a || alignment_placed_item != alignment_l2a || clip_placed_item != clip_l2a)
         {
-            if (alignment_placed_item == alignment_l2a && property_.GetVersion() < L2A::UTIL::ParseVersion("0.1.0"))
+            if (alignment_placed_item == alignment_l2a && property_.GetVersion() < L2A::UTIL::ParseVersion("1.0.0"))
             {
-                // Starting from v0.1.0 we only support items that are stretched to the boundary box for simplicity
+                // Starting from v1.0.0 we only support items that are stretched to the boundary box for simplicity
                 // reasons. No warning is needed here.
             }
             else
