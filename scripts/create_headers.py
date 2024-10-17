@@ -24,7 +24,7 @@
 # -----------------------------------------------------------------------------
 
 """
-Create the header containing version information of the plugin.
+Create the header containing constants for c++ and JS.
 """
 
 # Import python modules.

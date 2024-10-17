@@ -151,7 +151,7 @@ A few things to keep in mind:
         ```bash
         find src -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i
         ```
--   Add a short description of your changes to the [Changelog](#changelog).
+-   Add a short description of your changes to the [Changelog](doc/CHANGELOG.md).
 -   Feel free to add yourself to the [./CONTRIBUTORS](CONTRIBUTORS) file.
 
 # Build LaTeX2AI from source

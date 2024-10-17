@@ -90,7 +90,7 @@ def get_all_source_files():
             else:
                 source_files[source_ending_types[extension]].append(
                     os.path.join(repo_dir, file)
-            )
+                )
     return source_files
 
 

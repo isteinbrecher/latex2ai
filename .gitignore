@@ -39,3 +39,7 @@ com.isteinbrecher.latex2ai
 
 # Release
 LaTeX2AI*.aip
+LaTeX2AI*.zip
+*/release_zip/*
+*/release_zip_temp/*
+*/release_files/*
