@@ -265,13 +265,19 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
  */
 bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
 {
-    // Create the latex files
-    const ai::FilePath tex_file = WriteLatexFiles(latex_code, L2A::UTIL::GetTemporaryDirectory());
+    // Get the diretory where the items shall be created
+    ai::FilePath tex_directory = L2A::UTIL::GetTemporaryDirectory();
+    tex_directory.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_tex_name_base_));
 
-    // Remove a mabe existing pdf file.
+    // Make sure the directory is empty
+    L2A::UTIL::ClearDirectory(tex_directory);
+
+    // Create the latex files
+    const ai::FilePath tex_file = WriteLatexFiles(latex_code, tex_directory);
+
+    // Get the pdf name
     pdf_file = tex_file.GetParent();
     pdf_file.AddComponent(tex_file.GetFileNameNoExt() + ".pdf");
-    L2A::UTIL::RemoveFile(pdf_file, false);
 
     // Compile the latex file
     L2A::UTIL::SetWorkingDirectory(tex_file.GetParent());
@@ -395,7 +401,7 @@ std::string L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& header_p
 /**
  *
  */
-ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
+ai::UnicodeString L2A::LATEX::SearchDefaultGhostScriptCommand()
 {
 #ifdef WIN_ENV
     // Get the path to the programs folder.
@@ -463,7 +469,25 @@ ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
 /**
  *
  */
-ai::FilePath L2A::LATEX::GetDefaultLatexPath()
+std::pair<bool, ai::UnicodeString> L2A::LATEX::GetDefaultGhostScriptCommand()
+{
+    // Check if the automatically found command works
+    const auto default_gs_command = SearchDefaultGhostScriptCommand();
+    if (L2A::LATEX::CheckGhostscriptCommand(default_gs_command))
+    {
+        return {true, default_gs_command};
+    }
+
+    // We did not find a command that works, raise a warning and return an empty command here
+    L2A::AI::WarningAlert(ai::UnicodeString(
+        "Could not determine the Ghostscript command. Please set the command yourself in the LaTeX2AI options."));
+    return {false, ai::UnicodeString("")};
+}
+
+/**
+ *
+ */
+ai::FilePath L2A::LATEX::SearchDefaultLatexPath()
 {
 #ifdef WIN_ENV
     return ai::FilePath(ai::UnicodeString(""));
@@ -512,6 +536,31 @@ ai::FilePath L2A::LATEX::GetDefaultLatexPath()
         return ai::FilePath(ai::UnicodeString(""));
     }
 #endif
+}
+
+/**
+ *
+ */
+std::pair<bool, ai::FilePath> L2A::LATEX::GetDefaultLatexPath()
+{
+    // First try if the default (empty) value works
+    const ai::FilePath empty_latex_bin_path(ai::UnicodeString(""));
+    if (L2A::LATEX::CheckLatexCommand(empty_latex_bin_path))
+    {
+        return {true, empty_latex_bin_path};
+    }
+
+    // Next, try to automatically find the path
+    const auto default_latex_bin_path = SearchDefaultLatexPath();
+    if (L2A::LATEX::CheckLatexCommand(default_latex_bin_path))
+    {
+        return {true, default_latex_bin_path};
+    }
+
+    // Nothing worked, raise a warning and return an empty path
+    L2A::AI::WarningAlert(ai::UnicodeString(
+        "Could not determine the LaTeX binaries path. Please set the path yourself in the LaTeX2AI options."));
+    return {false, ai::FilePath(ai::UnicodeString(""))};
 }
 
 /**

@@ -141,6 +141,15 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
 /**
  *
  */
+void L2A::UTIL::ClearDirectory(const ai::FilePath& directory)
+{
+    RemoveDirectoryAI(directory, false);
+    CreateDirectoryL2A(directory);
+}
+
+/**
+ *
+ */
 void L2A::UTIL::WriteFileUTF8(const ai::FilePath& path, const ai::UnicodeString& text, const bool& overwrite)
 {
     // Check if the folder exists.
@@ -213,12 +222,7 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
 /**
  *
  */
-void L2A::UTIL::ClearTemporaryDirectory()
-{
-    const auto temp_dir = GetTemporaryDirectory();
-    RemoveDirectoryAI(temp_dir, false);
-    CreateDirectoryL2A(temp_dir);
-}
+void L2A::UTIL::ClearTemporaryDirectory() { ClearDirectory(GetTemporaryDirectory()); }
 
 /**
  *

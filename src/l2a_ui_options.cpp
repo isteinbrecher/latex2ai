@@ -155,6 +155,19 @@ void L2A::UI::Options::CallbackGetDefaultValues(const csxs::event::Event* const 
     auto default_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
     auto default_options_parameter_list = default_parameter_list->SetSubList(ai::UnicodeString("latex2ai_options"));
     L2A::Global().GetDefaultParameterList(default_options_parameter_list);
+
+    const auto [latex_bin_path_ok, auto_latex_bin_path] = L2A::LATEX::GetDefaultLatexPath();
+    if (latex_bin_path_ok)
+    {
+        default_options_parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), auto_latex_bin_path);
+    }
+
+    const auto [gs_command_ok, auto_gs_command] = L2A::LATEX::GetDefaultGhostScriptCommand();
+    if (gs_command_ok)
+    {
+        default_options_parameter_list->SetOption(ai::UnicodeString("gs_command"), auto_gs_command);
+    }
+
     SendData(default_parameter_list);
 }
 

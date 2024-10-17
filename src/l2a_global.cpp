@@ -103,32 +103,22 @@ L2A::GLOBAL::Global::Global() : is_testing_(false)
 
     // We are now at a stage where we have the variables for gs and latex, either from the default parameters or from
     // the settings file. In either case we now do some basic checks if the paths are correct. If they are not we try to
-    // find them automatically. If that does also not work we alert the user if they are not.
+    // find them automatically.
     {
         if (!L2A::LATEX::CheckGhostscriptCommand(gs_command_))
         {
-            const auto auto_gs_command = L2A::LATEX::GetDefaultGhostScriptCommand();
-            if (L2A::LATEX::CheckGhostscriptCommand(auto_gs_command))
+            const auto [gs_command_ok, auto_gs_command] = L2A::LATEX::GetDefaultGhostScriptCommand();
+            if (gs_command_ok)
             {
                 gs_command_ = auto_gs_command;
-            }
-            else
-            {
-                L2A::AI::WarningAlert(ai::UnicodeString(
-                    "Could not determine the Ghostscript path. Please set the path in the LaTeX2AI options."));
             }
         }
         if (!L2A::LATEX::CheckLatexCommand(latex_bin_path_))
         {
-            const auto auto_latex_bin_path = L2A::LATEX::GetDefaultLatexPath();
-            if (L2A::LATEX::CheckLatexCommand(auto_latex_bin_path))
+            const auto [latex_bin_path_ok, auto_latex_bin_path] = L2A::LATEX::GetDefaultLatexPath();
+            if (latex_bin_path_ok)
             {
                 latex_bin_path_ = auto_latex_bin_path;
-            }
-            else
-            {
-                L2A::AI::WarningAlert(ai::UnicodeString(
-                    "Could not determine the LaTeX binaries path. Please set the path in the LaTeX2AI options."));
             }
         }
     }
