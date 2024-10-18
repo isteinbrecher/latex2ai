@@ -41,18 +41,10 @@
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
-    const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
+L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
 {
 #ifdef WIN_ENV
-    if (quiet)
-    {
-        return INTERNAL::ExecuteCommandLineWindowsNoConsole(command, max_time_ms);
-    }
-    else
-    {
-        return INTERNAL::ExecuteCommandLineStd(command);
-    }
+    return INTERNAL::ExecuteCommandLineWindowsNoConsole(command);
 #else
     return INTERNAL::ExecuteCommandLineStd(command);
 #endif
@@ -98,8 +90,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole(
-    const ai::UnicodeString& command, const unsigned long max_time_ms)
+L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole(const ai::UnicodeString& command)
 {
 #ifndef _WIN32
     l2a_error("You are using the function for the wrong OS! Use the system calls via ExecuteCommandLine!");

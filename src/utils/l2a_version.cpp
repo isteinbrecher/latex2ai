@@ -64,10 +64,7 @@ void L2A::UTIL::CheckGithubVersion()
         ai::UnicodeString command("curl -s https://api.github.com/repos/isteinbrecher/latex2ai/releases");
         ai::UnicodeString result;
 
-        // TODO: On Windows the call to curl never finishes, but it seems that the output is OK. Therefore, we stop this
-        // after 500ms. Check if we can to this without the specified maximum time. The reason for that is that the
-        // output pipe is not fully read by the command line interface in c++
-        auto command_result = L2A::UTIL::ExecuteCommandLine(command, true, 500);
+        auto command_result = L2A::UTIL::ExecuteCommandLine(command);
         std::string curl_output = L2A::UTIL::StringAiToStd(command_result.output_);
         if (curl_output == "") return;
 
