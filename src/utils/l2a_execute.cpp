@@ -41,18 +41,10 @@
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(
-    const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms)
+L2A::UTIL::CommandResult L2A::UTIL::ExecuteCommandLine(const ai::UnicodeString& command)
 {
 #ifdef WIN_ENV
-    if (quiet)
-    {
-        return INTERNAL::ExecuteCommandLineWindowsNoConsole(command, max_time_ms);
-    }
-    else
-    {
-        return INTERNAL::ExecuteCommandLineStd(command);
-    }
+    return INTERNAL::ExecuteCommandLineWindowsNoConsole(command);
 #else
     return INTERNAL::ExecuteCommandLineStd(command);
 #endif
@@ -98,8 +90,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
 /**
  *
  */
-L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole(
-    const ai::UnicodeString& command, const unsigned long max_time_ms)
+L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole(const ai::UnicodeString& command)
 {
 #ifndef _WIN32
     l2a_error("You are using the function for the wrong OS! Use the system calls via ExecuteCommandLine!");
@@ -156,25 +147,15 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
     }
     else
     {
-        // Successfully created the process.  Wait for it to finish.
-        WaitForSingleObject(processInformation.hProcess, max_time_ms);
-
-        // Get the exit code.
-        DWORD exitCode;
-        result = GetExitCodeProcess(processInformation.hProcess, &exitCode);
-
-        // Close the handles.
-        CloseHandle(processInformation.hProcess);
-        CloseHandle(processInformation.hThread);
+        // Successfully created the process. First close the write handle so the process can finish.
         CloseHandle(g_hChildStd_OUT_Wr);
 
-        // Read the output from the command.
+        // Now we continuously read the ouput of the process
         DWORD dwRead;
         static const int BUFSIZE = 4096;
         CHAR chBuf[BUFSIZE];
         BOOL bSuccess = FALSE;
         std::string result_string = "";
-
         for (;;)
         {
             bSuccess = ReadFile(g_hChildStd_OUT_Rd, chBuf, BUFSIZE, &dwRead, NULL);
@@ -184,12 +165,24 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
             result_string += s;
         }
 
+        // Wait for the process to finish
+        WaitForSingleObject(processInformation.hProcess, INFINITE);
+
+        // Get the exit code
+        DWORD exitCode;
+        result = GetExitCodeProcess(processInformation.hProcess, &exitCode);
+
+        // Close all remaining handles
+        CloseHandle(processInformation.hProcess);
+        CloseHandle(processInformation.hThread);
+        CloseHandle(g_hChildStd_OUT_Rd);
+
         if (!result)
         {
             l2a_error("Executed command but couldn't get exit code.");
         }
 
-        // Return exit code, and command output as unicode string.
+        // Return exit code, and command output as unicode string
         return CommandResult{(int)exitCode, L2A::UTIL::StringStdToAi(result_string)};
     }
 #endif

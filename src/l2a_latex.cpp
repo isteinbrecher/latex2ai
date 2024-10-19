@@ -144,7 +144,7 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(
 
     // Call the command to split up the pdf file
     L2A::UTIL::SetWorkingDirectory(pdf_folder);
-    auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
+    auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command);
     if (command_result.exit_status_ == 127)
     {
         // This exit code means that the command was not found.
@@ -282,7 +282,7 @@ bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::Fi
     // Compile the latex file
     L2A::UTIL::SetWorkingDirectory(tex_file.GetParent());
     const ai::UnicodeString latex_command = GetLatexCompileCommand(tex_file);
-    const auto command_result = L2A::UTIL::ExecuteCommandLine(latex_command, false);
+    const auto command_result = L2A::UTIL::ExecuteCommandLine(latex_command);
 
     // Sometimes we get 0 exit status but still no pdf file. TODO: Find the reason for that. Intermediate fix: loop as
     // long as this condition is not fulfilled any more -> Use this fix and print the warning in debug mode
@@ -578,7 +578,7 @@ bool L2A::LATEX::CheckGhostscriptCommand(const ai::UnicodeString& gs_command)
 
     try
     {
-        auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
+        auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command);
         if (command_result.output_.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
             return true;
         else
@@ -618,7 +618,7 @@ bool L2A::LATEX::CheckLatexCommand(const ai::FilePath& path_latex)
     ai::UnicodeString command_output;
     try
     {
-        auto command_result = L2A::UTIL::ExecuteCommandLine(command_latex, true);
+        auto command_result = L2A::UTIL::ExecuteCommandLine(command_latex);
         if (command_result.output_.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
             return true;
         else
