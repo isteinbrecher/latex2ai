@@ -265,13 +265,19 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
  */
 bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
 {
-    // Create the latex files
-    const ai::FilePath tex_file = WriteLatexFiles(latex_code, L2A::UTIL::GetTemporaryDirectory());
+    // Get the directory where the items shall be created
+    ai::FilePath tex_directory = L2A::UTIL::GetTemporaryDirectory();
+    tex_directory.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_tex_name_base_));
 
-    // Remove a mabe existing pdf file.
+    // Make sure the directory exists and is empty
+    L2A::UTIL::ClearDirectory(tex_directory, false);
+
+    // Create the latex files
+    const ai::FilePath tex_file = WriteLatexFiles(latex_code, tex_directory);
+
+    // Get the pdf file name
     pdf_file = tex_file.GetParent();
     pdf_file.AddComponent(tex_file.GetFileNameNoExt() + ".pdf");
-    L2A::UTIL::RemoveFile(pdf_file, false);
 
     // Compile the latex file
     L2A::UTIL::SetWorkingDirectory(tex_file.GetParent());
