@@ -111,8 +111,8 @@ void L2A::UTIL::RemoveFile(const ai::FilePath& file, const bool& fail_if_not_exi
     if (IsFile(file))
     {
         std::error_code ec;
-        if (!std::filesystem::remove(FilePathAiToStd(file), ec))
-            l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
+        std::filesystem::remove(FilePathAiToStd(file), ec);
+        if (ec.value() != 0) l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
     }
     else if (IsDirectory(file))
         l2a_error("The given path " + file.GetFullPath() + " is a directory!");
@@ -129,13 +129,38 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
     if (IsDirectory(directory))
     {
         std::error_code ec;
-        if (!std::filesystem::remove_all(FilePathAiToStd(directory), ec))
-            l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
+        std::filesystem::remove_all(FilePathAiToStd(directory), ec);
+        if (ec.value() != 0) l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
     }
     else if (IsFile(directory))
         l2a_error("The given path " + directory.GetFullPath() + " is a file!");
     else if (fail_if_not_exist)
         l2a_error("The given path " + directory.GetFullPath() + " does not exist!");
+}
+
+/**
+ *
+ */
+void L2A::UTIL::ClearDirectory(const ai::FilePath& directory, const bool fail_if_not_exist)
+{
+    if (!IsDirectory(directory))
+    {
+        if (fail_if_not_exist)
+        {
+            l2a_error("The given directory " + directory.GetFullPath() + " to clear does not exist!");
+        }
+        else
+        {
+            CreateDirectoryL2A(directory);
+        }
+    }
+
+    for (const auto& entry : std::filesystem::directory_iterator(FilePathAiToStd(directory)))
+    {
+        std::error_code ec;
+        std::filesystem::remove_all(entry.path(), ec);
+        if (ec.value() != 0) l2a_error("The item \"" + entry.path().string() + "\" could not be deleted!");
+    }
 }
 
 /**
@@ -195,7 +220,7 @@ void L2A::UTIL::CopyFileL2A(const ai::FilePath& source, const ai::FilePath& targ
     std::error_code ec;
     std::filesystem::copy(
         FilePathAiToStd(source), FilePathAiToStd(target), std::filesystem::copy_options::overwrite_existing, ec);
-    if (ec.value()) l2a_error("Could not copy the file " + source.GetFullPath() + " to " + target.GetFullPath());
+    if (ec.value() != 0) l2a_error("Could not copy the file " + source.GetFullPath() + " to " + target.GetFullPath());
 }
 
 /**
@@ -213,11 +238,11 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
 /**
  *
  */
-void L2A::UTIL::ClearTemporaryDirectory()
+ai::FilePath L2A::UTIL::ClearTemporaryDirectory()
 {
-    const auto temp_dir = GetTemporaryDirectory();
-    RemoveDirectoryAI(temp_dir, false);
-    CreateDirectoryL2A(temp_dir);
+    const auto temp_directory = GetTemporaryDirectory();
+    ClearDirectory(temp_directory, false);
+    return temp_directory;
 }
 
 /**

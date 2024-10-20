@@ -72,8 +72,7 @@ void TestBase64Unit(L2A::TEST::UTIL::UnitTest& ut)
 void TestBase64EnAndDecoding(L2A::TEST::UTIL::UnitTest& ut)
 {
     // Get the name of the temp directory and clear it.
-    L2A::UTIL::ClearTemporaryDirectory();
-    const ai::FilePath temp_directory = L2A::UTIL::GetTemporaryDirectory();
+    const auto temp_directory = L2A::UTIL::ClearTemporaryDirectory();
 
     // Set name for the temp file to create.
     ai::FilePath temp_file = temp_directory;
