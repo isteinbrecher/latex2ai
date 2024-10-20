@@ -74,11 +74,6 @@ namespace L2A
         void RemoveDirectoryAI(const ai::FilePath& directroy, const bool& fail_if_not_exist = true);
 
         /**
-         * \brief Clear the contents of a directory (for now we remove it and then create an empty one).
-         */
-        void ClearDirectory(const ai::FilePath& directroy);
-
-        /**
          * \brief Wrties a string to an UTF8 file.
          * @param path path object of the file to save
          * @param text contains string that will be saved in the file
