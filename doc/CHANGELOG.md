@@ -11,6 +11,8 @@
         -   Use platform independent string hash algorithm.
         -   Use native `html` based UI.
         -   Restructured the repository file structure.
+    -   Deprecations:
+        -   Due to the new `html` UI, Illustrator CS6 is no longer supported.
 -   **v0.0.10**
     -   Features:
         -   Add optional warnings when saving as PDF.
