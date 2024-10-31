@@ -71,12 +71,15 @@ namespace L2A
         /**
          * \brief Remove a directory on the file system. If the directory does not exist, an error is thrown.
          */
-        void RemoveDirectoryAI(const ai::FilePath& directroy, const bool& fail_if_not_exist = true);
+        void RemoveDirectoryAI(const ai::FilePath& directory, const bool& fail_if_not_exist = true);
 
         /**
-         * \brief Clear the contents of a directory (for now we remove it and then create an empty one).
+         * \brief Clear the contents of a directory.
+         *
+         * If the flag fail_if_not_exist is true an error will be thrown if the directory does not exist. If it is false
+         * and the directory does not exist, it will be created.
          */
-        void ClearDirectory(const ai::FilePath& directroy);
+        void ClearDirectory(const ai::FilePath& directory, const bool fail_if_not_exist = true);
 
         /**
          * \brief Wrties a string to an UTF8 file.
@@ -108,8 +111,10 @@ namespace L2A
 
         /**
          * \brief Clear the temporary directory.
+         *
+         * @return Path to the temp directory
          */
-        void ClearTemporaryDirectory();
+        ai::FilePath ClearTemporaryDirectory();
 
         /**
          * \brief Return the path to the application data directory.
