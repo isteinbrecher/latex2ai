@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>LaTeX2AIForms</RootNamespace>
     <AssemblyName>LaTeX2AIForms</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -159,6 +159,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(PYTHON_EXE) "$(ProjectDir)..\scripts\create_headers.py"</PreBuildEvent>
+    <PreBuildEvent>"$(PYTHON_EXE)" "$(ProjectDir)..\scripts\create_headers.py"</PreBuildEvent>
   </PropertyGroup>
 </Project>
