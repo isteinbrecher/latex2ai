@@ -724,12 +724,15 @@ void L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
  */
 void L2A::CheckItemDataStructure()
 {
-    // We need a valid document path for this function to work.
-    if (!L2A::UTIL::IsFile(L2A::UTIL::GetDocumentPath(false))) return;
-
     // Get all LaTeX2AI placed items in this document.
     std::vector<AIArtHandle> items_all;
     L2A::AI::GetDocumentItems(items_all, L2A::AI::SelectionState::all);
+
+    // If there are no items, there is nothing to do here
+    if (items_all.size() == 0) return;
+
+    // We need a valid document path for this function to work.
+    if (!L2A::UTIL::IsFile(L2A::UTIL::GetDocumentPath(false))) return;
 
     // Loop over each item and check if the pdf file is encoded and stored within the item.
     std::vector<L2A::Item> working_items;
