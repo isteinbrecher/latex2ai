@@ -162,6 +162,9 @@ A few things to keep in mind:
 
 
 # Changelog
+- **v0.0.11**
+  - With LaTeX2AI version 1.0.0, CS6 support is dropped. In case someone is limited to CS6, this versions is patched such that LaTeX2AI will **NOT** check for updates.
+  - In case there are no LaTeX2AI items in the document, Illustrator does not give any warnings for non ASCII characters in the document path.
 - **v0.0.10**
   - Features:
     - Add optional warnings when saving as PDF.
