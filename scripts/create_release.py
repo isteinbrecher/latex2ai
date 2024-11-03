@@ -32,6 +32,7 @@ import subprocess
 import platform
 import shutil
 from pathlib import Path
+import argparse
 
 
 from create_headers import get_git_sha
@@ -75,7 +76,7 @@ def clean_repository(repository_dir):
         return False
 
 
-def build_solution_windows(repo_dir, git_identifier, build_type="Release"):
+def build_solution_windows(repo_dir, git_identifier, *, build_type="release"):
     """Build the solution and compress the executable into a zip file"""
 
     # Build the solution, for this we have to set the build type environment
@@ -93,7 +94,9 @@ def build_solution_windows(repo_dir, git_identifier, build_type="Release"):
 
         executable = os.path.join(executable_dir, "LaTeX2AI.aip")
         new_dir = os.path.join(repo_dir, "scripts", "release_files", "WIN")
-        final_name = os.path.join(new_dir, "LaTeX2AI_" + git_identifier + ".aip")
+        final_name = os.path.join(
+            new_dir, "LaTeX2AI_" + git_identifier + "_" + build_type + ".aip"
+        )
         Path(new_dir).mkdir(parents=True, exist_ok=True)
         shutil.move(executable, final_name)
     else:
@@ -102,6 +105,14 @@ def build_solution_windows(repo_dir, git_identifier, build_type="Release"):
 
 if __name__ == "__main__":
     # Execution part of script
+
+    # Create the CLI parser
+    parser = argparse.ArgumentParser(
+        description="A script to build and package LaTeX2AI."
+    )
+    parser.add_argument("--debug", action="store_true", help="Build debug version")
+    args = parser.parse_args()
+    build_type = "release" if not args.debug else "debug"
 
     # Get some basic repo/git information
     repo_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -116,15 +127,18 @@ if __name__ == "__main__":
 
     # Build the release version
     if platform.system() == "Windows":
-        build_solution_windows(repo_dir, git_identifier)
+        build_solution_windows(repo_dir, git_identifier, build_type=build_type)
 
         # Everything else is done on macOS
         sys.exit(0)
     else:
         # Build the plugin
+        os.environ["L2A_BUILD_TYPE"] = build_type
         subprocess.call(os.path.join(repo_dir, "scripts/compile_mac.sh"))
         mac_release_dir = os.path.join(
-            repo_dir, "scripts/release_files/macOS", f"LaTeX2AI_{git_identifier}.aip"
+            repo_dir,
+            "scripts/release_files/macOS",
+            f"LaTeX2AI_{git_identifier}_{build_type}.aip",
         )
 
         # Sign the UI folder
@@ -140,7 +154,9 @@ if __name__ == "__main__":
 
     # Check if the Windows binaries exist
     windows_release_file = os.path.join(
-        repo_dir, "scripts/release_files/WIN", f"LaTeX2AI_{git_identifier}.aip"
+        repo_dir,
+        "scripts/release_files/WIN",
+        f"LaTeX2AI_{git_identifier}_{build_type}.aip",
     )
     if not os.path.isfile(windows_release_file):
         print(f'Could not find matching windows release file "{windows_release_file}"')
@@ -172,7 +188,7 @@ if __name__ == "__main__":
     )
 
     Path(os.path.join(repo_dir, "scripts/release_zip/")).mkdir(exist_ok=True)
-    final_zip_name = f"../release_zip/LaTeX2AI_{git_identifier}.zip"
+    final_zip_name = f"../release_zip/LaTeX2AI_{git_identifier}_{build_type}.zip"
     subprocess.call(
         ["zip", "-r", final_zip_name, "."],
         cwd=release_zip_temp_dir,
