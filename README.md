@@ -22,35 +22,57 @@ The following software dependencies are required to run LaTeX2AI:
 -   A LaTeX compiler such as [TeX Live](https://www.tug.org/texlive) or [MiKTeX](https://miktex.org)
 -   [Ghost script](https://www.ghostscript.com)
 
-### Install LaTeX2AI
+### Windows
+
+1. Download LaTeX2AI from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases)
+1. Unzip the `.zip` file
+1. Copy the user interface folder `com.isteinbrecher.latex2ai`
+
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `com.isteinbrecher.latex2ai` to `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions` (the directory might have to be created)
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `com.isteinbrecher.latex2ai` to `C:\Program Files\Common Files\Adobe\CEP\extensions\`
+
+1. Copy the plugin
+
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `WIN/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `WIN/LaTeX2AI.aip` to `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
+
+1. After a restart of Adobe Illustrator, you can display the LaTeX2AI tools with `Window/Toolbars/Advanced`.
+
+To uninstall LaTeX2AI, delete the files you copied.
+
+### macOS
 
 1. Download LaTeX2AI from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases)
 1. Unzip the file
-1. Copy the user interface folder
-    - **macOS:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `com.isteinbrecher.latex2ai` to `~/Library/Application Support/Adobe/CEP/extensions/`
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `com.isteinbrecher.latex2ai` to `/Library/Application Support/Adobe/CEP/extensions/`
-    - **Windows:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `com.isteinbrecher.latex2ai` to `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions` (the directory might have to be created by the user)
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `com.isteinbrecher.latex2ai` to `C:\Program Files\Common Files\Adobe\CEP\extensions\`
-1. Copy the native plugin
+1. Copy the user interface folder `com.isteinbrecher.latex2ai`
 
-    - **macOS:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `macOS/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `macOS/LaTeX2AI.aip` to `/Applications/Adobe Illustrator <YOUR VERSION>/Plug-ins/`
-    - **Windows:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `WIN/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `WIN/LaTeX2AI.aip` to `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `com.isteinbrecher.latex2ai` to `~/Library/Application Support/Adobe/CEP/extensions/`
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `com.isteinbrecher.latex2ai` to `/Library/Application Support/Adobe/CEP/extensions/`
+
+1. Copy the plugin
+
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `macOS/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `macOS/LaTeX2AI.aip` to `/Applications/Adobe Illustrator <YOUR VERSION>/Plug-ins/`
 
 1. After a restart of Adobe Illustrator, you can display the LaTeX2AI tools with `Window/Toolbars/Advanced`.
+
+    > Depending on your system settings you might get the following error message when starting Illustrator
+    >
+    > <img src="/doc/images/macos_permission_error.png?raw=true" alt="macOS permission error" height="350" title="Create / Edit">
+    >
+    > This can be resolved by explicitly allowing the gatekeeper to run LaTeX2AI ([see also this thread](https://apple.stackexchange.com/questions/58509/how-can-i-open-a-single-app-by-an-unidentified-developer-without-allowing-all)). To do so, open the terminal and type
+    >
+    > ```bash
+    > xattr -d com.apple.quarantine <PATH TO LaTeXAI.aip>
+    > ```
 
 To uninstall LaTeX2AI, delete the files you copied.
 
