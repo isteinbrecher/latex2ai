@@ -7,6 +7,7 @@
         -   Improve finding of LaTeX and ghostscript paths.
         -   Rework documentation.
         -   Fix errors when working with Creative Cloud documents.
+        -   Allow to chose hotkey to finish item create / edit UI.
     -   Other:
         -   Use platform independent string hash algorithm.
         -   Use native `html` based UI.
