@@ -137,6 +137,8 @@ void L2A::UI::Options::CallbackSave(const csxs::event::Event* const eventParam)
     global_mutable.latex_command_options_ = options_form->GetStringOption(ai::UnicodeString("latex_command_options"));
     global_mutable.latex_bin_path_ = ai::FilePath(options_form->GetStringOption(ai::UnicodeString("latex_bin_path")));
     global_mutable.gs_command_ = options_form->GetStringOption(ai::UnicodeString("gs_command"));
+    global_mutable.item_ui_finish_on_enter_ =
+        options_form->GetIntOption(ai::UnicodeString("item_ui_finish_on_enter")) == 1;
     global_mutable.warning_boundary_boxes_ =
         options_form->GetIntOption(ai::UnicodeString("warning_boundary_boxes")) == 1;
     global_mutable.warning_ai_not_saved_ = options_form->GetIntOption(ai::UnicodeString("warning_ai_not_saved")) == 1;

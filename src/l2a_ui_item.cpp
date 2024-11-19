@@ -227,6 +227,10 @@ ASErr L2A::UI::Item::SendData()
     else
         l2a_error("Got unexpected ActionType");
 
+    // Set behavior when pressing Enter
+    form_parameter_list->SetOption(
+        ai::UnicodeString("item_ui_finish_on_enter"), L2A::GlobalMutable().item_ui_finish_on_enter_);
+
     // Add the item property
     // TODO: Make sure we dont copy the pdf contents here
     form_parameter_list->SetSubList(ai::UnicodeString("LaTeX2AI_item"), property_.ToParameterList());

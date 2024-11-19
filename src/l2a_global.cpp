@@ -142,6 +142,7 @@ void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterLi
     parameter_list->SetOption(ai::UnicodeString("latex_engine"), latex_engine_);
     parameter_list->SetOption(ai::UnicodeString("latex_command_options"), latex_command_options_);
     parameter_list->SetOption(ai::UnicodeString("gs_command"), gs_command_);
+    parameter_list->SetOption(ai::UnicodeString("item_ui_finish_on_enter"), item_ui_finish_on_enter_);
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), warning_boundary_boxes_);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), warning_ai_not_saved_);
 }
@@ -156,6 +157,7 @@ void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::Par
     parameter_list->SetOption(ai::UnicodeString("latex_command_options"),
         ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
     parameter_list->SetOption(ai::UnicodeString("gs_command"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("item_ui_finish_on_enter"), false);
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
 }
