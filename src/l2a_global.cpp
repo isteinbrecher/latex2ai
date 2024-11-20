@@ -142,6 +142,7 @@ void L2A::GLOBAL::Global::ToParameterList(std::shared_ptr<L2A::UTIL::ParameterLi
     parameter_list->SetOption(ai::UnicodeString("latex_engine"), latex_engine_);
     parameter_list->SetOption(ai::UnicodeString("latex_command_options"), latex_command_options_);
     parameter_list->SetOption(ai::UnicodeString("gs_command"), gs_command_);
+    parameter_list->SetOption(ai::UnicodeString("item_ui_finish_on_enter"), item_ui_finish_on_enter_);
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), warning_boundary_boxes_);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), warning_ai_not_saved_);
 }
@@ -156,6 +157,7 @@ void L2A::GLOBAL::Global::GetDefaultParameterList(std::shared_ptr<L2A::UTIL::Par
     parameter_list->SetOption(ai::UnicodeString("latex_command_options"),
         ai::UnicodeString("-interaction nonstopmode -halt-on-error -file-line-error"));
     parameter_list->SetOption(ai::UnicodeString("gs_command"), ai::UnicodeString(""));
+    parameter_list->SetOption(ai::UnicodeString("item_ui_finish_on_enter"), false);
     parameter_list->SetOption(ai::UnicodeString("warning_boundary_boxes"), true);
     parameter_list->SetOption(ai::UnicodeString("warning_ai_not_saved"), true);
 }
@@ -183,9 +185,9 @@ bool L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
     auto conversion_bool = [](const L2A::UTIL::ParameterList& parameter_list, const ai::UnicodeString& key)
     { return bool(parameter_list.GetIntOption(key)); };
 
-    // Functon to set the variable from one of the possibly multiple given keys. If the key is in the parameter list
+    // Function to set the variable from one of the possibly multiple given keys. If the key is in the parameter list
     // multiple times, an error will be thrown.
-    auto set_varialbe_from_keys =
+    auto set_variable_from_keys =
         [&](auto& variable, const std::vector<ai::UnicodeString>& keys, const bool set_all, auto conversion_function)
     {
         const auto [is_found, key] = parameter_list.OptionExistsMultipleKeys(keys);
@@ -202,26 +204,28 @@ bool L2A::GLOBAL::Global::SetFromParameterList(const L2A::UTIL::ParameterList& p
     };
 
     // Overload of the previous function that uses the
-    auto set_varialbe_from_keys_default =
+    auto set_variable_from_keys_default =
         [&](auto& variable, const std::vector<ai::UnicodeString>& keys, const bool set_all)
     {
-        return set_varialbe_from_keys(variable, keys, set_all,
+        return set_variable_from_keys(variable, keys, set_all,
             [](const L2A::UTIL::ParameterList& parameter_list, const ai::UnicodeString& key)
             { return parameter_list.GetStringOption(key); });
     };
 
     bool set_all = true;
-    set_all = set_varialbe_from_keys(latex_bin_path_,
+    set_all = set_variable_from_keys(latex_bin_path_,
         {ai::UnicodeString("latex_bin_path"), ai::UnicodeString("path_latex")}, set_all, conversion_file_path);
-    set_all = set_varialbe_from_keys_default(
+    set_all = set_variable_from_keys_default(
         latex_engine_, {ai::UnicodeString("latex_engine"), ai::UnicodeString("command_latex")}, set_all);
-    set_all = set_varialbe_from_keys_default(latex_command_options_,
+    set_all = set_variable_from_keys_default(latex_command_options_,
         {ai::UnicodeString("latex_command_options"), ai::UnicodeString("command_latex_options")}, set_all);
-    set_all = set_varialbe_from_keys_default(
+    set_all = set_variable_from_keys_default(
         gs_command_, {ai::UnicodeString("gs_command"), ai::UnicodeString("command_gs")}, set_all);
-    set_all = set_varialbe_from_keys(
+    set_all = set_variable_from_keys(
+        item_ui_finish_on_enter_, {ai::UnicodeString("item_ui_finish_on_enter")}, set_all, conversion_bool);
+    set_all = set_variable_from_keys(
         warning_boundary_boxes_, {ai::UnicodeString("warning_boundary_boxes")}, set_all, conversion_bool);
-    set_all = set_varialbe_from_keys(
+    set_all = set_variable_from_keys(
         warning_ai_not_saved_, {ai::UnicodeString("warning_ai_not_saved")}, set_all, conversion_bool);
 
     return set_all;
