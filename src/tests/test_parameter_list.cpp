@@ -109,4 +109,13 @@ void L2A::TEST::TestParameterList(L2A::TEST::UTIL::UnitTest& ut)
         multiple_options_list.OptionExistsMultipleKeys({ai::UnicodeString("old_key"), ai::UnicodeString("new_key")});
     ut.CompareInt(multiple_options_list.GetIntOption(key), 1);
     ut.CompareInt(is_found, 1);
+
+    // Test if unicode strings work
+    const auto test_string_unicode_key = ai::UnicodeString("unicode_key");
+    const auto test_string_unicode_value = L2A::TEST::UTIL::test_string_unicode_multiline();
+    L2A::UTIL::ParameterList unicode_list;
+    unicode_list.SetOption(test_string_unicode_key, test_string_unicode_value);
+    // Transform the list to a string and read it again.
+    L2A::UTIL::ParameterList transformed_unicode_list(unicode_list.ToXMLString(ai::UnicodeString("root")));
+    ut.CompareStr(test_string_unicode_value, transformed_unicode_list.GetStringOption(test_string_unicode_key));
 }
