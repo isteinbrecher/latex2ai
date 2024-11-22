@@ -601,7 +601,7 @@ bool L2A::RedoLaTeXItems(std::vector<L2A::Item>& l2a_items)
     }
 
     // Create the PDFs for the items and store them in the placed items. We dont reset the boundary box here. This is
-    // done in the redo function, we leave it out here, since one might want to use this funciton without resetting the
+    // done in the redo function, we leave it out here, since one might want to use this function without resetting the
     // bounding box.
     for (unsigned int i = 0; i < l2a_items.size(); i++)
     {
