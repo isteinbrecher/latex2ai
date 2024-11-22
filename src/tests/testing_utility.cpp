@@ -38,6 +38,38 @@
 /**
  *
  */
+ai::UnicodeString L2A::TEST::UTIL::test_string_unicode()
+{
+    return ai::UnicodeString(
+        reinterpret_cast<const ai::UnicodeString::UTF16Char*>(L2A::TEST::UTIL::test_string_unicode_characters));
+}
+
+/**
+ *
+ */
+ai::UnicodeString L2A::TEST::UTIL::test_string_unicode_multiline()
+{
+    return test_string_unicode() + "\n" + test_string_unicode() + "\n" + L2A::UTIL::StringStdToAi(test_string_4_) +
+           test_string_unicode() + "\n";
+}
+
+/**
+ *
+ */
+std::vector<L2A::TEST::UTIL::TestStringData> L2A::TEST::UTIL::test_strings()
+{
+    return {{L2A::UTIL::StringStdToAi(test_string_1_), "168fcba7bbad5ac1", "e55339768e9b9d93", "aa1275166c0e08a6"},
+        {L2A::UTIL::StringStdToAi(test_string_2_), "f51a4ec38c535aec", "99e5bbb4caec0750", "56133a1f4e042a14"},
+        {L2A::UTIL::StringStdToAi(test_string_3_), "a6c5f57342b2591", "e24088e7de7e0764", "5f906d24d8b354b2"},
+        {L2A::UTIL::StringStdToAi(test_string_4_), "62c1cd8642ed5be8", "6ff8d5730c8b63fa", "87ec20640dce3c6d"},
+        {L2A::UTIL::StringStdToAi(test_string_5_), "6b80f03d7ef29102", "53df0414bbc17175", "53df0414bbc17175"},
+        {test_string_unicode(), "c78005aaef48587d", "6ecbced3e51f5f33", "6ecbced3e51f5f33"},
+        {test_string_unicode_multiline(), "f3764ff58ed3b329", "e", "eeb9b4603c04ab81"}};
+}
+
+/**
+ *
+ */
 void L2A::TEST::UTIL::UnitTest::SetTestName(const ai::UnicodeString& test_name) { test_name_ = test_name; }
 
 /**

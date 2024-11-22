@@ -40,11 +40,12 @@
 /**
  *
  */
-void TestFileWriteRead(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp_directory)
+void TestFileWriteRead(
+    L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp_directory, const ai::UnicodeString& file_name)
 {
     // Set name for the temp file to create
     ai::FilePath temp_file = temp_directory;
-    temp_file.AddComponent(ai::UnicodeString("l2a_test_file_system.txt"));
+    temp_file.AddComponent(file_name);
 
     // If the file exists, delete it
     L2A::UTIL::RemoveFile(temp_file, false);
@@ -52,12 +53,12 @@ void TestFileWriteRead(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp_d
     // Add a file with a temp string to check that the file will be overwritten
     L2A::UTIL::WriteFileUTF8(temp_file, ai::UnicodeString("wrong text"));
 
-    for (const auto& test_string_data : L2A::TEST::UTIL::test_strings_)
+    for (const auto& test_string_data : L2A::TEST::UTIL::test_strings())
     {
         // Loop over the test strings, write them to file and read them to check if everything went ok
 
         // Create the file with a text
-        const ai::UnicodeString test_text = L2A::UTIL::StringStdToAi(test_string_data.string_);
+        const ai::UnicodeString test_text = test_string_data.string_;
         L2A::UTIL::WriteFileUTF8(temp_file, test_text, true);
 
         // Load the file and compare the results
@@ -90,7 +91,8 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
     const auto temp_directory = L2A::UTIL::ClearTemporaryDirectory();
 
     // Perform the tests
-    TestFileWriteRead(ut, temp_directory);
+    TestFileWriteRead(ut, temp_directory, ai::UnicodeString("l2a_test_file_system.txt"));
+    TestFileWriteRead(ut, temp_directory, ai::UnicodeString(L2A::TEST::UTIL::test_string_unicode() + ".txt"));
 
     // Get the application data directory to check if this function can be executed without an error
     L2A::UTIL::GetApplicationDataDirectory();
