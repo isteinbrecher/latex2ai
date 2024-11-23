@@ -63,7 +63,11 @@ ai::FilePath L2A::UTIL::FilePathStdToAi(const std::filesystem::path& path_std)
  */
 std::filesystem::path L2A::UTIL::FilePathAiToStd(const ai::FilePath& path_ai)
 {
+#ifdef WIN_ENV
+    return std::filesystem::path(L2A::UTIL::StringAiToStdW(path_ai.GetFullPath()));
+#else
     return std::filesystem::path(L2A::UTIL::StringAiToStd(path_ai.GetFullPath()));
+#endif
 }
 
 

@@ -38,14 +38,21 @@ namespace L2A
     namespace UTIL
     {
         /**
-         * \brief Convert a std::path to an ai::FilePath
+         * \brief Convert a std string to an AI string
          */
         ai::UnicodeString StringStdToAi(const std::string& string_std);
 
         /**
-         * \brief Convert an ai::FilePath to a std::path
+         * \brief Convert an AI string to a std string
          */
         std::string StringAiToStd(const ai::UnicodeString& string_ai);
+
+        /**
+         * \brief Convert an AI string to a std wstring (needed for Windows)
+         */
+#ifdef WIN_ENV
+        std::wstring StringAiToStdW(const ai::UnicodeString& string_ai);
+#endif
 
         /**
          * \brief Convert an integer to an ai::UnicodeString.
