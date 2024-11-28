@@ -33,6 +33,7 @@
 
 #include "testing_utlity.h"
 
+#include "l2a_execute.h"
 #include "l2a_file_system.h"
 #include "l2a_string_functions.h"
 
@@ -121,10 +122,31 @@ void TestCreateDirectory(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp
     ut.CompareInt(2, static_cast<int>(files_in_folder.size()));
     for (unsigned int i = 0; i < 2; i++) ut.CompareStr(files[i].GetFullPath(), files_in_folder[i].GetFullPath());
 
+    // Test that we can set this directory as working directory
+    const auto current_cwd = std::filesystem::current_path();
+    L2A::UTIL::SetWorkingDirectory(test_directory);
+    const auto cli_cwd = L2A::UTIL::ExecuteCommandLine(ai::UnicodeString("pwd"));
+    ut.CompareStr(cli_cwd.output_, test_directory.GetFullPath() + "\n");
+    L2A::UTIL::SetWorkingDirectory(L2A::UTIL::FilePathStdToAi(current_cwd));
+
     // Delete directory
     L2A::UTIL::RemoveDirectoryAI(test_directory);
     ut.CompareInt(false, L2A::UTIL::IsDirectory(test_directory));
     ut.CompareInt(false, L2A::UTIL::IsFile(file_path));
+}
+
+/**
+ *
+ */
+void TestExecute(L2A::TEST::UTIL::UnitTest& ut)
+{
+    // Test that we can call a command with unicode characters and get the unicode result string.
+    // Currently this does not work with Windoww as `echo` can't be found when calling the command.
+#ifndef WIN_ENV
+    const ai::UnicodeString command(ai::UnicodeString("echo ") + L2A::TEST::UTIL::test_string_unicode());
+    const auto result = L2A::UTIL::ExecuteCommandLine(command);
+    ut.CompareStr(result.output_, L2A::TEST::UTIL::test_string_unicode() + "\n");
+#endif
 }
 
 /**
@@ -149,4 +171,7 @@ void L2A::TEST::TestFileSystem(L2A::TEST::UTIL::UnitTest& ut)
     TestCreateDirectory(ut, temp_directory, ai::UnicodeString("test1"), ai::UnicodeString("test_file"));
     TestCreateDirectory(
         ut, temp_directory, L2A::TEST::UTIL::test_string_unicode(), L2A::TEST::UTIL::test_string_unicode());
+
+    // Test the execute function with unicode strings
+    TestExecute(ut);
 }
