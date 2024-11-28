@@ -64,7 +64,7 @@ std::vector<L2A::TEST::UTIL::TestStringData> L2A::TEST::UTIL::test_strings()
         {L2A::UTIL::StringStdToAi(test_string_4_), "62c1cd8642ed5be8", "6ff8d5730c8b63fa", "87ec20640dce3c6d"},
         {L2A::UTIL::StringStdToAi(test_string_5_), "6b80f03d7ef29102", "53df0414bbc17175", "53df0414bbc17175"},
         {test_string_unicode(), "c78005aaef48587d", "6ecbced3e51f5f33", "6ecbced3e51f5f33"},
-        {test_string_unicode_multiline(), "f3764ff58ed3b329", "e", "eeb9b4603c04ab81"}};
+        {test_string_unicode_multiline(), "f3764ff58ed3b329", "c9d48d8e239a32d9", "eeb9b4603c04ab81"}};
 }
 
 /**
