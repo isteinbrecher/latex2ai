@@ -55,7 +55,7 @@
  */
 ai::FilePath L2A::UTIL::FilePathStdToAi(const std::filesystem::path& path_std)
 {
-    return ai::FilePath(ai::UnicodeString(path_std.string()));
+    return ai::FilePath(L2A::UTIL::StringStdToAi(path_std.string()));
 }
 
 /**
@@ -318,13 +318,20 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
     {
         if (std::filesystem::is_regular_file(dir_entry))
         {
-            const auto file_name = dir_entry.path().filename().string();
+            const auto file_name = dir_entry.path().filename().u8string();
             if (std::regex_search(file_name, regex_string))
             {
                 file_vector.push_back(FilePathStdToAi(dir_entry.path()));
             }
         }
     }
+
+    // Sort the paths to ensure a deterministic ordering of the returned vector
+    std::sort(file_vector.begin(), file_vector.end(),
+        [](const ai::FilePath& a, const ai::FilePath& b)
+        {
+            return a.GetFullPath() < b.GetFullPath();  // Compare as UTF-8 strings
+        });
     return file_vector;
 }
 
