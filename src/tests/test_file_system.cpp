@@ -125,8 +125,10 @@ void TestCreateDirectory(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp
     // Test that we can set this directory as working directory
     const auto current_cwd = std::filesystem::current_path();
     L2A::UTIL::SetWorkingDirectory(test_directory);
+#ifndef WIN_ENV
     const auto cli_cwd = L2A::UTIL::ExecuteCommandLine(ai::UnicodeString("pwd"));
     ut.CompareStr(cli_cwd.output_, test_directory.GetFullPath() + "\n");
+#endif
     L2A::UTIL::SetWorkingDirectory(L2A::UTIL::FilePathStdToAi(current_cwd));
 
     // Delete directory
