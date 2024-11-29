@@ -41,9 +41,10 @@
 void TestReferenceStringsAndStringConversion(L2A::TEST::UTIL::UnitTest& ut)
 {
     // Test that the hashes of the test strings are as expected
-    for (const auto& test_string_data : L2A::TEST::UTIL::test_strings_)
+    for (const auto& test_string_data : L2A::TEST::UTIL::test_strings())
     {
-        ut.CompareStr(L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(test_string_data.string_)),
+        ut.CompareStr(
+            L2A::UTIL::StringHash(L2A::UTIL::StringStdToAi(L2A::UTIL::StringAiToStd(test_string_data.string_))),
             ai::UnicodeString(test_string_data.string_hash_));
     }
 }

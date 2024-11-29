@@ -22,35 +22,63 @@ The following software dependencies are required to run LaTeX2AI:
 -   A LaTeX compiler such as [TeX Live](https://www.tug.org/texlive) or [MiKTeX](https://miktex.org)
 -   [Ghost script](https://www.ghostscript.com)
 
-### Install LaTeX2AI
+### Windows
+
+1. Download LaTeX2AI from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases)
+1. Unzip the `.zip` file
+1. Copy the user interface folder `com.isteinbrecher.latex2ai`
+
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `com.isteinbrecher.latex2ai` to `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions` (the directory might have to be created)
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `com.isteinbrecher.latex2ai` to `C:\Program Files\Common Files\Adobe\CEP\extensions\`
+
+1. Copy the plugin
+
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `WIN/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `WIN/LaTeX2AI.aip` to `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
+
+1. After a restart of Adobe Illustrator, you can display the LaTeX2AI tools with `Window/Toolbars/Advanced`.
+
+To uninstall LaTeX2AI, delete the files you copied.
+
+### macOS
 
 1. Download LaTeX2AI from the [GitHub release page](https://github.com/isteinbrecher/latex2ai/releases)
 1. Unzip the file
-1. Copy the user interface folder
-    - **macOS:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `com.isteinbrecher.latex2ai` to `~/Library/Application Support/Adobe/CEP/extensions/`
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `com.isteinbrecher.latex2ai` to `/Library/Application Support/Adobe/CEP/extensions/`
-    - **Windows:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `com.isteinbrecher.latex2ai` to `C:\Users\<USERNAME>\AppData\Roaming\Adobe\CEP\extensions` (the directory might have to be created by the user)
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `com.isteinbrecher.latex2ai` to `C:\Program Files\Common Files\Adobe\CEP\extensions\`
-1. Copy the native plugin
+1. Copy the user interface folder `com.isteinbrecher.latex2ai`
 
-    - **macOS:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `macOS/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `macOS/LaTeX2AI.aip` to `/Applications/Adobe Illustrator <YOUR VERSION>/Plug-ins/`
-    - **Windows:**
-        - LaTeX2AI only for _current_ user:
-            - Copy `WIN/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
-        - LaTeX2AI for _all_ users (requires administrator privileges):
-            - Copy `WIN/LaTeX2AI.aip` to `C:\Program Files\Adobe\Adobe Illustrator <YOUR VERSION>\Plug-ins\`
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `com.isteinbrecher.latex2ai` to `~/Library/Application Support/Adobe/CEP/extensions/`
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `com.isteinbrecher.latex2ai` to `/Library/Application Support/Adobe/CEP/extensions/`
+
+1. Copy the plugin
+
+    - LaTeX2AI installation only for **_current_ user**:
+        - Copy `macOS/LaTeX2AI.aip` to an arbitrary directory. This directory has to be set as the Adobe Illustrator Plugin directory via `Edit/Preferences/Plug-ins & Scratch Disks.../Additional Plug-ins Folder/`
+    - LaTeX2AI installation for **_all_ users** (requires administrator privileges):
+        - Copy `macOS/LaTeX2AI.aip` to `/Applications/Adobe Illustrator <YOUR VERSION>/Plug-ins/`
 
 1. After a restart of Adobe Illustrator, you can display the LaTeX2AI tools with `Window/Toolbars/Advanced`.
+
+    > Depending on your system settings you might get the following error message when starting Illustrator
+    >
+    > <img src="/doc/images/macos_permission_error.png?raw=true" alt="macOS permission error" height="350" title="Create / Edit">
+    >
+    > This can be resolved by explicitly allowing the gatekeeper to run LaTeX2AI ([see also this thread](https://apple.stackexchange.com/questions/58509/how-can-i-open-a-single-app-by-an-unidentified-developer-without-allowing-all)). To do so, open the terminal and type:
+    >
+    > ```bash
+    > xattr -d com.apple.quarantine <PATH TO LaTeXAI.aip>
+    > ```
+    >
+    > If you have installed LaTeX2AI for _all_ users you need to run this command with administrator privileges:
+    >
+    > ```bash
+    > sudo xattr -d com.apple.quarantine <PATH TO LaTeXAI.aip>
+    > ```
 
 To uninstall LaTeX2AI, delete the files you copied.
 
@@ -116,20 +144,18 @@ It is not required to keep track of the files in the `links` folder, LaTeX2AI ma
 
 # Known issues
 
-## Non ASCII characters in the document name or path
-
-LaTeX2AI currently does not work if there are non ASCII characters in the document name or full document path.
-
 ## Creative Cloud documents
 
 LaTeX2AI currently does not work with _Creative Cloud documents_. However, if the document is stored in the _Creative Cloud Files_ folder on the disk, LaTeX2AI should work as expected.
 
 # Work that uses LaTeX2AI
 
--   F. Toenniessen, Die Homotopie der Sphären, eine Einführung in die Technik der Faserungen, Spektralsequenzen und Kohomologie-Operationen, Springer Verlag Heidelberg (to appear in 2022).
+An incomplete list of work that uses LaTeX2AI
+
+-   Toenniessen, F.: Die Homotopie der Sphären - Eine Einführung in Spektralsequenzen, Lokalisierungen und Kohomologie-Operationen, Springer Verlag Heidelberg, 2023.
 -   Steinbrecher, I., Popp, A., Meier, C.: Consistent coupling of positions and rotations for embedding 1D Cosserat beams into 3D solid volumes. Comput Mech (2021), [Open Access](https://doi.org/10.1007/s00466-021-02111-4)
 -   Steinbrecher, I., Mayr, M., Grill, M.J., Kremheller, J., Meier, C., Popp, A.: A mortar-type finite element approach for embedding 1D beams into 3D solid volumes, Comput Mech (2020), 66(6):1377-1398, [Open Access](https://doi.org/10.1007/s00466-020-01907-0)
--   Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010) (LaTeX2AI not credited)
+-   Steinbrecher, I., Humer, A., Vu-Quoc, L.: On the numerical modeling of sliding beams: A comparison of different approaches, Journal of Sound and Vibration, 408:270-290, [Open Access](https://doi.org/10.1016/j.jsv.2017.07.010)
 
 # Contributing
 
@@ -151,7 +177,7 @@ A few things to keep in mind:
         ```bash
         find src -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i
         ```
--   Add a short description of your changes to the [Changelog](#changelog).
+-   Add a short description of your changes to the [Changelog](doc/CHANGELOG.md).
 -   Feel free to add yourself to the [./CONTRIBUTORS](CONTRIBUTORS) file.
 
 # Build LaTeX2AI from source

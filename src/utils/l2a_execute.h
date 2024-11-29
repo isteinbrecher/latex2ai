@@ -50,16 +50,14 @@ namespace L2A
         };
 
         /**
-         * \brief Execute a command line. Return the exit code and the comand output.
+         * \brief Execute a command line. Return the exit code and the command output.
          */
-        CommandResult ExecuteCommandLine(
-            const ai::UnicodeString& command, const bool quiet, const unsigned long max_time_ms = 10000);
+        CommandResult ExecuteCommandLine(const ai::UnicodeString& command);
 
         namespace INTERNAL
         {
             /**
-             * \brief Execute system command and get stdout result. Do not throw erros in this
-             * function.
+             * \brief Execute system command and get stdout result. Do not throw errors in this function.
              *
              * Taken from https://github.com/RaymiiOrg/cpp-command-output
              *
@@ -68,11 +66,13 @@ namespace L2A
             CommandResult ExecuteCommandLineStd(const ai::UnicodeString& command);
 
             /**
-             * \brief Execute a command line. Return the exit code and the comand output. Do not throw erros in this
+             * \brief Execute a command line. Return the exit code and the command output. Do not throw errors in this
              * function.
+             *
+             * This function can only be used on windows, as the ExecuteCommandLineStd function opens a console window
+             * under Windows
              */
-            CommandResult ExecuteCommandLineWindowsNoConsole(
-                const ai::UnicodeString& command, const unsigned long max_time_ms);
+            CommandResult ExecuteCommandLineWindowsNoConsole(const ai::UnicodeString& command);
         }  // namespace INTERNAL
 
         /**

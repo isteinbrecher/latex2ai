@@ -26,16 +26,16 @@
 # Get the path of the current script
 SCRIPT_DIR="$(dirname "$0")"
 
-# Remove an existing release version
-BUILD_PATH=${SCRIPT_DIR}/../../output/mac/release/LaTeX2AI.aip
+# Remove an existing version
+BUILD_PATH=${SCRIPT_DIR}/../../output/mac/${L2A_BUILD_TYPE}/LaTeX2AI.aip
 rm -rf ${BUILD_PATH}
 
-# Build the release version of LaTeX2AI
-xcodebuild -project ${SCRIPT_DIR}/../LaTeX2AI.xcodeproj -scheme "LaTeX2AI" -configuration "release" -destination "generic/platform=macOS" clean build
+# Build the version of LaTeX2AI
+xcodebuild -project ${SCRIPT_DIR}/../LaTeX2AI.xcodeproj -scheme "LaTeX2AI" -configuration "${L2A_BUILD_TYPE}" -destination "generic/platform=macOS" clean build
 
 # Move to the correct folder
 FINAL_PATH_DIR=${SCRIPT_DIR}/release_files/macOS
 mkdir -p ${FINAL_PATH_DIR}
-FINAL_PATH=${FINAL_PATH_DIR}/LaTeX2AI.aip
+FINAL_PATH=${FINAL_PATH_DIR}/LaTeX2AI_${L2A_GIT_IDENTIFIER}_${L2A_BUILD_TYPE}.aip
 rm -rf ${FINAL_PATH}
 mv ${BUILD_PATH} ${FINAL_PATH}

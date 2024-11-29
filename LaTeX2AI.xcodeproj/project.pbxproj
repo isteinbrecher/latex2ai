@@ -19,6 +19,8 @@
 		A1A458C925E4DC890077068A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A458C825E4DC890077068A /* Cocoa.framework */; };
 		C605E7F72B226FF900E74B92 /* l2a_execute.h in Headers */ = {isa = PBXBuildFile; fileRef = C605E7F52B226FF900E74B92 /* l2a_execute.h */; };
 		C605E7F82B226FF900E74B92 /* l2a_execute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C605E7F62B226FF900E74B92 /* l2a_execute.cpp */; };
+		C613A4EE2CF9C76500043325 /* test_latex.h in Headers */ = {isa = PBXBuildFile; fileRef = C613A4EC2CF9C76500043325 /* test_latex.h */; };
+		C613A4EF2CF9C76500043325 /* test_latex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C613A4ED2CF9C76500043325 /* test_latex.cpp */; };
 		C61B699B2B4AAE0C00AF2924 /* SDKPlugPlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */; };
 		C61B699E2B4AB17400AF2924 /* l2a_ui_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */; };
 		C61B699F2B4AB17400AF2924 /* l2a_ui_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */; };
@@ -106,6 +108,8 @@
 		A1A458C825E4DC890077068A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C605E7F52B226FF900E74B92 /* l2a_execute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_execute.h; path = src/utils/l2a_execute.h; sourceTree = "<group>"; };
 		C605E7F62B226FF900E74B92 /* l2a_execute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_execute.cpp; path = src/utils/l2a_execute.cpp; sourceTree = "<group>"; };
+		C613A4EC2CF9C76500043325 /* test_latex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = test_latex.h; path = src/tests/test_latex.h; sourceTree = "<group>"; };
+		C613A4ED2CF9C76500043325 /* test_latex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_latex.cpp; path = src/tests/test_latex.cpp; sourceTree = "<group>"; };
 		C61B699A2B4AAE0C00AF2924 /* SDKPlugPlug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SDKPlugPlug.cpp; path = ../common/source/SDKPlugPlug.cpp; sourceTree = "<group>"; };
 		C61B699C2B4AB17400AF2924 /* l2a_ui_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2a_ui_manager.h; path = src/l2a_ui_manager.h; sourceTree = "<group>"; };
 		C61B699D2B4AB17400AF2924 /* l2a_ui_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2a_ui_manager.cpp; path = src/l2a_ui_manager.cpp; sourceTree = "<group>"; };
@@ -262,6 +266,8 @@
 				C6F3D1F42B03A022004EF248 /* test_file_system.h */,
 				C6F3D1F82B03A022004EF248 /* test_framework.cpp */,
 				C6F3D1F92B03A022004EF248 /* test_framework.h */,
+				C613A4ED2CF9C76500043325 /* test_latex.cpp */,
+				C613A4EC2CF9C76500043325 /* test_latex.h */,
 				C6F3D2012B03A022004EF248 /* test_parameter_list.cpp */,
 				C6F3D1FC2B03A022004EF248 /* test_parameter_list.h */,
 				C6F3D2022B03A022004EF248 /* test_string_functions.cpp */,
@@ -336,6 +342,7 @@
 				C6F3D1EF2B039EF3004EF248 /* l2a_plugin.h in Headers */,
 				C67D8B1E2B0384D5001F89FA /* l2a_string_functions.h in Headers */,
 				C67D8B502B038B86001F89FA /* l2a_names.h in Headers */,
+				C613A4EE2CF9C76500043325 /* test_latex.h in Headers */,
 				C6F3D20E2B03A022004EF248 /* test_parameter_list.h in Headers */,
 				C67D8B4E2B038B86001F89FA /* l2a_global.h in Headers */,
 				C62AA9DB2B4C3BF300E27B7B /* l2a_ui_redo.h in Headers */,
@@ -512,6 +519,7 @@
 				C62AA9DC2B4C3BF300E27B7B /* l2a_ui_redo.cpp in Sources */,
 				C67D8B562B038B86001F89FA /* l2a_global.cpp in Sources */,
 				2AF5F7AD0CF5F3110091D961 /* SDKAboutPluginsHelper.cpp in Sources */,
+				C613A4EF2CF9C76500043325 /* test_latex.cpp in Sources */,
 				2AF5F7AE0CF5F3110091D961 /* Suites.cpp in Sources */,
 				E8FDCA9910209FEA00D09060 /* IAIStringFormatUtils.cpp in Sources */,
 				C67D8B542B038B86001F89FA /* l2a_item.cpp in Sources */,

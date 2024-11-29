@@ -55,7 +55,11 @@
  */
 ai::FilePath L2A::UTIL::FilePathStdToAi(const std::filesystem::path& path_std)
 {
-    return ai::FilePath(ai::UnicodeString(path_std.string()));
+#ifdef WIN_ENV
+    return ai::FilePath(L2A::UTIL::StringStdToAi(path_std.u8string()));
+#else
+    return ai::FilePath(L2A::UTIL::StringStdToAi(path_std.string()));
+#endif
 }
 
 /**
@@ -63,7 +67,11 @@ ai::FilePath L2A::UTIL::FilePathStdToAi(const std::filesystem::path& path_std)
  */
 std::filesystem::path L2A::UTIL::FilePathAiToStd(const ai::FilePath& path_ai)
 {
+#ifdef WIN_ENV
+    return std::filesystem::path(L2A::UTIL::StringAiToStdW(path_ai.GetFullPath()));
+#else
     return std::filesystem::path(L2A::UTIL::StringAiToStd(path_ai.GetFullPath()));
+#endif
 }
 
 
@@ -111,8 +119,8 @@ void L2A::UTIL::RemoveFile(const ai::FilePath& file, const bool& fail_if_not_exi
     if (IsFile(file))
     {
         std::error_code ec;
-        if (!std::filesystem::remove(FilePathAiToStd(file), ec))
-            l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
+        std::filesystem::remove(FilePathAiToStd(file), ec);
+        if (ec.value() != 0) l2a_error("The given path " + file.GetFullPath() + " could not be deleted!");
     }
     else if (IsDirectory(file))
         l2a_error("The given path " + file.GetFullPath() + " is a directory!");
@@ -129,13 +137,38 @@ void L2A::UTIL::RemoveDirectoryAI(const ai::FilePath& directory, const bool& fai
     if (IsDirectory(directory))
     {
         std::error_code ec;
-        if (!std::filesystem::remove_all(FilePathAiToStd(directory), ec))
-            l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
+        std::filesystem::remove_all(FilePathAiToStd(directory), ec);
+        if (ec.value() != 0) l2a_error("The folder \"" + directory.GetFullPath() + "\" could not be deleted!");
     }
     else if (IsFile(directory))
         l2a_error("The given path " + directory.GetFullPath() + " is a file!");
     else if (fail_if_not_exist)
         l2a_error("The given path " + directory.GetFullPath() + " does not exist!");
+}
+
+/**
+ *
+ */
+void L2A::UTIL::ClearDirectory(const ai::FilePath& directory, const bool fail_if_not_exist)
+{
+    if (!IsDirectory(directory))
+    {
+        if (fail_if_not_exist)
+        {
+            l2a_error("The given directory " + directory.GetFullPath() + " to clear does not exist!");
+        }
+        else
+        {
+            CreateDirectoryL2A(directory);
+        }
+    }
+
+    for (const auto& entry : std::filesystem::directory_iterator(FilePathAiToStd(directory)))
+    {
+        std::error_code ec;
+        std::filesystem::remove_all(entry.path(), ec);
+        if (ec.value() != 0) l2a_error("The item \"" + entry.path().string() + "\" could not be deleted!");
+    }
 }
 
 /**
@@ -195,7 +228,7 @@ void L2A::UTIL::CopyFileL2A(const ai::FilePath& source, const ai::FilePath& targ
     std::error_code ec;
     std::filesystem::copy(
         FilePathAiToStd(source), FilePathAiToStd(target), std::filesystem::copy_options::overwrite_existing, ec);
-    if (ec.value()) l2a_error("Could not copy the file " + source.GetFullPath() + " to " + target.GetFullPath());
+    if (ec.value() != 0) l2a_error("Could not copy the file " + source.GetFullPath() + " to " + target.GetFullPath());
 }
 
 /**
@@ -213,11 +246,11 @@ ai::FilePath L2A::UTIL::GetTemporaryDirectory()
 /**
  *
  */
-void L2A::UTIL::ClearTemporaryDirectory()
+ai::FilePath L2A::UTIL::ClearTemporaryDirectory()
 {
-    const auto temp_dir = GetTemporaryDirectory();
-    RemoveDirectoryAI(temp_dir, false);
-    CreateDirectoryL2A(temp_dir);
+    const auto temp_directory = GetTemporaryDirectory();
+    ClearDirectory(temp_directory, false);
+    return temp_directory;
 }
 
 /**
@@ -242,21 +275,11 @@ ai::FilePath L2A::UTIL::GetDocumentPath(bool fail_if_not_saved)
     error = sAIDocument->GetDocumentFileSpecification(path);
     l2a_check_ai_error(error);
 
-    // Check if the path is a file.
+    // Check if the path is a file
     if (!IsFile(path) && fail_if_not_saved)
     {
         l2a_warning(
             "The document is not saved! Almost all functionality of LaTeX2AI requires the document to be saved.");
-    }
-    else
-    {
-        // Check if non ASCII characters appear in the path.
-        ai::UnicodeString unicode_path = path.GetFullPath();
-        ai::UnicodeString utf8_path(L2A::UTIL::StringStdToAi(L2A::UTIL::StringAiToStd(path.GetFullPath())));
-        if (unicode_path != utf8_path)
-            l2a_warning(
-                "The document path contains non ASCII characters. LaTeX2AI is only working if there "
-                "are non ASCII characters in the document name / path.");
     }
 
     return path;
@@ -289,13 +312,20 @@ std::vector<ai::FilePath> L2A::UTIL::FindFilesInFolder(const ai::FilePath& folde
     {
         if (std::filesystem::is_regular_file(dir_entry))
         {
-            const auto file_name = dir_entry.path().filename().string();
+            const auto file_name = dir_entry.path().filename().u8string();
             if (std::regex_search(file_name, regex_string))
             {
                 file_vector.push_back(FilePathStdToAi(dir_entry.path()));
             }
         }
     }
+
+    // Sort the paths to ensure a deterministic ordering of the returned vector
+    std::sort(file_vector.begin(), file_vector.end(),
+        [](const ai::FilePath& a, const ai::FilePath& b)
+        {
+            return a.GetFullPath() < b.GetFullPath();  // Compare as UTF-8 strings
+        });
     return file_vector;
 }
 

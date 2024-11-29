@@ -5,6 +5,7 @@ var text_align_vertical_input = null
 var latex_text_input = null
 var cursor_position_input = null
 var close_on_focus = false
+var item_ui_finish_on_enter = null
 
 $(function () {
     var csInterface = new CSInterface()
@@ -59,24 +60,13 @@ $(function () {
     )
 
     document.addEventListener("keydown", (event) => {
-        if (event.shiftKey && event.key === "Enter") {
-            event.preventDefault()
-
-            if (!(document.activeElement.id === "latex_text")) {
-                return
-            }
-
-            // Add newline to the text form
-            // Get the txt pre and post selection
-            let selection_start = $("#latex_text").prop("selectionStart")
-            let selection_end = $("#latex_text").prop("selectionEnd")
-            let text = $("#latex_text").val()
-            let pre = text.substring(0, selection_start)
-            let post = text.substring(selection_end)
-            $("#latex_text").val(pre + "\n" + post)
-            $("#latex_text").prop("selectionStart", selection_start + 1)
-            $("#latex_text").prop("selectionEnd", selection_start + 1)
-        } else if (event.key === "Enter") {
+        if (
+            // Events that finish the item creation
+            (item_ui_finish_on_enter && event.key === "Enter") ||
+            (!item_ui_finish_on_enter &&
+                event.shiftKey &&
+                event.key === "Enter")
+        ) {
             event.preventDefault()
             var event = new CSEvent(
                 "com.adobe.csxs.events.latex2ai.item.ok",
@@ -86,6 +76,28 @@ $(function () {
             )
             event.data = get_form_return_xml_string("ok", true)
             csInterface.dispatchEvent(event)
+        } else if (
+            // "Manually" add a new line for SHIFT+ENTER
+            item_ui_finish_on_enter &&
+            event.shiftKey &&
+            event.key === "Enter"
+        ) {
+            event.preventDefault()
+
+            if (!(document.activeElement.id === "latex_text")) {
+                return
+            }
+
+            // Add newline to the text form
+            // Get the text pre and post selection
+            let selection_start = $("#latex_text").prop("selectionStart")
+            let selection_end = $("#latex_text").prop("selectionEnd")
+            let text = $("#latex_text").val()
+            let pre = text.substring(0, selection_start)
+            let post = text.substring(selection_end)
+            $("#latex_text").val(pre + "\n" + post)
+            $("#latex_text").prop("selectionStart", selection_start + 1)
+            $("#latex_text").prop("selectionEnd", selection_start + 1)
         } else if (event.key === "Escape") {
             event.preventDefault()
             csInterface.closeExtension()
@@ -209,6 +221,21 @@ function update_create_item(event) {
             "_" +
             text_align_horizontal_input
     ).prop("checked", true)
+
+    // Set the behavior when pressing Enter
+    item_ui_finish_on_enter =
+        xml_form_data.attr("item_ui_finish_on_enter") == "1"
+    if (item_ui_finish_on_enter) {
+        $("#latex_code_title_text").prop(
+            "innerHTML",
+            "LaTeX code - complete form with ENTER (for newline press SHIFT+ENTER)"
+        )
+    } else {
+        $("#latex_code_title_text").prop(
+            "innerHTML",
+            "LaTeX code - complete form with SHIFT+ENTER"
+        )
+    }
 
     // Activate / Deactivate the buttons
     if (xml_form_data.attr("latex_exists") == "1") {

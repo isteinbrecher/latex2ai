@@ -48,10 +48,19 @@ namespace L2A
                 "Hier ist ein anderer langer Text mit Umlauten äöÄÖÜß@!\nund neue Zeilen\n\n\nthe end<>/''\"!\n";
             static const char* test_string_5_ = "abcdefg123567890";
 
+            //! Unicode string
+            const char16_t test_string_unicode_characters[] = {
+                0x041F, 0x0440, 0x0438, 0x0432, 0x0435, 0x0442, 0x0020, 0x043C, 0x0438, 0x0440, 0x0021, 0x0020, 0x3053,
+                0x3093, 0x306B, 0x3061, 0x306F, 0x4E16, 0x754C, 0xFF01,
+                0x0000  // Null terminator
+            };
+            ai::UnicodeString test_string_unicode();
+            ai::UnicodeString test_string_unicode_multiline();
+
             //! Container to store the data for the test string comparisons
             struct TestStringData
             {
-                std::string string_;
+                ai::UnicodeString string_;
                 std::string string_hash_;
                 std::string encoded_file_hash_win_;
                 std::string encoded_file_hash_mac_;
@@ -59,12 +68,7 @@ namespace L2A
 
             //! Vector of the strings including their hashes. Sine the line endings are different, the strings with a
             //! new line have different hashes for Windows and MacOS
-            static const std::vector<TestStringData> test_strings_ = {
-                {test_string_1_, "168fcba7bbad5ac1", "e55339768e9b9d93", "aa1275166c0e08a6"},
-                {test_string_2_, "f51a4ec38c535aec", "99e5bbb4caec0750", "56133a1f4e042a14"},
-                {test_string_3_, "a6c5f57342b2591", "e24088e7de7e0764", "5f906d24d8b354b2"},
-                {test_string_4_, "62c1cd8642ed5be8", "6ff8d5730c8b63fa", "87ec20640dce3c6d"},
-                {test_string_5_, "6b80f03d7ef29102", "53df0414bbc17175", "53df0414bbc17175"}};
+            std::vector<TestStringData> test_strings();
 
             /**
              * \brief A class that handles testing.

@@ -125,6 +125,14 @@ namespace L2A
         bool CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file);
 
         /**
+         * \brief Actually compile the latex document.
+         * @param (in) tex_file Path to the tex file.
+         * @param (out) Path of the created pdf file.
+         * @return True if creation was successful.
+         */
+        bool CompileLatexDocument(const ai::FilePath& tex_file, ai::FilePath& pdf_file);
+
+        /**
          * \brief Create all the files that are needed to create a latex document.
          * @return Path to the main latex document.
          */
@@ -149,12 +157,24 @@ namespace L2A
         /**
          * \brief Search the path to ghostscript on the system.
          */
-        ai::UnicodeString GetDefaultGhostScriptCommand();
+        ai::UnicodeString SearchDefaultGhostScriptCommand();
+
+        /**
+         * \brief Get a path to ghostscript on the system. It is checked if this path works, the first item in the
+         * return pair is the flag if the command is fine.
+         */
+        std::pair<bool, ai::UnicodeString> GetDefaultGhostScriptCommand();
 
         /**
          * \brief Search the path to the latex binaries on the system.
          */
-        ai::FilePath GetDefaultLatexPath();
+        ai::FilePath SearchDefaultLatexPath();
+
+        /**
+         * \brief Search the path to the latex binaries on the system. It is checked if this path works, the first item
+         * in the return pair is the flag if the command is fine.
+         */
+        std::pair<bool, ai::FilePath> GetDefaultLatexPath();
 
         /**
          * \brief Check if the ghostscript command is valid.

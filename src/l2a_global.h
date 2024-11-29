@@ -112,6 +112,10 @@ namespace L2A
             //! Command for ghostscript in the shell.
             ai::UnicodeString gs_command_;
 
+            //! Flag if item UI form can be finished by pressing Enter
+            //! If this is false, it can be finished by pressing Shift+Enter
+            bool item_ui_finish_on_enter_;
+
             //! Flag for warning if ai file is not saved.
             bool warning_ai_not_saved_;
 

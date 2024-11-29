@@ -144,7 +144,7 @@ std::vector<ai::FilePath> L2A::LATEX::SplitPdfPages(
 
     // Call the command to split up the pdf file
     L2A::UTIL::SetWorkingDirectory(pdf_folder);
-    auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
+    auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command);
     if (command_result.exit_status_ == 127)
     {
         // This exit code means that the command was not found.
@@ -265,18 +265,33 @@ std::pair<L2A::LATEX::LatexCreationResult, std::vector<ai::FilePath>> L2A::LATEX
  */
 bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file)
 {
-    // Create the latex files
-    const ai::FilePath tex_file = WriteLatexFiles(latex_code, L2A::UTIL::GetTemporaryDirectory());
+    // Get the directory where the items shall be created
+    ai::FilePath tex_directory = L2A::UTIL::GetTemporaryDirectory();
+    tex_directory.AddComponent(ai::UnicodeString(L2A::NAMES::create_pdf_tex_name_base_));
 
-    // Remove a mabe existing pdf file.
+    // Make sure the directory exists and is empty
+    L2A::UTIL::ClearDirectory(tex_directory, false);
+
+    // Create the latex files
+    const ai::FilePath tex_file = WriteLatexFiles(latex_code, tex_directory);
+
+    // Compile the latex file
+    return CompileLatexDocument(tex_file, pdf_file);
+}
+
+/**
+ *
+ */
+bool L2A::LATEX::CompileLatexDocument(const ai::FilePath& tex_file, ai::FilePath& pdf_file)
+{
+    // Get the pdf file name
     pdf_file = tex_file.GetParent();
     pdf_file.AddComponent(tex_file.GetFileNameNoExt() + ".pdf");
-    L2A::UTIL::RemoveFile(pdf_file, false);
 
     // Compile the latex file
     L2A::UTIL::SetWorkingDirectory(tex_file.GetParent());
     const ai::UnicodeString latex_command = GetLatexCompileCommand(tex_file);
-    const auto command_result = L2A::UTIL::ExecuteCommandLine(latex_command, false);
+    const auto command_result = L2A::UTIL::ExecuteCommandLine(latex_command);
 
     // Sometimes we get 0 exit status but still no pdf file. TODO: Find the reason for that. Intermediate fix: loop as
     // long as this condition is not fulfilled any more -> Use this fix and print the warning in debug mode
@@ -395,7 +410,7 @@ std::string L2A::LATEX::GetHeaderWithIncludedInputs(const ai::FilePath& header_p
 /**
  *
  */
-ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
+ai::UnicodeString L2A::LATEX::SearchDefaultGhostScriptCommand()
 {
 #ifdef WIN_ENV
     // Get the path to the programs folder.
@@ -463,7 +478,25 @@ ai::UnicodeString L2A::LATEX::GetDefaultGhostScriptCommand()
 /**
  *
  */
-ai::FilePath L2A::LATEX::GetDefaultLatexPath()
+std::pair<bool, ai::UnicodeString> L2A::LATEX::GetDefaultGhostScriptCommand()
+{
+    // Check if the automatically found command works
+    const auto default_gs_command = SearchDefaultGhostScriptCommand();
+    if (L2A::LATEX::CheckGhostscriptCommand(default_gs_command))
+    {
+        return {true, default_gs_command};
+    }
+
+    // We did not find a command that works, raise a warning and return an empty command here
+    L2A::AI::WarningAlert(ai::UnicodeString(
+        "Could not determine the Ghostscript command. Please set the command yourself in the LaTeX2AI options."));
+    return {false, ai::UnicodeString("")};
+}
+
+/**
+ *
+ */
+ai::FilePath L2A::LATEX::SearchDefaultLatexPath()
 {
 #ifdef WIN_ENV
     return ai::FilePath(ai::UnicodeString(""));
@@ -517,6 +550,31 @@ ai::FilePath L2A::LATEX::GetDefaultLatexPath()
 /**
  *
  */
+std::pair<bool, ai::FilePath> L2A::LATEX::GetDefaultLatexPath()
+{
+    // First try if the default (empty) value works
+    const ai::FilePath empty_latex_bin_path(ai::UnicodeString(""));
+    if (L2A::LATEX::CheckLatexCommand(empty_latex_bin_path))
+    {
+        return {true, empty_latex_bin_path};
+    }
+
+    // Next, try to automatically find the path
+    const auto default_latex_bin_path = SearchDefaultLatexPath();
+    if (L2A::LATEX::CheckLatexCommand(default_latex_bin_path))
+    {
+        return {true, default_latex_bin_path};
+    }
+
+    // Nothing worked, raise a warning and return an empty path
+    L2A::AI::WarningAlert(ai::UnicodeString(
+        "Could not determine the LaTeX binaries path. Please set the path yourself in the LaTeX2AI options."));
+    return {false, ai::FilePath(ai::UnicodeString(""))};
+}
+
+/**
+ *
+ */
 bool L2A::LATEX::CheckGhostscriptCommand(const ai::UnicodeString& gs_command)
 {
     if (gs_command == ai::UnicodeString(""))
@@ -529,7 +587,7 @@ bool L2A::LATEX::CheckGhostscriptCommand(const ai::UnicodeString& gs_command)
 
     try
     {
-        auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command, true);
+        auto command_result = L2A::UTIL::ExecuteCommandLine(full_gs_command);
         if (command_result.output_.find(ai::UnicodeString(" Ghostscript ")) != std::string::npos)
             return true;
         else
@@ -569,7 +627,7 @@ bool L2A::LATEX::CheckLatexCommand(const ai::FilePath& path_latex)
     ai::UnicodeString command_output;
     try
     {
-        auto command_result = L2A::UTIL::ExecuteCommandLine(command_latex, true);
+        auto command_result = L2A::UTIL::ExecuteCommandLine(command_latex);
         if (command_result.output_.find(ai::UnicodeString("pdfTeX")) != std::string::npos)
             return true;
         else

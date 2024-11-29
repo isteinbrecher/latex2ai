@@ -23,56 +23,36 @@
 // -----------------------------------------------------------------------------
 
 /**
- * \brief Main function for testing.
+ * \brief File encoding to base 64.
  */
 
 
-#include "IllustratorSDK.h"
-
-#include "testing.h"
-
-#include "test_base64.h"
-#include "test_file_system.h"
-#include "test_framework.h"
-#include "test_latex.h"
-#include "test_parameter_list.h"
-#include "test_string_functions.h"
-#include "test_utlity.h"
-#include "testing_utlity.h"
+#ifndef TEST_LATEX_H_
+#define TEST_LATEX_H_
 
 
-/**
- *
- */
-void L2A::TEST::TestingMain(const bool print_status)
+// Forward declarations.
+namespace L2A
 {
-    // Create the testing object.
-    L2A::TEST::UTIL::UnitTest ut;
+    namespace TEST
+    {
+        namespace UTIL
+        {
+            class UnitTest;
+        }
+    }  // namespace TEST
+}  // namespace L2A
 
-    // Call the individual testing functions.
-    L2A::TEST::TestParameterList(ut);
-    L2A::TEST::TestStringFunctions(ut);
-    L2A::TEST::TestFileSystem(ut);
-    L2A::TEST::TestUtilityFunctions(ut);
-    L2A::TEST::TestVersion(ut);
-    L2A::TEST::TestBase64(ut);
-    L2A::TEST::TestLatex(ut);
 
-    // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary(print_status);
-}
-
-/**
- *
- */
-void L2A::TEST::TestFramework(const bool print_status)
+namespace L2A
 {
-    // Create the testing object.
-    L2A::TEST::UTIL::UnitTest ut;
+    namespace TEST
+    {
+        /**
+         * \brief Test the functionality of the Latex module.
+         */
+        void TestLatex(L2A::TEST::UTIL::UnitTest& ut);
+    }  // namespace TEST
+}  // namespace L2A
 
-    // Call the framework test.
-    L2A::TEST::TestFramework(ut);
-
-    // Print the testing summary. For now this is deactivated.
-    ut.PrintTestSummary(print_status);
-}
+#endif

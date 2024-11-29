@@ -131,6 +131,9 @@
     <ClCompile Include="..\common\source\Suites.cpp">
       <Filter>sdk</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\test_latex.cpp">
+      <Filter>src\tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tpl\tinyxml2\tinyxml2.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="src\l2a_ui_redo.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\test_latex.h">
+      <Filter>src\tests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

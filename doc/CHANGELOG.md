@@ -3,14 +3,18 @@
 -   **v1.0.0**
     -   Features:
         -   Add macOS support.
+        -   Add support for Unicode file paths.
         -   Fix pdf file structure before missing links message is shown.
         -   Improve finding of LaTeX and ghostscript paths.
         -   Rework documentation.
         -   Fix errors when working with Creative Cloud documents.
+        -   Allow to chose hotkey to finish item create / edit UI.
     -   Other:
         -   Use platform independent string hash algorithm.
         -   Use native `html` based UI.
         -   Restructured the repository file structure.
+    -   Deprecations:
+        -   Due to the new `html` UI, **Illustrator CS6 support is dropped**.
 -   **v0.0.10**
     -   Features:
         -   Add optional warnings when saving as PDF.

@@ -4,7 +4,7 @@
 
 The additional requirements to build LaTeX2AI from source are:
 
--   A C++ compiler has to be available on the system. This repository includes a Visual Studio 2022 solution for Windows.
+-   A C++ compiler has to be available on the system. This repository includes a Visual Studio 2022 solution for Windows and a Xcode project for macOS.
 -   `python3` and `git` have to be available on the system.
 
 ## Getting started

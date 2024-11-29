@@ -164,6 +164,10 @@ function form_content_to_xml() {
         $("#gs_command").prop("value")
     )
     xml_document.documentElement.setAttribute(
+        "item_ui_finish_on_enter",
+        bool_to_string($("#item_ui_finish_on_enter").prop("checked"))
+    )
+    xml_document.documentElement.setAttribute(
         "warning_boundary_boxes",
         bool_to_string($("#warning_save_boundary_box").prop("checked"))
     )
@@ -203,6 +207,13 @@ function update_form(event) {
             "tex_options"
         )
         if_found_update_value(latex2ai_data, "latex_engine", "tex_engine")
+
+        // Item creation options
+        if_found_update_checkbox(
+            latex2ai_data,
+            "item_ui_finish_on_enter",
+            "item_ui_finish_on_enter"
+        )
 
         // Warnings
         if_found_update_checkbox(

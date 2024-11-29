@@ -83,9 +83,13 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
 
         // Delete the old testing document.
         ai::FilePath testing_document_path = temp_dir;
-        testing_document_path.AddComponent(ai::UnicodeString("testing_document"));
+        const auto testing_document_base_name =
+            ai::UnicodeString("l2a_testing_document") + L2A::TEST::UTIL::test_string_unicode();
+
+        testing_document_path.AddComponent(
+            ai::UnicodeString("testing_document" + L2A::TEST::UTIL::test_string_unicode()));
         L2A::UTIL::CreateDirectoryL2A(testing_document_path);
-        testing_document_path.AddComponent(ai::UnicodeString("l2a_testing_document.ai"));
+        testing_document_path.AddComponent(testing_document_base_name + ".ai");
         L2A::UTIL::RemoveFile(testing_document_path, false);
 
         // Create the testing document.
@@ -93,7 +97,7 @@ void L2A::TEST::TestFramework(L2A::TEST::UTIL::UnitTest& ut)
         AIDocumentHandle new_doc;
 
         AINewDocumentPreset new_doc_settings;
-        new_doc_settings.docTitle = ai::UnicodeString("l2a_testing_document");
+        new_doc_settings.docTitle = testing_document_base_name;
         new_doc_settings.docWidth = (AIReal)595.2800292969;
         new_doc_settings.docHeight = (AIReal)841.8900146484;
         new_doc_settings.docNumArtboards = 1;

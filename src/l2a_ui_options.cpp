@@ -137,6 +137,8 @@ void L2A::UI::Options::CallbackSave(const csxs::event::Event* const eventParam)
     global_mutable.latex_command_options_ = options_form->GetStringOption(ai::UnicodeString("latex_command_options"));
     global_mutable.latex_bin_path_ = ai::FilePath(options_form->GetStringOption(ai::UnicodeString("latex_bin_path")));
     global_mutable.gs_command_ = options_form->GetStringOption(ai::UnicodeString("gs_command"));
+    global_mutable.item_ui_finish_on_enter_ =
+        options_form->GetIntOption(ai::UnicodeString("item_ui_finish_on_enter")) == 1;
     global_mutable.warning_boundary_boxes_ =
         options_form->GetIntOption(ai::UnicodeString("warning_boundary_boxes")) == 1;
     global_mutable.warning_ai_not_saved_ = options_form->GetIntOption(ai::UnicodeString("warning_ai_not_saved")) == 1;
@@ -155,6 +157,19 @@ void L2A::UI::Options::CallbackGetDefaultValues(const csxs::event::Event* const 
     auto default_parameter_list = std::make_shared<L2A::UTIL::ParameterList>();
     auto default_options_parameter_list = default_parameter_list->SetSubList(ai::UnicodeString("latex2ai_options"));
     L2A::Global().GetDefaultParameterList(default_options_parameter_list);
+
+    const auto [latex_bin_path_ok, auto_latex_bin_path] = L2A::LATEX::GetDefaultLatexPath();
+    if (latex_bin_path_ok)
+    {
+        default_options_parameter_list->SetOption(ai::UnicodeString("latex_bin_path"), auto_latex_bin_path);
+    }
+
+    const auto [gs_command_ok, auto_gs_command] = L2A::LATEX::GetDefaultGhostScriptCommand();
+    if (gs_command_ok)
+    {
+        default_options_parameter_list->SetOption(ai::UnicodeString("gs_command"), auto_gs_command);
+    }
+
     SendData(default_parameter_list);
 }
 
