@@ -68,10 +68,16 @@ To uninstall LaTeX2AI, delete the files you copied.
     >
     > <img src="/doc/images/macos_permission_error.png?raw=true" alt="macOS permission error" height="350" title="Create / Edit">
     >
-    > This can be resolved by explicitly allowing the gatekeeper to run LaTeX2AI ([see also this thread](https://apple.stackexchange.com/questions/58509/how-can-i-open-a-single-app-by-an-unidentified-developer-without-allowing-all)). To do so, open the terminal and type
+    > This can be resolved by explicitly allowing the gatekeeper to run LaTeX2AI ([see also this thread](https://apple.stackexchange.com/questions/58509/how-can-i-open-a-single-app-by-an-unidentified-developer-without-allowing-all)). To do so, open the terminal and type:
     >
     > ```bash
     > xattr -d com.apple.quarantine <PATH TO LaTeXAI.aip>
+    > ```
+    >
+    > If you have installed LaTeX2AI for _all_ users you need to run this command with administrator privileges:
+    >
+    > ```bash
+    > sudo xattr -d com.apple.quarantine <PATH TO LaTeXAI.aip>
     > ```
 
 To uninstall LaTeX2AI, delete the files you copied.
