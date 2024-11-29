@@ -275,6 +275,15 @@ bool L2A::LATEX::CreateLatexDocument(const ai::UnicodeString& latex_code, ai::Fi
     // Create the latex files
     const ai::FilePath tex_file = WriteLatexFiles(latex_code, tex_directory);
 
+    // Compile the latex file
+    return CompileLatexDocument(tex_file, pdf_file);
+}
+
+/**
+ *
+ */
+bool L2A::LATEX::CompileLatexDocument(const ai::FilePath& tex_file, ai::FilePath& pdf_file)
+{
     // Get the pdf file name
     pdf_file = tex_file.GetParent();
     pdf_file.AddComponent(tex_file.GetFileNameNoExt() + ".pdf");

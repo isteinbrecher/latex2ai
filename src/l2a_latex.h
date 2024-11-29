@@ -125,6 +125,14 @@ namespace L2A
         bool CreateLatexDocument(const ai::UnicodeString& latex_code, ai::FilePath& pdf_file);
 
         /**
+         * \brief Actually compile the latex document.
+         * @param (in) tex_file Path to the tex file.
+         * @param (out) Path of the created pdf file.
+         * @return True if creation was successful.
+         */
+        bool CompileLatexDocument(const ai::FilePath& tex_file, ai::FilePath& pdf_file);
+
+        /**
          * \brief Create all the files that are needed to create a latex document.
          * @return Path to the main latex document.
          */
