@@ -102,25 +102,33 @@ void TestCreateDirectory(L2A::TEST::UTIL::UnitTest& ut, const ai::FilePath& temp
     ut.CompareInt(true, L2A::UTIL::IsFile(file_path));
 
     // Create multiple files and check if the find files in folder function works
-    std::vector<ai::FilePath> files(4, test_directory);
-    files[0].AddComponent(ai::UnicodeString(base_name_file + "_01.tex"));
-    files[1].AddComponent(ai::UnicodeString(base_name_file + "_02.tex"));
-    files[3].AddComponent(ai::UnicodeString(base_name_file + "_04.texx"));
+    std::vector<ai::FilePath> files_to_create(4, test_directory);
+    files_to_create[0].AddComponent(ai::UnicodeString(base_name_file + "_01.tex"));
+    files_to_create[1].AddComponent(ai::UnicodeString(base_name_file + "_02.tex"));
+    files_to_create[3].AddComponent(ai::UnicodeString(base_name_file + "_04.texx"));
     // Also create one in a sub directory -> that one should not be found
     ai::FilePath sub_dir = test_directory;
     sub_dir.AddComponent(ai::UnicodeString("tmp"));
     L2A::UTIL::CreateDirectoryL2A(sub_dir);
-    files[2] = sub_dir;
-    files[2].AddComponent(ai::UnicodeString(base_name_file + "_03.tex"));
-    for (const auto& file : files)
+    files_to_create[2] = sub_dir;
+    files_to_create[2].AddComponent(ai::UnicodeString(base_name_file + "_03.tex"));
+    for (const auto& file : files_to_create)
     {
         L2A::UTIL::WriteFileUTF8(file, ai::UnicodeString("Test content"));
     }
+
+    // Copy one -> that one should be found
+    auto file_to_copy = test_directory;
+    file_to_copy.AddComponent(ai::UnicodeString(base_name_file + "_05.tex"));
+    L2A::UTIL::CopyFileL2A(files_to_create[0], file_to_copy);
+
     // Search for a regex match
+    const std::vector<ai::FilePath> ref_files = {files_to_create[0], files_to_create[1], file_to_copy};
     const auto files_in_folder =
         L2A::UTIL::FindFilesInFolder(test_directory, ai::UnicodeString(".*_\\d{2}\\.[tT][eE][xX]$"));
-    ut.CompareInt(2, static_cast<int>(files_in_folder.size()));
-    for (unsigned int i = 0; i < 2; i++) ut.CompareStr(files[i].GetFullPath(), files_in_folder[i].GetFullPath());
+    ut.CompareInt(3, static_cast<int>(files_in_folder.size()));
+    for (unsigned int i = 0; i < ref_files.size(); i++)
+        ut.CompareStr(ref_files[i].GetFullPath(), files_in_folder[i].GetFullPath());
 
     // Test that we can set this directory as working directory
     const auto current_cwd = std::filesystem::current_path();
