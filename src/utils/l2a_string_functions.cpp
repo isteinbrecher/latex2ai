@@ -56,6 +56,17 @@ std::string L2A::UTIL::StringAiToStd(const ai::UnicodeString& string_ai) { retur
 /**
  *
  */
+#ifdef WIN_ENV
+std::wstring L2A::UTIL::StringAiToStdW(const ai::UnicodeString& string_ai)
+{
+    const std::basic_string<ai::UnicodeString::UTF16Char> string_utf16 = string_ai.as_ASUnicode();
+    return std::wstring(string_utf16.begin(), string_utf16.end());
+}
+#endif
+
+/**
+ *
+ */
 ai::UnicodeString L2A::UTIL::IntegerToString(const unsigned int& number, const unsigned int& pad_len)
 {
     ai::NumberFormat format;

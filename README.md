@@ -144,10 +144,6 @@ It is not required to keep track of the files in the `links` folder, LaTeX2AI ma
 
 # Known issues
 
-## Non ASCII characters in the document name or path
-
-LaTeX2AI currently does not work if there are non ASCII characters in the document name or full document path.
-
 ## Creative Cloud documents
 
 LaTeX2AI currently does not work with _Creative Cloud documents_. However, if the document is stored in the _Creative Cloud Files_ folder on the disk, LaTeX2AI should work as expected.

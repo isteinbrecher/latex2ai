@@ -3,6 +3,7 @@
 -   **v1.0.0**
     -   Features:
         -   Add macOS support.
+        -   Add support for Unicode file paths.
         -   Fix pdf file structure before missing links message is shown.
         -   Improve finding of LaTeX and ghostscript paths.
         -   Rework documentation.
