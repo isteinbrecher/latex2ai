@@ -227,6 +227,11 @@ ASErr L2APlugin::StartupPlugin(SPInterfaceMessage* message)
     {
         error = ex;
     }
+    catch (L2A::ERR::Exception&)
+    {
+        sAIUser->MessageAlert(ai::UnicodeString("Error wile setting up LaTeX2AI"));
+        // TODO: Should we return an error here?
+    }
     catch (...)
     {
         error = kCantHappenErr;
