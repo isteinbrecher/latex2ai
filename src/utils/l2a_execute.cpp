@@ -61,6 +61,8 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
 #define popen _popen
 #define pclose _pclose
 #define WEXITSTATUS
+    l2a_error(
+        "ExecuteCommandLineStd is not tested for Windows. If this is adaped, check that unicode works as expected!");
 #endif
     FILE* pipe = popen(L2A::UTIL::StringAiToStd(command).c_str(), "r");
     if (pipe == nullptr)
@@ -92,7 +94,7 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineStd(const ai::Un
  */
 L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole(const ai::UnicodeString& command)
 {
-#ifndef _WIN32
+#ifndef WIN_ENV
     l2a_error("You are using the function for the wrong OS! Use the system calls via ExecuteCommandLine!");
 #else
     // This code is mainly a combination of
@@ -100,7 +102,8 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
     // https://docs.microsoft.com/en-us/windows/win32/procthread/creating-a-child-process-with-redirected-input-and-output
 
     // Convert the string to platform text.
-    std::string cmdLine = L2A::UTIL::StringAiToStd(command);
+    auto command_wstr = L2A::UTIL::StringAiToStdW(command);
+
     SECURITY_ATTRIBUTES saAttr;
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
@@ -118,32 +121,29 @@ L2A::UTIL::CommandResult L2A::UTIL::INTERNAL::ExecuteCommandLineWindowsNoConsole
 
     // Create the process.
     PROCESS_INFORMATION processInformation = {0};
-    STARTUPINFO startupInfo = {0};
+    STARTUPINFOW startupInfo = {0};
     startupInfo.cb = sizeof(startupInfo);
     startupInfo.hStdError = g_hChildStd_OUT_Wr;
     startupInfo.hStdOutput = g_hChildStd_OUT_Wr;
     startupInfo.dwFlags |= STARTF_USESTDHANDLES;
-    BOOL result = CreateProcess(nullptr, (char*)(cmdLine.c_str()), nullptr, nullptr, TRUE,
+    BOOL result = CreateProcessW(nullptr, &command_wstr[0], nullptr, nullptr, TRUE,
         NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, nullptr, nullptr, &startupInfo, &processInformation);
 
     // Check if the process could be created.
     if (!result)
     {
         // Get the error from the system
-        LPVOID lpMsgBuf;
-        DWORD dw = GetLastError();
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-            nullptr, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, nullptr);
-
-        // Display the error
-        // CString strError = (LPTSTR) lpMsgBuf;
-        // TRACE(_T("::executeCommandLine() failed at CreateProcess()\nCommand=%s\nMessage=%s\n\n"), cmdLine, strError);
+        LPWSTR lpMsgBuf;
+        const DWORD dw = GetLastError();
+        FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+            nullptr, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&lpMsgBuf, 0, nullptr);
+        ai::UnicodeString error_string(lpMsgBuf);
 
         // Free resources created by the system
         LocalFree(lpMsgBuf);
 
         // Create error message.
-        l2a_error("Error, process '" + command + "' could not be created!");
+        l2a_error("Error, process '" + command + "' could not be created! Got error: " + error_string);
     }
     else
     {
