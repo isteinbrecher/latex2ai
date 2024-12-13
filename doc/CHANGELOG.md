@@ -1,5 +1,8 @@
 # Changelog
 
+-   **pre-release**
+    -   Bug fixes:
+        -   Fix bug that caused problems when using items that were created using a deprecated hash algorithm.
 -   **v1.0.0**
     -   Features:
         -   Add macOS support.
