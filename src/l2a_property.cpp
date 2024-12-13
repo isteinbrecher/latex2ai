@@ -122,8 +122,9 @@ void L2A::Property::SetFromParameterList(const L2A::UTIL::ParameterList& propert
         if (pdf_file_hash_method_ != HashMethod::crc64)
         {
             // The current hash method is crc64 if this is not the one that the has was created with, recalculate the
-            // hash.
+            // hash and set the hash method accordingly.
             pdf_file_hash_ = L2A::UTIL::StringHash(pdf_file_encoded_);
+            pdf_file_hash_method_ = HashMethod::crc64;
         }
         else
         {
