@@ -37,7 +37,7 @@
 #define L2A_PLUGIN_NAME "LaTeX2AI"
 
 //! Version of the plugin.
-#define L2A_VERSION_STRING_ "1.0.0"
+#define L2A_VERSION_STRING_ "1.0.1"
 
 //! Icon IDs.
 #define TOOL_ICON_CREATE_DARK_ID 19000        // icon for create mode in dark mode
