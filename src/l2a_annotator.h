@@ -104,7 +104,7 @@ namespace L2A
         /**
          * \brief Invalidate the annotation.
          */
-        void InvalAnnotation(AIAnnotatorMessage* message) const;
+        void InvalAnnotation(const AIRealRect& artwork_bounds) const;
 
         /**
          * \brief Invalidate the entire document view bounds.
