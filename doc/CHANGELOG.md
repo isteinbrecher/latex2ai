@@ -1,5 +1,8 @@
 # Changelog
 
+-   **pre-release**
+    -   Bug fixes:
+        -   Fix bug that caused Illustrator to crash when deselecting all active LaTeX2AI elements [#189](https://github.com/isteinbrecher/latex2ai/issues/189).
 -   **v1.0.1**
     -   Bug fixes:
         -   Fix bug that caused problems when using items that were created using a deprecated hash algorithm.
