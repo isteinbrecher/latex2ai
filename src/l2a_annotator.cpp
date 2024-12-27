@@ -190,10 +190,10 @@ void L2A::Annotator::Draw(AIAnnotatorMessage* message) const
 /**
  *
  */
-void L2A::Annotator::InvalAnnotation(AIAnnotatorMessage* message) const
+void L2A::Annotator::InvalAnnotation(const AIRealRect& artwork_bounds) const
 {
     // Get the rectangle to invalidate.
-    AIRect inval_rect = L2A::AI::ArtworkBoundsToViewBounds(*message->invalidationRects);
+    AIRect inval_rect = L2A::AI::ArtworkBoundsToViewBounds(artwork_bounds);
 
     // Invalidate the rect bounds so it is redrawn.
     AIErr result = sAIAnnotator->InvalAnnotationRect(nullptr, &inval_rect);
@@ -211,7 +211,5 @@ void L2A::Annotator::InvalAnnotation() const
     l2a_check_ai_error(result);
 
     // Invalidate the rect bounds so it is redrawn.
-    AIRect inval_rect = L2A::AI::ArtworkBoundsToViewBounds(view_bounds);
-    result = sAIAnnotator->InvalAnnotationRect(nullptr, &inval_rect);
-    l2a_check_ai_error(result);
+    InvalAnnotation(view_bounds);
 }

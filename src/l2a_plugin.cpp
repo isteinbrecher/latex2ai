@@ -157,14 +157,35 @@ ASErr L2APlugin::Message(char* caller, char* selector, void* message)
         {
             if (strcmp(caller, kCallerAIAnnotation) == 0)
             {
-                if (strcmp(selector, kSelectorAIDrawAnnotation) == 0)
-                    // Draw the l2a annotator.
-                    annotator_->Draw((AIAnnotatorMessage*)message);
-                else if (strcmp(selector, kSelectorAIInvalAnnotation) == 0)
-                    // Invalidate the annotator.
-                    // TODO: maybe this function call can be removed. Check if it is called at all / what the given
-                    // invalidate box actually is.
-                    annotator_->InvalAnnotation((AIAnnotatorMessage*)message);
+                auto* annotator_message = (AIAnnotatorMessage*)message;
+                if (annotator_message == nullptr)
+                {
+                    // In case the annotator message pointer is null, we don't do anything here.
+                }
+                else
+                {
+                    if (strcmp(selector, kSelectorAIDrawAnnotation) == 0)
+                        // Draw the l2a annotator.
+                        annotator_->Draw(annotator_message);
+                    else if (strcmp(selector, kSelectorAIInvalAnnotation) == 0)
+                    {
+                        // Invalidate the annotator.
+                        // TODO: maybe this function call can be removed. Check if it is called at all / what the given
+                        // invalidate box actually is.
+
+                        // In some calls, the pointer to the invalidation rectangle is null, in these cases we
+                        // invalidate the whole document view.
+                        auto* artwork_bounds = annotator_message->invalidationRects;
+                        if (artwork_bounds == nullptr)
+                        {
+                            annotator_->InvalAnnotation();
+                        }
+                        else
+                        {
+                            annotator_->InvalAnnotation(*artwork_bounds);
+                        }
+                    }
+                }
             }
         }
         else
