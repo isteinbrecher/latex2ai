@@ -217,6 +217,7 @@ void L2A::Item::RedoBoundary()
     AIRealPoint old_position = GetPosition();
 
     // Get the angle.
+    L2A::GlobalMutable().logger_.push_back(ai::UnicodeString("L2A::Item::RedoBounary ")+ L2A::UTIL::IntegerToString(__LINE__));
     AIReal angle = GetAngle();
 
     // Rotate the object back to the initial position.
@@ -359,6 +360,8 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
     else
     {
         // Angles of the basis vectors
+        L2A::GlobalMutable().logger_.push_back(
+            ai::UnicodeString("L2A::Item::GetPosition ") + L2A::UTIL::IntegerToString(__LINE__));
         AIReal angle_1 = GetAngle(0);
         AIReal angle_2 = GetAngle(1);
 
@@ -474,6 +477,10 @@ void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment,
 AIReal L2A::Item::GetAngle(unsigned short director) const
 {
     // Get the values from the matrix.
+    L2A::GlobalMutable().logger_.push_back(ai::UnicodeString("L2A::Item::GetAngle"));
+    L2A::GlobalMutable().logger_.push_back(ai::UnicodeString("  PDF Path:\n     ") + this->GetPDFPath().GetFullPath());
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("  Exists: ") + L2A::UTIL::IntegerToString(L2A::UTIL::IsFile(this->GetPDFPath())));
     AIRealMatrix artMatrix = L2A::AI::GetPlacedMatrix(placed_item_);
 
     if (director == 0)
@@ -488,6 +495,8 @@ AIReal L2A::Item::GetAngle(unsigned short director) const
 bool L2A::Item::IsRotated() const
 {
     // check if item is rotated
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Item::IsRotated ") + L2A::UTIL::IntegerToString(__LINE__));
     if (abs(GetAngle()) < L2A::CONSTANTS::eps_angle_)
         return false;
     else
@@ -500,6 +509,8 @@ bool L2A::Item::IsRotated() const
 bool L2A::Item::IsDiamond() const
 {
     // Check if the angle between the two directors is pi/2
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Item::IsDiamond ") + L2A::UTIL::IntegerToString(__LINE__));
     AIReal angle_1 = GetAngle(0);
     AIReal angle_2 = GetAngle(1);
     // Use the strech tollerance here, because not the angles are compared, but their cosines.
@@ -515,6 +526,11 @@ bool L2A::Item::IsDiamond() const
 AIReal L2A::Item::GetStretch(unsigned short director) const
 {
     // Get the values from the matrix.
+    L2A::GlobalMutable().logger_.push_back(ai::UnicodeString("L2A::Item::GetStretch"));
+
+    L2A::GlobalMutable().logger_.push_back(ai::UnicodeString("  PDF Path:\n     ") + this->GetPDFPath().GetFullPath());
+    L2A::GlobalMutable().logger_.push_back(ai::UnicodeString("  Exists: ") + L2A::UTIL::IntegerToString(L2A::UTIL::IsFile(this->GetPDFPath())));
+
     AIRealMatrix artMatrix = L2A::AI::GetPlacedMatrix(placed_item_);
 
     if (director == 0)

@@ -218,6 +218,16 @@ AIRealMatrix L2A::AI::GetPlacedMatrix(const AIArtHandle& placed_item)
     ASErr error = kNoErr;
     AIRealMatrix matrix;
     error = sAIPlaced->GetPlacedMatrix(placed_item, &matrix);
+    if (error)
+    {
+        auto log_path = L2A::UTIL::GetTemporaryDirectory();
+        log_path.AddComponent(ai::UnicodeString("latex2ai.log"));
+        ai::UnicodeString error_string("");
+        for (const auto& item : L2A::GlobalMutable().logger_) error_string += "\n" + item;
+        L2A::UTIL::WriteFileUTF8(log_path, error_string, true);
+        sAIUser->MessageAlert("Written log to: " + log_path.GetFullPath());
+    }
+
     l2a_check_ai_error(error);
     return matrix;
 }

@@ -121,6 +121,8 @@ namespace L2A
 
             //! Flag for warning if boundary boxes are not OK.
             bool warning_boundary_boxes_;
+
+            std::vector<ai::UnicodeString> logger_;
         };
 
         /**
