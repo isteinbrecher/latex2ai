@@ -33,6 +33,9 @@
 
 #include "l2a_suites.h"
 
+#include "l2a_global.h"
+#include "l2a_string_functions.h"
+
 #include <map>
 
 // Forward declaration.
@@ -94,7 +97,12 @@ namespace L2A
         /**
          * \brief Return true hit item.
          */
-        AIArtHandle GetArtHit() const { return cursor_item_; }
+        AIArtHandle GetArtHit() const {
+            L2A::GlobalMutable().logger_.push_back(
+                ai::UnicodeString("L2A::Annotator::GetArtHit Line ") + L2A::UTIL::IntegerToString(__LINE__));
+
+            
+            return cursor_item_; }
 
         /**
          * \brief Draw the boundaries of the items.

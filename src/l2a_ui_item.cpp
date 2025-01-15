@@ -211,6 +211,10 @@ ASErr L2A::UI::Item::SendData()
     {
         ai::UnicodeString key_boundary_box("boundary_box_state");
         form_parameter_list->SetOption(key_latex, true);
+
+            L2A::GlobalMutable().logger_.push_back(
+            ai::UnicodeString("L2A::UI::Item::SendData Line ") + L2A::UTIL::IntegerToString(__LINE__));
+
         if (change_item_->IsDiamond())
         {
             form_parameter_list->SetOption(key_boundary_box, ai::UnicodeString("diamond"));

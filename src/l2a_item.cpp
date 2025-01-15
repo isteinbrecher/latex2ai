@@ -210,6 +210,9 @@ L2A::ItemChangeResult L2A::Item::Change(const ai::UnicodeString& form_return_val
  */
 void L2A::Item::RedoBoundary()
 {
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Item::RedoBoundary Line ") + L2A::UTIL::IntegerToString(__LINE__));
+
     // If object is not stretched and not diamond -> do nothing.
     if (!IsStretched() && !IsDiamond()) return;
 
@@ -344,6 +347,8 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
     // Boundary coordinates for item.
     AIRealRect bounds = L2A::AI::GetArtBounds(placed_item_);
 
+        L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Item::GetPosition Line ") + L2A::UTIL::IntegerToString(__LINE__));
     if ((!IsRotated()) && (!IsDiamond()))
     {
         // Item is rectangle that is not rotated. This should be the default case.
@@ -405,6 +410,8 @@ std::vector<AIRealPoint> L2A::Item::GetPosition(const std::vector<PlaceAlignment
  */
 void L2A::Item::Draw(AIAnnotatorMessage* message, const std::map<PlaceAlignment, AIRealPoint>& item_boundaries) const
 {
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Item::Draw Line ") + L2A::UTIL::IntegerToString(__LINE__));
     // Get the color for this item.
     AIRGBColor item_color;
     if (IsDiamond())

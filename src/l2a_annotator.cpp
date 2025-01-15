@@ -34,6 +34,7 @@
 #include "l2a_ai_functions.h"
 #include "l2a_error.h"
 #include "l2a_item.h"
+#include "l2a_global.h"
 
 
 /**
@@ -57,6 +58,9 @@ L2A::Annotator::Annotator(SPInterfaceMessage* message) : cursor_item_(nullptr)
  */
 void L2A::Annotator::ArtSelectionChanged()
 {
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Annotator::ArtSelectionChanged Line ") + L2A::UTIL::IntegerToString(__LINE__));
+
     // Reset the item vector.
     item_vector_.clear();
 
@@ -127,12 +131,22 @@ void L2A::Annotator::SetAnnotatorWithInvalidateBounds(bool active)
 /**
  *
  */
-void L2A::Annotator::SetAnnotatorActive() { SetAnnotatorWithInvalidateBounds(true); }
+void L2A::Annotator::SetAnnotatorActive() { 
+    
+        L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Annotator::SetAnnotatorActive Line ") + L2A::UTIL::IntegerToString(__LINE__));
+
+    SetAnnotatorWithInvalidateBounds(true); }
 
 /**
  *
  */
-void L2A::Annotator::SetAnnotatorInactive() { SetAnnotatorWithInvalidateBounds(false); }
+void L2A::Annotator::SetAnnotatorInactive() { 
+    
+     L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Annotator::SetAnnotatorInactive Line ") + L2A::UTIL::IntegerToString(__LINE__));
+    
+    SetAnnotatorWithInvalidateBounds(false); }
 
 /**
  *
@@ -148,6 +162,9 @@ void L2A::Annotator::SetAnnotator(bool active)
  */
 bool L2A::Annotator::CheckForArtHit(AIToolMessage* message)
 {
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Annotator::CheckForArtHit Line ") + L2A::UTIL::IntegerToString(__LINE__));
+
     ASErr result = kNoErr;
 
     // This function can only be called if the annotator is active.
@@ -180,6 +197,9 @@ bool L2A::Annotator::CheckForArtHit(AIToolMessage* message)
  */
 void L2A::Annotator::Draw(AIAnnotatorMessage* message) const
 {
+    L2A::GlobalMutable().logger_.push_back(
+        ai::UnicodeString("L2A::Annotator::Draw Line ") + L2A::UTIL::IntegerToString(__LINE__));
+
     // This can only be called when the annotator is active.
     if (!IsActive()) l2a_error("The annotator has to be active.");
 
