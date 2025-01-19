@@ -1,0 +1,34 @@
+name: Test suite
+
+on:
+    push:
+        branches:
+            - "*" # matches every branch that doesn't contain a '/'
+            - "*/*" # matches every branch containing a single '/'
+            - "**" # matches every branch
+            - "!master" # excludes master
+
+jobs:
+    meshpy-testing:
+        name: Windows build
+        runs-on: windows-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: Set up Python 3.12
+              uses: actions/setup-python@v5
+              with:
+                  python-version: 3.12
+            - name: Print path
+              shell: cmd
+              run: cd
+            - name: Print path2
+              shell: cmd
+              run: echo %GITHUB_WORKSPACE%
+            - name: Python
+              shell: cmd
+              run: python --version
+            - name: Compile Visual Studio project with MSBuild
+              shell: cmd
+              run: ${{ '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat" && msbuild' }}
+              working-directory: path/to/your/project
