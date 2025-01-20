@@ -91,6 +91,7 @@ def build_solution_windows(repo_dir, git_identifier, *, build_type="release"):
 
     if "GITHUB_SHA" in os.environ.keys():
         os.environ["VS_activate"] = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\Tools\\VsDevCmd.bat"
+        os.environ["PYTHON_EXE"] = "c/hostedtoolcache/windows/Python/3.12.8/x64/python"
     else:
         "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\VsDevCmd.bat"
 
