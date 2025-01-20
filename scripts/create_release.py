@@ -88,6 +88,12 @@ def build_solution_windows(repo_dir, git_identifier, *, build_type="release"):
     script_dir = os.path.join(repo_dir, "scripts")
     os.chdir(script_dir)
     os.environ["L2A_build_type"] = build_type
+
+    if "GITHUB_SHA" in os.environ.keys():
+        os.environ["VS_activate"] = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\Tools\\VsDevCmd.bat"
+    else:
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\VsDevCmd.bat"
+
     return_value = subprocess.call(["compile_solution.bat"])
 
     if return_value == 0:
