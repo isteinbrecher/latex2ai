@@ -43,6 +43,10 @@ def get_git_tag_or_hash(repo=None):
     Return the commit, if the commit has a tag, return the tag.
     """
 
+    if "GITHUB_SHA" in os.environ.keys():
+        git_sha = os.environ["GITHUB_SHA"]
+        return git_sha, git_sha[:7]
+
     # Get current sha.
     git_sha = get_git_sha(repo)
 
