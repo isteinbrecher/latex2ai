@@ -30,6 +30,9 @@ jobs:
             - name: Print path2
               shell: cmd
               run: echo %GITHUB_WORKSPACE%
+            - name: Print path244
+              shell: cmd
+              run: which python
             - name: Python
               shell: cmd
               run: python create_release.py
