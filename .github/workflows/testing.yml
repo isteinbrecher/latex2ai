@@ -23,6 +23,10 @@ jobs:
               shell: cmd
               run: cd
               working-directory: ${{ github.workspace }}
+            - name: Print path3
+              shell: cmd
+              run: dir
+              working-directory: ${{ github.workspace }}
             - name: Print path2
               shell: cmd
               run: echo %GITHUB_WORKSPACE%
